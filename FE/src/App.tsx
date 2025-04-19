@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
 import Wertermittlung from "./pages/Wertermittlung";
@@ -13,16 +13,17 @@ import NotFound from "./pages/NotFound";
 const App = () => {
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/wertermittlung" element={<Wertermittlung />} />
-        <Route path="/immobilien" element={<Immobilien />} />
-        <Route path="/finanzierung" element={<Finanzierung />} />
-        <Route path="/kontakt" element={<Kontakt />} />
-        <Route path="/kontakt/form" element={<KontaktForm />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/wertermittlung" element={<Wertermittlung />} />
+          <Route path="/immobilien" element={<Immobilien />} />
+          <Route path="/finanzierung" element={<Finanzierung />} />
+          <Route path="/kontakt" element={<Kontakt />} />
+          <Route path="/kontakt/form" element={<KontaktForm />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 };
