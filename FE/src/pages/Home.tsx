@@ -1,11 +1,2 @@
-import React from "react";
-
-const Home = () => {
-  return (
-    <div>
-      <h1>Добро пожаловать на главную страницу!</h1>
-    </div>
-  );
-};
-
+const Home = () => <h1>🏠 Willkommen bei ImmoTonn</h1>;
 export default Home;
