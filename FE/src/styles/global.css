@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+nav ul {
+  display: flex;
+  gap: 16px;
+  padding: 1rem;
+  background: #f0f0f0;
+  list-style: none;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+nav a.active {
+  font-weight: bold;
+  color: navy;
+}
