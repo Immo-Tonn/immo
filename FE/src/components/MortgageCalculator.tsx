@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import jsPDF from "jspdf";
+import React, { useState } from 'react';
+import jsPDF from 'jspdf';
 
 const MortgageCalculator = () => {
   const [price, setPrice] = useState(400000);
@@ -24,7 +24,7 @@ const MortgageCalculator = () => {
     const doc = new jsPDF();
 
     doc.setFontSize(16);
-    doc.text("ImmoMaton Finanzierungsrechner", 20, 20);
+    doc.text('ImmoMaton Finanzierungsrechner', 20, 20);
 
     doc.setFontSize(12);
     doc.text(`Immobilienpreis: €${price}`, 20, 40);
@@ -38,25 +38,25 @@ const MortgageCalculator = () => {
       doc.text(`Bitte zuerst berechnen`, 20, 90);
     }
 
-    doc.save("Finanzierung_Berechnung.pdf");
+    doc.save('Finanzierung_Berechnung.pdf');
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "2rem auto" }}>
+    <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
       <h2>🧮 Immobilien Finanzierung Rechner</h2>
 
       <label>Immobilienpreis (€):</label>
       <input
         type="number"
         value={price}
-        onChange={(e) => setPrice(Number(e.target.value))}
+        onChange={e => setPrice(Number(e.target.value))}
       />
 
       <label>Eigenkapital (€):</label>
       <input
         type="number"
         value={downPayment}
-        onChange={(e) => setDownPayment(Number(e.target.value))}
+        onChange={e => setDownPayment(Number(e.target.value))}
       />
 
       <label>Jahreszins (%):</label>
@@ -64,27 +64,27 @@ const MortgageCalculator = () => {
         type="number"
         value={interestRate}
         step="0.1"
-        onChange={(e) => setInterestRate(Number(e.target.value))}
+        onChange={e => setInterestRate(Number(e.target.value))}
       />
 
       <label>Laufzeit (Jahre):</label>
       <input
         type="number"
         value={loanTerm}
-        onChange={(e) => setLoanTerm(Number(e.target.value))}
+        onChange={e => setLoanTerm(Number(e.target.value))}
       />
 
-      <button onClick={calculatePayment} style={{ marginTop: "1rem" }}>
+      <button onClick={calculatePayment} style={{ marginTop: '1rem' }}>
         Monatliche Rate berechnen
       </button>
 
       {monthlyPayment !== null && (
-        <p style={{ marginTop: "1rem" }}>
+        <p style={{ marginTop: '1rem' }}>
           Monatliche Zahlung: <strong>{monthlyPayment.toFixed(2)} €</strong>
         </p>
       )}
 
-      <button onClick={exportToPDF} style={{ marginTop: "1rem" }}>
+      <button onClick={exportToPDF} style={{ marginTop: '1rem' }}>
         Export als PDF
       </button>
     </div>

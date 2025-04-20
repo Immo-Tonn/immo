@@ -1,15 +1,15 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import ScrollToTop from "./components/ScrollToTop";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import ScrollToTop from './components/ScrollToTop';
 
-import Home from "./pages/Home";
-import Wertermittlung from "./pages/Wertermittlung";
-import Immobilien from "./pages/Immobilien";
-import Finanzierung from "./pages/Finanzierung";
-import Kontakt from "./pages/Kontakt";
-import KontaktForm from "./pages/KontaktForm";
-import NotFound from "./pages/NotFound";
+import Home from './pages/Home';
+import Wertermittlung from './pages/Wertermittlung';
+import Immobilien from './pages/Immobilien';
+import Finanzierung from './pages/Finanzierung';
+import Kontakt from './pages/Kontakt';
+import KontaktForm from './pages/KontaktForm';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
