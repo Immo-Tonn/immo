@@ -24,7 +24,7 @@ const MortgageCalculator = () => {
     const doc = new jsPDF();
 
     doc.setFontSize(16);
-    doc.text("ImmoMaton Finanzierungsrechner", 20, 20);
+    doc.text("ImmoTonn Finanzierungsrechner", 20, 20);
 
     doc.setFontSize(12);
     doc.text(`Immobilienpreis: €${price}`, 20, 40);
