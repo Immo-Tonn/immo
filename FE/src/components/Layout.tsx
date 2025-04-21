@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Header />
-      <main style={{ minHeight: "80vh", padding: "2rem" }}>{children}</main>
+      <main style={{ minHeight: "600vh", padding: "2rem" }}>{children}</main>
       <Footer />
     </>
   );

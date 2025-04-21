@@ -1,4 +1,4 @@
-import React from "react";
+//import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Header.css"; // пока не добавили — можно закомментить
 
@@ -20,6 +20,9 @@ const Header = () => {
         </li>
         <li>
           <NavLink to="/kontakt">Kontakt</NavLink>
+        </li>
+        <li>
+          <NavLink to="/kontakt/form">Kontakt Form</NavLink>
         </li>
       </ul>
     </nav>
