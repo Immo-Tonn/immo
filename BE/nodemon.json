@@ -1,0 +1,8 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "exec": "node --import ./register-tsnode.mjs src/app.ts",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
