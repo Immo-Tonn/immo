@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-import "./Header.css"; // пока не добавили — можно закомментить
+import { NavLink } from 'react-router-dom';
+// import './Header.css'; // пока не добавили — можно закомментить
 
 const Header = () => {
   return (
@@ -10,6 +10,9 @@ const Header = () => {
         </li>
         <li>
           <NavLink to="/wertermittlung">Wertermittlung</NavLink>
+        </li>
+        <li>
+          <NavLink to="/immobilien/:id">PropertyPage</NavLink>
         </li>
         <li>
           <NavLink to="/immobilien">Immobilien</NavLink>
