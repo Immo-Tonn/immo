@@ -1,12 +1,17 @@
 import express, {Application, Request, Response, NextFunction} from "express";
 import "dotenv/config"
+import cors from "cors"
 import connectDb from "./config/db";
+import realEstateRoutes from "./routes/realEstateObjactsRoutes";
 
 const app: Application = express()
 app.use(express.json())
+app.use(cors());
+
+app.use("/objects", realEstateRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error("Ошибка сервера:", err.message);
+    console.error("Server error:", err.message);
     res.status(500).json({ message: "Ошибка сервера", error: err.message });
   });
 
