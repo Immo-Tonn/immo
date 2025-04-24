@@ -2,8 +2,8 @@ import { useParams } from 'react-router-dom';
 import PropertyHero from '../widgets/PropertyHero/PropertyHero';
 import PropertyDetails from '../widgets/PropertyDetails/PropertyDetails';
 import PropertyMap from '../widgets/PropertyMap/PropertyMap';
-import InquiryForm from '../features/contact/InquiryForm';
-import MortgageCalculator from '../features/mortgage/MortgageCalculator';
+import InquiryForm from '../features/contact/ui/InquiryForm';
+import MortgageCalculator from '../features/mortgage/ui/MortgageCalculator';
 
 const PropertyPage = () => {
   const { id } = useParams(); // ← получаем ID из URL

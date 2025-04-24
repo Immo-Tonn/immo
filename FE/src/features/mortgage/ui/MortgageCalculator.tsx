@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import jsPDF from 'jspdf';
-import { calcMonthly } from './model';
-import Button from '../../shared/ui/Button';
+import { calcMonthly } from '../model/model';
+import Button from '../../../shared/ui/Button';
 
 const MortgageCalculator = () => {
   const [price, setPrice] = useState(400000);
