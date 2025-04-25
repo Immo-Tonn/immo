@@ -1,5 +1,5 @@
 import style from '../AboutUs/AboutUs.module.css';
-import whiteLogo from '../../shared/assets/about-us/logo-white.svg';
+import whiteLogo from '@shared/assets/about-us/logo-white.svg';
 
 const AboutUs = () => {
   return (

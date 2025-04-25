@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
-import PropertyHero from '../widgets/PropertyHero/PropertyHero';
-import PropertyDetails from '../widgets/PropertyDetails/PropertyDetails';
-import PropertyMap from '../widgets/PropertyMap/PropertyMap';
-import InquiryForm from '../features/contact/ui/InquiryForm';
-import MortgageCalculator from '../features/mortgage/ui/MortgageCalculator';
+import PropertyHero from '@widgets/PropertyHero/PropertyHero';
+import PropertyDetails from '@widgets/PropertyDetails/PropertyDetails';
+import PropertyMap from '@widgets/PropertyMap/PropertyMap';
+import InquiryForm from '@features/contact/ui/InquiryForm';
+import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 
 const PropertyPage = () => {
   const { id } = useParams();

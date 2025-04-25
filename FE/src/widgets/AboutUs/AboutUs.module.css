@@ -9,7 +9,7 @@
 .line {
   width: 100%;
   max-width: 720px;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid black;
   margin: 115px 155px;
 }
 
@@ -28,20 +28,32 @@
 }
 
 .textBlock h1 {
-  font-size: 1.8rem;
+  font-size: 30px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: #160c20;
   margin-bottom: 16px;
 }
 
 .textBlock p {
-  font-size: 15px;
-  font-size: 1rem;
+  max-width: 639px;
+  font-family: 'Inter', sans-serif;
   line-height: 1.6;
   margin-bottom: 24px;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: #160c20;
 }
 
 .textBottom {
   font-family: 'Inter', sans-serif;
   margin-top: 40px;
   max-width: 636px;
+  font-weight: 400;
   font-size: 24px;
+  letter-spacing: 0.1em;
+  color: #120922;
 }
