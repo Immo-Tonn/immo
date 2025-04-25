@@ -1,0 +1,46 @@
+.aboutUsSection {
+  background: rgba(82, 110, 137, 0.16);
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line {
+  width: 100%;
+  max-width: 720px;
+  border-bottom: 1px solid black;
+  margin: 115px 155px;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+  margin: 20px 0;
+}
+
+.contentWrapper {
+  display: flex;
+}
+.textBlock {
+  margin-left: 68px;
+  max-width: 720px;
+}
+
+.textBlock h1 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+}
+
+.textBlock p:first-child {
+  font-size: 15px;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.textBottom {
+  margin-top: 40px;
+  max-width: 636px;
+  font-size: 24px;
+}

@@ -1,4 +1,14 @@
+import AboutUs from '../widgets/AboutUs/AboutUs';
+import FiveSteps from '../widgets/FiveSteps/FiveSteps';
+import Categories from '../widgets/Сategories/Categories';
+
 const Home = () => {
-  return <h1>🏠 Willkommen bei ImmoTonn</h1>;
+  return (
+    <>
+      <Categories />
+      <AboutUs />
+      <FiveSteps />
+    </>
+  );
 };
 export default Home;
