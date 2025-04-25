@@ -1,4 +1,4 @@
-import MortgageCalculator from "../components/MortgageCalculator";
+import MortgageCalculator from '../features/mortgage/ui/MortgageCalculator';
 
 const Finanzierung = () => {
   return (

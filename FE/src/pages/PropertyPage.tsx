@@ -1,15 +1,15 @@
-import { useParams } from "react-router-dom";
-import PropertyHero from "../components/property/PropertyHero";
-import PropertyDetails from "../components/property/PropertyDetails";
-import PropertyMap from "../components/property/PropertyMap";
-import InquiryForm from "../components/property/InquiryForm";
-import MortgageCalculator from "../components/MortgageCalculator";
+import { useParams } from 'react-router-dom';
+import PropertyHero from '../widgets/PropertyHero/PropertyHero';
+import PropertyDetails from '../widgets/PropertyDetails/PropertyDetails';
+import PropertyMap from '../widgets/PropertyMap/PropertyMap';
+import InquiryForm from '../features/contact/ui/InquiryForm';
+import MortgageCalculator from '../features/mortgage/ui/MortgageCalculator';
 
 const PropertyPage = () => {
   const { id } = useParams(); // ← получаем ID из URL
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div style={{ padding: '2rem' }}>
       <h2>Заглушка: выбран объект с ID — {id}</h2>
 
       <PropertyHero />
