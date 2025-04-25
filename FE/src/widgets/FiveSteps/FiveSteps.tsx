@@ -1,6 +1,5 @@
 import styles from './FiveSteps.module.css';
 import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
@@ -84,7 +83,7 @@ const FiveSteps = () => {
               eget.
             </AccordionDetails>
           </Accordion>
-          <Button text="Verkauf" />
+          <Button style={{ width: '332px', height: '98px' }} text="Verkauf" />
         </ul>
       </div>
     </section>

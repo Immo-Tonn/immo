@@ -1,5 +1,7 @@
 .fiveStepsSection {
   margin: 0 124px 0 124px;
+  background-image: url('../../src/shared/assets/five-steps/image-bg.svg');
+  background-size: contain;
 }
 .itemList {
   list-style: none;
