@@ -1,6 +1,6 @@
 import MortgageCalculator from '../features/mortgage/ui/MortgageCalculator';
 
-const Finanzierung = () => {
+const Financing = () => {
   return (
     <>
       <h1>💰 Finanzierung & Beratung</h1>
@@ -9,4 +9,4 @@ const Finanzierung = () => {
   );
 };
 
-export default Finanzierung;
+export default Financing;

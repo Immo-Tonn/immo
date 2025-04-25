@@ -6,7 +6,7 @@ import InquiryForm from '../features/contact/ui/InquiryForm';
 import MortgageCalculator from '../features/mortgage/ui/MortgageCalculator';
 
 const PropertyPage = () => {
-  const { id } = useParams(); // ← получаем ID из URL
+  const { id } = useParams();
 
   return (
     <div style={{ padding: '2rem' }}>
