@@ -1,0 +1,31 @@
+.categoriesSection {
+  display: flex;
+  justify-content: center;
+  background-color: #160c20;
+}
+
+.categoriesList {
+  list-style: none;
+  gap: 93px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.categoryImage {
+  width: 343px;
+  height: 249px;
+  object-fit: cover;
+}
+
+.categoryLink {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.categoryTitle {
+  color: white;
+  margin-top: 26px;
+}
