@@ -3,7 +3,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
-import Button from '@shared/ui/Button';
+import Button from '@shared/ui/Button/Button';
 
 const FiveSteps = () => {
   return (
