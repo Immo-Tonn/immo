@@ -1,13 +1,28 @@
-import style from '../AboutUs/AboutUs.module.css';
+import { useRef } from 'react';
+import style from './AboutUs.module.css';
 import whiteLogo from '@shared/assets/about-us/logo-white.svg';
+import '@shared/styles/animation.css';
 
 const AboutUs = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <section className={style.aboutUsSection}>
+    <section
+      className={style.aboutUsSection}
+      ref={containerRef}
+      data-scroll-container
+    >
       <span className={style.line}></span>
+
       <div className={style.contentWrapper}>
-        <img src={whiteLogo} alt="logo" className={style.logo} />
-        <div className={style.textBlock}>
+        <img
+          src={whiteLogo}
+          alt="logo"
+          className={style.logo}
+          data-scroll
+          data-scroll-speed="1"
+        />
+        <div className={style.textBlock} data-scroll data-scroll-speed="2">
           <h1>Was Sie von uns erwarten können</h1>
           <p>
             Mit einem professionellen Immobilienmakler an Ihrer Seite können Sie
@@ -24,10 +39,12 @@ const AboutUs = () => {
           </p>
         </div>
       </div>
-      <p className={style.textBottom}>
+
+      <p className={style.textBottom} data-scroll data-scroll-speed="1.5">
         Ihr Maklerteam für Wohnimmobilien, Geschäftshäuser und hochwertige
         Investment
       </p>
+
       <span className={style.line}></span>
     </section>
   );

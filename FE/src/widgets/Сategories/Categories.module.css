@@ -27,5 +27,7 @@
 
 .categoryTitle {
   color: white;
+  font-size: 24px;
+  font-family: 'Inter', sans-serif;
   margin-top: 26px;
 }
