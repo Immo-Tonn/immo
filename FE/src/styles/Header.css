@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+
+.header {
+  background-color: #1C1829;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  height: 329px;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+}
+
+.header-logo {
+  width: 328px;
+  height: 328px;
+  display: flex;
+  align-items: flex-start;
+  align-self: flex-start;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.header-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+
+
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 20px;
+}
+
+.header-contacts {
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: left;
+  margin: 0;
+}
+
+.header-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+}
+
+.header-nav ul {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header-nav a,
+.header-nav a:visited,
+.header-nav a.active {
+  color: #D9D9D9;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  background: transparent;
+}
+
+/* Адаптация под планшеты (до 1024px) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 0 20px;
+  }
+
+  .header-nav ul {
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header-right {
+    margin-right: 0;
+  }
+}
+
+/* Адаптация под мобильные и планшеты (до 768px) */
+@media (max-width: 768px) {
+  .header {
+    height: auto;
+    padding: 20px;
+  }
+
+  .header-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .header-logo img {
+    height: 80px;
+  }
+
+  .header-right {
+    align-items: flex-end;
+  }
+
+  .header-contacts {
+    text-align: left;
+  }
+
+  .header-nav {
+    height: auto;
+    padding-top: 20px;
+  }
+
+  .header-nav ul {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header-nav a {
+    font-size: 20px;
+  }
+}
+
+/* Адаптация под небольшие смартфоны (до 560px) */
+@media (max-width: 560px) {
+  .header-logo img {
+    height: 70px;
+  }
+
+  .header-nav ul {
+    gap: 16px;
+  }
+
+  .header-nav a {
+    font-size: 18px;
+
+  }
+}
