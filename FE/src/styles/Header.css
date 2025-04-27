@@ -10,6 +10,11 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.header-main-right{
+display: flex;
+flex-direction: column;
+
+}
 
 .header-top {
   display: flex;
