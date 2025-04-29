@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 
 export enum ImageType {
   MAIN = 'main',
-  FLOOR_PLAN = 'floor plan',
+  PLAN = 'plan',
   ADDITIONAL = 'additional'
 }
 

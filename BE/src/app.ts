@@ -3,12 +3,14 @@ import "dotenv/config"
 import cors from "cors"
 import connectDb from "./config/db";
 import realEstateRoutes from "./routes/realEstateObjactsRoutes";
+import imagesRoutes from './routes/imagesRoutes'
 
 const app: Application = express()
 app.use(express.json())
 app.use(cors());
 
 app.use("/objects", realEstateRoutes);
+app.use('/images', imagesRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error("Server error:", err.message);

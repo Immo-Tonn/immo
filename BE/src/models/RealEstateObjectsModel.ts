@@ -21,12 +21,16 @@ type: ObjectType;
   additionalInfo: string;
   address: {
     city: string;
-    zip: string;
+    zip: number;
   };
   price: number;
   dateAdded: Date;
   status: ObjectStatus;
-  images?: Types.ObjectId
+  images?: Array<Types.ObjectId>;
+  apartments?: Types.ObjectId;
+  commercial_NonResidentialBuildings?: Types.ObjectId;
+  landPlots?: Types.ObjectId;
+  residentialHouses?: Types.ObjectId
 }
 
 const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
@@ -49,7 +53,7 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
     },
     address: {
       city: { type: String, required: true },
-      zip: { type: String, required: true }
+      zip: { type: Number, required: true }
     },
     price: {
       type: Number,
@@ -64,9 +68,25 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
       enum: Object.values(ObjectStatus),
       default: ObjectStatus.ACTIVE
     },
-    images: { 
+    images: [{ 
         type: Schema.Types.ObjectId,
-        ref: "Images"
+        ref: "Images",
+    }],
+    apartments: {
+      type: Types.ObjectId,
+      ref: "Apartments"
+    },
+    commercial_NonResidentialBuildings: {
+      type: Types.ObjectId,
+      ref: "Commercial_NonResidentialBuildings"
+    },
+    landPlots: {
+      type: Types.ObjectId,
+      ref: "LandPlots"
+    },
+    residentialHouses: {
+      type: Types.ObjectId,
+      ref: "ResidentialHouses"
     }
   });
   

@@ -1,16 +1,18 @@
 
 import { Request, Response } from "express";
-import RealEstateObjectsModel from "../models/RealEstateObjectsModel"; // путь адаптируйте к вашей структуре
+import RealEstateObjectsModel from "../models/RealEstateObjectsModel";
 
 // Получить все объекты недвижимости
 export const getAllObjects = async (req: Request, res: Response) => {
   try {
     const objects = await RealEstateObjectsModel.find().populate("images");
-    res.json(objects);
+    res.status(200).json(objects); 
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Ошибка при получении объектов", error });
   }
 };
+
 
 // Получить объект по ID
 export const getObjectById = async (req: Request, res: Response) => {
