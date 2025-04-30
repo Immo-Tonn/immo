@@ -5,14 +5,15 @@
   color: white;
   font-family: 'Inter', sans-serif;
   height: 329px;
-  padding: 0 40px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.header-main-right{
-display: flex;
-flex-direction: column;
+
+.header-main-right {
+  display: flex;
+  flex-direction: column;
 
 }
 
@@ -60,22 +61,36 @@ flex-direction: column;
   line-height: 1.4;
   text-align: left;
   margin: 0;
+  line-height: 24px;
+  padding-top: 30px;
+
 }
+
+
 
 .header-nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
   height: 80px;
-  width: 100%;
+
+  margin-top: 90px;
 }
+
+
+
+
+
 
 .header-nav ul {
   display: flex;
+
   gap: 40px;
   list-style: none;
   padding: 0;
   margin: 0;
+
 }
 
 .header-nav a,
@@ -89,77 +104,24 @@ flex-direction: column;
   background: transparent;
 }
 
-/* Адаптация под планшеты (до 1024px) */
-@media (max-width: 1024px) {
-  .header {
-    padding: 0 20px;
-  }
-
-  .header-nav ul {
-    gap: 24px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .header-right {
-    margin-right: 0;
-  }
+.header-contacts p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* расстояние между иконкой и текстом */
+  margin: 0;
+  padding: 0;
 }
 
-/* Адаптация под мобильные и планшеты (до 768px) */
-@media (max-width: 768px) {
-  .header {
-    height: auto;
-    padding: 20px;
-  }
+.header-contacts p:last-child {
+  margin-left: 24px;
 
-  .header-top {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .header-logo img {
-    height: 80px;
-  }
-
-  .header-right {
-    align-items: flex-end;
-  }
-
-  .header-contacts {
-    text-align: left;
-  }
-
-  .header-nav {
-    height: auto;
-    padding-top: 20px;
-  }
-
-  .header-nav ul {
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .header-nav a {
-    font-size: 20px;
-  }
+  /* сдвигаем город */
+  margin-top: -4px;
+  /* поднимаем город ближе к улице */
 }
 
-/* Адаптация под небольшие смартфоны (до 560px) */
-@media (max-width: 560px) {
-  .header-logo img {
-    height: 70px;
-  }
-
-  .header-nav ul {
-    gap: 16px;
-  }
-
-  .header-nav a {
-    font-size: 18px;
-
-  }
+.header-contacts .icon {
+  width: 16px;
+  height: 16px;
 }
