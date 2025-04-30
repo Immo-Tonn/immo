@@ -43,6 +43,9 @@ const Header = () => {
               <li>
                 <NavLink to="/finanzierung">Finanzierung</NavLink>
               </li>
+              <li>
+                <NavLink to="/kontakt">Kontaktformular</NavLink>
+              </li>
             </ul>
           </div>
         </div>
