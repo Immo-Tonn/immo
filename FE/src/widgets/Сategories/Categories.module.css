@@ -5,8 +5,9 @@
 }
 
 .categoriesList {
+  padding: 145px 0 182px 0;
   list-style: none;
-  gap: 93px;
+  gap: 120px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -29,5 +30,5 @@
   color: white;
   font-size: 24px;
   font-family: 'Inter', sans-serif;
-  margin-top: 26px;
+  margin-bottom: 27px;
 }
