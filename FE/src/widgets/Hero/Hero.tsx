@@ -7,8 +7,12 @@ const Hero = () => {
         Der richtige Partner für Ihren Immobilienverkauf
       </div>
       <div className={styles.bottomBar}>
-        <Button text={'Kostenlose\nWertermittlung'} addLineBreak />
-        <Button text="direkt anfordern" />
+        <Button
+          initialText={'Kostenlose\nWertermittlung'}
+          clickedText="Weiterleitung"
+          addLineBreak
+        />
+        <Button initialText="direkt anfordern" clickedText="Weiterleitung" />
       </div>
     </section>
   );

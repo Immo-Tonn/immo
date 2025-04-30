@@ -219,7 +219,8 @@ const FiveSteps = () => {
                 textAlign: 'center',
                 color: '#f5f5f5',
               }}
-              text="Verkauf"
+              initialText="Verkauf"
+              clickedText="Weiterleitung"
             />
           </div>
         </ul>

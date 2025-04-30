@@ -41,8 +41,9 @@ const Footer = () => {
 
             <div className={styles.footerButtonWrapper}>
               <Button
-                text="Kontaktieren Sie uns"
+                initialText="Kontaktieren Sie uns"
                 className={styles.contactButton}
+                clickedText="Weiterleitung"
                 onClick={handleContactClick}
               />
             </div>

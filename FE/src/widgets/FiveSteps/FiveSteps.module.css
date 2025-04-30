@@ -8,7 +8,7 @@
 .itemList {
   list-style: none;
   margin: 0 auto;
-  max-width: 550px;
+  max-width: 750px;
 }
 .accordionItem {
   font-family: 'Inter', sans-serif;
@@ -21,7 +21,7 @@
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   padding: 60px;
-  font-size: 30px;
+  font-size: 40px;
   text-align: center;
   color: #fff;
 }
