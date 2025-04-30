@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Input from '@shared/ui/Input/Input';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -92,77 +93,41 @@ const Contact = () => {
         </p>
       ) : (
         <form onSubmit={handleSubmit} noValidate>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              placeholder="Max Mustermann"
-              style={{
-                display: 'block',
-                width: '100%',
-                margin: '0.5rem 0',
-                padding: '0.5rem',
-              }}
-            />
-          </label>
-
-          <label>
-            Telefonnummer:
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              placeholder="+49..."
-              style={{
-                display: 'block',
-                width: '100%',
-                margin: '0.5rem 0',
-                padding: '0.5rem',
-              }}
-            />
-          </label>
-
-          <label>
-            E-Mail-Adresse:
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="beispiel@email.de"
-              style={{
-                display: 'block',
-                width: '100%',
-                margin: '0.5rem 0',
-                padding: '0.5rem',
-              }}
-            />
-          </label>
-
-          <label>
-            Ihre Nachricht:
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              rows={5}
-              placeholder="Schreiben Sie uns etwas..."
-              style={{
-                display: 'block',
-                width: '100%',
-                margin: '0.5rem 0',
-                padding: '0.5rem',
-              }}
-            />
-          </label>
+          <Input
+            label="Name:"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            placeholder="Max Mustermann"
+          />
+          <Input
+            label="Telefonnummer:"
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+            placeholder="+49..."
+          />
+          <Input
+            label="E-Mail-Adresse:"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="beispiel@email.de"
+          />
+          <Input
+            label="Ihre Nachricht:"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            isTextarea
+            placeholder="Schreiben Sie uns etwas..."
+          />
 
           <label style={{ display: 'block', margin: '0.5rem 0' }}>
             <input

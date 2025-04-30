@@ -1,0 +1,50 @@
+.heroSection {
+  position: relative;
+  width: 1024px;
+  height: 793px;
+  background-image: url('@shared/assets/hero/banner.svg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.topText {
+  margin-top: 42px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 40px;
+  color: #fff;
+}
+
+.bottomBar {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0 91px 0 91px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bottomBar Button:first-child {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  border: none;
+  font-size: 48px;
+  background-color: transparent;
+  line-height: 122%;
+  text-align: center;
+  cursor: pointer;
+  color: #f5f5f5;
+}
+.bottomBar Button:last-child {
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  border: none;
+  background-color: transparent;
+  font-size: 32px;
+  text-align: center;
+  color: #f5f5f5;
+}
