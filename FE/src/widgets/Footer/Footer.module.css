@@ -5,7 +5,7 @@ footer {
 }
 
 .topStripe {
-  background-color: #536d8f;
+  background-color: #2b3e56;
   height: 53px;
   width: 100%;
 }
@@ -29,10 +29,9 @@ footer {
 }
 
 .footerLinks {
+  font-family: 'Inter', sans-serif;
   list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .footerLinks li {
@@ -48,6 +47,9 @@ footer {
   font-size: 16px;
   line-height: 1.6;
   text-align: left;
+  /* this is kindly bad */
+  margin: 0px 0 57px 190px;
+  /* this is kindly bad */
 }
 
 .footerButtonWrapper {
@@ -65,9 +67,8 @@ footer {
   cursor: pointer;
 }
 
-/* Нижняя полоса */
 .bottomStripe {
-  background-color: #536d8f;
+  background-color: #2b3e56;
   height: 40px;
   width: 100%;
   display: flex;
@@ -76,12 +77,15 @@ footer {
 }
 
 .bottomStripe p {
-  color: white;
-  font-size: 14px;
-  margin: 0;
+  font-weight: 400;
+  font-size: 20px;
+  color: #fff;
 }
 
-/* Responsive */
+.wrapper {
+  flex-direction: column;
+  display: flex;
+}
 @media (max-width: 768px) {
   .footerContainer {
     flex-direction: column;

@@ -1,3 +1,4 @@
+import Button from '@shared/ui/Button/Button';
 import styles from './Hero.module.css';
 const Hero = () => {
   return (
@@ -6,11 +7,8 @@ const Hero = () => {
         Der richtige Partner für Ihren Immobilienverkauf
       </div>
       <div className={styles.bottomBar}>
-        <span>
-          Kostenlose <br />
-          Wertermittlung
-        </span>
-        <span>direkt anfordern</span>
+        <Button text={'Kostenlose\nWertermittlung'} addLineBreak />
+        <Button text="direkt anfordern" />
       </div>
     </section>
   );
