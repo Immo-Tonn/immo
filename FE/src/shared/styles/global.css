@@ -1,8 +1,8 @@
 @import '@shared/fonts/fonts.css';
 
 body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
+  margin: 0 auto;
+  max-width: 1024px;
 }
 
 nav ul {
@@ -21,4 +21,9 @@ nav a {
 nav a.active {
   font-weight: bold;
   color: navy;
+}
+
+* {
+  padding: 0;
+  margin: 0;
 }

@@ -8,8 +8,16 @@ import Button from '@shared/ui/Button/Button';
 const FiveSteps = () => {
   return (
     <section className={styles.fiveStepsSection}>
-      <div className={styles.title}>
-        <h2>in 5 Schritten zum Verkauf Ihrer Immobilie</h2>
+      <div className={styles.firstTitleWrap}>
+        <h3 className={styles.firstTitle}>
+          Mehr als nur Immobilien – eine Partnerschaft, <br />
+          die für Sie entfaltet
+        </h3>
+      </div>
+      <div className={styles.secondTitleWrap}>
+        <h2 className={styles.secondTitle}>
+          in 5 Schritten zum Verkauf Ihrer Immobilie
+        </h2>
       </div>
 
       <div className={styles.contentWrapper}>
