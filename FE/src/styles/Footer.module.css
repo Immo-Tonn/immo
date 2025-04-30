@@ -1,0 +1,109 @@
+/* Обнуление стилей */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.footer {
+  background-color: #1c1829;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+.topStripe {
+  background-color: #536D8F;
+  height: 53px;
+  width: 100%;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px 40px;
+  flex-wrap: wrap;
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footerLogo {
+  width: 100px;
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+
+.footerLinks li {
+  margin-bottom: 8px;
+}
+
+.footerLinks li a {
+  text-decoration: none;
+  color: white;
+}
+
+.footerCenter {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.footerButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.contactButton {
+  background-color: #cbd8e2;
+  color: #1c1829;
+  font-weight: bold;
+  font-size: 32px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Нижняя полоса */
+.bottomStripe {
+  background-color: #536D8F;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottomStripe p {
+  color: white;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footerContainer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .footerLeft,
+  .footerCenter {
+    align-items: center;
+  }
+
+  .footerButtonWrapper {
+    justify-content: center;
+    margin-top: 20px;
+  }
+}
