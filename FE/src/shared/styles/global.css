@@ -1,28 +1,5 @@
 @import '@shared/fonts/fonts.css';
 
-body {
-  margin: 0 auto;
-  max-width: 1024px;
-}
-
-nav ul {
-  display: flex;
-  gap: 16px;
-  padding: 1rem;
-  background: #f0f0f0;
-  list-style: none;
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-}
-
-nav a.active {
-  font-weight: bold;
-  color: navy;
-}
-
 * {
   padding: 0;
   margin: 0;

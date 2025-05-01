@@ -2,6 +2,7 @@ footer {
   background-color: #1c1829;
   color: white;
   font-family: 'Inter', sans-serif;
+  margin: 0 auto;
 }
 
 .topStripe {
@@ -12,10 +13,11 @@ footer {
 
 .footerContainer {
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  padding: 20px 40px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 108px 0 110px;
+  align-items: center;
+  max-width: 1024px;
+  margin: 0 auto;
 }
 
 .footerLeft {
@@ -52,11 +54,6 @@ footer {
   /* this is kindly bad */
 }
 
-.footerButtonWrapper {
-  display: flex;
-  align-items: center;
-}
-
 .contactButton {
   background-color: #cbd8e2;
   color: #1c1829;
@@ -65,6 +62,7 @@ footer {
   padding: 10px 20px;
   border: none;
   cursor: pointer;
+  margin-bottom: 60px;
 }
 
 .bottomStripe {
@@ -82,11 +80,7 @@ footer {
   color: #fff;
 }
 
-.wrapper {
-  flex-direction: column;
-  display: flex;
-}
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .footerContainer {
     flex-direction: column;
     align-items: center;
@@ -103,4 +97,4 @@ footer {
     justify-content: center;
     margin-top: 20px;
   }
-}
+} */

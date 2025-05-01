@@ -14,7 +14,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.topStripe} />
 
-      <div className={styles.wrapper}>
+      <div className={styles.wrapperRight}>
         <div className={styles.footerContainer}>
           <div className={styles.footerLeft}>
             <img src={logo} alt="logo" className={styles.footerLogo} />
@@ -30,7 +30,8 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div className={styles.wrapper}>
+
+          <div className={styles.wrapperLeft}>
             <div className={styles.footerCenter}>
               <p>Sessendrupweg 54</p>
               <p>48161 Münster</p>
@@ -41,8 +42,9 @@ const Footer = () => {
 
             <div className={styles.footerButtonWrapper}>
               <Button
-                text="Kontaktieren Sie uns"
+                initialText="Kontaktieren Sie uns"
                 className={styles.contactButton}
+                clickedText="Weiterleitung"
                 onClick={handleContactClick}
               />
             </div>
