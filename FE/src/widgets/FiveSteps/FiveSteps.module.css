@@ -1,0 +1,64 @@
+.fiveStepsSection {
+  background-image: url('@shared/assets/five-steps/image-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.itemList {
+  list-style: none;
+  margin: 0 auto;
+  max-width: 750px;
+}
+.accordionItem {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  color: #f5f5f5;
+}
+.secondTitle {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  padding: 60px;
+  font-size: 40px;
+  text-align: center;
+  color: #fff;
+}
+.secondTitle::after {
+  content: '';
+  z-index: -1;
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #10396e;
+}
+
+.firstTitle {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: #fff;
+  z-index: 1;
+}
+.firstTitle::after {
+  bottom: -24px;
+  content: '';
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #1d2a3b;
+}
+.accordionItem {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  color: #f5f5f5;
+}

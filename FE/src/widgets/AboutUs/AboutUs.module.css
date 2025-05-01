@@ -1,0 +1,59 @@
+.aboutUsSection {
+  background: rgba(82, 110, 137, 0.16);
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line {
+  width: 100%;
+  max-width: 720px;
+  border-bottom: 2px solid black;
+  margin: 115px 155px;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+  margin: 20px 0;
+}
+
+.contentWrapper {
+  display: flex;
+}
+.textBlock {
+  margin-left: 68px;
+  max-width: 720px;
+}
+
+.textBlock h1 {
+  font-size: 30px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: #160c20;
+  margin-bottom: 16px;
+}
+
+.textBlock p {
+  max-width: 639px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: #160c20;
+}
+
+.textBottom {
+  font-family: 'Inter', sans-serif;
+  margin-top: 40px;
+  max-width: 636px;
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  color: #120922;
+}
