@@ -3,15 +3,13 @@ header {
   color: white;
   font-family: 'Inter', sans-serif;
   height: 329px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .headerTop {
+  max-width: 1024px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  margin: 0 auto;
 }
 .headerLogo img {
   object-fit: contain;

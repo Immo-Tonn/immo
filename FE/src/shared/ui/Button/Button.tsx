@@ -14,7 +14,9 @@ const Button = ({
   const [isButtonDisabled, setButtonState] = useState(false);
   const handleClick = () => {
     setText(clickedText);
-
+    if (onClick) {
+      onClick();
+    }
     setButtonState(true);
 
     setTimeout(() => {

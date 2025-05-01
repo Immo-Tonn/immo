@@ -5,5 +5,4 @@ export type Button = {
   addLineBreak?: boolean;
   initialText: string;
   clickedText: string;
-  isButtonDisabled?: boolean;
 };
