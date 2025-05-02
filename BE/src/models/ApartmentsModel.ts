@@ -1,70 +1,74 @@
-import mongoose, {Schema, Document, Types} from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
-export interface IApartments extends Document{
-id: Types.ObjectId;
-realEstateObject: Types.ObjectId;
-type?: string;
-floor?: number;
-totalFloors?: number;
-livingArea: number;
-numberOfRooms?: number;
-numberOfBedrooms?: number;
-numberOfBathrooms?: number;
-yearBuilt?: number;
-yearRenovated?: number;
-heatingType?: string;
-energySource?: string;
-energyEfficiencyClass?: string;
-additionalFeatures?: string;
+export interface IApartments extends Document {
+  id: Types.ObjectId;
+  realEstateObject: Types.ObjectId;
+  type: string;
+  floor?: number;
+  totalFloors?: number;
+  livingArea: number;
+  numberOfRooms?: number;
+  numberOfBedrooms?: number;
+  numberOfBathrooms?: number;
+  yearBuilt?: number;
+  yearRenovated?: number;
+  heatingType?: string;
+  energySource?: string;
+  energyEfficiencyClass?: string;
+  additionalFeatures?: string;
 }
 
-const ApartmentsSchema: Schema = new Schema<IApartments>({      
-    realEstateObject: {
-        type: Schema.Types.ObjectId,
-        ref: 'RealEstateObjects',
-        required: true
-      },
-    type:{
+const ApartmentsSchema: Schema = new Schema<IApartments>({
+  realEstateObject: {
+    type: Schema.Types.ObjectId,
+    ref: "RealEstateObjects",
+    required: true,
+  },
+  type: {
     type: String,
-},
-floor: {
+    required: true,
+  },
+  floor: {
     type: Number,
-},
-totalFloors: {
+  },
+  totalFloors: {
     type: Number,
-},
-livingArea: {
+  },
+  livingArea: {
     type: Number,
     required: true,
-},
-numberOfRooms: {
+  },
+  numberOfRooms: {
     type: Number,
-},
-numberOfBedrooms: {
+  },
+  numberOfBedrooms: {
     type: Number,
-},
-numberOfBathrooms: {
+  },
+  numberOfBathrooms: {
     type: Number,
-},
-yearBuilt: {
+  },
+  yearBuilt: {
     type: Number,
-},
-yearRenovated: {
+  },
+  yearRenovated: {
     type: Number,
-},
-heatingType:{
+  },
+  heatingType: {
     type: String,
-},
-energySource:{
+  },
+  energySource: {
     type: String,
-},
-energyEfficiencyClass:{
+  },
+  energyEfficiencyClass: {
     type: String,
-},
-additionalFeatures:{
+  },
+  additionalFeatures: {
     type: String,
-}
-})
+  },
+});
 
-const ApartmentsModel = mongoose.model<IApartments>('Apartments', ApartmentsSchema);
+const ApartmentsModel = mongoose.model<IApartments>(
+  "Apartments",
+  ApartmentsSchema
+);
 export default ApartmentsModel;

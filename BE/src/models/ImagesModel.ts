@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export enum ImageType {
-  MAIN = 'main',
-  PLAN = 'plan',
-  ADDITIONAL = 'additional'
+  MAIN = "main",
+  PLAN = "plan",
+  ADDITIONAL = "additional",
 }
 
 export interface IImage extends Document {
@@ -16,19 +16,19 @@ export interface IImage extends Document {
 const ImagesSchema: Schema<IImage> = new Schema({
   realEstateObject: {
     type: Schema.Types.ObjectId,
-    ref: 'RealEstateObjects',
-    required: true
+    ref: "RealEstateObjects",
+    required: true,
   },
   url: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: String,
     enum: Object.values(ImageType),
-    required: true
-  }
+    required: true,
+  },
 });
 
-const ImagesModel = mongoose.model<IImage>('Images', ImagesSchema);
+const ImagesModel = mongoose.model<IImage>("Images", ImagesSchema);
 export default ImagesModel;
