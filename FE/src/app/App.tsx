@@ -7,7 +7,10 @@ import PropertyPage from '@pages/PropertyPage';
 import Valuation from '@pages/Valuation';
 import RealEstate from '@pages/RealEstate';
 import Financing from '@pages/Financing';
-import Contact from '@pages/Contact';
+import Contact from '@pages/ContactForm';
+import LegalNotice from '@pages/LegalNotice';
+import CancellationPolicy from '@pages/CancellationPolicy';
+import PrivacyPolicy from '@pages/PrivacyPolicy';
 
 const App = () => {
   return (
@@ -22,6 +25,9 @@ const App = () => {
           <Route path="/finanzierung" element={<Financing />} />
           <Route path="/kontakt" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/legalnotice" element={<LegalNotice />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
         </Routes>
       </Layout>
     </Router>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import jsPDF from 'jspdf';
 import { calcMonthly } from '../model/model';
 import Button from '@shared/ui/Button/Button';
-
+import styles from './MortgageCalculator.module.css';
 const MortgageCalculator = () => {
   const [price, setPrice] = useState(400000);
   const [down, setDown] = useState(80000);
@@ -34,7 +34,7 @@ const MortgageCalculator = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
+    <div className={styles.calculatorWrapper}>
       <h2>🧮 Immobilien Finanzierung Rechner</h2>
 
       <label>Immobilienpreis (€):</label>
@@ -50,8 +50,16 @@ const MortgageCalculator = () => {
         type="number"
         onChange={e => setDown(+e.target.value)}
       />
+      <select value={rate} onChange={e => setRate(+e.target.value)}>
+        <option value={3.5}>3.5%</option>
+        <option value={3.8}>3.8%</option>
+        <option value={4.0}>4.0%</option>
+        <option value={4.5}>4.5%</option>
+        <option value={5.0}>5.0%</option>
+      </select>
 
       <label>Jahreszins (%):</label>
+
       <input
         value={rate}
         type="number"
@@ -66,11 +74,19 @@ const MortgageCalculator = () => {
         onChange={e => setYears(+e.target.value)}
       />
 
-      <Button text="Berechnen" onClick={handleCalc} />
+      <Button initialText="Berechnen" onClick={handleCalc} />
 
-      {monthly && <p>Rate: {monthly.toFixed(2)} € / Monat</p>}
+      {monthly && (
+        <p className={styles.result}>
+          Monatliche Zahlung: <strong>{monthly.toFixed(2)} € / Monat</strong>
+        </p>
+      )}
 
-      <Button text="PDF" onClick={exportPDF} />
+      <Button
+        className={styles.exportBtn}
+        initialText="Export als PDF"
+        onClick={exportPDF}
+      />
     </div>
   );
 };

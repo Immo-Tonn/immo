@@ -14,8 +14,7 @@ footer {
 .footerContainer {
   display: flex;
   justify-content: space-between;
-  padding: 0 108px 0 110px;
-  align-items: center;
+  padding: 28px 108px 0 110px;
   max-width: 1024px;
   margin: 0 auto;
 }
