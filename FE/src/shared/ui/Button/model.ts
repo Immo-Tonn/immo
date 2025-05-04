@@ -4,5 +4,5 @@ export type Button = {
   className?: string;
   addLineBreak?: boolean;
   initialText: string;
-  clickedText: string;
+  clickedText?: string;
 };

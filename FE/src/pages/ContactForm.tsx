@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Input from '@shared/ui/Input/Input';
 
-const Contact = () => {
+const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -155,4 +155,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactForm;

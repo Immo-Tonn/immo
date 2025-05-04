@@ -11,7 +11,6 @@ const Header = () => {
         <div className={styles.headerLogo}>
           <img src={logo} alt="logo" />
         </div>
-
         <div className={styles.headerMainRight}>
           <div className={styles.headerRight}>
             <ul className={styles.headerContacts}>
@@ -62,6 +61,22 @@ const Header = () => {
             </ul>
           </div>
         </div>
+      </div>
+      <div className={styles.headerMobile}>
+        <ul className={styles.headerContactsMobile}>
+          <li>
+            <div className={styles.contactIcon}>
+              <img src={telephone} alt="phone" className="icon" />
+            </div>
+            <div className={styles.contactText}>0174 345 44 19</div>
+          </li>
+          <li>
+            <div className={styles.contactIcon}>
+              <img src={eMail} alt="mail" className="icon" />
+            </div>
+            <div className={styles.contactText}>tonn_andreas@web.de</div>
+          </li>
+        </ul>
       </div>
     </header>
   );

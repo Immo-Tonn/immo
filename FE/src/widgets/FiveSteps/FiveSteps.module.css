@@ -62,3 +62,16 @@
   font-size: 32px;
   color: #f5f5f5;
 }
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 765px) {
+  .buttonWrapper {
+    justify-content: center;
+  }
+  Button {
+    height: 27px;
+  }
+}
