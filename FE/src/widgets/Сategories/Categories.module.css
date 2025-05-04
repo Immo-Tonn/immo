@@ -33,3 +33,18 @@
   font-family: 'Inter', sans-serif;
   margin-bottom: 27px;
 }
+
+@media (max-width: 765px) {
+  .categoriesList {
+    gap: 50px;
+    padding: 86px 0 64px 0;
+  }
+  .categoryImage {
+    max-width: 304px;
+  }
+}
+
+@media (max-width: 572px) {
+  .categoriesList {
+  }
+}

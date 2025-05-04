@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CancellationPolicy = () => {
   return (
     <div style={{ padding: '2rem' }}>

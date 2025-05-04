@@ -31,8 +31,8 @@
   font-weight: 400;
   font-size: 40px;
   color: #fff;
+  z-index: 2;
 }
-
 .bottomBar {
   margin: 0 auto;
   z-index: 99;
@@ -53,7 +53,7 @@
   line-height: 122%;
   text-align: center;
   cursor: pointer;
-  color: #f5f5f5;
+  color: wheat;
 }
 .bottomBar Button:last-child {
   padding: 0 91px 0 91px;
@@ -65,4 +65,18 @@
   font-size: 32px;
   text-align: center;
   color: #f5f5f5;
+}
+@media (max-width: 765px) {
+  .topText {
+    padding-left: 48px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 572px) {
+  .bottomBar {
+    display: block;
+  }
+  .bottomBar Button:first-child {
+  }
 }

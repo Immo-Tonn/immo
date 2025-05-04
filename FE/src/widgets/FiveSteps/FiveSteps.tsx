@@ -132,6 +132,7 @@ const FiveSteps = () => {
             </AccordionSummary>
             <AccordionDetails
               sx={{
+                fontFamily: 'Inter, sans-serif',
                 backgroundColor: 'transparent',
                 color: 'white',
                 border: 'none',
@@ -173,6 +174,7 @@ const FiveSteps = () => {
             </AccordionSummary>
             <AccordionDetails
               sx={{
+                fontFamily: 'Inter, sans-serif',
                 flexDirection: 'row-reverse',
                 backgroundColor: 'transparent',
                 color: 'white',
@@ -215,6 +217,7 @@ const FiveSteps = () => {
             </AccordionSummary>
             <AccordionDetails
               sx={{
+                fontFamily: 'Inter, sans-serif',
                 backgroundColor: 'transparent',
                 color: 'white',
                 border: 'none',

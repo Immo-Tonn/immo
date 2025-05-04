@@ -24,10 +24,10 @@ const App = () => {
           <Route path="/immobilien/:id" element={<PropertyPage />} />
           <Route path="/finanzierung" element={<Financing />} />
           <Route path="/kontakt" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </Router>
