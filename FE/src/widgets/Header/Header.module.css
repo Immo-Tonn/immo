@@ -128,6 +128,10 @@ header {
   font-size: 14px;
 }
 
+.headerContactsMobile {
+  display: none;
+}
+
 @media (max-width: 765px) {
   .headerLogo img {
     max-width: 182px;
@@ -144,16 +148,28 @@ header {
   .headerContacts {
     display: none;
   }
+  .headerMobile {
+    display: flex;
+  }
+  .headerContactsMobile {
+    display: flex;
+    list-style: none;
+  }
+  .headerContactsMobile li {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+  }
   .headerNav {
     margin-top: 0;
   }
   .headerNav ul {
     display: block;
-    gap: 50px;
   }
   .headerNav ul li {
     padding: 0 82px 0 0;
     text-align: left;
+    margin-top: 20px;
   }
   .headerTop {
     height: 100%;

@@ -62,6 +62,22 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <div className={styles.headerMobile}>
+        <ul className={styles.headerContactsMobile}>
+          <li>
+            <div className={styles.contactIcon}>
+              <img src={telephone} alt="phone" className="icon" />
+            </div>
+            <div className={styles.contactText}>0174 345 44 19</div>
+          </li>
+          <li>
+            <div className={styles.contactIcon}>
+              <img src={eMail} alt="mail" className="icon" />
+            </div>
+            <div className={styles.contactText}>tonn_andreas@web.de</div>
+          </li>
+        </ul>
+      </div>
     </header>
   );
 };

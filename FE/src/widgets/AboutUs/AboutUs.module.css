@@ -5,7 +5,10 @@
   flex-direction: column;
   align-items: center;
 }
-
+.logoWrapper {
+  height: auto;
+  display: flex;
+}
 .line {
   width: 100%;
   max-width: 720px;
@@ -60,4 +63,24 @@
   font-size: 24px;
   letter-spacing: 0.1em;
   color: #120922;
+}
+
+@media (max-width: 765px) {
+  .logo {
+    max-width: 134px;
+  }
+  .logoWrapper {
+    height: 100%;
+    justify-content: flex-start;
+  }
+  .textBlock {
+    margin-left: 0;
+  }
+  .textBlock p {
+    max-width: 540px;
+  }
+  .line {
+    max-width: 539px;
+    margin: 40px 0 40px 0;
+  }
 }

@@ -15,13 +15,15 @@ const AboutUs = () => {
       <span className={style.line}></span>
 
       <div className={style.contentWrapper}>
-        <img
-          src={whiteLogo}
-          alt="logo"
-          className={style.logo}
-          data-scroll
-          data-scroll-speed="1"
-        />
+        <div className={style.logoWrapper}>
+          <img
+            src={whiteLogo}
+            alt="logo"
+            className={style.logo}
+            data-scroll
+            data-scroll-speed="1"
+          />
+        </div>
         <div className={style.textBlock} data-scroll data-scroll-speed="2">
           <h1>
             Ihr zuverlässiger Partner für Immobilien in NRW – <br />
