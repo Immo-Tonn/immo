@@ -7,24 +7,14 @@ const AboutUs = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section
-      className={style.aboutUsSection}
-      ref={containerRef}
-      data-scroll-container
-    >
+    <section className={style.aboutUsSection} ref={containerRef}>
       <span className={style.line}></span>
 
       <div className={style.contentWrapper}>
         <div className={style.logoWrapper}>
-          <img
-            src={whiteLogo}
-            alt="logo"
-            className={style.logo}
-            data-scroll
-            data-scroll-speed="1"
-          />
+          <img src={whiteLogo} alt="logo" className={style.logo} />
         </div>
-        <div className={style.textBlock} data-scroll data-scroll-speed="2">
+        <div className={style.textBlock}>
           <h1>
             Ihr zuverlässiger Partner für Immobilien in NRW – <br />
             Das dürfen Sie von uns erwarten:
@@ -45,7 +35,7 @@ const AboutUs = () => {
         </div>
       </div>
 
-      <p className={style.textBottom} data-scroll data-scroll-speed="1.5">
+      <p className={style.textBottom}>
         Ihr Maklerteam für Wohnimmobilien, Geschäftshäuser und hochwertige
         Investment
       </p>

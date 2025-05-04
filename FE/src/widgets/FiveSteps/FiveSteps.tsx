@@ -241,12 +241,12 @@ const FiveSteps = () => {
             </AccordionDetails>
           </Accordion>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div className={styles.buttonWrapper}>
             <Button
               style={{
                 margin: '109px 19px 60px 0',
-                width: '332px',
-                height: '98px',
+                width: 'clamp(275px, 10vw, 332px)',
+                height: 'clamp(27px, 10vw, 98px)',
                 border: 'none',
                 cursor: 'pointer',
                 background: '#163054',

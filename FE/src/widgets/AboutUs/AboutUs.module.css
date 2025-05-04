@@ -84,3 +84,9 @@
     margin: 40px 0 40px 0;
   }
 }
+
+@media (max-width: 572px) {
+  .logo {
+    max-width: 185px;
+  }
+}
