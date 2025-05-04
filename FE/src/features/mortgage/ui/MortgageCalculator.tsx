@@ -50,6 +50,9 @@ const MortgageCalculator = () => {
         type="number"
         onChange={e => setDown(+e.target.value)}
       />
+
+      <label>Jahreszins (%):</label>
+
       <select value={rate} onChange={e => setRate(+e.target.value)}>
         <option value={3.5}>3.5%</option>
         <option value={3.8}>3.8%</option>
@@ -58,15 +61,6 @@ const MortgageCalculator = () => {
         <option value={5.0}>5.0%</option>
       </select>
 
-      <label>Jahreszins (%):</label>
-
-      <input
-        value={rate}
-        type="number"
-        step="0.1"
-        onChange={e => setRate(+e.target.value)}
-      />
-
       <label>Laufzeit (Jahre)</label>
       <input
         value={years}
@@ -74,7 +68,11 @@ const MortgageCalculator = () => {
         onChange={e => setYears(+e.target.value)}
       />
 
-      <Button initialText="Berechnen" onClick={handleCalc} />
+      <Button
+        initialText="Berechnen"
+        clickedText="im Prozess"
+        onClick={handleCalc}
+      />
 
       {monthly && (
         <p className={styles.result}>
@@ -85,6 +83,7 @@ const MortgageCalculator = () => {
       <Button
         className={styles.exportBtn}
         initialText="Export als PDF"
+        clickedText="im Prozess"
         onClick={exportPDF}
       />
     </div>
