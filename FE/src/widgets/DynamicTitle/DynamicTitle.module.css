@@ -1,0 +1,11 @@
+.titleWrapper h1 {
+  max-width: 720px;
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: #160c20;
+  margin-bottom: 16px;
+}

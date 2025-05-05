@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Button as ButtonProps } from './model';
 
 const Button = ({
-  style,
   onClick,
   className,
   addLineBreak,
@@ -27,14 +26,13 @@ const Button = ({
 
   return (
     <button
-      style={style}
       onClick={handleClick}
       className={className}
       disabled={isButtonDisabled}
     >
       {typeof text === 'string' && addLineBreak
-        ? text.split('\n').map((line, i) => (
-            <span key={i}>
+        ? text.split('\n').map((line, id) => (
+            <span key={id}>
               {line}
               <br />
             </span>

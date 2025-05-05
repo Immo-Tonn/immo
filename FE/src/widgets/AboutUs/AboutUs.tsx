@@ -3,6 +3,7 @@ import style from './AboutUs.module.css';
 import whiteLogo from '@shared/assets/about-us/logo-white.svg';
 import '@shared/styles/animation.css';
 import DynamicText from '@widgets/DynamicText/DynamicText';
+import DynamicTitle from '@widgets/DynamicTitle/DynamicTitle';
 
 const AboutUs = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,13 +16,10 @@ const AboutUs = () => {
         <div className={style.logoWrapper}>
           <img src={whiteLogo} alt="logo" className={style.logo} />
         </div>
-        <div className={style.textBlock}>
-          <h1>
-            Ihr zuverlässiger Partner für Immobilien in NRW – <br />
-            Das dürfen Sie von uns erwarten:
-          </h1>
-          <DynamicText />
-        </div>
+        <DynamicTitle />
+      </div>
+      <div className={style.textBlock}>
+        <DynamicText />
       </div>
 
       <p className={style.textBottom}>

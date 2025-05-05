@@ -8,12 +8,16 @@ const Hero = () => {
       </p>
 
       <div className={styles.bottomBar}>
-        <Button
-          initialText={'Kostenlose\nWertermittlung'}
-          addLineBreak
-          clickedText="Weiterleitung"
-        />
-        <Button initialText="direkt anfordern" clickedText="Weiterleitung" />
+        <div className={styles.buttonWrapper}>
+          <Button
+            initialText={'Kostenlose\nWertermittlung'}
+            addLineBreak
+            clickedText="Weiterleitung"
+          />
+        </div>
+        <div className={styles.buttonWrapper}>
+          <Button initialText="direkt anfordern" clickedText="Weiterleitung" />
+        </div>
       </div>
     </section>
   );

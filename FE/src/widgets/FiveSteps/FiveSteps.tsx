@@ -245,18 +245,7 @@ const FiveSteps = () => {
 
           <div className={styles.buttonWrapper}>
             <Button
-              style={{
-                margin: '109px 19px 60px 0',
-                width: 'clamp(275px, 10vw, 332px)',
-                height: 'clamp(27px, 10vw, 98px)',
-                border: 'none',
-                cursor: 'pointer',
-                background: '#163054',
-                fontWeight: 400,
-                fontSize: '32px',
-                textAlign: 'center',
-                color: '#f5f5f5',
-              }}
+              className={styles.verkaufButton}
               initialText="Verkauf"
               clickedText="Weiterleitung"
             />

@@ -8,22 +8,13 @@ header {
 .headerTop {
   max-width: 1024px;
   display: flex;
+  max-height: 220px;
   justify-content: space-between;
   margin: 0 auto;
 }
-.headerLogo img {
-  object-fit: contain;
-  display: block;
-  border: none;
-}
-
-.headerLogo img {
+.headerLogo {
   width: 328px;
-  height: auto;
-  display: flex;
-  align-items: flex-start;
-  align-self: flex-start;
-  box-sizing: border-box;
+  height: 330px;
 }
 
 .headerMainRight {
@@ -49,11 +40,11 @@ header {
 }
 
 .headerNav {
+  max-width: 1024px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  height: 80px;
-  margin-top: 90px;
 }
 
 .headerNav ul {
@@ -63,7 +54,6 @@ header {
   padding-right: 30px;
 }
 .headerNav ul li {
-  padding-bottom: 60px;
   font-weight: 400;
   font-size: 24px;
   text-align: center;
@@ -135,46 +125,43 @@ header {
 }
 
 @media (max-width: 765px) {
-  .headerLogo img {
+  .headerLogo {
     max-width: 182px;
     height: auto;
   }
-  .headerTop {
+  .headerNav ul {
+    margin-top: 60px;
+    gap: 64px;
   }
 }
 
 @media (max-width: 572px) {
-  .headerLogo {
-    padding-left: 41px;
+  .headerWrapper {
+    height: 90%;
+    align-items: center;
+    display: flex;
   }
   .headerContacts {
     display: none;
   }
-  .headerMobile {
-    display: flex;
-  }
   .headerContactsMobile {
     display: flex;
+    padding: 0 30px 0 30px;
     list-style: none;
+    justify-content: space-around;
   }
   .headerContactsMobile li {
     align-items: center;
     display: flex;
     gap: 10px;
   }
-  .headerNav {
-    margin-top: 0;
-  }
+
   .headerNav ul {
+    margin: 0;
     display: block;
   }
   .headerNav ul li {
-    padding: 0 82px 0 0;
     text-align: left;
     margin-top: 20px;
-  }
-  .headerTop {
-    height: 100%;
-    align-items: center;
   }
 }
