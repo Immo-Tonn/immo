@@ -39,7 +39,7 @@ const Header = () => {
                     src={location}
                     alt="location"
                     className="icon"
-                    style={{ width: '47px', height: '49px' }}
+                    style={{ width: '26px', height: '26px' }}
                   />
                 </div>
                 <a

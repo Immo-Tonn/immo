@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('@public/fonts/Inter.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: url('@public/fonts/Montserrat-Regular.ttf') format('truetype');
+}

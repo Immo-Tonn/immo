@@ -2,7 +2,7 @@
   position: relative;
   margin: 0 auto;
   height: 793px;
-  background-color: #2b3e56;
+  background-color: #160c20;
   color: white;
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@
   line-height: 122%;
   text-align: center;
   cursor: pointer;
-  color: wheat;
+  color: #eae3cf;
 }
 .bottomBar Button:last-child {
   padding: 0 91px 0 91px;

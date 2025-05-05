@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from '@widgets/Layout/Layout';
-import ScrollToTop from '@shared/ui/ScrollToTop';
+import ScrollToTop from '@shared/ui/ScrollToTop/ScrollToTop';
 import Home from '@pages/Home';
 import NotFound from '@pages/NotFound';
 import PropertyPage from '@pages/PropertyPage';
@@ -21,7 +21,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/wertermittlung" element={<Valuation />} />
           <Route path="/immobilien" element={<RealEstate />} />
-          <Route path="/immobilien/:id" element={<PropertyPage />} />
           <Route path="/finanzierung" element={<Financing />} />
           <Route path="/kontakt" element={<Contact />} />
           <Route path="/legalnotice" element={<LegalNotice />} />

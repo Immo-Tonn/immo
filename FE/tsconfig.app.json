@@ -28,7 +28,8 @@
       "@features/*": ["src/features/*"],
       "@widgets/*": ["src/widgets/*"],
       "@pages/*": ["src/pages/*"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@public/*": ["public/*"]
     }
   },
   "include": ["src", "src/app/main.tsx"]
