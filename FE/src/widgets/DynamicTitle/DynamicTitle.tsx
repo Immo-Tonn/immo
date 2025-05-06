@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import styles from './DynamicTitle.module.css';
+import whiteLogo from '@shared/assets/about-us/logo-white.svg';
 const MobileTitle = () => (
   <>
-    <h1> Ihr zuverlässiger Partner für Immobilien in NRW </h1>
+    <img src={whiteLogo} alt="logo" className={styles.logoMobile} />
+    <h1>Ihr zuverlässiger Partner für Immobilien in NRW</h1>
   </>
 );
 

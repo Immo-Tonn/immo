@@ -1,11 +1,27 @@
 .titleWrapper h1 {
-  max-width: 720px;
   text-align: center;
-  font-size: 30px;
+  font-size: 24px;
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
   font-weight: 400;
   letter-spacing: 0.1em;
   color: #160c20;
   margin-bottom: 16px;
+}
+.logoMobile {
+  display: none;
+  max-width: 184px;
+}
+.titleWrapper {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 573px) {
+  .logoMobile {
+    display: flex;
+  }
+  .titleWrapper h1 {
+    max-width: 300px;
+  }
 }

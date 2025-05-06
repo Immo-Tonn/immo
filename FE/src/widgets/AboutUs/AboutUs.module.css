@@ -42,14 +42,16 @@
   letter-spacing: 0.1em;
   color: #120922;
 }
+.firstTitleMobile {
+  display: none;
+}
 
 @media (max-width: 765px) {
   .logo {
     max-width: 134px;
   }
-  .logoWrapper {
-    height: 100%;
-    justify-content: flex-start;
+  .contentWrapper {
+    align-items: flex-start;
   }
   .textBlock {
     margin-left: 0;
@@ -63,8 +65,32 @@
   }
 }
 
-@media (max-width: 572px) {
-  .logo {
-    max-width: 185px;
+@media (max-width: 573px) {
+  .logoDesktop {
+    display: none;
+  }
+  .textBottom {
+    max-width: 438px;
+  }
+  .firstTitleMobile {
+    display: flex;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+  }
+  .firstTitleMobile::after {
+    bottom: -24px;
+    content: '';
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #1d2a3b;
   }
 }

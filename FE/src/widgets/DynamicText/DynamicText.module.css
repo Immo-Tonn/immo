@@ -17,10 +17,15 @@
   color: #160c20;
 }
 .textWrapper h2 {
+  margin: 30px 0 50px 0;
   font-weight: 400;
   font-size: 24px;
   letter-spacing: 0.1em;
   text-align: center;
   font-family: 'Inter', sans-serif;
   color: #160c20;
+}
+
+.textWrapper ul {
+  padding-left: 27px;
 }
