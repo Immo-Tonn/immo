@@ -8,7 +8,7 @@ export interface IResidentialHouses extends Document {
   livingArea: number;
   usableArea?: number;
   plotArea?: number;
-  numberOfRooms: number;
+  numberOfRooms?: number;
   numberOfBedrooms?: number;
   numberOfBathrooms?: number;
   garageParkingSpaces?: string;
@@ -44,7 +44,6 @@ const ResidentialHousesSchema: Schema = new Schema<IResidentialHouses>({
   },
   numberOfRooms: {
     type: Number,
-    required: true,
   },
   numberOfBedrooms: {
     type: Number,

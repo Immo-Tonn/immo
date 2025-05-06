@@ -11,6 +11,7 @@ export enum ObjectStatus {
   ACTIVE = "active",
   SOLD = "sold",
   ARCHIVED = "archived",
+  RESERVED = "reserved",
 }
 
 export interface IRealEstateObjects extends Document {
