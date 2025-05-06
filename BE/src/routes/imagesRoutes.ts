@@ -1,4 +1,5 @@
-import { Router } from "express";
+import express from "express";
+import multer from "multer";
 import {
   getAllImages,
   getImageById,
@@ -7,12 +8,13 @@ import {
   deleteImage,
 } from "../controllers/imagesController";
 
-const router = Router();
+const router = express.Router();
+const upload = multer({ dest: "uploads/" });
 
 router.get("/", getAllImages);
 router.get("/:id", getImageById);
-router.post("/", createImage);
-router.put("/:id", updateImage);
+router.post("/", upload.single("file"), createImage);
+router.put("/:id", upload.single("file"), updateImage);
 router.delete("/:id", deleteImage);
 
 export default router;

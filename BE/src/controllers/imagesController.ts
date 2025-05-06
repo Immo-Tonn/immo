@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import ImagesModel from "../models/ImagesModel";
 import RealEstateObjectsModel from "../models/RealEstateObjectsModel";
+import { uploadToBunny } from "../utils/uploadImages";
+import { deleteFromBunny } from "../utils/deleteImages";
+import path from "path";
+import fs from "fs";
+import multer from "multer";
 
 export const getAllImages = async (req: Request, res: Response) => {
   try {
@@ -37,17 +42,25 @@ export const createImage = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const { realEstateObject, url, type } = req.body;
+  const file = req.file;
+  const localFilePath = file ? path.resolve(file.path) : "";
 
-    // 1. Проверяем, существует ли объект недвижимости
+  try {
+    const { realEstateObject, type } = req.body;
+
+    if (!file) {
+      res.status(400).json({ message: "Datei nicht hochgeladen" });
+      return;
+    }
+
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: "Objekt nicht gefunden" });
       return;
     }
 
-    // 2. Создаем новое изображение
+    const url = await uploadToBunny(localFilePath, file.originalname);
+
     const newImage = new ImagesModel({
       realEstateObject,
       url,
@@ -55,16 +68,26 @@ export const createImage = async (
     });
     const savedImage = await newImage.save();
 
-    // 3. Добавляем изображение в объект недвижимости
     realEstate.images?.push(savedImage.id);
     await realEstate.save();
 
-    // 4. Возвращаем успешный ответ
+    if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
+
     res.status(201).json(savedImage);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Fehler beim Erstellen des Bildes", error });
+  } catch (error: any) {
+    if (localFilePath && fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("Fehler beim Erstellen des Bildes:", error);
+
+    res.status(500).json({
+      message: "Fehler beim Erstellen des Bildes",
+      error: errorMessage,
+    });
   }
 };
 
@@ -72,23 +95,53 @@ export const updateImage = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const file = req.file;
+  const localFilePath = file ? path.resolve(file.path) : "";
+
   try {
-    const updatedImage = await ImagesModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-      }
-    );
-    if (!updatedImage) {
+    const existingImage = await ImagesModel.findById(req.params.id);
+    if (!existingImage) {
       res.status(404).json({ message: "Bild nicht gefunden" });
       return;
     }
+
+    let updatedData: any = { ...req.body };
+
+    if (file) {
+      const newUrl = await uploadToBunny(localFilePath, file.originalname);
+
+      try {
+        await deleteFromBunny(existingImage.url);
+      } catch (cdnErr) {
+        console.warn(
+          "Altes Bild konnte nicht vom CDN entfernt werden:",
+          cdnErr
+        );
+      }
+
+      updatedData.url = newUrl;
+
+      if (fs.existsSync(localFilePath)) {
+        fs.unlinkSync(localFilePath);
+      }
+    }
+
+    const updatedImage = await ImagesModel.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true }
+    );
+
     res.status(200).json(updatedImage);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Fehler beim Aktualisieren des Bildes", error });
+  } catch (error: any) {
+    if (file && fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
+
+    res.status(500).json({
+      message: "Fehler beim Aktualisieren des Bildes",
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 
@@ -97,22 +150,28 @@ export const deleteImage = async (
   res: Response
 ): Promise<void> => {
   try {
-    // 1. Удаляем изображение по ID
     const deletedImage = await ImagesModel.findByIdAndDelete(req.params.id);
     if (!deletedImage) {
       res.status(404).json({ message: "Bild nicht gefunden" });
       return;
     }
 
-    // 2. Удаляем ID изображения из соответствующего объекта недвижимости
+    try {
+      await deleteFromBunny(deletedImage.url);
+    } catch (cdnErr) {
+      console.warn("Datei konnte nicht vom CDN gelöscht werden:", cdnErr);
+    }
+
     await RealEstateObjectsModel.findByIdAndUpdate(
       deletedImage.realEstateObject,
       { $pull: { images: deletedImage._id } }
     );
 
-    // 3. Ответ клиенту
     res.status(200).json({ message: "Bild entfernt" });
   } catch (error) {
-    res.status(500).json({ message: "Fehler beim Löschen des Bildes", error });
+    res.status(500).json({
+      message: "Fehler beim Löschen des Bildes",
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 };

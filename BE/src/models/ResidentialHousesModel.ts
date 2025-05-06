@@ -44,7 +44,6 @@ const ResidentialHousesSchema: Schema = new Schema<IResidentialHouses>({
   },
   numberOfRooms: {
     type: Number,
-    required: true,
   },
   numberOfBedrooms: {
     type: Number,
