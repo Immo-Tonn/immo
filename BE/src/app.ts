@@ -10,6 +10,7 @@ import landPlotRoutes from "./routes/landPlotsRoutes";
 import residentialHousesRoutes from "./routes/residentialHousesRoutes";
 
 const app: Application = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
