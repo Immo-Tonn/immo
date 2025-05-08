@@ -1,13 +1,15 @@
+import { InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+
 export type InputProps = {
   label: string;
-  type?: string;
   name: string;
-  value: string;
+  type?: string;
   placeholder?: string;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
   required?: boolean;
   isTextarea?: boolean;
-  checked?: boolean;
-};
+  error?: string;
+  register?: any; // Тип от react-hook-form
+} & (
+  | InputHTMLAttributes<HTMLInputElement>
+  | TextareaHTMLAttributes<HTMLTextAreaElement>
+);

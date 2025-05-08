@@ -11,8 +11,7 @@ const AboutUs = () => {
   return (
     <section className={styles.aboutUsSection} ref={containerRef}>
       <h3 className={styles.firstTitleMobile}>
-        Mehr als nur Immobilien – eine Partnerschaft, <br />
-        die für Sie entfaltet
+        Mehr als nur Immobilien – eine Partnerschaft, die für Sie entfaltet
       </h3>
       <span className={styles.line}></span>
       <div className={styles.contentWrapper}>

@@ -49,13 +49,13 @@ header {
 
 .headerNav ul {
   display: flex;
-  gap: 15px;
+  gap: clamp(10px, 5vw, 15px);
   list-style: none;
   padding-right: 30px;
 }
 .headerNav ul li {
   font-weight: 400;
-  font-size: 24px;
+  font-size: clamp(20px, 5vw, 24px);
   text-align: center;
   color: #d9d9d9;
 }

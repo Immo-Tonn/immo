@@ -1,5 +1,5 @@
 import { CategoriesData, CategoryItem } from './CategoriesData';
-import styles from '../Сategories/Categories.module.css';
+import styles from './Categories.module.css';
 
 const Categories = () => {
   return (

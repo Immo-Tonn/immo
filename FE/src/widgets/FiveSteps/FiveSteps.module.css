@@ -21,7 +21,7 @@
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   padding: 60px;
-  font-size: 40px;
+  font-size: clamp(40px, 5vw, 40px);
   text-align: center;
   color: #fff;
 }
@@ -60,7 +60,7 @@
   margin-left: 20px;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 32px;
+  font-size: clamp(20px, 5vw, 32px);
   color: #f5f5f5;
 }
 .buttonWrapper {
@@ -70,7 +70,6 @@
 
 .verkaufButton {
   width: clamp(275px, 10vw, 332px);
-  height: clamp(27px, 10vw, 98px);
   margin: 109px 19px 60px 0;
   border: none;
   cursor: pointer;
@@ -83,8 +82,5 @@
 @media (max-width: 765px) {
   .buttonWrapper {
     justify-content: center;
-  }
-  Button {
-    height: 27px;
   }
 }
