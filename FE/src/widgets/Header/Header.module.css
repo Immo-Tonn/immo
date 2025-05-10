@@ -42,6 +42,7 @@ header {
 .headerNav {
   max-width: 1024px;
   margin: 0 auto;
+  padding-top: 30px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -146,7 +147,6 @@ header {
   }
   .headerContactsMobile {
     display: flex;
-    padding: 0 30px 0 30px;
     list-style: none;
     justify-content: space-around;
   }

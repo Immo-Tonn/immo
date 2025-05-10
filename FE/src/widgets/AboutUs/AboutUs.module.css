@@ -24,6 +24,7 @@
 .contentWrapper {
   display: flex;
   align-items: center;
+  padding: 0 20px 0 20px;
 }
 .textBlock {
   display: flex;
@@ -46,7 +47,7 @@
 }
 
 @media (max-width: 765px) {
-  .logo {
+  .logoDesktop {
     max-width: 134px;
   }
   .contentWrapper {

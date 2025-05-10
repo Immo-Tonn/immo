@@ -17,11 +17,16 @@
   align-items: center;
 }
 
-@media (max-width: 573px) {
+@media (max-width: 572px) {
   .logoMobile {
     display: flex;
   }
   .titleWrapper h1 {
     max-width: 300px;
+  }
+  .titleWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
   }
 }

@@ -79,6 +79,12 @@
   text-align: center;
   color: #f5f5f5;
 }
+
+.verkaufButton[disabled] {
+  color: white;
+  background-color: #091321;
+}
+
 @media (max-width: 765px) {
   .buttonWrapper {
     justify-content: center;
