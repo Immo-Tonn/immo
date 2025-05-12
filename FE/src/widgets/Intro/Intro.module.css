@@ -1,21 +1,22 @@
 .introSection {
-  position: relative;
-  margin: 0 auto;
-  height: 793px;
-  background-color: #160c20;
-  color: white;
+  background-color: white;
+  color: black;
+}
+.contentWrapper {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 675px;
 }
 
-.introSection::before {
-  content: '';
+.contentWrapper::before {
   position: absolute;
+  content: '';
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 1200px;
   height: 675px;
   background-image: url('@shared/assets/intro/intro-photo.svg');
   background-size: cover;
@@ -25,15 +26,31 @@
 }
 
 .firstTitle {
+  font-family: 'Inter', sans-serif;
+  padding: 70px 0 70px 0;
   text-align: center;
+  font-weight: 700;
+  font-size: clamp(10px, 5vw, 36px);
 }
+
 .buttonWrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding-bottom: 70px;
 }
-.buttonWrapper Button:first-child {
+.buttonWrapper Button {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 5vw, 40px);
+  font-weight: 400;
   background: #02020e;
+  z-index: 22;
   opacity: 0.73;
   width: 872px;
   height: 89px;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
 }

@@ -4,9 +4,10 @@ const Intro = () => {
   return (
     <section className={styles.introSection}>
       <h1 className={styles.firstTitle}>
-        Immobilienbewertung mit Immo Tonn – Wir kennen den Wert Ihres Zuhauses
+        Immobilienbewertung mit Immo Tonn – Wir kennen den Wert Ihres
+        <br /> Zuhauses
       </h1>
-      <div className={styles.bottomBar}>
+      <div className={styles.contentWrapper}>
         <div className={styles.buttonWrapper}>
           <Button
             initialText={'Immobilienbewertung mit Herz und Verstand'}

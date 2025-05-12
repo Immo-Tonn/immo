@@ -53,12 +53,10 @@
   background-color: transparent;
   line-height: 122%;
   text-align: center;
-  cursor: pointer;
   color: #eae3cf;
 }
 .bottomBar .buttonWrapper:last-child Button {
   padding: 0 91px 0 91px;
-  cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   border: none;
