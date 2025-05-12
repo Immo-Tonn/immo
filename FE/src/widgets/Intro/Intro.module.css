@@ -1,0 +1,39 @@
+.introSection {
+  position: relative;
+  margin: 0 auto;
+  height: 793px;
+  background-color: #160c20;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.introSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 1200px;
+  height: 675px;
+  background-image: url('@shared/assets/intro/intro-photo.svg');
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
+  width: 100%;
+}
+
+.firstTitle {
+  text-align: center;
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+}
+.buttonWrapper Button:first-child {
+  background: #02020e;
+  opacity: 0.73;
+  width: 872px;
+  height: 89px;
+}

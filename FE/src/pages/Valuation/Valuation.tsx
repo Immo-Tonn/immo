@@ -1,2 +1,6 @@
-const Valuation = () => <h1>🏷️ Immobilienbewertung</h1>;
+import Intro from '@widgets/Intro/Intro';
+
+const Valuation = () => {
+  return <Intro />;
+};
 export default Valuation;
