@@ -5,9 +5,11 @@ const ValuationCTA = () => {
   return (
     <section className={styles.ValuationCTASection}>
       <div className={styles.textWrapper}>
-        <h1 className={styles.firstTitle}>
-          Viele Eigentümer fragen sich: Was ist meine Immobilie heute wert?
-        </h1>
+        <h2 className={styles.firstTitle}>
+          <b>
+            Viele Eigentümer fragen sich: Was ist meine Immobilie heute wert?
+          </b>
+        </h2>
         <p className={styles.description}>
           Ob aus Interesse, für eine mögliche Verkaufsentscheidung oder zur
           besseren finanziellen Planung – eine fundierte Wertermittlung schafft
@@ -17,10 +19,10 @@ const ValuationCTA = () => {
         </p>
       </div>
       <div className={styles.imageWrapper}>
-        <h2 className={styles.secondTitle}>
+        <h1 className={styles.secondTitle}>
           Lassen Sie Ihre Immobilie jetzt bewerten!
-        </h2>
-        <img src={valuationPhoto} />
+        </h1>
+        <img src={valuationPhoto} alt="valuation-photo" />
       </div>
       <div className={styles.bottomWrapper}>
         <h2 className={styles.thirdTitle}>

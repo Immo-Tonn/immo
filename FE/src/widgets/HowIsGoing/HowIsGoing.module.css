@@ -1,0 +1,39 @@
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.textBlock h3 {
+  margin: 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(10px, 5vw, 40px);
+  color: #000;
+}
+.textBlock ol,
+.textBlock ul {
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  font-size: 24px;
+  color: #000;
+  max-width: 813px;
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 256px;
+}
+.buttonWrapper Button {
+  width: 832px;
+  height: 113px;
+  margin-top: 113px;
+  background-color: #1c1829;
+  font-weight: 400;
+  font-size: clamp(10px, 5vw, 36px);
+  color: #fcfdff;
+}
+.howIsGoingSection {
+  margin-top: 91px;
+}
