@@ -3,6 +3,7 @@ import styles from './PropertyHero.module.css';
 
 interface Address {
   city: string;
+  district: string;
   zip: number;
 }
 
@@ -32,6 +33,7 @@ interface CommercialBuilding {
 }
 
 interface RealEstateObject {
+  title: string;
   description: string;
   address: Address;
   price: number;
@@ -55,35 +57,50 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   commercialBuilding,
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const { description, address, price } = object;
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { title, address, price } = object;
 
   const livingArea =
-    residentialHouse?.livingArea ?? 
-    apartment?.livingArea ?? 
-    undefined;
-
+    residentialHouse?.livingArea ?? apartment?.livingArea;
   const numberOfRooms =
-    residentialHouse?.numberOfRooms ?? 
-    apartment?.numberOfRooms ?? 
-    undefined;
-
+    residentialHouse?.numberOfRooms ?? apartment?.numberOfRooms;
   const plotArea =
-    residentialHouse?.plotArea ?? 
-    landPlot?.plotArea ?? 
-    undefined;
-
+    residentialHouse?.plotArea ?? landPlot?.plotArea;
   const commercialArea = commercialBuilding?.area;
 
   const previewImages = images.slice(0, 3);
   const hasMoreImages = images.length > 3;
 
+  const handlePrev = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleThumbClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}>{description}</h1>
+      <h1 className={styles.title}>{title}</h1>
 
       <div className={styles.imageContainer}>
         {images.length > 0 && (
-          <img src={images[0].url} alt="Objekt Hauptbild" className={styles.mainImage} />
+          <img
+            src={images[0].url}
+            alt="Objekt Hauptbild"
+            className={styles.mainImage}
+          />
         )}
 
         <div className={styles.sideImages}>
@@ -93,9 +110,15 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
               className={`${styles.smallImageWrapper} ${
                 index === 1 && hasMoreImages ? styles.overlayWrapper : ''
               }`}
-              onClick={() => index === 1 && hasMoreImages && setShowModal(true)}
+              onClick={() =>
+                index === 1 && hasMoreImages && setShowModal(true)
+              }
             >
-              <img src={img.url} alt={`Bild ${index + 2}`} className={styles.smallImage} />
+              <img
+                src={img.url}
+                alt={`Bild ${index + 2}`}
+                className={styles.smallImage}
+              />
               {index === 1 && hasMoreImages && (
                 <div className={styles.overlay}>Mehr Bilder</div>
               )}
@@ -152,15 +175,35 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
       </div>
 
       <div className={styles.address}>
-        {address.city}, {address.zip}
+        {address.city}, {address.district}
       </div>
 
       {showModal && (
         <div className={styles.modal} onClick={() => setShowModal(false)}>
-          <div className={styles.modalContent}>
-            {images.map((img) => (
-              <img key={img.id} src={img.url} alt="Vollbild" className={styles.modalImage} />
-            ))}
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalImageWrapper}>
+              <button className={styles.navLeft} onClick={handlePrev}>‹</button>
+              <img
+                src={images[currentIndex].url}
+                alt="Großbild"
+                className={styles.modalImage}
+              />
+              <button className={styles.navRight} onClick={handleNext}>›</button>
+            </div>
+
+            <div className={styles.thumbnails}>
+              {images.map((img, index) => (
+                <img
+                  key={img.id}
+                  src={img.url}
+                  alt={`Thumb ${index + 1}`}
+                  className={`${styles.thumbnail} ${
+                    index === currentIndex ? styles.activeThumbnail : ''
+                  }`}
+                  onClick={() => handleThumbClick(index)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       )}

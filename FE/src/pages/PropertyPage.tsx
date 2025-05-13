@@ -8,8 +8,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface Address {
+  country: string;
   city: string;
   zip: number;
+  district: string;
+  street: string;
+  houseNumber: string;
 }
 
 interface Image {
@@ -67,9 +71,11 @@ interface ResidentialHouse {
 interface RealEstateObject {
   id: string;
   type: string;
+  title: string;
   description: string;
+  features?: string;
+  miscellaneous?: string;
   location: string;
-  additionalInfo: string;
   address: Address;
   price: number;
   dateAdded: string;
@@ -100,7 +106,7 @@ const PropertyPage: React.FC = () => {
         setObjectData(objectRes.data);
         setImages(imagesRes.data);
       } catch (err) {
-        console.error('Fehler beim Laden des Objekts oder der Bilder:', err);
+        console.error('Ошибка при загрузке данных:', err);
       } finally {
         setLoading(false);
       }
@@ -109,18 +115,19 @@ const PropertyPage: React.FC = () => {
     fetchData();
   }, [id]);
 
-  if (loading) return <p>Lädt...</p>;
+  if (loading) return <p>Laden...</p>;
   if (!objectData) return <p>Objekt nicht gefunden</p>;
 
   return (
     <div style={{ padding: '2rem' }}>
-      <PropertyHero 
-      object={objectData} 
-      images={images}  
-      apartment={objectData.apartments}
-      commercialBuilding={objectData.commercial_NonResidentialBuildings}
-      landPlot={objectData.landPlots}
-      residentialHouse={objectData.residentialHouses}/>
+      <PropertyHero
+        object={objectData}
+        images={images}
+        apartment={objectData.apartments}
+        commercialBuilding={objectData.commercial_NonResidentialBuildings}
+        landPlot={objectData.landPlots}
+        residentialHouse={objectData.residentialHouses}
+      />
       <PropertyDetails
         object={objectData}
         apartment={objectData.apartments}

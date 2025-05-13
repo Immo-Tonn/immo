@@ -17,12 +17,18 @@ export enum ObjectStatus {
 export interface IRealEstateObjects extends Document {
   id: Types.ObjectId;
   type: ObjectType;
+  title: string;
   description: string;
+  features?: string;
+  miscellaneous?: string;
   location: string;
-  additionalInfo: string;
   address: {
+    country: string;
     city: string;
     zip: number;
+    district: string;
+    street: string;
+    houseNumber: string;
   };
   price: number;
   dateAdded: Date;
@@ -40,21 +46,31 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
     enum: Object.values(ObjectType),
     required: true,
   },
+  title: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
+  },
+  features: {
+    type: String,
+  },
+  miscellaneous: {
+    type: String,
   },
   location: {
     type: String,
     required: true,
   },
-  additionalInfo: {
-    type: String,
-    required: true,
-  },
   address: {
+    country: { type: String, required: true },
     city: { type: String, required: true },
     zip: { type: Number, required: true },
+    district: { type: String, required: true },
+    street: { type: String, required: true },
+    houseNumber: { type: String, required: true },
   },
   price: {
     type: Number,

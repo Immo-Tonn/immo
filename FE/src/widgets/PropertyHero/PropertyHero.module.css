@@ -36,7 +36,6 @@
     cursor: pointer;
     flex: 1;
     height: 50%;
-    /* равная высота */
     overflow: hidden;
     border-radius: 8px;
 }
@@ -116,17 +115,78 @@
 }
 
 .modalContent {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    position: relative;
     max-width: 90%;
-    max-height: 90%;
-    overflow: auto;
+    margin: auto;
+    text-align: center;
+}
+
+.modalImageWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modalImage {
-    max-width: 300px;
-    max-height: 200px;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 70vh;
+    margin: 0 auto;
     border-radius: 8px;
+}
+
+.navLeft,
+.navRight {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: 2.5rem;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    z-index: 10;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.navLeft:hover,
+.navRight:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.navLeft {
+    width: 50px;
+    position: relative;
+}
+
+.navRight {
+    width: 50px;
+    position: relative;
+}
+
+.thumbnails {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+.activeThumbnail {
+    opacity: 1;
+    border-color: #ffffff;
+    transform: scale(1.05);
 }
