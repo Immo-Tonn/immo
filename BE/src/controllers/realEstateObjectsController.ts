@@ -3,7 +3,11 @@ import RealEstateObjectsModel from "../models/RealEstateObjectsModel";
 
 export const getAllObjects = async (req: Request, res: Response) => {
   try {
-    const objects = await RealEstateObjectsModel.find().populate("images");
+    const objects = await RealEstateObjectsModel.find()
+      .populate("apartments")
+      .populate("commercial_NonResidentialBuildings")
+      .populate("landPlots")
+      .populate("residentialHouses");
     if (!objects) {
       res.status(404).json({ message: "Keine Objekte gefunden" });
       return;
@@ -17,9 +21,11 @@ export const getAllObjects = async (req: Request, res: Response) => {
 
 export const getObjectById = async (req: Request, res: Response) => {
   try {
-    const object = await RealEstateObjectsModel.findById(
-      req.params.id
-    ).populate("images");
+    const object = await RealEstateObjectsModel.findById(req.params.id)
+      .populate("apartments")
+      .populate("commercial_NonResidentialBuildings")
+      .populate("landPlots")
+      .populate("residentialHouses");
     if (!object) {
       res.status(404).json({ message: "Objekt nicht gefunden" });
       return;

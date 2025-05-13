@@ -1,0 +1,132 @@
+.section {
+    padding: 2rem;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.imageContainer {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.mainImage {
+    width: 60%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.sideImages {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.smallImageWrapper {
+    position: relative;
+    cursor: pointer;
+    flex: 1;
+    height: 50%;
+    /* равная высота */
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.smallImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: filter 0.3s;
+}
+
+.overlayWrapper:hover .smallImage {
+    filter: brightness(60%);
+}
+
+.overlayWrapper:hover .overlay {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.divider {
+    width: 1px;
+    background-color: #ccc;
+    height: 50px;
+}
+
+.address {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+}
+
+.modalImage {
+    max-width: 300px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
