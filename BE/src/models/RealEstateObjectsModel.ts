@@ -28,7 +28,7 @@ export interface IRealEstateObjects extends Document {
     zip: number;
     district: string;
     street: string;
-    houseNumber: string;
+    houseNumber?: string;
   };
   price: number;
   dateAdded: Date;
@@ -70,7 +70,7 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
     zip: { type: Number, required: true },
     district: { type: String, required: true },
     street: { type: String, required: true },
-    houseNumber: { type: String, required: true },
+    houseNumber: { type: String },
   },
   price: {
     type: Number,

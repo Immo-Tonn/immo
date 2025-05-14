@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './PropertyHero.module.css';
+import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
 
 interface Address {
   city: string;
@@ -95,7 +96,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
       <h1 className={styles.title}>{title}</h1>
 
       <div className={styles.imageContainer}>
-        {images.length > 0 && (
+        {images.length > 0 && images[0] && (
           <img
             src={images[0].url}
             alt="Objekt Hauptbild"
@@ -178,34 +179,15 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         {address.city}, {address.district}
       </div>
 
-      {showModal && (
-        <div className={styles.modal} onClick={() => setShowModal(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalImageWrapper}>
-              <button className={styles.navLeft} onClick={handlePrev}>‹</button>
-              <img
-                src={images[currentIndex].url}
-                alt="Großbild"
-                className={styles.modalImage}
-              />
-              <button className={styles.navRight} onClick={handleNext}>›</button>
-            </div>
-
-            <div className={styles.thumbnails}>
-              {images.map((img, index) => (
-                <img
-                  key={img.id}
-                  src={img.url}
-                  alt={`Thumb ${index + 1}`}
-                  className={`${styles.thumbnail} ${
-                    index === currentIndex ? styles.activeThumbnail : ''
-                  }`}
-                  onClick={() => handleThumbClick(index)}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+      {showModal && images.length > 0 && (
+        <ImageGalleryModal
+          images={images}
+          currentIndex={currentIndex}
+          onClose={() => setShowModal(false)}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onSelect={handleThumbClick}
+        />
       )}
     </section>
   );
