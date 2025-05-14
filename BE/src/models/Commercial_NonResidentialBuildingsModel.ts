@@ -37,7 +37,7 @@ const Commercial_NonResidentialBuildingsSchema: Schema =
 
 const Commercial_NonResidentialBuildingsModel =
   mongoose.model<ICommercial_NonResidentialBuildings>(
-    "Commercial_NonResidentialBuildingsModel",
+    "Commercial_NonResidentialBuildings",
     Commercial_NonResidentialBuildingsSchema
   );
 export default Commercial_NonResidentialBuildingsModel;

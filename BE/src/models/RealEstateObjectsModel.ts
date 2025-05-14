@@ -38,6 +38,7 @@ export interface IRealEstateObjects extends Document {
   commercial_NonResidentialBuildings?: Types.ObjectId;
   landPlots?: Types.ObjectId;
   residentialHouses?: Types.ObjectId;
+  freeWith?: string;
 }
 
 const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
@@ -84,6 +85,9 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
     type: String,
     enum: Object.values(ObjectStatus),
     default: ObjectStatus.ACTIVE,
+  },
+  freeWith: {
+    type: String,
   },
   images: [
     {

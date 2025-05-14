@@ -1,0 +1,58 @@
+.section {
+    padding: 2rem 1rem;
+    font-family: sans-serif;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.detailsContainer {
+    display: flex;
+    position: relative;
+}
+
+.detailsContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    max-width: 500px;
+}
+
+.label {
+    font-weight: 600;
+    color: #333;
+}
+
+.value {
+    color: #555;
+}
+
+.verticalDivider {
+    width: 1px;
+    background-color: #ccc;
+    margin-left: 2rem;
+    min-height: 100%;
+}
+
+.hr {
+    margin: 2rem 0 2rem 0;
+    width: 40%;
+    border: none;
+    height: 2px;
+    background-color: #ddd;
+}
+
+.text {
+    max-width: 800px;
+    color: #444;
+    line-height: 1.6;
+}

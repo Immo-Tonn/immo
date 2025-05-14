@@ -100,3 +100,10 @@
     text-align: left;
     padding-left: 2rem;
 }
+
+.horizontalLine {
+    width: 40%;
+    height: 1px;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}

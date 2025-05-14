@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import PropertyHero from '@widgets/PropertyHero/PropertyHero';
 import PropertyDetails from '@widgets/PropertyDetails/PropertyDetails';
 import PropertyMap from '@widgets/PropertyMap/PropertyMap';
-import InquiryForm from '@features/contact/ui/InquiryForm';
 import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -22,7 +21,7 @@ interface Image {
   type: string;
 }
 
-interface Apartment {
+export interface Apartment {
   floor?: number;
   totalFloors?: number;
   livingArea: number;
@@ -37,7 +36,7 @@ interface Apartment {
   additionalFeatures?: string;
 }
 
-interface CommercialBuilding {
+export interface CommercialBuilding {
   buildingType: string;
   area?: number;
   yearBuilt?: number;
@@ -45,14 +44,14 @@ interface CommercialBuilding {
   additionalFeatures?: string;
 }
 
-interface LandPlot {
+export interface LandPlot {
   plotArea: number;
   infrastructureConnection?: string;
   buildingRegulations?: string;
   recommendedUsage?: string;
 }
 
-interface ResidentialHouse {
+export interface ResidentialHouse {
   numberOfFloors?: number;
   livingArea: number;
   usableArea?: number;
@@ -68,8 +67,8 @@ interface ResidentialHouse {
   additionalFeatures?: string;
 }
 
-interface RealEstateObject {
-  id: string;
+export interface RealEstateObject {
+  _id: string;
   type: string;
   title: string;
   description: string;
@@ -80,11 +79,12 @@ interface RealEstateObject {
   price: number;
   dateAdded: string;
   status: string;
-  images?: Image[];
+  images?: any[]; // Предположим, это просто индикатор наличия
   apartments?: Apartment;
   commercial_NonResidentialBuildings?: CommercialBuilding;
   landPlots?: LandPlot;
   residentialHouses?: ResidentialHouse;
+  freeWith?: string;
 }
 
 const PropertyPage: React.FC = () => {
@@ -98,13 +98,21 @@ const PropertyPage: React.FC = () => {
 
     const fetchData = async () => {
       try {
-        const [objectRes, imagesRes] = await Promise.all([
-          axios.get<RealEstateObject>(`http://localhost:3000/api/objects/${id}`),
-          axios.get<Image[]>(`http://localhost:3000/api/images/by-object?objectId=${id}`)
-        ]);
+        const objectRes = await axios.get<RealEstateObject>(
+          `http://localhost:3000/api/objects/${id}`
+        );
 
-        setObjectData(objectRes.data);
-        setImages(imagesRes.data);
+        const data = objectRes.data;
+        setObjectData(data);
+
+        // Запрос изображений только если есть данные в object.images
+        if (data.images && data.images.length > 0) {
+          const imagesRes = await axios.get<Image[]>(
+            `http://localhost:3000/api/images/by-object?objectId=${id}`
+          );
+          setImages(imagesRes.data);
+        }
+
       } catch (err) {
         console.error('Ошибка при загрузке данных:', err);
       } finally {
@@ -136,7 +144,6 @@ const PropertyPage: React.FC = () => {
         residentialHouse={objectData.residentialHouses}
       />
       <PropertyMap address={objectData.address} />
-      <InquiryForm />
       <MortgageCalculator />
     </div>
   );
