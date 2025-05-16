@@ -34,11 +34,11 @@
 }
 
 .textBottom {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   margin-top: 40px;
   max-width: 636px;
   font-weight: 400;
-  font-size: 24px;
+  font-size: var(--font-size-small);
   letter-spacing: 0.1em;
   color: #120922;
 }
@@ -78,9 +78,9 @@
   .firstTitleMobile {
     display: flex;
     position: relative;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--Inter);
     font-weight: 400;
-    font-size: clamp(10px, 5vw, 20px);
+    font-size: clamp(10px, 5vw, font-size: var(--font-size-xs));
     letter-spacing: 0.1em;
     text-align: center;
     color: #fff;

@@ -1,0 +1,58 @@
+.interiorStylingSection {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.interiorStylingSection h2 {
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-main);
+  margin-top: 70px;
+  font-size: clamp(21px, 5vw, var(--font-size-main));
+  color: #000;
+  text-transform: uppercase;
+}
+.interiorStylingSection p {
+  font-weight: 400;
+  margin: 20px 0 0 108px;
+  font-size: var(--font-size-xs);
+  font-family: var(--Inter);
+  color: #000;
+  max-width: 705px;
+}
+.formWrapper {
+  display: flex;
+  align-items: center;
+  margin: 139px 0 168px 0;
+}
+.formWrapper p {
+  font-family: var(--Lato);
+  font-weight: 700;
+  font-size: 64px;
+  text-align: center;
+  color: #000;
+}
+.line {
+  margin-top: 24px;
+  display: flex;
+  max-width: 972px;
+  height: 1px;
+  background-color: #000;
+}
+.interiorStylingSection .lineVertical {
+  background-color: #000;
+  width: 1px;
+  margin-left: 97px;
+  display: flex;
+  height: 647px;
+}
+.buttonWrapper Button {
+  background-color: #000;
+  text-transform: uppercase;
+  color: white;
+  max-width: 347px;
+  font-family: var(--Inter);
+  height: 47px;
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+}

@@ -1,7 +1,7 @@
 .titleWrapper h1 {
   text-align: center;
-  font-size: 24px;
-  font-family: 'Inter', sans-serif;
+  font-size: var(--font-size-small);
+  font-family: var(--Inter);
   line-height: 1.6;
   font-weight: 400;
   letter-spacing: 0.1em;

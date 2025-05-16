@@ -3,6 +3,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import Input from '@shared/ui/Input/Input';
 import { ContactData, sendContactForm } from './model';
 import { useRef, useState } from 'react';
+import styles from './ContactForm.module.css'
 const ContactForm = () => {
   const {
     register,
@@ -36,13 +37,13 @@ const ContactForm = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: '2rem auto' }}>
-      <h1>Kontaktformular</h1>
+      <h2>Kontaktformular</h2>
       {isSubmitSuccessful ? (
         <p style={{ color: 'green' }}>
           Danke! Ihre Nachricht wurde erfolgreich versendet.
         </p>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form className={styles.contactForm} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Input
             label="Name:"
             placeholder="Max Mustermann"

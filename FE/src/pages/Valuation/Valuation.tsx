@@ -1,12 +1,12 @@
 import Competence from '@widgets/Competence/Competence';
 import HowIsGoing from '@widgets/HowIsGoing/HowIsGoing';
-import Intro from '@widgets/Intro/Intro';
 import ValuationCTA from '@widgets/ValuationCTA/ValuationCTA';
+import HeroValuation from '@widgets/hero/HeroValuation/HeroValuation.module';
 
 const Valuation = () => {
   return (
     <>
-      <Intro /> <ValuationCTA /> <Competence /> <HowIsGoing />
+      <HeroValuation /> <ValuationCTA /> <Competence /> <HowIsGoing />
     </>
   );
 };

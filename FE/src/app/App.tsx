@@ -10,7 +10,8 @@ import Contact from '@pages/ContactForm/ContactForm';
 import LegalNotice from '@pages/LegalNotice/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy/PrivacyPolicy';
-
+import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
+import '@shared/styles/global.css';
 const App = () => {
   return (
     <Router>
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/wertermittlung" element={<Valuation />} />
           <Route path="/immobilien" element={<RealEstate />} />
+          <Route path="/objectstyling" element={<ObjectStyling />} />
           <Route path="/finanzierung" element={<Financing />} />
           <Route path="/kontakt" element={<Contact />} />
           <Route path="/legalnotice" element={<LegalNotice />} />

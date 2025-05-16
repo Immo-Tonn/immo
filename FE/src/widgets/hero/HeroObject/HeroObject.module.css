@@ -1,0 +1,33 @@
+.objectSection {
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 675px;
+}
+
+.objectSection::before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 675px;
+  background-image: url('@shared/assets/hero-object/hero-photo.svg');
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
+  width: 100%;
+}
+.firstTitle {
+  max-width: 373px;
+  font-size: clamp(10px, 5vw, 32px);
+  font-family: var(--Inter);
+  font-weight: 700;
+  font-size: 64px;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.25);
+  padding: 0 0 163px 168px;
+}

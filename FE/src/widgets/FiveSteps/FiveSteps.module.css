@@ -11,14 +11,14 @@
   max-width: 750px;
 }
 .accordionItem {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   font-weight: 400;
-  font-size: 32px;
+  font-size: var(--font-size-secondary);
   color: #f5f5f5;
 }
 .secondTitle {
   position: relative;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   font-weight: 400;
   padding: 60px;
   font-size: clamp(40px, 5vw, 40px);
@@ -38,9 +38,9 @@
 
 .firstTitle {
   position: relative;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   font-weight: 400;
-  font-size: 20px;
+  font-size: var(--font-size-xs);
   letter-spacing: 0.1em;
   text-align: center;
   color: #fff;
@@ -58,9 +58,9 @@
 }
 .accordionItem {
   margin-left: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   font-weight: 400;
-  font-size: clamp(20px, 5vw, 32px);
+  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-secondary));
   color: #f5f5f5;
 }
 .buttonWrapper {
@@ -75,7 +75,7 @@
   cursor: pointer;
   background: #163054;
   font-weight: 400;
-  font-size: 32px;
+  font-size: var(--font-size-secondary);
   text-align: center;
   color: #f5f5f5;
 }

@@ -3,7 +3,7 @@
   padding: 66px 0 0 0;
 }
 .firstTitle {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   font-weight: 400;
   font-size: clamp(10px, 5vw, 64px);
   color: #000;
@@ -11,10 +11,10 @@
 .secondTitle {
   position: relative;
   font-weight: 900;
-  font-size: 48px;
+  font-size: var(--font-size-main);
   text-align: center;
   color: #fbfbfe;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   max-width: 1044px;
 }
 
@@ -31,7 +31,7 @@
 .competenceSection p {
   font-weight: 400;
   margin-top: 20px;
-  font-size: clamp(10px, 5vw, 24px);
+  font-size: clamp(10px, 5vw, var(--font-size-small));
   max-width: 1028px;
 }
 .titleWrapper {

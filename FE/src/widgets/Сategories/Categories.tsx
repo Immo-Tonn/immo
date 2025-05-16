@@ -1,5 +1,6 @@
 import { CategoriesData, CategoryItem } from './CategoriesData';
 import styles from './Categories.module.css';
+import { NavLink } from 'react-router-dom';
 
 const Categories = () => {
   return (
@@ -7,7 +8,7 @@ const Categories = () => {
       <ul className={styles.categoriesList}>
         {CategoriesData.map((item: CategoryItem) => (
           <li key={item.id} className={styles.categoryItem}>
-            <a className={styles.categoryLink}>
+            <NavLink to={item.link} className={styles.categoryLink}>
               <p className={styles.categoryTitle}>{item.title}</p>
               <div className={styles.imageWrapper}>
                 <img
@@ -16,7 +17,7 @@ const Categories = () => {
                   className={styles.categoryImage}
                 />
               </div>
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>

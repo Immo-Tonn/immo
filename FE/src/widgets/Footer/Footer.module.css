@@ -1,7 +1,7 @@
 footer {
   background-color: #1c1829;
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   margin: 0 auto;
 }
 
@@ -30,9 +30,9 @@ footer {
 }
 
 .footerLinks {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Inter);
   list-style: none;
-  font-size: 20px;
+  font-size: var(--font-size-xs);
 }
 
 .footerLinks li {
@@ -74,7 +74,7 @@ footer {
 
 .bottomStripe p {
   font-weight: 400;
-  font-size: 20px;
+  font-size: var(--font-size-xs);
   color: #fff;
 }
 
