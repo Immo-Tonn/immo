@@ -1,3 +1,4 @@
+import axios from 'axios';
 export type ContactData = {
   name: string;
   phone: string;
@@ -5,3 +6,35 @@ export type ContactData = {
   message: string;
   consent: boolean;
 };
+
+export type ContactFormPayload = {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+  recaptchaToken: string;
+};
+
+export const sendContactForm = async (data: ContactFormPayload) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/email`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      '❌ Fehler beim Senden des Kontaktformulars:',
+      error?.response || error,
+    );
+    throw new Error(
+      error?.response?.data?.message || 'Unbekannter Fehler beim Senden.',
+    );
+  }
+};
+console.log('Sitekey:', import.meta.env.VITE_RECAPTCHA_SITE_KEY);

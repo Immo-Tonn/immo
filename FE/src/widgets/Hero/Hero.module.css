@@ -15,7 +15,7 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 1024px;
+  max-width: 1200px;
   height: 793px;
   background-image: url('@shared/assets/hero/banner.svg');
   background-size: cover;
@@ -38,7 +38,7 @@
   z-index: 99;
   width: 100%;
   height: fit-content;
-  max-width: 1024px;
+  max-width: 1200px;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: space-between;

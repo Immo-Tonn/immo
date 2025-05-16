@@ -5,7 +5,7 @@ const HowIsGoing = () => {
     <section className={styles.howIsGoingSection}>
       <div className={`${styles.textBlock}`}>
         <h3>Was wir bei der Bewertung berücksichtigen:</h3>
-        <div>
+        <div className={styles.listWrapper}>
           <ul>
             <li>Aktuelle Markt- und Nachfragesituation</li>
             <li>Lage und Mikrolage der Immobilien</li>
@@ -15,7 +15,7 @@ const HowIsGoing = () => {
           </ul>
         </div>
         <h3>Wie läuft die Bewertung ab?</h3>
-        <div>
+        <div className={styles.listWrapper}>
           <ol>
             <li>Unverbindliches Erstgespräch – telefonisch oder vor Ort</li>
             <li>Analyse der Objektunterlagen und Besichtigung</li>

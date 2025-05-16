@@ -22,7 +22,11 @@ const ValuationCTA = () => {
         <h1 className={styles.secondTitle}>
           Lassen Sie Ihre Immobilie jetzt bewerten!
         </h1>
-        <img src={valuationPhoto} alt="valuation-photo" />
+        <img
+          src={valuationPhoto}
+          alt="valuation-photo"
+          style={{ boxShadow: '0 4px 41px 11px rgba(0, 0, 0, 0.25)' }}
+        />
       </div>
       <div className={styles.bottomWrapper}>
         <h2 className={styles.thirdTitle}>

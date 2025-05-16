@@ -32,5 +32,5 @@
       "@public/*": ["public/*"]
     }
   },
-  "include": ["src", "src/app/main.tsx"]
+  "include": ["src", "src/app/main.tsx", ".env"]
 }

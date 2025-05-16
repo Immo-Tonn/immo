@@ -6,7 +6,7 @@ header {
 }
 
 .headerTop {
-  max-width: 1024px;
+  max-width: 1200px;
   display: flex;
   max-height: 220px;
   justify-content: space-between;

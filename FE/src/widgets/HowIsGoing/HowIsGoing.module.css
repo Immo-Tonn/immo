@@ -18,7 +18,12 @@
   font-weight: 400;
   font-size: 24px;
   color: #000;
-  max-width: 813px;
+}
+
+.textBlock .listWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .buttonWrapper {
   display: flex;

@@ -17,8 +17,8 @@ const Competence = () => {
       </p>
       <img src={lightBuilding} alt="light-house" />
 
-      <div className={`${styles.titleWrapper}`}>
-        <h2 className={`${styles.secondTitle}`}>
+      <div className={styles.titleWrapper}>
+        <h2 className={styles.secondTitle}>
            Jetzt unverbindlich anfragen – Ihr Immo Tonn Team ist für Sie da!
         </h2>
       </div>

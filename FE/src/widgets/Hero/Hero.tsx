@@ -18,8 +18,7 @@ const Hero = () => {
       <div className={styles.bottomBar} ref={bottomBar}>
         <div className={styles.buttonWrapper}>
           <Button
-            initialText={'Kostenlose\nWertermittlung'}
-            addLineBreak
+            initialText="Kostenlose Wertermittlung"
             clickedText="Weiterleitung"
           />
         </div>

@@ -1,15 +1,37 @@
 import { useForm } from 'react-hook-form';
+import ReCAPTCHA from 'react-google-recaptcha';
 import Input from '@shared/ui/Input/Input';
-import { ContactData } from './model';
+import { ContactData, sendContactForm } from './model';
+import { useRef, useState } from 'react';
 const ContactForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitSuccessful },
+    reset,
   } = useForm<ContactData>();
 
-  const onSubmit = (data: ContactData) => {
-    console.log('Gesendet:', data);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
+
+  const onSubmit = async (data: ContactData) => {
+    if (!captchaToken) {
+      setCaptchaError('Bitte bestätigen Sie das CAPTCHA.');
+      return;
+    }
+
+    try {
+      await sendContactForm({
+        ...data,
+        recaptchaToken: captchaToken,
+      });
+      reset();
+      setCaptchaToken(null);
+      setCaptchaError(null);
+    } catch (err) {
+      console.error('Fehler beim Absenden:', err);
+    }
   };
 
   return (
@@ -91,7 +113,25 @@ const ContactForm = () => {
               {errors.consent.message}
             </span>
           )}
-
+          <div>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              size="normal"
+              onChange={token => {
+                console.log('reCAPTCHA Token:', token);
+                setCaptchaToken(token);
+                setCaptchaError(null);
+              }}
+              onExpired={() => {
+                setCaptchaToken(null);
+                setCaptchaError(
+                  'CAPTCHA ist abgelaufen, bitte erneut bestätigen.',
+                );
+              }}
+            />
+            {captchaError && <p>{captchaError}</p>}
+          </div>
           <button
             type="submit"
             style={{ padding: '0.7rem 1.5rem', marginTop: '1rem' }}
