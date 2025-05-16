@@ -3,7 +3,7 @@ import styles from './ValuationCTA.module.css';
 import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.svg';
 const ValuationCTA = () => {
   return (
-    <section className={styles.ValuationCTASection}>
+    <section className={styles.valuationCTASection}>
       <div className={styles.textWrapper}>
         <h2 className={styles.firstTitle}>
           <b>

@@ -11,7 +11,7 @@
 .secondTitle {
   position: relative;
   font-weight: 900;
-  font-size: var(--font-size-main);
+  font-size: clamp(32px, 5vw, var(--font-size-main));
   text-align: center;
   color: #fbfbfe;
   font-family: var(--Inter);
@@ -28,9 +28,11 @@
   flex-direction: column;
   align-items: center;
 }
-.competenceSection p {
+.competenceSection > p {
   font-weight: 400;
   margin-top: 20px;
+  font-family: var(--Inter);
+  margin-left: 50px;
   font-size: clamp(10px, 5vw, var(--font-size-small));
   max-width: 1028px;
 }
@@ -44,6 +46,7 @@
   justify-content: center;
 }
 
-.competenceSection img {
+.competenceSection > img {
   margin-top: 91px;
+  max-width: 1200px;
 }

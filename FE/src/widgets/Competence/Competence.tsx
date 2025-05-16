@@ -15,6 +15,7 @@ const Competence = () => {
         – Immobilienbewertung und Versicherungsberatung – für eine ganzheitliche
         Betreuung.
       </p>
+
       <img src={lightBuilding} alt="light-house" />
 
       <div className={styles.titleWrapper}>

@@ -1,4 +1,4 @@
-.introSection {
+.heroValuationSection {
   background-color: white;
   color: black;
 }
@@ -9,6 +9,15 @@
   max-width: 1200px;
   margin: 0 auto;
   height: 675px;
+}
+
+.heroValuationSection > p {
+  display: none;
+  font-family: var(--Inter);
+  text-align: center;
+  font-size: clamp(10px, 5vw, 36px);
+  color: #000;
+  padding: 20px;
 }
 
 .contentWrapper::before {
@@ -48,11 +57,17 @@
 .textWrapper p {
   color: white;
   font-family: var(--Inter);
-  font-size: clamp(10px, 5vw, 40px);
+  font-size: clamp(24px, 4.5vw, 40px);
   font-weight: 400;
 }
 
 .titleWrapper {
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 765px) {
+  .heroValuationSection > p {
+    display: flex;
+  }
 }
