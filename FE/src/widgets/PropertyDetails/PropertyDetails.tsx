@@ -7,6 +7,7 @@ import {
   LandPlot,
   CommercialBuilding,
 } from '@shared/types/propertyTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface PropertyDetailsProps {
   object: RealEstateObject;
@@ -24,11 +25,11 @@ const DetailRow = ({ label, value }: { label: string; value: any }) => (
 );
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <>
+  <div className={styles.section}>
+    <hr className={styles.hr} />
     <h2 className={styles.sectionTitle}>{title}</h2>
     {children}
-    <hr className={styles.hr} />
-  </>
+  </div>
 );
 
 const getPropertyDetails = (
@@ -51,7 +52,8 @@ const getPropertyDetails = (
   Etage: apartment?.floor,
   'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
   Garage: house?.garageParkingSpaces,
-  Energieeffizienzklasse: house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
+  Energieeffizienzklasse:
+    house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
   Energieträger: house?.energySource ?? apartment?.energySource,
   Heizung: house?.heatingType ?? apartment?.heatingType,
   'Frei ab': object.freeWith,
@@ -68,52 +70,71 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   residentialHouse,
 }) => {
   const details = getPropertyDetails(object, apartment, commercialBuilding, landPlot, residentialHouse);
+  const navigate = useNavigate();
 
   return (
-    <section className={styles.section}>
-      <Section title="OBJEKTDATEN">
-        <div className={styles.detailsContainer}>
-          <div className={styles.detailsContent}>
-            {Object.entries(details)
-              .filter(([_, value]) => value !== undefined && value !== null)
-              .map(([label, value]) => (
-                <DetailRow key={label} label={label} value={value} />
-              ))}
+    <div className={styles.propertyLayout}>
+      <div className={styles.mainContent}>
+        <Section title="OBJEKTDATEN">
+          <div className={styles.detailsWithDivider}>
+            <div className={styles.detailsLeft}>
+              {Object.entries(details)
+                .filter(([_, value]) => value !== undefined && value !== null)
+                .map(([label, value]) => (
+                  <DetailRow key={label} label={label} value={value} />
+                ))}
+            </div>
+            <div className={styles.verticalDivider} />
           </div>
-          <div className={styles.verticalDivider} />
+        </Section>
+
+        {(apartment?.additionalFeatures ||
+          residentialHouse?.additionalFeatures ||
+          commercialBuilding?.additionalFeatures) && (
+          <Section title="AUSSTATTUNG">
+            <p className={styles.narrowText}>
+              {apartment?.additionalFeatures ??
+                residentialHouse?.additionalFeatures ??
+                commercialBuilding?.additionalFeatures}
+            </p>
+          </Section>
+        )}
+
+        {object.description && (
+          <Section title="OBJEKTBESCHREIBUNG">
+            <p className={styles.narrowText}>{object.description}</p>
+          </Section>
+        )}
+
+        {object.location && (
+          <Section title="LAGE">
+            <p className={styles.narrowText}>{object.location}</p>
+          </Section>
+        )}
+
+        {object.miscellaneous && (
+          <Section title="SONSTIGES">
+            <p className={styles.narrowText}>{object.miscellaneous}</p>
+          </Section>
+        )}
+      </div>
+
+      <aside className={styles.stickyAside}>
+        <div className={styles.detailsRight}>
+          <div className={styles.tagline}>
+            <p>Verlässlich.</p>
+            <p>Persönlich.</p>
+            <p>Vor Ort.</p>
+          </div>
+          <button
+            className={styles.calcButton}
+            onClick={() => navigate('/finanzierung')}
+          >
+            Finanzierungsrechner
+          </button>
         </div>
-      </Section>
-
-      {(apartment?.additionalFeatures ||
-        residentialHouse?.additionalFeatures ||
-        commercialBuilding?.additionalFeatures) && (
-        <Section title="AUSSTATTUNG">
-          <p className={styles.text}>
-            {apartment?.additionalFeatures ??
-              residentialHouse?.additionalFeatures ??
-              commercialBuilding?.additionalFeatures}
-          </p>
-        </Section>
-      )}
-
-      {object.description && (
-        <Section title="OBJEKTBESCHREIBUNG">
-          <p className={styles.text}>{object.description}</p>
-        </Section>
-      )}
-
-      {object.location && (
-        <Section title="LAGE">
-          <p className={styles.text}>{object.location}</p>
-        </Section>
-      )}
-
-      {object.miscellaneous && (
-        <Section title="SONSTIGES">
-          <p className={styles.text}>{object.miscellaneous}</p>
-        </Section>
-      )}
-    </section>
+      </aside>
+    </div>
   );
 };
 

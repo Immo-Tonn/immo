@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import PropertyHero from '@widgets/PropertyHero/PropertyHero';
 import PropertyDetails from '@widgets/PropertyDetails/PropertyDetails';
 import PropertyMap from '@widgets/PropertyMap/PropertyMap';
-import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 import { usePropertyData } from '@shared/api/usePropertyData';
 
 const PropertyPage: React.FC = () => {
@@ -30,7 +29,6 @@ const PropertyPage: React.FC = () => {
         residentialHouse={objectData.residentialHouses}
       />
       <PropertyMap address={objectData.address} />
-      <MortgageCalculator />
     </div>
   );
 };

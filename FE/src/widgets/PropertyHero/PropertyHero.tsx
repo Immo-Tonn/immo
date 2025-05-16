@@ -195,8 +195,6 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
           onSelect={handleThumbClick}
         />
       )}
-
-      <hr className={styles.horizontalLine} />
     </section>
   );
 };

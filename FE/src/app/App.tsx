@@ -11,6 +11,8 @@ import Contact from '@pages/ContactForm';
 import LegalNotice from '@pages/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy';
+import 'leaflet/dist/leaflet.css';
+
 
 const App = () => {
   return (
