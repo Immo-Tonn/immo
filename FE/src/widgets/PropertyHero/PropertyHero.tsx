@@ -62,12 +62,9 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const { title, address, price } = object;
 
-  const livingArea =
-    residentialHouse?.livingArea ?? apartment?.livingArea;
-  const numberOfRooms =
-    residentialHouse?.numberOfRooms ?? apartment?.numberOfRooms;
-  const plotArea =
-    residentialHouse?.plotArea ?? landPlot?.plotArea;
+  const livingArea = residentialHouse?.livingArea ?? apartment?.livingArea;
+  const numberOfRooms = residentialHouse?.numberOfRooms ?? apartment?.numberOfRooms;
+  const plotArea = residentialHouse?.plotArea ?? landPlot?.plotArea;
   const commercialArea = commercialBuilding?.area;
 
   const previewImages = images.slice(0, 3);
@@ -89,6 +86,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const handleThumbClick = (index: number) => {
     setCurrentIndex(index);
+    setShowModal(true);
   };
 
   return (
@@ -96,36 +94,44 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
       <h1 className={styles.title}>{title}</h1>
 
       <div className={styles.imageContainer}>
-        {images.length > 0 && images[0] && (
-          <img
-            src={images[0].url}
-            alt="Objekt Hauptbild"
-            className={styles.mainImage}
-          />
-        )}
+        {images.length > 0 && images[0] ? (
+          <>
+            <img
+              src={images[0].url}
+              alt="Objekt Hauptbild"
+              className={styles.mainImage}
+              onClick={() => handleThumbClick(0)}
+            />
 
-        <div className={styles.sideImages}>
-          {previewImages.slice(1).map((img, index) => (
-            <div
-              key={img.id}
-              className={`${styles.smallImageWrapper} ${
-                index === 1 && hasMoreImages ? styles.overlayWrapper : ''
-              }`}
-              onClick={() =>
-                index === 1 && hasMoreImages && setShowModal(true)
-              }
-            >
-              <img
-                src={img.url}
-                alt={`Bild ${index + 2}`}
-                className={styles.smallImage}
-              />
-              {index === 1 && hasMoreImages && (
-                <div className={styles.overlay}>Mehr Bilder</div>
-              )}
+            <div className={styles.sideImages}>
+              {previewImages.slice(1).map((img, index) => {
+                const actualIndex = index + 1; 
+                const isLastPreview = index === 1;
+
+                return (
+                  <div
+                    key={img.id}
+                    className={`${styles.smallImageWrapper} ${
+                      isLastPreview && hasMoreImages ? styles.overlayWrapper : ''
+                    }`}
+                    onClick={() => handleThumbClick(actualIndex)}
+                  >
+                    <img
+                      src={img.url}
+                      alt={`Bild ${actualIndex + 1}`}
+                      className={styles.smallImage}
+                    />
+                    {isLastPreview && hasMoreImages && (
+                      <div className={styles.overlay}>Mehr Bilder</div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <div className={styles.placeholderImage}>Kein Bild verfügbar</div>
+        )}
       </div>
 
       <div className={styles.features}>
@@ -189,6 +195,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
           onSelect={handleThumbClick}
         />
       )}
+
       <hr className={styles.horizontalLine} />
     </section>
   );

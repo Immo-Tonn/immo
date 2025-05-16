@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './PropertyDetails.module.css';
-
 import {
   RealEstateObject,
   Apartment,
   ResidentialHouse,
   LandPlot,
   CommercialBuilding,
-} from '@pages/PropertyPage'; 
+} from '@shared/types/propertyTypes';
 
 interface PropertyDetailsProps {
   object: RealEstateObject;
@@ -17,93 +16,102 @@ interface PropertyDetailsProps {
   residentialHouse?: ResidentialHouse;
 }
 
-const renderDetailRow = (label: string, value: any) => (
-  <div className={styles.detailRow} key={label}>
+const DetailRow = ({ label, value }: { label: string; value: any }) => (
+  <div className={styles.detailRow}>
     <span className={styles.label}>{label}:</span>
     <span className={styles.value}>{String(value)}</span>
   </div>
 );
 
-const PropertyDetails: React.FC<PropertyDetailsProps> = ({ object, apartment, commercialBuilding, landPlot, residentialHouse}) => {
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <>
+    <h2 className={styles.sectionTitle}>{title}</h2>
+    {children}
+    <hr className={styles.hr} />
+  </>
+);
 
+const getPropertyDetails = (
+  object: RealEstateObject,
+  apartment?: Apartment,
+  commercial?: CommercialBuilding,
+  land?: LandPlot,
+  house?: ResidentialHouse
+): Record<string, any> => ({
+  Land: object.address?.country,
+  'Nummer ID': object._id,
+  Objektart: object.type,
+  Wohnfläche: house?.livingArea ?? apartment?.livingArea,
+  Grundstück: house?.plotArea ?? land?.plotArea,
+  Nutzfläche: house?.usableArea,
+  Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
+  Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
+  Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
+  Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
+  Etage: apartment?.floor,
+  'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
+  Garage: house?.garageParkingSpaces,
+  Energieeffizienzklasse: house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
+  Energieträger: house?.energySource ?? apartment?.energySource,
+  Heizung: house?.heatingType ?? apartment?.heatingType,
+  'Frei ab': object.freeWith,
+  Nutzung: commercial?.purpose ?? land?.recommendedUsage,
+  Infrastruktur: land?.infrastructureConnection,
+  Bebauungsplan: land?.buildingRegulations,
+});
 
-  const details: Record<string, any> = {
-    Land: object.address?.country,
-    'Nummer ID': object._id,
-    Objektart: object.type,
-    Wohnfläche: residentialHouse?.livingArea ?? apartment?.livingArea,
-    Grundstück: residentialHouse?.plotArea ?? landPlot?.plotArea,
-    Nutzfläche: residentialHouse?.usableArea,
-    Baujahr: residentialHouse?.yearBuilt ?? apartment?.yearBuilt ?? commercialBuilding?.yearBuilt,
-    Zimmern: residentialHouse?.numberOfRooms ?? apartment?.numberOfRooms,
-    Schlafzimmer: residentialHouse?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
-    Badezimmer: residentialHouse?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
-    Etage: apartment?.floor,
-    'Anzahl Etagen': apartment?.totalFloors ?? residentialHouse?.numberOfFloors,
-    Garage: residentialHouse?.garageParkingSpaces,
-    Energieeffizienzklasse:
-      residentialHouse?.energyEfficiencyClass ??
-      apartment?.energyEfficiencyClass ??
-      commercialBuilding?.additionalFeatures,
-    Energieträger:
-      residentialHouse?.energySource ?? apartment?.energySource,
-    Heizung:
-      residentialHouse?.heatingType ?? apartment?.heatingType,
-    'Frei ab': object.freeWith,
-    Nutzung: commercialBuilding?.purpose ?? landPlot?.recommendedUsage,
-    Infrastruktur: landPlot?.infrastructureConnection,
-    Bebauungsplan: landPlot?.buildingRegulations,
-  };
-
-  const renderedRows = Object.entries(details)
-    .filter(([_, value]) => value !== undefined && value !== null)
-    .map(([key, value]) => renderDetailRow(key, value));
+const PropertyDetails: React.FC<PropertyDetailsProps> = ({
+  object,
+  apartment,
+  commercialBuilding,
+  landPlot,
+  residentialHouse,
+}) => {
+  const details = getPropertyDetails(object, apartment, commercialBuilding, landPlot, residentialHouse);
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>OBJEKTDATEN</h2>
-      <div className={styles.detailsContainer}>
-        <div className={styles.detailsContent}>{renderedRows}</div>
-        <div className={styles.verticalDivider} />
-      </div>
-
-      <hr className={styles.hr} />
+      <Section title="OBJEKTDATEN">
+        <div className={styles.detailsContainer}>
+          <div className={styles.detailsContent}>
+            {Object.entries(details)
+              .filter(([_, value]) => value !== undefined && value !== null)
+              .map(([label, value]) => (
+                <DetailRow key={label} label={label} value={value} />
+              ))}
+          </div>
+          <div className={styles.verticalDivider} />
+        </div>
+      </Section>
 
       {(apartment?.additionalFeatures ||
         residentialHouse?.additionalFeatures ||
         commercialBuilding?.additionalFeatures) && (
-        <>
-          <h2 className={styles.sectionTitle}>AUSSTATTUNG</h2>
+        <Section title="AUSSTATTUNG">
           <p className={styles.text}>
             {apartment?.additionalFeatures ??
               residentialHouse?.additionalFeatures ??
               commercialBuilding?.additionalFeatures}
           </p>
-          <hr className={styles.hr} />
-        </>
+        </Section>
       )}
 
       {object.description && (
-        <>
-          <h2 className={styles.sectionTitle}>OBJEKTBESCHREIBUNG</h2>
+        <Section title="OBJEKTBESCHREIBUNG">
           <p className={styles.text}>{object.description}</p>
-          <hr className={styles.hr} />
-        </>
+        </Section>
       )}
 
       {object.location && (
-        <>
-          <h2 className={styles.sectionTitle}>LAGE</h2>
+        <Section title="LAGE">
           <p className={styles.text}>{object.location}</p>
-          <hr className={styles.hr} />
-        </>
+        </Section>
       )}
 
       {object.miscellaneous && (
-        <>
-          <h2 className={styles.sectionTitle}>SONSTIGES</h2>
+        <Section title="SONSTIGES">
           <p className={styles.text}>{object.miscellaneous}</p>
-        </>
+        </Section>
       )}
     </section>
   );
