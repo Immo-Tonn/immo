@@ -58,7 +58,7 @@
   color: white;
   font-family: var(--Inter);
   font-size: clamp(24px, 4.5vw, 40px);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
 }
 
 .titleWrapper {

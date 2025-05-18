@@ -28,7 +28,7 @@
   margin-top: 42px;
   text-align: center;
   font-family: var(--Inter);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: clamp(30px, 5vw, 40px);
   color: #fff;
   z-index: 2;
@@ -47,7 +47,7 @@
 .bottomBar .buttonWrapper:first-child Button {
   padding: 0 91px 0 91px;
   font-family: var(--Inter);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   border: none;
   font-size: clamp(36px, 5vw, var(--font-size-main));
   background-color: transparent;
@@ -58,7 +58,7 @@
 .bottomBar .buttonWrapper:last-child Button {
   padding: 0 91px 0 91px;
   font-family: var(--Inter);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   border: none;
   background-color: transparent;
   font-size: clamp(10px, 5vw, 32px);

@@ -47,7 +47,7 @@
 
 .bottomWrapper > p {
   font-family: var(--Inter);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   color: #212529;
   font-size: 22px;
   max-width: 557px;
@@ -60,7 +60,7 @@
   margin-bottom: 55px;
 
   Button {
-    font-weight: 400;
+    font-weight: var(--font-weight-secondary);
     font-size: var(--font-size-secondary);
     font-family: var(--Inter);
     background-color: #1c1829;

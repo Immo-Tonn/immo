@@ -3,7 +3,7 @@
   font-size: var(--font-size-small);
   font-family: var(--Inter);
   line-height: 1.6;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   letter-spacing: 0.1em;
   color: #160c20;
   margin-bottom: 16px;

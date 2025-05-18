@@ -1,4 +1,3 @@
-import Button from '@shared/ui/Button/Button';
 import styles from '../InteriorStyling/InteriorStyling.module.css';
 import ContactForm from '@pages/ContactForm/ContactForm';
 const InteriorStyling = () => {
@@ -6,18 +5,22 @@ const InteriorStyling = () => {
     <section className={styles.interiorStylingSection}>
       <h2>vom raum zum wunschobjekt</h2>
       <p>
-        Sie haben die Immobilie. Wir verleihen ihr Charakter, Tiefe und
-        Atmosphäre.
+        Sie haben die Immobilie.
+        <br />
+        Wir verleihen ihr Charakter, Tiefe und Atmosphäre.
       </p>
       <p>
-        Design, das sofort ein Gefühl von Zuhause vermittelt und zum Verweilen
-        einlädt.
+        Design, das sofort ein Gefühl von Zuhause vermittelt und zum <br />
+        Verweilen einlädt.
       </p>
       <p>
-        Ob leerstehende Wohnung, Familienhaus oder Design-Loft – wir entwickeln
-        individuelle Stylingkonzepte mit klarer Linie und Liebe zum Detail.
+        Ob leerstehende Wohnung, Familienhaus oder Design-Loft – <br />
+        wir entwickeln individuelle Stylingkonzepte mit klarer Linie und Liebe
+        zum Detail.
       </p>
-      <span className={styles.line}></span>
+      <div className={styles.lineWrapper}>
+        <span className={styles.line}></span>
+      </div>
       <div className={styles.formWrapper}>
         <ContactForm />
         <span className={styles.lineVertical}></span>

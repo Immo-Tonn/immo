@@ -37,7 +37,7 @@
   font-family: var(--Inter);
   margin-top: 40px;
   max-width: 636px;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-small);
   letter-spacing: 0.1em;
   color: #120922;
@@ -79,8 +79,8 @@
     display: flex;
     position: relative;
     font-family: var(--Inter);
-    font-weight: 400;
-    font-size: clamp(10px, 5vw, font-size: var(--font-size-xs));
+    font-weight: var(--font-weight-secondary);
+    font-size: clamp(10px, 5vw, var(--font-size-xs));
     letter-spacing: 0.1em;
     text-align: center;
     color: #fff;

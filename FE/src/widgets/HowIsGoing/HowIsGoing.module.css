@@ -15,7 +15,7 @@
 .textBlock ul {
   display: flex;
   flex-direction: column;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-family: var(--Inter);
   font-size: var(--font-size-small);
   color: #000;
@@ -37,7 +37,7 @@
   height: 113px;
   margin-top: 113px;
   background-color: #1c1829;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: clamp(10px, 5vw, 36px);
   color: #fcfdff;
 }

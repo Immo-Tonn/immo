@@ -9,8 +9,9 @@ const Effect = () => {
         <p className={styles.description}>
           Objektstyling ist mehr als Dekoration. Es ist die Kunst, Räume
           lebendig wirken zu lassen. Wir inszenieren Immobilien so, dass sie
-          nicht nur schön aussehen — sondern sich wie Zuhause anfühlen. Weil der
-          erste Eindruck keine zweite Chance bekommt.
+          nicht nur schön aussehen <br /> — <br />
+          sondern sich wie Zuhause anfühlen. Weil der erste Eindruck keine
+          zweite Chance bekommt.
         </p>
       </div>
       <div className={styles.imageWrapper}>
@@ -24,13 +25,13 @@ const Effect = () => {
           wird gezielt inszeniert – damit Ihre Immobilie nicht nur im Foto
           glänzt, sondern beim ersten Schritt über die Schwelle begeistert. Ihre
           Vorteile auf einen Blick:
-          <p>
+          <span>
             <b>
               Höhere Sichtbarkeit auf Plattformen Mehr Anfragen & schnellere
               Verkäufe Preissteigerung von bis zu 15 % Alles aus einer Hand –
               stilvoll & stressfrei
             </b>
-          </p>
+          </span>
         </p>
       </div>
       <img src={effectBuild} alt="effect-build" />

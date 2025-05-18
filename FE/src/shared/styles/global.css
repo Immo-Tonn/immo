@@ -9,10 +9,12 @@
   --font-size-small: 24px;
   --font-size-xs: 20px;
   --font-weight-main: 600;
+  --font-weight-secondary: 400;
 }
 
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 
 * {

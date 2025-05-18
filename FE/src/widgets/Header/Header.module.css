@@ -2,7 +2,7 @@ header {
   background-color: #1c1829;
   color: white;
   font-family: var(--Inter);
-  height: 329px;
+  height: 139px;
 }
 
 .headerTop {
@@ -13,8 +13,8 @@ header {
   margin: 0 auto;
 }
 .headerLogo {
-  width: 328px;
-  height: 330px;
+  width: auto;
+  height: 139px;
 }
 
 .headerMainRight {
@@ -55,7 +55,7 @@ header {
   padding-right: 30px;
 }
 .headerNav ul li {
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-small));
   text-align: center;
   color: #d9d9d9;
@@ -64,7 +64,7 @@ header {
 .headerNav a,
 .headerNav a:visited,
 .headerNav a.active {
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-small);
   text-align: center;
   color: #d9d9d9;

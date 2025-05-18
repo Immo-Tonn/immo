@@ -10,13 +10,13 @@
   color: #000;
   text-transform: uppercase;
 }
-.interiorStylingSection p {
-  font-weight: 400;
+.interiorStylingSection > p {
+  font-weight: var(--font-weight-secondary);
   margin: 20px 0 0 108px;
   font-size: var(--font-size-xs);
   font-family: var(--Inter);
   color: #000;
-  max-width: 705px;
+  max-width: 702px;
 }
 .formWrapper {
   display: flex;
@@ -30,10 +30,13 @@
   text-align: center;
   color: #000;
 }
-.line {
-  margin-top: 24px;
+.lineWrapper {
   display: flex;
-  max-width: 972px;
+  justify-content: center;
+}
+.line {
+  margin-top: 94px;
+  width: 922px;
   height: 1px;
   background-color: #000;
 }

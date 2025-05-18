@@ -10,6 +10,22 @@ const Header = () => {
       <div className={styles.headerWrapper}>
         <div className={styles.headerTop}>
           <img className={styles.headerLogo} src={logo} alt="logo" />
+          <div className={styles.headerNav}>
+            <ul>
+              <li>
+                <NavLink to="/">Home</NavLink>
+              </li>
+              <li>
+                <NavLink to="/wertermittlung">Wertermittlung</NavLink>
+              </li>
+              <li>
+                <NavLink to="/immobilien">Immobilien</NavLink>
+              </li>
+              <li>
+                <NavLink to="/finanzierung">Finanzierung</NavLink>
+              </li>
+            </ul>
+          </div>
           <div className={styles.headerMainRight}>
             <div className={styles.headerRight}>
               <ul className={styles.headerContacts}>
@@ -60,23 +76,6 @@ const Header = () => {
               </ul>
             </div>
           </div>
-        </div>
-
-        <div className={styles.headerNav}>
-          <ul>
-            <li>
-              <NavLink to="/">Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/wertermittlung">Wertermittlung</NavLink>
-            </li>
-            <li>
-              <NavLink to="/immobilien">Immobilien</NavLink>
-            </li>
-            <li>
-              <NavLink to="/finanzierung">Finanzierung</NavLink>
-            </li>
-          </ul>
         </div>
       </div>
       <div className={styles.headerMobile}>

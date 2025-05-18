@@ -4,7 +4,7 @@
 }
 .firstTitle {
   font-family: var(--Inter);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: clamp(10px, 5vw, 64px);
   color: #000;
 }
@@ -29,7 +29,7 @@
   align-items: center;
 }
 .competenceSection > p {
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   margin-top: 20px;
   font-family: var(--Inter);
   margin-left: 50px;

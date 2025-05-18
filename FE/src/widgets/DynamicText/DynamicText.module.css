@@ -1,6 +1,6 @@
 .textWrapper ul {
   font-family: var(--Inter);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: 16px;
   letter-spacing: 0.1em;
   color: #160c20;
@@ -11,14 +11,14 @@
   max-width: 625px;
   font-family: var(--Inter);
   margin-bottom: 24px;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: 18px;
   letter-spacing: 0.1em;
   color: #160c20;
 }
 .textWrapper h2 {
   margin: 30px 0 50px 0;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-small);
   letter-spacing: 0.1em;
   text-align: center;
