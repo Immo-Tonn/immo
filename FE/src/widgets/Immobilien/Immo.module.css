@@ -1,7 +1,7 @@
 .card {
   position: relative;
-  width: 300px;
-  height: 400px;
+  width: 600px;
+  height: 300px;
   background-size: cover;
   background-position: center;
   border-radius: 10px;
@@ -19,18 +19,42 @@
   bottom: 0;
   width: 100%;
   padding: 16px;
-  background: rgba(0, 0, 0, 0.5); /* затемнение */
+  background: rgba(25, 25, 31, 0.6);
   color: white;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  box-sizing: border-box;
 }
 
 .street {
-  font-size: 1.2rem;
+  font-size: 20px;
   font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  color: #f7f9fa;
 }
 
 .city {
-  font-size: 1rem;
+  font-size: 13px;
+  font-family: 'Roboto', sans-serif;
+  color: #f7f9fa;
+}
+
+/* ВАЖНО: стили для блока, который появляется при наведении */
+.details {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    opacity 0.3s ease,
+    max-height 0.3s ease;
+  font-size: 11 px;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
+  color: #f7f9fa;
+}
+
+.card:hover .details {
+  opacity: 1;
+  max-height: 100px;
 }

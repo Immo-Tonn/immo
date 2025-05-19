@@ -1,9 +1,23 @@
 .container {
+  height: 100vh;
   padding: 20px;
+  max-width: 100%; /* опционально — чтобы не было слишком растянуто */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cardList {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  flex-wrap: wrap;
+  height: 50vh;
+}
+.title {
+  font-family: 'Apple Braille', sans-serif;
+  font-size: 48px;
+  color: #003763;
+  text-align: center;
+  margin-bottom: 32px;
 }

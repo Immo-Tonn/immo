@@ -13,6 +13,10 @@ const ImmoCard = ({ image, street, city }: ImmoCardProps) => {
       <div className={styles.overlay}>
         <div className={styles.street}>{street}</div>
         <div className={styles.city}>{city}</div>
+        <div className={styles.details}>
+          Wohnfläche: 190 m²&nbsp;|&nbsp;7 Zimmer&nbsp;|&nbsp;Kaufpreis: 479000
+          €
+        </div>
       </div>
     </div>
   );

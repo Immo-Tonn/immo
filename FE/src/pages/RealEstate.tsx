@@ -38,7 +38,7 @@ const propertyList = [
 const RealEstate = () => {
   return (
     <div className={styles.container}>
-      <h1>Unsere Immobilienangebote</h1>
+      <h1 className={styles.title}>Immobilienangebote</h1>
       <div className={styles.cardList}>
         {propertyList.map(property => (
           <ImmoCard
