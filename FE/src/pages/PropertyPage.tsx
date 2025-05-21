@@ -3,6 +3,7 @@ import PropertyHero from '@widgets/PropertyHero/PropertyHero';
 import PropertyDetails from '@widgets/PropertyDetails/PropertyDetails';
 import PropertyMap from '@widgets/PropertyMap/PropertyMap';
 import { usePropertyData } from '@shared/api/usePropertyData';
+import ContactForm from './ContactForm';
 
 const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +30,7 @@ const PropertyPage: React.FC = () => {
         residentialHouse={objectData.residentialHouses}
       />
       <PropertyMap address={objectData.address} />
+      <ContactForm/>
     </div>
   );
 };

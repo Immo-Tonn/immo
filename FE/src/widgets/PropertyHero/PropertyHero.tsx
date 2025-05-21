@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './PropertyHero.module.css';
 import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
 
@@ -60,6 +60,14 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // ✅ Обновление начального значения isMobile на основе ширины окна
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+
   const { title, address, price } = object;
 
   const livingArea = residentialHouse?.livingArea ?? apartment?.livingArea;
@@ -69,6 +77,21 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const previewImages = images.slice(0, 3);
   const hasMoreImages = images.length > 3;
+
+  useEffect(() => {
+    const updateMobile = () => setIsMobile(window.innerWidth <= 768);
+    updateMobile();
+    window.addEventListener('resize', updateMobile);
+    return () => window.removeEventListener('resize', updateMobile);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile || images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images.length, isMobile]);
 
   const handlePrev = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -93,59 +116,73 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
     <section className={styles.section}>
       <h1 className={styles.title}>{title}</h1>
 
-      <div className={styles.imageContainer}>
-        {images.length > 0 && images[0] ? (
-          <>
-            <img
-              src={images[0].url}
-              alt="Objekt Hauptbild"
-              className={styles.mainImage}
-              onClick={() => handleThumbClick(0)}
-            />
+      {/* ✅ Карусель для мобильных экранов */}
+      {isMobile && images.length > 0 && (
+        <div className={styles.carouselContainer}>
+          <img
+            src={images[currentIndex]?.url}
+            alt={`Bild ${currentIndex + 1}`}
+            className={styles.carouselImage}
+            onClick={() => handleThumbClick(currentIndex)}
+          />
+        </div>
+      )}
 
-            <div className={styles.sideImages}>
-              {previewImages.slice(1).map((img, index) => {
-                const actualIndex = index + 1; 
-                const isLastPreview = index === 1;
+      {/* 🖥️ Галерея для десктопа */}
+      {!isMobile && (
+        <div className={styles.imageContainer}>
+          {images.length > 0 && images[0] ? (
+            <>
+              <img
+                src={images[0].url}
+                alt="Objekt Hauptbild"
+                className={styles.mainImage}
+                onClick={() => handleThumbClick(0)}
+              />
+              <div className={styles.sideImages}>
+                {previewImages.slice(1).map((img, index) => {
+                  const actualIndex = index + 1;
+                  const isLastPreview = index === 1;
 
-                return (
-                  <div
-                    key={img.id}
-                    className={`${styles.smallImageWrapper} ${
-                      isLastPreview && hasMoreImages ? styles.overlayWrapper : ''
-                    }`}
-                    onClick={() => handleThumbClick(actualIndex)}
-                  >
-                    <img
-                      src={img.url}
-                      alt={`Bild ${actualIndex + 1}`}
-                      className={styles.smallImage}
-                    />
-                    {isLastPreview && hasMoreImages && (
-                      <div className={styles.overlay}>Mehr Bilder</div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        ) : (
-          <div className={styles.placeholderImage}>Kein Bild verfügbar</div>
-        )}
-      </div>
+                  return (
+                    <div
+                      key={img.id}
+                      className={`${styles.smallImageWrapper} ${
+                        isLastPreview && hasMoreImages ? styles.overlayWrapper : ''
+                      }`}
+                      onClick={() => handleThumbClick(actualIndex)}
+                    >
+                      <img
+                        src={img.url}
+                        alt={`Bild ${actualIndex + 1}`}
+                        className={styles.smallImage}
+                      />
+                      {isLastPreview && hasMoreImages && (
+                        <div className={styles.overlay}>Mehr Bilder</div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div className={styles.placeholderImage}>Kein Bild verfügbar</div>
+          )}
+        </div>
+      )}
 
       <div className={styles.features}>
         <div className={styles.feature}>
-          <span>{price.toLocaleString()} €</span>
-          <strong>Kaufpreis</strong>
+          <h3>{price.toLocaleString()} €</h3>
+          <h6>Kaufpreis</h6>
         </div>
 
         {livingArea !== undefined && (
           <>
             <div className={styles.divider} />
             <div className={styles.feature}>
-              <span>{livingArea} m²</span>
-              <strong>Wohnfläche</strong>
+              <h3>{livingArea} m²</h3>
+              <h6>Wohnfläche</h6>
             </div>
           </>
         )}
@@ -154,8 +191,8 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
           <>
             <div className={styles.divider} />
             <div className={styles.feature}>
-              <span>{numberOfRooms}</span>
-              <strong>Zimmer</strong>
+              <h3>{numberOfRooms}</h3>
+              <h6>Zimmer</h6>
             </div>
           </>
         )}
@@ -164,8 +201,8 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
           <>
             <div className={styles.divider} />
             <div className={styles.feature}>
-              <span>{plotArea} m²</span>
-              <strong>Grundstück</strong>
+              <h3>{plotArea} m²</h3>
+              <h6>Grundstück</h6>
             </div>
           </>
         )}
@@ -174,8 +211,8 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
           <>
             <div className={styles.divider} />
             <div className={styles.feature}>
-              <span>{commercialArea} m²</span>
-              <strong>Fläche</strong>
+              <h3>{commercialArea} m²</h3>
+              <h6>Fläche</h6>
             </div>
           </>
         )}

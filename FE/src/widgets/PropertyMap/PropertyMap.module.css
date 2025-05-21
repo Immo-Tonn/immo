@@ -2,6 +2,7 @@
     margin-top: 2rem;
     width: 100%;
     font-family: sans-serif;
+    padding: 2rem 1rem;
 }
 
 .hr {
@@ -14,16 +15,15 @@
 }
 
 .title {
-    font-size: 1.5rem;
+    font-size: 34px;
     font-weight: bold;
-    margin: 0 0 1rem 0;
+    margin: 35px 0;
     text-align: left;
 }
 
 .infoLine {
-    font-size: 1rem;
-    color: #444;
-    margin-bottom: 0.5rem;
+    font-size: 32px;
+    margin: 30px 20px;
     display: flex;
     gap: 0.3rem;
     align-items: center;
@@ -32,8 +32,8 @@
 
 .disclaimer {
     font-style: italic;
-    color: #777;
-    margin-bottom: 1rem;
+    font-size: 28px;
+    margin: 20px;
 }
 
 .map {

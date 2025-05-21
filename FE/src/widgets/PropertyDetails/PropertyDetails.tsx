@@ -75,16 +75,20 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   return (
     <div className={styles.propertyLayout}>
       <div className={styles.mainContent}>
+        {/* Центрированная кнопка, не выходящая за границы компонента */}
+        <div className={styles.floatingButtonWrapper}>
+          <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
+            Finanzierungsrechner
+          </button>
+        </div>
+
         <Section title="OBJEKTDATEN">
-          <div className={styles.detailsWithDivider}>
-            <div className={styles.detailsLeft}>
-              {Object.entries(details)
-                .filter(([_, value]) => value !== undefined && value !== null)
-                .map(([label, value]) => (
-                  <DetailRow key={label} label={label} value={value} />
-                ))}
-            </div>
-            <div className={styles.verticalDivider} />
+          <div className={styles.detailsLeft}>
+            {Object.entries(details)
+              .filter(([_, value]) => value !== undefined && value !== null)
+              .map(([label, value]) => (
+                <DetailRow key={label} label={label} value={value} />
+              ))}
           </div>
         </Section>
 
@@ -120,18 +124,18 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       </div>
 
       <aside className={styles.stickyAside}>
+        <div className={styles.verticalDividerRight} />
         <div className={styles.detailsRight}>
           <div className={styles.tagline}>
             <p>Verlässlich.</p>
             <p>Persönlich.</p>
             <p>Vor Ort.</p>
           </div>
-          <button
-            className={styles.calcButton}
-            onClick={() => navigate('/finanzierung')}
-          >
-            Finanzierungsrechner
-          </button>
+          <div className={styles.rightButton}>
+            <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
+              Finanzierungsrechner
+            </button>
+          </div>
         </div>
       </aside>
     </div>

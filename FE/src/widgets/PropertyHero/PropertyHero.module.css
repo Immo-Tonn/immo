@@ -4,16 +4,17 @@
 }
 
 .title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 48px;
+    margin-bottom: 45px;
 }
 
 .imageContainer {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 100px;
     justify-content: center;
     align-items: stretch;
+    max-height: 450px;
 }
 
 .mainImage {
@@ -49,12 +50,10 @@
     transition: filter 0.3s;
 }
 
-/* Обертка для третьей картинки с эффектом затемнения при наведении */
 .overlayWrapper:hover .smallImage {
     filter: brightness(60%);
 }
 
-/* Оверлей над изображением (надпись Mehr Bilder) */
 .overlay {
     position: absolute;
     top: 0;
@@ -69,7 +68,6 @@
     align-items: center;
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.4);
-    /* лёгкое затемнение */
     border-radius: 8px;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
@@ -93,6 +91,15 @@
     align-items: center;
 }
 
+.feature h3 {
+    font-size: 40px;
+}
+
+.feature h6 {
+    font-size: 24px;
+    font-weight: normal;
+}
+
 .divider {
     width: 1px;
     background-color: #ccc;
@@ -100,8 +107,8 @@
 }
 
 .address {
-    margin-top: 1rem;
-    font-size: 1.1rem;
+    margin-top: 45px;
+    font-size: 26px;
     text-align: left;
     padding-left: 2rem;
 }
@@ -116,4 +123,68 @@
     color: #888;
     font-size: 1.2rem;
     border-radius: 8px;
+}
+
+.carouselContainer {
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+    .imageContainer {
+        display: none;
+    }
+
+    .carouselContainer {
+        display: block;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .carouselImage {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .title {
+        font-size: 36px;
+    }
+
+    .feature h3 {
+        font-size: 32px;
+    }
+
+    .feature h6 {
+        font-size: 18px;
+    }
+
+    .address {
+        font-size: 22px;
+        padding-left: 1rem;
+    }
+
+    .imageContainer {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 28px;
+    }
+
+    .feature h3 {
+        font-size: 26px;
+    }
+
+    .feature h6 {
+        font-size: 16px;
+    }
+
+    .address {
+        font-size: 18px;
+    }
 }

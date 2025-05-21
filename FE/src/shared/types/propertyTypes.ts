@@ -4,7 +4,7 @@ export interface Address {
   zip: number;
   district: string;
   street: string;
-  houseNumber: string;
+  houseNumber?: string;
 }
 
 export interface Image {
