@@ -28,6 +28,7 @@
     gap: 0.3rem;
     align-items: center;
     white-space: nowrap;
+    flex-wrap: wrap;
 }
 
 .disclaimer {
@@ -51,4 +52,57 @@
 .error {
     color: red;
     font-style: italic;
+}
+
+/* ---------- Media Queries ---------- */
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 28px;
+        margin: 25px 0;
+    }
+
+    .infoLine {
+        font-size: 24px;
+        margin: 20px 10px;
+        gap: 0.5rem;
+    }
+
+    .disclaimer {
+        font-size: 22px;
+        margin: 15px;
+    }
+
+    .map {
+        height: 300px;
+    }
+
+    .hr {
+        width: 52%;
+    }
+}
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 24px;
+        margin: 20px 0;
+    }
+
+    .infoLine {
+        font-size: 20px;
+        margin: 15px 8px;
+    }
+
+    .disclaimer {
+        font-size: 18px;
+        margin: 12px;
+    }
+
+    .map {
+        height: 250px;
+    }
+
+    .hr {
+        width: 85%;
+    }
 }

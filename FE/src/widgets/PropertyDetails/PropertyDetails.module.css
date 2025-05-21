@@ -1,10 +1,8 @@
 .propertyLayout {
     display: flex;
-    gap: 2rem;
     align-items: flex-start;
     position: relative;
     padding: 2rem 1rem;
-    font-family: sans-serif;
 }
 
 .mainContent {
@@ -64,7 +62,6 @@
 
 .stickyAside {
     flex-basis: 35%;
-    position: -webkit-sticky;
     position: sticky;
     top: 100px;
     align-self: flex-start;
@@ -119,11 +116,14 @@
 @media (max-width: 768px) {
 
     .calcButton {
-        font-size: 24px;
-        padding: 0.6rem 1.2rem;
+        font-size: 20px;
+        padding: 0.5rem 1rem;
         width: 100%;
     }
 
+    .sectionTitle {
+        font-size: 32px;
+    }
 
     .tagline {
         font-size: 32px;
@@ -137,13 +137,12 @@
         font-size: 20px;
     }
 
-    .detailRow {
-        margin: 10px;
-    }
 }
 
 @media (max-width: 576px) {
-
+    .propertyLayout {
+        display: grid;
+    }
 
     .rightButton {
         display: none;
@@ -154,7 +153,7 @@
         justify-content: center;
         align-items: center;
         position: sticky;
-        top: 200px;
+        top: 500px;
         z-index: 10;
         padding: 1rem 0;
         width: 100%;
