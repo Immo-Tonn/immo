@@ -11,6 +11,8 @@ import Contact from '@pages/ContactForm';
 import LegalNotice from '@pages/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy';
+import Verkaufssupport from '@pages/Verkaufssupport/Verkaufssupport';
+import '@shared/styles/global.css';
 
 const App = () => {
   return (
@@ -27,7 +29,8 @@ const App = () => {
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/verkaufssupport" element={<Verkaufssupport />} /> 
+       <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </Router>
