@@ -8,7 +8,7 @@ export type InputProps = {
   required?: boolean;
   isTextarea?: boolean;
   error?: string;
-  register?: any; // Тип от react-hook-form
+  register?: any;
 } & (
   | InputHTMLAttributes<HTMLInputElement>
   | TextareaHTMLAttributes<HTMLTextAreaElement>

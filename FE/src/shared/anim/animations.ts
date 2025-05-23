@@ -89,15 +89,15 @@ export const fadeInOnScroll = (elementRef: { current: HTMLElement | null }) => {
     el,
     {
       opacity: 0,
-      y: 30,
+      x: -50,
     },
     {
       opacity: 1,
-      y: 0,
-      ease: 'power4.inOut',
+      x: 0,
+      ease: 'sine.out',
       scrollTrigger: {
         trigger: el,
-        start: 'top 80%',
+        start: 'top 30%',
         toggleActions: 'play none none reverse',
       },
     },

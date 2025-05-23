@@ -1,3 +1,4 @@
+import Button from '@shared/ui/Button/Button';
 import styles from './ImageGalleryModal.module.css';
 
 interface Image {
@@ -31,17 +32,23 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
     <div className={styles.modal} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <div className={styles.modalImageWrapper}>
-          <button className={styles.navLeft} onClick={onPrev}>
-            ‹
-          </button>
+          <Button
+            initialText="‹"
+            clickedText="‹"
+            className={styles.navLeft}
+            onClick={onPrev}
+          />
           <img
             src={currentImage.url}
             alt="Großbild"
             className={styles.modalImage}
           />
-          <button className={styles.navRight} onClick={onNext}>
-            ›
-          </button>
+          <Button
+            initialText="›"
+            clickedText="›"
+            className={styles.navRight}
+            onClick={onNext}
+          />
         </div>
 
         <div className={styles.thumbnails}>

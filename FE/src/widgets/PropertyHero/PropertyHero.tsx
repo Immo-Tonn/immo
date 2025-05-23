@@ -66,10 +66,8 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   };
 
   return (
-    <section className={styles.section}>
+    <section className={styles.propertyHeroSection}>
       <h1 className={styles.title}>{title}</h1>
-
-      {/* ✅ Карусель для мобильных экранов */}
       {isMobile && images.length > 0 && (
         <div className={styles.carouselContainer}>
           <img
@@ -80,8 +78,6 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
           />
         </div>
       )}
-
-      {/* 🖥️ Галерея для десктопа */}
       {!isMobile && (
         <div className={styles.imageContainer}>
           {images.length > 0 && images[0] ? (

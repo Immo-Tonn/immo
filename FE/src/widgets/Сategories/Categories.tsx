@@ -23,7 +23,12 @@ const Categories = () => {
             ref={el => (refs.current[i] = el)}
           >
             <NavLink to={item.link} className={styles.categoryLink}>
-              <p className={styles.categoryTitle}>{item.title}</p>
+              <p
+                className={styles.categoryTitle}
+                style={item.id === 3 ? { color: '#160c20' } : {}}
+              >
+                {item.title}
+              </p>
               <div className={styles.imageWrapper}>
                 <img
                   src={item.image}

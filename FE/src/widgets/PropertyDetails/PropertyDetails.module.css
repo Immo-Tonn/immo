@@ -9,7 +9,7 @@
   flex: 1;
 }
 
-.section {
+.titleWrapper {
   margin-bottom: 4rem;
 }
 
@@ -17,6 +17,7 @@
   font-size: 34px;
   font-weight: bold;
   margin: 35px 0;
+  font-family: var(--Roboto);
   text-align: left;
 }
 
@@ -46,13 +47,16 @@
 .label {
   font-size: 22px;
   font-weight: bold;
+  font-family: var(--Roboto);
 }
 
 .value {
   font-size: 22px;
+  font-family: var(--Roboto);
 }
 
 .narrowText {
+  font-family: var(--Roboto);
   width: 100%;
   max-width: 700px;
   line-height: 1.6;
@@ -87,6 +91,7 @@
 }
 
 .tagline {
+  font-family: var(--Roboto);
   text-align: center;
   font-size: 48px;
   font-weight: 900;

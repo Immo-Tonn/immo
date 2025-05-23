@@ -18,7 +18,7 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }) => (
-  <div className={styles.section}>
+  <div className={styles.titleWrapper}>
     <hr className={styles.hr} />
     <h2 className={styles.sectionTitle}>{title}</h2>
     {children}
@@ -44,14 +44,13 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   return (
     <div className={styles.propertyLayout}>
       <div className={styles.mainContent}>
-        {/* Центрированная кнопка, не выходящая за границы компонента */}
         <div className={styles.floatingButtonWrapper}>
-          <button
+          <Button
+            initialText="Finanzierungsrechner"
+            clickedText="Weiterleitung"
             className={styles.calcButton}
             onClick={() => navigate('/finanzierung')}
-          >
-            Finanzierungsrechner
-          </button>
+          />
         </div>
 
         <Section title="OBJEKTDATEN">
