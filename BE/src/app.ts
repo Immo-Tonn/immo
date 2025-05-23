@@ -2,7 +2,7 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import "dotenv/config";
 import cors from "cors";
 import connectDb from "./config/db";
-import realEstateRoutes from "./routes/realEstateObjactsRoutes";
+import realEstateRoutes from "./routes/realEstateObjectsRoutes";
 import imagesRoutes from "./routes/imagesRoutes";
 import apartmentRoutes from "./routes/apartmentsRoutes";
 import commercial_NonResidentialBuildingsRoutes from "./routes/commercial_NonResidentialBuildingsRoutes";

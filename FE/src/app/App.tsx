@@ -12,6 +12,7 @@ import LegalNotice from '@pages/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy';
 import 'leaflet/dist/leaflet.css';
+import RechtUndRat from '@pages/RechtUndRat/RechtUndRat';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
+          <Route path='/recht' element={<RechtUndRat/>}/>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
