@@ -1,0 +1,80 @@
+export interface Address {
+  country: string;
+  city: string;
+  zip: number;
+  district: string;
+  street: string;
+  houseNumber?: string;
+}
+
+export interface Image {
+  id: string;
+  url: string;
+  type: string;
+}
+
+export interface Apartment {
+  floor?: number;
+  totalFloors?: number;
+  livingArea: number;
+  numberOfRooms?: number;
+  numberOfBedrooms?: number;
+  numberOfBathrooms?: number;
+  yearBuilt?: number;
+  yearRenovated?: number;
+  heatingType?: string;
+  energySource?: string;
+  energyEfficiencyClass?: string;
+  additionalFeatures?: string;
+}
+
+export interface CommercialBuilding {
+  buildingType: string;
+  area?: number;
+  yearBuilt?: number;
+  purpose?: string;
+  additionalFeatures?: string;
+}
+
+export interface LandPlot {
+  plotArea: number;
+  infrastructureConnection?: string;
+  buildingRegulations?: string;
+  recommendedUsage?: string;
+}
+
+export interface ResidentialHouse {
+  numberOfFloors?: number;
+  livingArea: number;
+  usableArea?: number;
+  plotArea?: number;
+  numberOfRooms: number;
+  numberOfBedrooms?: number;
+  numberOfBathrooms?: number;
+  garageParkingSpaces?: string;
+  yearBuilt?: number;
+  heatingType?: string;
+  energySource?: string;
+  energyEfficiencyClass?: string;
+  additionalFeatures?: string;
+}
+
+export interface RealEstateObject {
+  _id: string;
+  type: string;
+  title: string;
+  description: string;
+  features?: string;
+  miscellaneous?: string;
+  location: string;
+  address: Address;
+  price: number;
+  dateAdded: string;
+  status: string;
+  images?: Image[];
+  apartments?: Apartment;
+  commercial_NonResidentialBuildings?: CommercialBuilding;
+  landPlots?: LandPlot;
+  residentialHouses?: ResidentialHouse;
+  freeWith?: string;
+}

@@ -1,7 +1,14 @@
 import Button from '@shared/ui/Button/Button';
 import styles from './ValuationCTA.module.css';
 import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.svg';
+import { useEffect, useRef } from 'react';
+import { runningBoxShadow } from '@shared/anim/animations';
 const ValuationCTA = () => {
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    runningBoxShadow(imgRef);
+  }, []);
   return (
     <section className={styles.valuationCTASection}>
       <div className={styles.textWrapper}>
@@ -23,6 +30,7 @@ const ValuationCTA = () => {
           Lassen Sie Ihre Immobilie jetzt bewerten!
         </h1>
         <img
+          ref={imgRef}
           src={valuationPhoto}
           alt="valuation-photo"
           style={{ boxShadow: '0 4px 41px 11px rgba(0, 0, 0, 0.25)' }}

@@ -85,6 +85,10 @@ footer {
   color: white;
   background-color: #557289;
 }
+.contactButton:hover {
+  background-color: #9cb2c3;
+}
+
 /* .linksWrapper {
   display: flex;
   align-items: flex-end;

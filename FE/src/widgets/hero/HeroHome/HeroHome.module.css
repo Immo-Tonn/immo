@@ -45,7 +45,7 @@
   align-items: center;
 }
 .bottomBar .buttonWrapper:first-child Button {
-  padding: 0 91px 0 91px;
+  padding: 0 41px 11px 41px;
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
   border: none;
@@ -56,7 +56,7 @@
   color: #eae3cf;
 }
 .bottomBar .buttonWrapper:last-child Button {
-  padding: 0 91px 0 91px;
+  padding: 0 41px 41px 41px;
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
   border: none;

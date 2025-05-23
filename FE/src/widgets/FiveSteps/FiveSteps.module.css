@@ -83,7 +83,9 @@
   color: white;
   background-color: #091321;
 }
-
+.verkaufButton:hover {
+  background-color: #2b4878;
+}
 @media (max-width: 765px) {
   .buttonWrapper {
     justify-content: center;

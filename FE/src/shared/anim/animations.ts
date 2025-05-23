@@ -1,5 +1,5 @@
-import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap } from 'gsap';
 
 gsap.registerPlugin(ScrollTrigger);
 export const parallaxMouseEffect = (
@@ -82,24 +82,51 @@ export const parallaxScrolling = (topText, heroSection, bottomBar) => {
   });
 };
 
-// export const bezierAnimation = (topText, heroSection, path) => {
-//   const text = topText.current;
-//   const section = heroSection.current;
-//   const path = path.current;
+export const fadeInOnScroll = (elementRef: { current: HTMLElement | null }) => {
+  const el = elementRef.current;
 
-//   gsap.to(text, {
-//     scrollTrigger: {
-//       trigger: section,
-//       start: 'top center',
-//       end: 'bottom center',
-//       scrub: true,
-//     },
-//     motionPath: {
-//       path: bottom,
-//       curviness: 1.25,
-//       autoRotate: true,
-//     },
-//     duration: 1,
-//     ease: 'none',
-//   });
-// };
+  gsap.fromTo(
+    el,
+    {
+      opacity: 0,
+      y: 30,
+    },
+    {
+      opacity: 1,
+      y: 0,
+      ease: 'power4.inOut',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    },
+  );
+};
+
+export const runningBoxShadow = ref => {
+  const el = ref.current;
+  if (!el) return;
+
+  const radius = 10;
+  const blur = 40;
+  const color = 'rgba(0,0,0,0.5)';
+  const duration = 2;
+
+  gsap.to(
+    {},
+    {
+      repeat: -1,
+      duration,
+      ease: 'linear',
+      onUpdate: function () {
+        const progress = this.progress();
+        const angle = progress * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+
+        el.style.boxShadow = `${x.toFixed(2)}px ${y.toFixed(2)}px ${blur}px ${color}`;
+      },
+    },
+  );
+};

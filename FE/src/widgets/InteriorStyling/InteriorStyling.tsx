@@ -1,5 +1,5 @@
-import styles from '../InteriorStyling/InteriorStyling.module.css';
-import ContactForm from '@pages/ContactForm/ContactForm';
+import styles from './InteriorStyling.module.css';
+import ContactForm from '@features/contact/ui/ContactForm';
 const InteriorStyling = () => {
   return (
     <section className={styles.interiorStylingSection}>

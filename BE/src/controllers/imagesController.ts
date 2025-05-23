@@ -5,18 +5,28 @@ import { uploadToBunny } from "../utils/uploadImages";
 import { deleteFromBunny } from "../utils/deleteImages";
 import path from "path";
 import fs from "fs";
-import multer from "multer";
+import {
+  getAllImagesHelper,
+  getImageByIdHelper,
+  getImagesByObjectIdHelper,
+} from "../utils/getImages";
 
-export const getAllImages = async (req: Request, res: Response) => {
+export const getAllImages = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const images = await ImagesModel.find().populate("realEstateObject");
+    const images = await getAllImagesHelper();
     if (!images) {
       res.status(404).json({ message: "Keine Bilder gefunden" });
       return;
     }
     res.status(200).json(images);
   } catch (error) {
-    res.status(500).json({ message: "Fehler beim Abrufen der Bilder", error });
+    res.status(500).json({
+      message: "Fehler beim Abrufen der Bilder",
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 
@@ -25,16 +35,51 @@ export const getImageById = async (
   res: Response
 ): Promise<void> => {
   try {
-    const image = await ImagesModel.findById(req.params.id).populate(
-      "realEstateObject"
-    );
+    const image = await getImageByIdHelper(req.params.id);
+
     if (!image) {
       res.status(404).json({ message: "Bild nicht gefunden" });
       return;
     }
+
     res.status(200).json(image);
   } catch (error) {
-    res.status(500).json({ message: "Fehler beim Abrufen des Bildes", error });
+    res.status(500).json({
+      message: "Fehler beim Abrufen des Bildes",
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const getImagesByObjectId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const objectId = req.query.objectId as string;
+
+    if (!objectId) {
+      res
+        .status(400)
+        .json({ message: "Parameter 'objectId' ist erforderlich" });
+      return;
+    }
+
+    const images = await getImagesByObjectIdHelper(objectId);
+
+    if (!images) {
+      res
+        .status(404)
+        .json({ message: "Keine Bilder für dieses Objekt gefunden" });
+      return;
+    }
+
+    res.status(200).json(images);
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler beim Abrufen der Bilder nach Objekt-ID",
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 

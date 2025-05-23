@@ -6,12 +6,13 @@ import NotFound from '@pages/NotFound/NotFound';
 import Valuation from '@pages/Valuation/Valuation';
 import RealEstate from '@pages/RealEstate/RealEstate';
 import Financing from '@pages/Financing/Financing';
-import Contact from '@pages/ContactForm/ContactForm';
+import ContactForm from '@features/contact/ui/ContactForm';
 import LegalNotice from '@pages/LegalNotice/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy/PrivacyPolicy';
 import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
+import PropertyPage from '@pages/PropertyPage/PropertyPage';
 const App = () => {
   return (
     <Router>
@@ -21,9 +22,10 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/wertermittlung" element={<Valuation />} />
           <Route path="/immobilien" element={<RealEstate />} />
+          <Route path="/immobilien/:id" element={<PropertyPage />} />
           <Route path="/objectstyling" element={<ObjectStyling />} />
           <Route path="/finanzierung" element={<Financing />} />
-          <Route path="/kontakt" element={<Contact />} />
+          <Route path="/kontakt" element={<ContactForm />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />

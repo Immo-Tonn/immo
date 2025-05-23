@@ -7,7 +7,6 @@ import linkedIn from '@shared/assets/footer/linkedin.svg';
 import youtube from '@shared/assets/footer/youtube.svg';
 const Footer = () => {
   const navigate = useNavigate();
-
   const handleContactClick = () => {
     navigate('/kontakt');
   };
@@ -34,13 +33,19 @@ const Footer = () => {
         <div className={styles.footerMiddle}>
           <ul className={styles.footerIcons}>
             <li>
-              <img src={instagram} />
+              <a>
+                <img src={instagram} />
+              </a>
             </li>
             <li>
-              <img src={youtube} />
+              <a>
+                <img src={youtube} />
+              </a>
             </li>
             <li>
-              <img src={linkedIn} />
+              <a>
+                <img src={linkedIn} />
+              </a>
             </li>
           </ul>
         </div>

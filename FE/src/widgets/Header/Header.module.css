@@ -2,19 +2,22 @@ header {
   background-color: #1c1829;
   color: white;
   font-family: var(--Inter);
-  height: 139px;
 }
 
+.headerWrapper {
+  height: auto;
+}
 .headerTop {
   max-width: 1200px;
   display: flex;
-  max-height: 220px;
+
   justify-content: space-between;
   margin: 0 auto;
 }
+
 .headerLogo {
-  width: auto;
-  height: 139px;
+  max-width: 136.35px;
+  height: 136.35px;
 }
 
 .headerMainRight {
@@ -30,29 +33,23 @@ header {
 }
 
 .headerContacts {
+  margin-top: 5px;
   align-items: center;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: clamp(10px, 5vw, 14px);
   text-align: left;
   list-style: none;
-  line-height: 24px;
-  padding-top: 30px;
 }
 
 .headerNav {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding-top: 30px;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  justify-content: center;
 }
 
 .headerNav ul {
   display: flex;
-  gap: clamp(10px, 5vw, 15px);
+  gap: clamp(20px, 5vw, 15px);
   list-style: none;
-  padding-right: 30px;
+  margin-bottom: 7px;
 }
 .headerNav ul li {
   font-weight: var(--font-weight-secondary);
@@ -72,31 +69,23 @@ header {
   background: transparent;
 }
 
-.headerContacts li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
 .headerContacts .icon {
   width: 16px;
   height: 16px;
 }
 
-.headerContacts {
+/* .headerContacts {
   font-size: 14px;
   line-height: 1.4;
   text-align: left;
   list-style: none;
   padding-top: 30px;
-}
+} */
 
 .headerContacts li {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 12px;
 }
 
 .contactIcon {
@@ -127,12 +116,16 @@ header {
 
 @media (max-width: 765px) {
   .headerLogo {
-    max-width: 182px;
-    height: auto;
+    height: 114px;
+    width: auto;
+  }
+  .headerNav {
+    justify-content: flex-end;
   }
   .headerNav ul {
-    margin-top: 60px;
-    gap: 64px;
+    gap: 9px;
+    margin-bottom: 15px;
+    margin-right: 30px;
   }
 }
 

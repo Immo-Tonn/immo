@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
-import styles from './AboutUs.module.css';
+import styles from '../AboutUs/AboutUs.module.css';
 import whiteLogo from '@shared/assets/about-us/logo-white.svg';
-import '@shared/styles/animation.css';
 import DynamicText from '@widgets/DynamicText/DynamicText';
 import DynamicTitle from '@widgets/DynamicTitle/DynamicTitle';
 import { parallaxMouseEffect } from '@shared/anim/animations';
@@ -23,12 +22,12 @@ const AboutUs = () => {
   }, []);
 
   return (
-    <section className={`${styles.aboutUsSection}`}>
+    <section className={styles.aboutUsSection}>
       <h3 className={`${styles.firstTitleMobile}`}>
         Mehr als nur Immobilien – eine Partnerschaft, die für Sie entfaltet
       </h3>
       <span className={styles.line}></span>
-      <div className={`${styles.contentWrapper}`} ref={wrapperRef}>
+      <div className={styles.contentWrapper} ref={wrapperRef}>
         <img
           src={whiteLogo}
           alt="logo"
@@ -36,12 +35,12 @@ const AboutUs = () => {
           ref={logoRef}
         />
 
-        <div className={`${styles.textBlock}`} ref={textRef}>
+        <div className={styles.textBlock} ref={textRef}>
           <DynamicTitle />
           <DynamicText />
         </div>
       </div>
-      <p className={`${styles.textBottom}`} ref={bottomTextRef}>
+      <p className={styles.textBottom} ref={bottomTextRef}>
         Ihr Maklerteam für Wohnimmobilien, Geschäftshäuser und hochwertige
         Investment
       </p>

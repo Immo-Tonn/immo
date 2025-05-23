@@ -7,7 +7,8 @@ export const sendContactEmail = async (req: Request, res: Response) => {
   console.log("Kontaktformular empfangen:", req.body);
 
   const { name, email, phone, message, recaptchaToken } = req.body;
-
+  console.log({recaptchaToken});
+  
   if (!recaptchaToken) {
     return res.status(400).json({ message: "reCAPTCHA-Token fehlt." });
   }
