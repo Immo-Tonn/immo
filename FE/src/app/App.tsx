@@ -18,6 +18,9 @@ const App = () => {
       <ScrollToTop />
       <Layout>
         <Routes>
+        {/* <Route path="/cookies" element={<CookieSettings />} />
+        <Route path="/cookie-info" element={<CookiePolicy />} /> */}
+
           <Route path="/" element={<Home />} />
           <Route path="/wertermittlung" element={<Valuation />} />
           <Route path="/immobilien" element={<RealEstate />} />

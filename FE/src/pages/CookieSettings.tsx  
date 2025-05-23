@@ -1,0 +1,37 @@
+import React, { useEffect, useState } from 'react';
+
+export const CookieSettings = () => {
+  const [accepted, setAccepted] = useState(localStorage.getItem('cookiesAccepted') || '');
+
+  const handleSave = (value: 'all' | 'necessary' | 'none') => {
+    localStorage.setItem('cookiesAccepted', value);
+    setAccepted(value);
+    alert('Ihre Einstellungen wurden gespeichert.');
+  };
+
+  return (
+    <div style={{ padding: '40px' }}>
+      <h1>Cookie-Einstellungen</h1>
+      <p>
+        Wir verwenden Cookies, um die Benutzerfreundlichkeit unserer Website zu verbessern und
+        relevante Inhalte anzuzeigen. Sie können selbst entscheiden, welche Kategorien Sie zulassen möchten.
+      </p>
+
+      <h2>Notwendige Cookies</h2>
+      <p>Diese Cookies sind erforderlich, damit die Website korrekt funktioniert.</p>
+
+      <h2>Marketing & Analyse (optional)</h2>
+      <p>
+        Diese Cookies helfen uns, unsere Website zu verbessern und relevante Inhalte anzuzeigen.
+      </p>
+
+      <div style={{ marginTop: '24px' }}>
+        <button onClick={() => handleSave('all')}>Alle akzeptieren</button>{' '}
+        <button onClick={() => handleSave('necessary')}>Nur notwendige Cookies</button>{' '}
+        <button onClick={() => handleSave('none')}>Alle ablehnen</button>
+      </div>
+
+      {accepted && <p style={{ marginTop: '20px' }}>Aktuell gespeichert: <strong>{accepted}</strong></p>}
+    </div>
+  );
+};

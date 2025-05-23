@@ -1,0 +1,48 @@
+.cookieBanner {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #ffffff;
+    color: #1C1829;
+    border-top: 1px solid #1C1829;
+    padding: 16px 24px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+  }
+  
+  .cookieBanner p {
+    margin: 0;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .primary {
+    background-color: #1C1829;
+    color: #ffffff;
+    padding: 10px 16px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 0;
+  }
+  
+  .secondary {
+    background-color: transparent;
+    color: #1C1829;
+    border: 1px solid #1C1829;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 0;
+  }
+  
