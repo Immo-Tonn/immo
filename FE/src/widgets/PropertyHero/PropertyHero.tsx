@@ -1,52 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import styles from './PropertyHero.module.css';
 import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
-
-interface Address {
-  city: string;
-  district: string;
-  zip: number;
-}
-
-interface Image {
-  id: string;
-  url: string;
-  type: string;
-}
-
-interface Apartment {
-  livingArea?: number;
-  numberOfRooms?: number;
-}
-
-interface LandPlot {
-  plotArea?: number;
-}
-
-interface ResidentialHouse {
-  livingArea?: number;
-  numberOfRooms?: number;
-  plotArea?: number;
-}
-
-interface CommercialBuilding {
-  area?: number;
-}
-
-interface RealEstateObject {
-  title: string;
-  description: string;
-  address: Address;
-  price: number;
-}
+import {
+  RealEstateObject,
+  Apartment,
+  ResidentialHouse,
+  LandPlot,
+  CommercialBuilding,
+  Image,
+} from '@shared/types/propertyTypes';
 
 interface PropertyHeroProps {
   object: RealEstateObject;
   images?: Image[];
   apartment?: Apartment;
-  residentialHouse?: ResidentialHouse;
-  landPlot?: LandPlot;
   commercialBuilding?: CommercialBuilding;
+  landPlot?: LandPlot;
+  residentialHouse?: ResidentialHouse;
 }
 
 const PropertyHero: React.FC<PropertyHeroProps> = ({
@@ -59,16 +29,11 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+  );
 
-  // ✅ Обновление начального значения isMobile на основе ширины окна
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth <= 768;
-    }
-    return false;
-  });
-
-  const { title, address, price } = object;
+  const { title, address, price, status } = object;
 
   const livingArea = residentialHouse?.livingArea ?? apartment?.livingArea;
   const numberOfRooms = residentialHouse?.numberOfRooms ?? apartment?.numberOfRooms;
@@ -95,9 +60,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const handlePrev = (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
   const handleNext = (e?: React.MouseEvent) => {
@@ -112,38 +75,47 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
     setShowModal(true);
   };
 
+  const shouldShowStatus = status === 'sold' || status === 'reserved';
+  const statusLabel = status === 'sold' ? 'VERKAUFT' : 'RESERVIERT';
+
   return (
     <section className={styles.section}>
       <h1 className={styles.title}>{title}</h1>
 
-      {/* ✅ Карусель для мобильных экранов */}
       {isMobile && images.length > 0 && (
         <div className={styles.carouselContainer}>
-          <img
-            src={images[currentIndex]?.url}
-            alt={`Bild ${currentIndex + 1}`}
-            className={styles.carouselImage}
-            onClick={() => handleThumbClick(currentIndex)}
-          />
+          <div className={styles.carouselWrapper} onClick={() => handleThumbClick(currentIndex)}>
+            {shouldShowStatus && (
+              <div className={styles.statusBadge}>{statusLabel}</div>
+            )}
+            <img
+              src={images[currentIndex]?.url}
+              alt={`Bild ${currentIndex + 1}`}
+              className={styles.carouselImage}
+            />
+          </div>
         </div>
       )}
 
-      {/* 🖥️ Галерея для десктопа */}
       {!isMobile && (
         <div className={styles.imageContainer}>
           {images.length > 0 && images[0] ? (
             <>
-              <img
-                src={images[0].url}
-                alt="Objekt Hauptbild"
-                className={styles.mainImage}
-                onClick={() => handleThumbClick(0)}
-              />
+              <div className={styles.mainImageWrapper} onClick={() => handleThumbClick(0)}>
+                {shouldShowStatus && (
+                  <div className={styles.statusBadge}>{statusLabel}</div>
+                )}
+                <img
+                  src={images[0].url}
+                  alt="Objekt Hauptbild"
+                  className={styles.mainImage}
+                />
+              </div>
+
               <div className={styles.sideImages}>
                 {previewImages.slice(1).map((img, index) => {
                   const actualIndex = index + 1;
                   const isLastPreview = index === 1;
-
                   return (
                     <div
                       key={img.id}

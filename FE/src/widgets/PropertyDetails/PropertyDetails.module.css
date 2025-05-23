@@ -113,6 +113,14 @@
     display: none;
 }
 
+.statusBanner {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #b00020;
+    padding: 1rem;
+}
+
+
 @media (max-width: 768px) {
 
     .calcButton {

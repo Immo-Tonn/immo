@@ -61,6 +61,7 @@ export interface ResidentialHouse {
 
 export interface RealEstateObject {
   _id: string;
+  number: string;
   type: string;
   title: string;
   description: string;

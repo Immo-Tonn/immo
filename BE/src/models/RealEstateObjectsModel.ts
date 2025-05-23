@@ -16,6 +16,7 @@ export enum ObjectStatus {
 
 export interface IRealEstateObjects extends Document {
   id: Types.ObjectId;
+  number: string;
   type: ObjectType;
   title: string;
   description: string;
@@ -46,6 +47,11 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
     type: String,
     enum: Object.values(ObjectType),
     required: true,
+  },
+  number: {
+    type: String,
+    required: true,
+    unique: true,
   },
   title: {
     type: String,

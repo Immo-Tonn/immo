@@ -18,11 +18,19 @@
 }
 
 .mainImage {
-    width: 60%;
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.mainImageWrapper {
+    width: 60%;
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .sideImages {
@@ -125,10 +133,22 @@
     border-radius: 8px;
 }
 
+.statusBadge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: rgb(228 236 239 / 85%);
+    color: #000000;
+    font-size: 1.1rem;
+    padding: 0.4rem 1rem;
+    border-radius: 0.5rem;
+    z-index: 2;
+    text-transform: uppercase;
+}
+
 .carouselContainer {
     display: none;
 }
-
 
 @media (max-width: 768px) {
     .imageContainer {
@@ -141,12 +161,24 @@
         margin-bottom: 1.5rem;
     }
 
+    .carouselWrapper {
+        position: relative;
+        width: 100%;
+        cursor: pointer;
+    }
+
     .carouselImage {
         width: 100%;
         max-height: 400px;
         object-fit: cover;
         border-radius: 8px;
-        cursor: pointer;
+    }
+
+    .statusBadge {
+        top: 0.75rem;
+        left: 0.75rem;
+        font-size: 1rem;
+        padding: 0.3rem 0.8rem;
     }
 
     .title {
@@ -164,10 +196,6 @@
     .address {
         font-size: 22px;
         padding-left: 1rem;
-    }
-
-    .imageContainer {
-        display: none;
     }
 }
 

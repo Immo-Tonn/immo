@@ -38,29 +38,32 @@ const getPropertyDetails = (
   commercial?: CommercialBuilding,
   land?: LandPlot,
   house?: ResidentialHouse
-): Record<string, any> => ({
-  Land: object.address?.country,
-  'Nummer ID': object._id,
-  Objektart: object.type,
-  Wohnfläche: house?.livingArea ?? apartment?.livingArea,
-  Grundstück: house?.plotArea ?? land?.plotArea,
-  Nutzfläche: house?.usableArea,
-  Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
-  Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
-  Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
-  Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
-  Etage: apartment?.floor,
-  'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
-  Garage: house?.garageParkingSpaces,
-  Energieeffizienzklasse:
-    house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
-  Energieträger: house?.energySource ?? apartment?.energySource,
-  Heizung: house?.heatingType ?? apartment?.heatingType,
-  'Frei ab': object.freeWith,
-  Nutzung: commercial?.purpose ?? land?.recommendedUsage,
-  Infrastruktur: land?.infrastructureConnection,
-  Bebauungsplan: land?.buildingRegulations,
-});
+): Record<string, any> => {
+  return {
+    Land: object.address?.country,
+    'Nummer ID': object.number,
+    Objektart: object.type,
+    Wohnfläche: house?.livingArea ?? apartment?.livingArea,
+    Grundstück: house?.plotArea ?? land?.plotArea,
+    Nutzfläche: house?.usableArea,
+    Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
+    Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
+    Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
+    Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
+    Etage: apartment?.floor,
+    'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
+    Garage: house?.garageParkingSpaces,
+    Energieeffizienzklasse:
+      house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
+    Energieträger: house?.energySource ?? apartment?.energySource,
+    Heizung: house?.heatingType ?? apartment?.heatingType,
+    'Frei ab': object.freeWith,
+    Nutzung: commercial?.purpose ?? land?.recommendedUsage,
+    Infrastruktur: land?.infrastructureConnection,
+    Bebauungsplan: land?.buildingRegulations,
+  };
+};
+
 
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   object,
@@ -75,7 +78,6 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   return (
     <div className={styles.propertyLayout}>
       <div className={styles.mainContent}>
-        {/* Центрированная кнопка, не выходящая за границы компонента */}
         <div className={styles.floatingButtonWrapper}>
           <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
             Finanzierungsrechner
@@ -83,14 +85,21 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         </div>
 
         <Section title="OBJEKTDATEN">
-          <div className={styles.detailsLeft}>
-            {Object.entries(details)
-              .filter(([_, value]) => value !== undefined && value !== null)
-              .map(([label, value]) => (
-                <DetailRow key={label} label={label} value={value} />
-              ))}
-          </div>
-        </Section>
+  {['sold', 'reserved'].includes(object.status) && (
+    <div className={styles.statusBanner}>
+      {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
+    </div>
+  )}
+
+  <div className={styles.detailsLeft}>
+    {Object.entries(details)
+      .filter(([_, value]) => value !== undefined && value !== null)
+      .map(([label, value]) => (
+        <DetailRow key={label} label={label} value={value} />
+      ))}
+  </div>
+</Section>
+
 
         {(apartment?.additionalFeatures ||
           residentialHouse?.additionalFeatures ||
