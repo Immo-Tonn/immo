@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button as ButtonProps } from './model';
 
 const Button = ({
@@ -7,37 +6,26 @@ const Button = ({
   addLineBreak,
   initialText,
   clickedText,
-}: ButtonProps) => {
-  const [text, setText] = useState(initialText);
-
-  const [isButtonDisabled, setButtonState] = useState(false);
-  const handleClick = () => {
-    setText(clickedText);
-    if (onClick) {
-      onClick();
-    }
-    setButtonState(true);
-
-    setTimeout(() => {
-      setText(initialText);
-      setButtonState(false);
-    }, 1000);
-  };
+  type,
+  disabled,
+}: ButtonProps & { disabled?: boolean }) => {
+  const displayText = disabled ? clickedText : initialText;
 
   return (
     <button
-      onClick={handleClick}
+      onClick={onClick}
       className={className}
-      disabled={isButtonDisabled}
+      disabled={disabled}
+      type={type}
     >
-      {typeof text === 'string' && addLineBreak
-        ? text.split('\n').map((line, id) => (
+      {typeof displayText === 'string' && addLineBreak
+        ? displayText.split('\n').map((line, id) => (
             <span key={id}>
               {line}
               <br />
             </span>
           ))
-        : text}
+        : displayText}
     </button>
   );
 };

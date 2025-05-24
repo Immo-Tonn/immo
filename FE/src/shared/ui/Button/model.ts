@@ -4,4 +4,6 @@ export type Button = {
   addLineBreak?: boolean;
   initialText?: string;
   clickedText?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 };

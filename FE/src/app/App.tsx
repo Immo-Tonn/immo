@@ -10,6 +10,7 @@ import ContactForm from '@features/contact/ui/ContactForm';
 import LegalNotice from '@pages/LegalNotice/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy/PrivacyPolicy';
+import DankePage from '@pages/DankePage/DankePage';
 import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/kontakt" element={<ContactForm />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/kontakt/danke" element={<DankePage />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

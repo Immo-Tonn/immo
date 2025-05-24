@@ -3,19 +3,19 @@ import { gsap } from 'gsap';
 
 gsap.registerPlugin(ScrollTrigger);
 export const parallaxMouseEffect = (
-  wrapperRef,
-  logoRef,
-  textRef,
-  bottomTextRef,
+  wrapperRef: any,
+  logoRef: any,
+  textRef: any,
+  bottomTextRef: any,
 ) => {
   const wrapper = wrapperRef.current;
   const logo = logoRef.current;
   const text = textRef.current;
   const bottomText = bottomTextRef.current;
 
-  if (!wrapper || !logo || !text || !bottomText) return; // without null when function makes return
+  if (!wrapper || !logo || !text || !bottomText) return;
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e: any) => {
     const { width, height, left, top } = wrapper.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 20;
     const y = (e.clientY - top - height / 2) / 20;
@@ -48,18 +48,20 @@ export const parallaxMouseEffect = (
   wrapper.addEventListener('mousemove', handleMouseMove);
   wrapper.addEventListener('mouseleave', handleMouseLeave);
 
-  // 🧹 Удаляем слушатели при размонтировании
   return () => {
     wrapper.removeEventListener('mousemove', handleMouseMove);
     wrapper.removeEventListener('mouseleave', handleMouseLeave);
   };
 };
 
-export const parallaxScrolling = (topText, heroSection, bottomBar) => {
+export const parallaxScrolling = (
+  topText: any,
+  heroSection: any,
+  bottomBar: any,
+) => {
   const text = topText.current;
   const section = heroSection.current;
   const bottom = bottomBar.current;
-  // Параллакс текст
   gsap.to(text, {
     yPercent: 60,
     ease: 'circ.inOut',
@@ -104,7 +106,7 @@ export const fadeInOnScroll = (elementRef: { current: HTMLElement | null }) => {
   );
 };
 
-export const runningBoxShadow = ref => {
+export const runningBoxShadow = (ref: any) => {
   const el = ref.current;
   if (!el) return;
 
