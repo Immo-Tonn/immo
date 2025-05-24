@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface ILandPlots extends Document {
   id: Types.ObjectId;
@@ -12,7 +12,7 @@ export interface ILandPlots extends Document {
 const LandPlotsSchema: Schema = new Schema<ILandPlots>({
   realEstateObject: {
     type: Schema.Types.ObjectId,
-    ref: "RealEstateObjects",
+    ref: 'RealEstateObjects',
     required: true,
   },
   plotArea: {
@@ -30,5 +30,5 @@ const LandPlotsSchema: Schema = new Schema<ILandPlots>({
   },
 });
 
-const LandPlotsModel = mongoose.model<ILandPlots>("LandPlots", LandPlotsSchema);
+const LandPlotsModel = mongoose.model<ILandPlots>('LandPlots', LandPlotsSchema);
 export default LandPlotsModel;

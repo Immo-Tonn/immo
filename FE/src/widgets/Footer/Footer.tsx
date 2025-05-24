@@ -34,17 +34,17 @@ const Footer = () => {
           <ul className={styles.footerIcons}>
             <li>
               <a>
-                <img src={instagram} />
+                <img src={instagram} alt="instagram" />
               </a>
             </li>
             <li>
               <a>
-                <img src={youtube} />
+                <img src={youtube} alt="youtube" />
               </a>
             </li>
             <li>
               <a>
-                <img src={linkedIn} />
+                <img src={linkedIn} alt="linked-in" />
               </a>
             </li>
           </ul>

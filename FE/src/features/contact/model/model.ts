@@ -37,4 +37,3 @@ export const sendContactForm = async (data: ContactFormPayload) => {
     );
   }
 };
-console.log('Sitekey:', import.meta.env.VITE_RECAPTCHA_SITE_KEY);

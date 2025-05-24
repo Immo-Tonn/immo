@@ -32,7 +32,7 @@ const Categories = () => {
               <div className={styles.imageWrapper}>
                 <img
                   src={item.image}
-                  alt={item.title}
+                  alt={item.alt}
                   className={styles.categoryImage}
                 />
               </div>

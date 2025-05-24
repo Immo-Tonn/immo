@@ -1,14 +1,14 @@
-import fs from "fs";
-import https from "https";
+import fs from 'fs';
+import https from 'https';
 import {
   BUNNY_STORAGE_ZONE,
   BUNNY_STORAGE_HOST,
   BUNNY_ACCESS_KEY,
-} from "../config/bunny";
+} from '../config/bunny';
 
 export const uploadToBunny = async (
   localFilePath: string,
-  originalName: string
+  originalName: string,
 ): Promise<string> => {
   const fileName = `${Date.now()}-${originalName}`;
   const fullPath = `${BUNNY_STORAGE_ZONE}/${fileName}`;
@@ -21,27 +21,27 @@ export const uploadToBunny = async (
       const req = https.request(
         uploadUrl,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
             AccessKey: BUNNY_ACCESS_KEY,
-            "Content-Type": "application/octet-stream",
-            "Content-Length": fileBuffer.length,
+            'Content-Type': 'application/octet-stream',
+            'Content-Length': fileBuffer.length,
           },
         },
-        (res) => {
+        res => {
           if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
             resolve();
           } else {
             reject(
               new Error(
-                `Hochladen fehlgeschlagen. Statuscode: ${res.statusCode}`
-              )
+                `Hochladen fehlgeschlagen. Statuscode: ${res.statusCode}`,
+              ),
             );
           }
-        }
+        },
       );
 
-      req.on("error", (err) => {
+      req.on('error', err => {
         reject(new Error(`Fehler beim Hochladen: ${err.message}`));
       });
 

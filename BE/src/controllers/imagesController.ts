@@ -1,30 +1,30 @@
-import { Request, Response } from "express";
-import ImagesModel from "../models/ImagesModel";
-import RealEstateObjectsModel from "../models/RealEstateObjectsModel";
-import { uploadToBunny } from "../utils/uploadImages";
-import { deleteFromBunny } from "../utils/deleteImages";
-import path from "path";
-import fs from "fs";
+import { Request, Response } from 'express';
+import ImagesModel from '../models/ImagesModel';
+import RealEstateObjectsModel from '../models/RealEstateObjectsModel';
+import { uploadToBunny } from '../utils/uploadImages';
+import { deleteFromBunny } from '../utils/deleteImages';
+import path from 'path';
+import fs from 'fs';
 import {
   getAllImagesHelper,
   getImageByIdHelper,
   getImagesByObjectIdHelper,
-} from "../utils/getImages";
+} from '../utils/getImages';
 
 export const getAllImages = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const images = await getAllImagesHelper();
     if (!images) {
-      res.status(404).json({ message: "Keine Bilder gefunden" });
+      res.status(404).json({ message: 'Keine Bilder gefunden' });
       return;
     }
     res.status(200).json(images);
   } catch (error) {
     res.status(500).json({
-      message: "Fehler beim Abrufen der Bilder",
+      message: 'Fehler beim Abrufen der Bilder',
       error: error instanceof Error ? error.message : String(error),
     });
   }
@@ -32,20 +32,20 @@ export const getAllImages = async (
 
 export const getImageById = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const image = await getImageByIdHelper(req.params.id);
 
     if (!image) {
-      res.status(404).json({ message: "Bild nicht gefunden" });
+      res.status(404).json({ message: 'Bild nicht gefunden' });
       return;
     }
 
     res.status(200).json(image);
   } catch (error) {
     res.status(500).json({
-      message: "Fehler beim Abrufen des Bildes",
+      message: 'Fehler beim Abrufen des Bildes',
       error: error instanceof Error ? error.message : String(error),
     });
   }
@@ -53,7 +53,7 @@ export const getImageById = async (
 
 export const getImagesByObjectId = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const objectId = req.query.objectId as string;
@@ -70,14 +70,14 @@ export const getImagesByObjectId = async (
     if (!images) {
       res
         .status(404)
-        .json({ message: "Keine Bilder für dieses Objekt gefunden" });
+        .json({ message: 'Keine Bilder für dieses Objekt gefunden' });
       return;
     }
 
     res.status(200).json(images);
   } catch (error) {
     res.status(500).json({
-      message: "Fehler beim Abrufen der Bilder nach Objekt-ID",
+      message: 'Fehler beim Abrufen der Bilder nach Objekt-ID',
       error: error instanceof Error ? error.message : String(error),
     });
   }
@@ -85,22 +85,22 @@ export const getImagesByObjectId = async (
 
 export const createImage = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const file = req.file;
-  const localFilePath = file ? path.resolve(file.path) : "";
+  const localFilePath = file ? path.resolve(file.path) : '';
 
   try {
     const { realEstateObject, type } = req.body;
 
     if (!file) {
-      res.status(400).json({ message: "Datei nicht hochgeladen" });
+      res.status(400).json({ message: 'Datei nicht hochgeladen' });
       return;
     }
 
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
-      res.status(404).json({ message: "Objekt nicht gefunden" });
+      res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
 
@@ -127,10 +127,10 @@ export const createImage = async (
     }
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Fehler beim Erstellen des Bildes:", error);
+    console.error('Fehler beim Erstellen des Bildes:', error);
 
     res.status(500).json({
-      message: "Fehler beim Erstellen des Bildes",
+      message: 'Fehler beim Erstellen des Bildes',
       error: errorMessage,
     });
   }
@@ -138,15 +138,15 @@ export const createImage = async (
 
 export const updateImage = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const file = req.file;
-  const localFilePath = file ? path.resolve(file.path) : "";
+  const localFilePath = file ? path.resolve(file.path) : '';
 
   try {
     const existingImage = await ImagesModel.findById(req.params.id);
     if (!existingImage) {
-      res.status(404).json({ message: "Bild nicht gefunden" });
+      res.status(404).json({ message: 'Bild nicht gefunden' });
       return;
     }
 
@@ -159,8 +159,8 @@ export const updateImage = async (
         await deleteFromBunny(existingImage.url);
       } catch (cdnErr) {
         console.warn(
-          "Altes Bild konnte nicht vom CDN entfernt werden:",
-          cdnErr
+          'Altes Bild konnte nicht vom CDN entfernt werden:',
+          cdnErr,
         );
       }
 
@@ -174,7 +174,7 @@ export const updateImage = async (
     const updatedImage = await ImagesModel.findByIdAndUpdate(
       req.params.id,
       updatedData,
-      { new: true }
+      { new: true },
     );
 
     res.status(200).json(updatedImage);
@@ -184,7 +184,7 @@ export const updateImage = async (
     }
 
     res.status(500).json({
-      message: "Fehler beim Aktualisieren des Bildes",
+      message: 'Fehler beim Aktualisieren des Bildes',
       error: error instanceof Error ? error.message : String(error),
     });
   }
@@ -192,30 +192,30 @@ export const updateImage = async (
 
 export const deleteImage = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const deletedImage = await ImagesModel.findByIdAndDelete(req.params.id);
     if (!deletedImage) {
-      res.status(404).json({ message: "Bild nicht gefunden" });
+      res.status(404).json({ message: 'Bild nicht gefunden' });
       return;
     }
 
     try {
       await deleteFromBunny(deletedImage.url);
     } catch (cdnErr) {
-      console.warn("Datei konnte nicht vom CDN gelöscht werden:", cdnErr);
+      console.warn('Datei konnte nicht vom CDN gelöscht werden:', cdnErr);
     }
 
     await RealEstateObjectsModel.findByIdAndUpdate(
       deletedImage.realEstateObject,
-      { $pull: { images: deletedImage._id } }
+      { $pull: { images: deletedImage._id } },
     );
 
-    res.status(200).json({ message: "Bild entfernt" });
+    res.status(200).json({ message: 'Bild entfernt' });
   } catch (error) {
     res.status(500).json({
-      message: "Fehler beim Löschen des Bildes",
+      message: 'Fehler beim Löschen des Bildes',
       error: error instanceof Error ? error.message : String(error),
     });
   }

@@ -21,7 +21,7 @@ const FiveSteps = () => {
       </div>
 
       <div className={styles.contentWrapper}>
-        <ul className={styles.itemList}>
+        <div className={styles.itemList}>
           <Accordion
             sx={{
               m: 0,
@@ -42,9 +42,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Kostenlose Immobilienbewertung & Erstberatung
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -85,7 +85,7 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>Auftragserteilung</li>
+              <div className={styles.accordionItem}>Auftragserteilung</div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -128,9 +128,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Fototermin, Expose-Erstellung & Veröffentlichung
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -170,9 +170,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Anfragen und Besichtigungen
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -213,9 +213,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Notartermin und Beurkundung
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -250,7 +250,7 @@ const FiveSteps = () => {
               clickedText="Weiterleitung"
             />
           </div>
-        </ul>
+        </div>
       </div>
     </section>
   );

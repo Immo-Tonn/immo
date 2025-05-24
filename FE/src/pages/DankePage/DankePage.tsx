@@ -4,10 +4,14 @@ import Lottie from 'lottie-react';
 import animationData from '@shared/assets/lottie/mail-sent.json';
 import Confetti from 'react-confetti';
 import styles from './DankePage.module.css';
+import Button from '@shared/ui/Button/Button';
 
 const DankePage = () => {
   const navigate = useNavigate();
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     const updateSize = () => {
@@ -30,11 +34,19 @@ const DankePage = () => {
       <div className={styles.card}>
         <Lottie
           animationData={animationData}
-          style={{ width: 180, height: 180, marginBottom: 20 }}
+          style={{
+            width: 180,
+            height: 180,
+            marginBottom: 20,
+          }}
         />
         <h1>Vielen Dank!</h1>
         <p>Ihre Nachricht wurde erfolgreich versendet.</p>
-        <button onClick={() => navigate('/')}>Zurück zur Startseite</button>
+        <Button
+          initialText="Zurück zur Startseite"
+          clickedText="Weiterleitung"
+          onClick={() => navigate('/')}
+        />
       </div>
     </div>
   );
