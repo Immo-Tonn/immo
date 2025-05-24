@@ -1,34 +1,40 @@
 import React from 'react';
 import ImmoCard from '@widgets/Immobilien/ImmoCard';
-import styles from './RealEstate.module.css'; // если есть стили для страницы
+import styles from './RealEstate.module.css';
 
-import placeholderImage from '@shared/assets/immobilien/Haus.png'; // твоя заглушка
+import placeholderImage from '@shared/assets/immobilien/Haus.png'; //  заглушка
 
-const propertyList = [
+type Property = {
+  id: number;
+  street: string;
+  city: string;
+  image: string;
+  status?: 'VERKAUFT' | 'RESERVIERT';
+};
+
+const propertyList: Property[] = [
   {
     id: 1,
-    title: 'Moderne Wohnung in Berlin',
     street: 'Asseln Koenigstrasse',
     city: 'Dortmund',
     image: placeholderImage,
+    status: 'VERKAUFT',
   },
   {
     id: 2,
-    title: 'Familienhaus in München',
     street: 'Asseln Koenigstrasse',
     city: 'Dortmund',
     image: placeholderImage,
+    status: 'RESERVIERT',
   },
   {
     id: 3,
-    title: 'Altbauwohnung in Hamburg',
     street: 'Asseln Koenigstrasse',
     city: 'Dortmund',
     image: placeholderImage,
   },
   {
     id: 4,
-    title: 'Penthouse in Frankfurt',
     street: 'Asseln Koenigstrasse',
     city: 'Dortmund',
     image: placeholderImage,
@@ -43,10 +49,10 @@ const RealEstate = () => {
         {propertyList.map(property => (
           <ImmoCard
             key={property.id}
-            title={property.title}
             street={property.street}
             city={property.city}
             image={property.image}
+            status={property.status}
           />
         ))}
       </div>

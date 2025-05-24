@@ -5,11 +5,13 @@ type ImmoCardProps = {
   image: string;
   street: string;
   city: string;
+  status?: 'VERKAUFT' | 'RESERVIERT';
 };
 
-const ImmoCard = ({ image, street, city }: ImmoCardProps) => {
+const ImmoCard = ({ image, street, city, status }: ImmoCardProps) => {
   return (
     <div className={styles.card} style={{ backgroundImage: `url(${image})` }}>
+      {status && <div className={styles.statusBadge}>{status}</div>}
       <div className={styles.overlay}>
         <div className={styles.street}>{street}</div>
         <div className={styles.city}>{city}</div>

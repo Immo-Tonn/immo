@@ -5,7 +5,6 @@
   height: 300px;
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
@@ -42,7 +41,6 @@
   color: #f7f9fa;
 }
 
-/* ВАЖНО: стили для блока, который появляется при наведении */
 .details {
   opacity: 0;
   max-height: 0;
@@ -54,6 +52,29 @@
   font-family: 'Roboto', sans-serif;
   line-height: 1.4;
   color: #f7f9fa;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  background-color: #f5f5f5;
+  color: #000000;
+  font-size: 10px;
+  font-family: 'Roboto', sans-serif;
+  padding: 2px 8px;
+  height: 18px;
+  min-width: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-transform: none; /* можно убрать CAPS, если нужно */
+}
+
+/* Можешь добавить разные цвета для статусов, если хочешь */
+.statusBadge.RESERVIERT {
+  background-color: rgba(255, 193, 7, 0.9); /* желтый */
 }
 
 .card:hover .details {
