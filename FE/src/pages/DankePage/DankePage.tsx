@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Lottie from 'lottie-react';
+const Lottie = lazy(() => import('lottie-react'));
 import animationData from '@shared/assets/lottie/mail-sent.json';
 import Confetti from 'react-confetti';
 import styles from './DankePage.module.css';
@@ -32,14 +32,12 @@ const DankePage = () => {
       <Confetti width={windowSize.width} height={windowSize.height} />
 
       <div className={styles.card}>
-        <Lottie
-          animationData={animationData}
-          style={{
-            width: 180,
-            height: 180,
-            marginBottom: 20,
-          }}
-        />
+        <Suspense fallback={<div>Animation wird geladen...</div>}>
+          <Lottie
+            animationData={animationData}
+            style={{ width: 180, height: 180, marginBottom: 20 }}
+          />
+        </Suspense>
         <h1>Vielen Dank!</h1>
         <p>Ihre Nachricht wurde erfolgreich versendet.</p>
         <Button

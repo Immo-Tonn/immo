@@ -4,6 +4,7 @@ import { RealEstateObject, Image } from '@shared/types/propertyTypes';
 
 export const usePropertyData = (id?: string) => {
   const [objectData, setObjectData] = useState<RealEstateObject | null>(null);
+  const [err, setErr] = useState<RealEstateObject | null>(null);
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,15 +25,16 @@ export const usePropertyData = (id?: string) => {
           );
           setImages(imagesRes.data);
         }
-      } catch (err) {
-        console.error('Fetch error:', err);
+        setErr(null);
+      } catch (err: any) {
+        console.error('Fehler beim Laden der Daten:', err);
+        setErr(err?.message || 'Unbekannter Fehler');
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [id]);
 
-  return { objectData, images, loading };
+  return { objectData, images, loading, err };
 };

@@ -17,7 +17,7 @@
   transform: translateX(-50%);
   max-width: 1200px;
   height: 793px;
-  background-image: url('@shared/assets/hero/banner.svg');
+  background-image: url('@shared/assets/hero/banner.webp');
   background-size: cover;
   background-position: center;
   z-index: 2;
@@ -31,7 +31,7 @@
   font-weight: var(--font-weight-secondary);
   font-size: clamp(30px, 5vw, 40px);
   color: #fff;
-  z-index: 2;
+  z-index: 99;
 }
 .bottomBar {
   margin: 0 auto;

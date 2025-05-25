@@ -1,5 +1,5 @@
 import styles from './Competence.module.css';
-import lightBuilding from '@shared/assets/competence/light-bulding.svg';
+import lightBuilding from '@shared/assets/competence/light-bulding.webp';
 const Competence = () => {
   return (
     <section className={styles.competenceSection}>
