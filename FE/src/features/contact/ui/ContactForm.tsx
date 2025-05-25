@@ -116,9 +116,6 @@ const ContactForm = () => {
                 },
               })}
             />
-            {errors.message && (
-              <span className={styles.error}>{errors.message.message}</span>
-            )}
           </div>
 
           <div className={styles.checkboxContainer}>

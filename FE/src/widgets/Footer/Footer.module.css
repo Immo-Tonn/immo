@@ -54,7 +54,7 @@ footer {
   line-height: 1.6;
   text-align: left;
   /* this is kindly bad */
-  margin: 0px 0 47px 136px;
+  margin: 0px 0 43px 136px;
   /* this is kindly bad */
 }
 
@@ -87,4 +87,30 @@ footer {
 }
 .contactButton:hover {
   background-color: #9cb2c3;
+}
+@media (max-width: 765px) {
+  .footerLeft {
+    display: block;
+  }
+  .footerLeft .footerLinks li {
+    margin-top: 20px;
+  }
+  .footerIcons img {
+    width: 30px;
+    height: 27px;
+  }
+  .contactButton {
+    display: none;
+  }
+  .footerCenter {
+    /* this is kindly bad */
+    margin: 0px 0 187px 0;
+    /* this is kindly bad */
+  }
+}
+
+@media (max-width: 572px) {
+  .bottomBar {
+    display: block;
+  }
 }

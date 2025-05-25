@@ -1,5 +1,6 @@
 .categoriesSection {
   display: flex;
+  overflow-x: hidden;
   justify-content: center;
   background-color: #160c20;
 }
@@ -17,10 +18,8 @@
 }
 
 .categoryImage {
-  /* width: 343px; */
-  width: 1200px;
+  max-width: 1200px;
   position: relative;
-  /* height: 249px; */
   height: 592px;
   object-fit: cover;
 }
@@ -78,6 +77,7 @@
     padding: 86px 0 64px 0;
   }
   .categoryImage {
-    max-width: 304px;
+    max-width: 770px;
+    height: 477px;
   }
 }
