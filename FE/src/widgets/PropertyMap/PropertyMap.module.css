@@ -1,108 +1,108 @@
 .mapSection {
-    margin-top: 2rem;
-    width: 100%;
-    font-family: sans-serif;
-    padding: 2rem 1rem;
+  margin-top: 2rem;
+  width: 100%;
+  font-family: sans-serif;
+  padding: 2rem 1rem;
 }
 
 .hr {
-    width: 54%;
-    height: 1px;
-    background-color: #000;
-    border: none;
-    margin-bottom: 0.5rem;
-    margin-left: 0;
+  width: 54%;
+  height: 1px;
+  background-color: #000;
+  border: none;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
 }
 
 .title {
-    font-size: 34px;
-    font-weight: bold;
-    margin: 35px 0;
-    text-align: left;
+  font-size: 34px;
+  font-weight: bold;
+  margin: 35px 0;
+  text-align: left;
 }
 
 .infoLine {
-    font-size: 32px;
-    margin: 30px 20px;
-    display: flex;
-    gap: 0.3rem;
-    align-items: center;
-    white-space: nowrap;
-    flex-wrap: wrap;
+  font-size: 32px;
+  margin: 30px 20px;
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  white-space: nowrap;
+  flex-wrap: wrap;
 }
 
 .disclaimer {
-    font-style: italic;
-    font-size: 28px;
-    margin: 20px;
+  font-style: italic;
+  font-size: 28px;
+  margin: 20px;
 }
 
 .map {
-    width: 100%;
-    height: 400px;
-    border-radius: 8px;
-    overflow: hidden;
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .loading {
-    color: #666;
-    font-style: italic;
+  color: #666;
+  font-style: italic;
 }
 
 .error {
-    color: red;
-    font-style: italic;
+  color: red;
+  font-style: italic;
 }
 
 /* ---------- Media Queries ---------- */
 
 @media (max-width: 768px) {
-    .title {
-        font-size: 28px;
-        margin: 25px 0;
-    }
+  .title {
+    font-size: 28px;
+    margin: 25px 0;
+  }
 
-    .infoLine {
-        font-size: 24px;
-        margin: 20px 10px;
-        gap: 0.5rem;
-    }
+  .infoLine {
+    font-size: 24px;
+    margin: 20px 10px;
+    gap: 0.5rem;
+  }
 
-    .disclaimer {
-        font-size: 22px;
-        margin: 15px;
-    }
+  .disclaimer {
+    font-size: 22px;
+    margin: 15px;
+  }
 
-    .map {
-        height: 300px;
-    }
+  .map {
+    height: 300px;
+  }
 
-    .hr {
-        width: 52%;
-    }
+  .hr {
+    width: 52%;
+  }
 }
 
 @media (max-width: 576px) {
-    .title {
-        font-size: 24px;
-        margin: 20px 0;
-    }
+  .title {
+    font-size: 24px;
+    margin: 20px 0;
+  }
 
-    .infoLine {
-        font-size: 20px;
-        margin: 15px 8px;
-    }
+  .infoLine {
+    font-size: 20px;
+    margin: 15px 8px;
+  }
 
-    .disclaimer {
-        font-size: 18px;
-        margin: 12px;
-    }
+  .disclaimer {
+    font-size: 18px;
+    margin: 12px;
+  }
 
-    .map {
-        height: 250px;
-    }
+  .map {
+    height: 250px;
+  }
 
-    .hr {
-        width: 85%;
-    }
+  .hr {
+    width: 85%;
+  }
 }

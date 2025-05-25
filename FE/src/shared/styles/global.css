@@ -23,12 +23,9 @@ a {
   margin: 0;
 }
 
-/* button:hover {
-  background-color: #14374e;
-} */
-
 button {
   width: 100%;
+  cursor: pointer;
   background-color: #1b4965;
   color: white;
   border: none;
@@ -37,27 +34,4 @@ button {
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-top: 1rem;
-  font-weight: 600;
-}
-
-input,
-select {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #1b4965;
-  border-radius: 6px;
-  margin-top: 4px;
-  background-color: white;
 }

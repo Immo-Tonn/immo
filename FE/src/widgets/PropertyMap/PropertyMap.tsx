@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
 import { PropertyMapProps } from './models';
 import { LatLngTuple } from 'leaflet';

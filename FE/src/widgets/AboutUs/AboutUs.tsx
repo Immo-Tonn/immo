@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import styles from '../AboutUs/AboutUs.module.css';
+import styles from './AboutUs.module.css';
 import whiteLogo from '@shared/assets/about-us/logo-white.svg';
 import DynamicText from '@widgets/DynamicText/DynamicText';
 import DynamicTitle from '@widgets/DynamicTitle/DynamicTitle';

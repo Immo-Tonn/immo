@@ -9,7 +9,7 @@ const Categories = () => {
 
   useEffect(() => {
     refs.current.forEach(ref => {
-      if (ref) fadeInOnScroll({ current: ref });
+      if (ref) fadeInOnScroll({ current: ref }, { x: -100 });
     });
   }, []);
 

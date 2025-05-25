@@ -16,15 +16,18 @@ const Button = ({
   useEffect(() => {
     if (disabled) {
       setText(clickedText);
-      // При внешнем disabled внутреннюю блокировку не включаем, чтобы не мешать форме
-      setInternalDisabled(false);
+      setInternalDisabled(false); // don't lock internally when externally disabled
     } else if (!internalDisabled) {
       setText(initialText);
     }
   }, [disabled, clickedText, initialText, internalDisabled]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // Вызов onClick при клике, только если кнопка НЕ заблокирована (внешне или внутренне)
+    if (type === 'submit') {
+      // Allow native form submit to proceed
+      return;
+    }
+
     if (disabled || internalDisabled) return;
 
     setText(clickedText);

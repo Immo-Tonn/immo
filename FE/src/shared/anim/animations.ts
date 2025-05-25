@@ -54,52 +54,78 @@ export const parallaxMouseEffect = (
   };
 };
 
-export const parallaxScrolling = (
-  topText: any,
-  heroSection: any,
-  bottomBar: any,
-) => {
-  const text = topText.current;
-  const section = heroSection.current;
-  const bottom = bottomBar.current;
-  gsap.to(text, {
-    yPercent: 60,
-    ease: 'circ.inOut',
-    scrollTrigger: {
-      trigger: section,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 2,
-    },
-  });
-  gsap.to(bottom, {
-    yPercent: 50,
-    ease: 'circ.in',
-    scrollTrigger: {
-      trigger: section,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 2,
-    },
-  });
-};
+// export const parallaxScrolling = (
+//   topText: any,
+//   heroSection: any,
+//   bottomBar: any,
+// ) => {
+//   const text = topText.current;
+//   const section = heroSection.current;
+//   const bottom = bottomBar.current;
+//   gsap.to(text, {
+//     yPercent: 60,
+//     ease: 'circ.inOut',
+//     scrollTrigger: {
+//       trigger: section,
+//       start: 'top bottom',
+//       end: 'bottom top',
+//       scrub: 2,
+//     },
+//   });
+//   gsap.to(bottom, {
+//     yPercent: 50,
+//     ease: 'circ.in',
+//     scrollTrigger: {
+//       trigger: section,
+//       start: 'top bottom',
+//       end: 'bottom top',
+//       scrub: 2,
+//     },
+//   });
+// };
 
-export const fadeInOnScroll = (elementRef: { current: HTMLElement | null }) => {
+// type FadeInOptions = {
+//   x?: number;
+//   y?: number;
+//   duration?: number;
+//   delay?: number;
+//   ease?: string;
+//   start?: string;
+// };
+
+export const fadeInOnScroll = (
+  elementRef: { current: HTMLElement | null },
+  options: FadeInOptions = {},
+) => {
   const el = elementRef.current;
+  if (!el) return;
+
+  const {
+    x = 0,
+    y = 0,
+    duration = 0.3,
+    delay = 0,
+    ease = 'sine.out',
+    start = 'top 30%',
+  } = options;
 
   gsap.fromTo(
     el,
     {
       opacity: 0,
-      x: -50,
+      x,
+      y,
     },
     {
       opacity: 1,
       x: 0,
-      ease: 'sine.out',
+      y: 0,
+      duration,
+      delay,
+      ease,
       scrollTrigger: {
         trigger: el,
-        start: 'top 30%',
+        start,
         toggleActions: 'play none none reverse',
       },
     },

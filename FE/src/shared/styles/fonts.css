@@ -1,19 +1,23 @@
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Montserrat-Regular';
   src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Lato';
   src: url('/fonts/Lato-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Roboto';
   src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+  font-display: swap;
 }

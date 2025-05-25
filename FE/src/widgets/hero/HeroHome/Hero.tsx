@@ -1,21 +1,19 @@
 import Button from '@shared/ui/Button/Button';
-import styles from '../HeroHome/HeroHome.module.css';
+import styles from './HeroHome.module.css';
 import { useEffect, useRef } from 'react';
-import { parallaxScrolling } from '@shared/anim/animations';
+import { fadeInOnScroll } from '@shared/anim/animations';
 const HeroHome = () => {
-  const topText = useRef(null);
-  const heroSection = useRef(null);
-  const bottomBar = useRef(null);
+  const ref = useRef(null);
   useEffect(() => {
-    parallaxScrolling(topText, heroSection, bottomBar);
+    fadeInOnScroll(ref, { y: 100 });
   }, []);
+
   return (
-    <section className={styles.heroSection} ref={heroSection}>
-      <p className={styles.topText} ref={topText}>
+    <section className={styles.heroSection}>
+      <p className={styles.topText}>
         Der richtige Partner für Ihren Immobilienverkauf
       </p>
-
-      <div className={styles.bottomBar} ref={bottomBar}>
+      <div className={styles.bottomBar}>
         <div className={styles.buttonWrapper}>
           <Button
             initialText="Kostenlose Wertermittlung"

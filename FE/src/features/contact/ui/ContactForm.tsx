@@ -20,6 +20,7 @@ const ContactForm = () => {
   const [captchaError, setCaptchaError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
   const onSubmit = async (data: ContactData) => {
     if (!captchaToken) {
       setCaptchaError('Bitte bestätigen Sie das CAPTCHA.');
@@ -84,7 +85,6 @@ const ContactForm = () => {
             <div key={field.name} className={styles.inputGroup}>
               <Input
                 placeholder={field.label}
-                className={styles.input}
                 {...register(field.name as keyof ContactData, {
                   required: field.requiredMsg,
                   ...(field.pattern && {
@@ -123,13 +123,13 @@ const ContactForm = () => {
 
           <div className={styles.checkboxContainer}>
             <Input
-              label=""
+              id="consent"
               type="checkbox"
               {...register('consent', {
                 required: 'Bitte stimmen Sie der Datenschutzerklärung zu.',
               })}
             />
-            <label>
+            <label htmlFor="consent">
               Ja, ich habe die Datenschutzerklärung gelesen und bin damit
               einverstanden, dass meine Angaben zur Kontaktaufnahme und für
               Rückfragen elektronisch gespeichert und verarbeitet werden.

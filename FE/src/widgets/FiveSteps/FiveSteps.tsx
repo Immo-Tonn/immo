@@ -4,8 +4,15 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import Button from '@shared/ui/Button/Button';
+import { useEffect, useRef } from 'react';
+import { fadeInOnScroll } from '@shared/anim/animations';
 
 const FiveSteps = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    fadeInOnScroll(ref, { x: -100 });
+  }, []);
+
   return (
     <section className={styles.fiveStepsSection}>
       <div className={styles.firstTitleWrap}>
@@ -21,7 +28,7 @@ const FiveSteps = () => {
       </div>
 
       <div className={styles.contentWrapper}>
-        <div className={styles.itemList}>
+        <div className={styles.itemList} ref={ref}>
           <Accordion
             sx={{
               m: 0,

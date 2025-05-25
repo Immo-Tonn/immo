@@ -1,4 +1,4 @@
-import styles from '../Effect/Effect.module.css';
+import styles from './Effect.module.css';
 import effectPhoto from '@shared/assets/effect/effect-photo.webp';
 import effectBuild from '@shared/assets/effect/effect-build.webp';
 const Effect = () => {

@@ -1,5 +1,5 @@
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+import Header from '@widgets/Header/Header';
+import Footer from '@widgets/Footer/Footer';
 import React from 'react';
 
 interface LayoutProps {
