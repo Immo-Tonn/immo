@@ -50,9 +50,6 @@ const ContactForm = () => {
 
   return (
     <div className={styles.formWrapper}>
-      <div className={styles.verticalLineLeft}></div>
-      <div className={styles.verticalLineRight}></div>
-
       <div className={styles.container}>
         <h2 className={styles.heading}>Jetzt Kontakt aufnehmen</h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -138,6 +135,7 @@ const ContactForm = () => {
 
           <div className={styles.captchaContainer}>
             <ReCAPTCHA
+              hl="de"
               ref={recaptchaRef}
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
               size="normal"

@@ -14,6 +14,7 @@ import DankePage from '@pages/DankePage/DankePage';
 import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
+import SalesSupport from '@pages/SalesSupport/SalesSupport';
 const App = () => {
   return (
     <Router>
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/kontakt/danke" element={<DankePage />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
+          <Route path="/verkaufssupport" element={<SalesSupport />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

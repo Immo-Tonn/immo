@@ -15,7 +15,11 @@ const Effect = () => {
         </p>
       </div>
       <div className={styles.imageWrapper}>
-        <img src={effectPhoto} alt="effect-photo" />
+        <img
+          src={effectPhoto}
+          alt="effect-photo"
+          className={styles.effectPhoto}
+        />
         <h2>Licht. Perspektive. Wirkung.</h2>
       </div>
       <div className={styles.descriptionWrapper}>

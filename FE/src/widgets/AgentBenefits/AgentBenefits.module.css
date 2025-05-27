@@ -1,0 +1,119 @@
+.whyAgentSection {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.whyAgentSectionTablet {
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.whyAgentContentWithLine {
+  flex-grow: 1;
+  max-width: 600px;
+  box-sizing: border-box;
+  padding-right: 30px;
+  border-right: 2px solid black;
+  width: 100%;
+}
+
+.whyAgentContentWithLineTablet {
+  padding-right: 0;
+  border-right: none;
+  border-bottom: 2px solid black;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+.whyAgentH3 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.whyAgentUl {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.whyAgentLi {
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  width: 90%;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+.whyAgentH4 {
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
+.whyAgentH4Mobile {
+  font-size: 1em;
+}
+
+.whyAgentP {
+  color: #555;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.whyAgentPMobile {
+  font-size: 0.8em;
+}
+
+/* --- Immo Tonn Section Styles --- */
+.immoTonnImageBackground {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  background-image: url(/public/images/immo-tonn.svg);
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.immoTonnImageBackgroundMobile {
+  height: 200px;
+}
+
+.immoTonnOverlayText {
+  position: absolute;
+  right: 40px;
+  bottom: 100px;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.immoTonnOverlayTextMobile {
+  font-size: 20px;
+  right: 15px;
+  bottom: 40px;
+}

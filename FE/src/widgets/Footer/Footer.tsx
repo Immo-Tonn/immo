@@ -7,6 +7,7 @@ import linkedIn from '@shared/assets/footer/linkedin.svg';
 import youtube from '@shared/assets/footer/youtube.svg';
 const Footer = () => {
   const navigate = useNavigate();
+
   const handleContactClick = () => {
     navigate('/kontakt');
   };

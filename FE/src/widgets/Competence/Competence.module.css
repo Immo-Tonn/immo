@@ -50,3 +50,10 @@
   margin-top: 91px;
   max-width: 1200px;
 }
+
+@media (max-width: 768px) {
+  .competenceSection > img {
+    margin-top: 91px;
+    max-width: 768px;
+  }
+}

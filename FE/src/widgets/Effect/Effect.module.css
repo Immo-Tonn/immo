@@ -8,7 +8,7 @@
 .descriptionWrapper .description:nth-of-type(1) {
   font-family: var(--Inter);
   max-width: 579px;
-  font-weight: var(--font-weight-secondary); /* уже правильный */
+  font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-small);
   color: #000;
   margin-left: 33px;
@@ -52,7 +52,6 @@
   max-height: 383px;
 }
 .effectSection img {
-  max-width: 1200px;
   max-height: 682px;
 }
 

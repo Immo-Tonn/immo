@@ -37,7 +37,6 @@
   margin: 0 auto;
   z-index: 99;
   width: 100%;
-  height: fit-content;
   max-width: 1200px;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;

@@ -34,6 +34,7 @@ export interface RealEstateObject {
   description: string;
   address: Address;
   price: number;
+  images?: Image[];
 }
 
 export interface PropertyHeroProps {

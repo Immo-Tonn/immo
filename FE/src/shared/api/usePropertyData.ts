@@ -38,3 +38,38 @@ export const usePropertyData = (id?: string) => {
 
   return { objectData, images, loading, err };
 };
+
+export const usePropertysData = () => {
+  const [objectData, setObjectData] = useState<RealEstateObject[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+  const [images, setImages] = useState<Image[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const objectRes = await axios.get<RealEstateObject[]>(
+          `http://localhost:3000/api/objects/`,
+        );
+        const data = objectRes.data;
+        setObjectData(data);
+
+        const imagesRes = await axios.get<Image[]>(
+          `http://localhost:3000/api/images/`,
+        );
+        setImages(imagesRes.data);
+
+        setErr(null);
+      } catch (err: any) {
+        console.error('Fehler beim Laden der Daten:', err);
+        setErr(err?.message || 'Unbekannter Fehler');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return { objectData, images, loading, err };
+};
