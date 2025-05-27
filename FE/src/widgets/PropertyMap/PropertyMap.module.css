@@ -22,7 +22,7 @@
 }
 
 .infoLine {
-  font-size: 32px;
+  font-size: var(--font-size-secondary);
   margin: 30px 20px;
   display: flex;
   gap: 0.3rem;

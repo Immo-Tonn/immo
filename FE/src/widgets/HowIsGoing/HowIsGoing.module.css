@@ -8,7 +8,7 @@
   margin: 20px;
   font-family: var(--Inter);
   font-weight: var(--font-weight-main);
-  font-size: clamp(32px, 5vw, 40px);
+  font-size: clamp(var(--font-size-secondary), 5vw, 40px);
   color: #000;
 }
 .textBlock ol,
@@ -51,5 +51,10 @@
   }
   .textBlock > h3 {
     text-align: center;
+  }
+}
+@media (max-width: 576px) {
+  .textBlock .textWrapper {
+    max-width: 353px;
   }
 }

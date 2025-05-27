@@ -102,7 +102,7 @@
   position: absolute;
   right: 40px;
   bottom: 100px;
-  font-size: 48px;
+  font-size: var(--font-size-main);
   font-weight: bold;
   color: white;
   background-color: rgba(0, 0, 0, 0.4);

@@ -58,11 +58,13 @@ const ContactForm = () => {
               name: 'name',
               label: 'Vorname*',
               requiredMsg: 'Vorname ist erforderlich',
+              autoComplete: 'given-name',
             },
             {
               name: 'surname',
               label: 'Nachname*',
               requiredMsg: 'Nachname ist erforderlich',
+              autoComplete: 'family-name',
             },
             {
               name: 'email',
@@ -70,6 +72,7 @@ const ContactForm = () => {
               requiredMsg: 'E-Mail ist erforderlich',
               pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
               patternMsg: 'Ungültige E-Mail-Adresse',
+              autoComplete: 'email',
             },
             {
               name: 'phone',
@@ -77,11 +80,13 @@ const ContactForm = () => {
               requiredMsg: 'Telefon ist erforderlich',
               pattern: /^[0-9+]{10,15}$/,
               patternMsg: 'Ungültige Telefonnummer',
+              autoComplete: 'tel',
             },
           ].map(field => (
             <div key={field.name} className={styles.inputGroup}>
               <Input
                 placeholder={field.label}
+                autoComplete={field.autoComplete}
                 {...register(field.name as keyof ContactData, {
                   required: field.requiredMsg,
                   ...(field.pattern && {
@@ -114,7 +119,6 @@ const ContactForm = () => {
               })}
             />
           </div>
-
           <div className={styles.checkboxContainer}>
             <Input
               id="consent"
@@ -132,7 +136,6 @@ const ContactForm = () => {
           {errors.consent && (
             <span className={styles.error}>{errors.consent.message}</span>
           )}
-
           <div className={styles.captchaContainer}>
             <ReCAPTCHA
               hl="de"
@@ -152,9 +155,7 @@ const ContactForm = () => {
             />
             {captchaError && <p className={styles.error}>{captchaError}</p>}
           </div>
-
           {submitError && <p className={styles.error}>{submitError}</p>}
-
           <Button
             className={styles.submitButton}
             type="submit"

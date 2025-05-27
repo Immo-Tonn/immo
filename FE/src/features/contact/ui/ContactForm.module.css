@@ -20,7 +20,7 @@
   justify-content: center;
 }
 .heading {
-  font-size: 48px;
+  font-size: var(--font-size-main);
   font-family: 'Roboto', sans-serif;
   font-weight: 800;
   color: #212529;

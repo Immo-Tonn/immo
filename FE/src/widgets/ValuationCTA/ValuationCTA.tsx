@@ -9,6 +9,7 @@ const ValuationCTA = () => {
   useEffect(() => {
     runningBoxShadow(imgRef);
   }, []);
+
   return (
     <section className={styles.valuationCTASection}>
       <div className={styles.textWrapper}>
@@ -20,9 +21,12 @@ const ValuationCTA = () => {
         <p className={styles.description}>
           Ob aus Interesse, für eine mögliche Verkaufsentscheidung oder zur
           besseren finanziellen Planung – eine fundierte Wertermittlung schafft
-          Sicherheit und Klarheit. Als erfahrene Partner in der Versicherungs-
-          und Immobilienbranche wissen wir bei Immo Tonn, worauf es ankommt:
-          Marktkenntnis und persönliche Beratung.
+          Sicherheit und Klarheit.
+        </p>
+        <p className={styles.description}>
+          Als erfahrene Partner in der Versicherungs- und Immobilienbranche
+          wissen wir bei Immo Tonn, worauf es ankommt: Marktkenntnis und
+          persönliche Beratung.
         </p>
       </div>
       <div className={styles.imageWrapper}>

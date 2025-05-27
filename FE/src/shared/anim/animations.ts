@@ -1,47 +1,44 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { gsap } from 'gsap';
-
+import { ParallaxOptions } from './models';
 gsap.registerPlugin(ScrollTrigger);
-export const parallaxMouseEffect = (
-  wrapperRef: any,
-  logoRef: any,
-  textRef: any,
-  bottomTextRef: any,
-) => {
+
+export const parallaxMouseEffect = ({
+  wrapperRef,
+  targets,
+}: ParallaxOptions) => {
   const wrapper = wrapperRef.current;
-  const logo = logoRef.current;
-  const text = textRef.current;
-  const bottomText = bottomTextRef.current;
+  if (!wrapper) return;
 
-  if (!wrapper || !logo || !text || !bottomText) return;
-
-  const handleMouseMove = (e: any) => {
+  const handleMouseMove = (e: MouseEvent) => {
     const { width, height, left, top } = wrapper.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 20;
     const y = (e.clientY - top - height / 2) / 20;
 
-    gsap.to(logo, {
-      x: x / 1.5,
-      y: y / 1.5,
-      duration: 0.4,
-      ease: 'power2.out',
-    });
-    gsap.to(text, { x: x, y: y, duration: 0.4, ease: 'power2.out' });
-
-    gsap.to(bottomText, {
-      x: x / 2,
-      y: y / 2,
-      duration: 0.4,
-      ease: 'power2.out',
+    targets.forEach(({ ref, factor = 1 }) => {
+      const element = ref.current;
+      if (element) {
+        gsap.to(element, {
+          x: x / factor,
+          y: y / factor,
+          duration: 0.4,
+          ease: 'power2.out',
+        });
+      }
     });
   };
 
   const handleMouseLeave = () => {
-    gsap.to([logo, text, bottomText], {
-      x: 0,
-      y: 0,
-      duration: 0.8,
-      ease: 'power3.out',
+    targets.forEach(({ ref }) => {
+      const element = ref.current;
+      if (element) {
+        gsap.to(element, {
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+        });
+      }
     });
   };
 
@@ -95,7 +92,7 @@ export const parallaxMouseEffect = (
 
 export const fadeInOnScroll = (
   elementRef: { current: HTMLElement | null },
-  options: FadeInOptions = {},
+  options: any,
 ) => {
   const el = elementRef.current;
   if (!el) return;

@@ -10,7 +10,7 @@
 }
 .firstTitle {
   max-width: 625px;
-  font-size: clamp(10px, 5vw, 32px);
+  font-size: clamp(10px, 5vw, var(--font-size-secondary));
   font-family: var(--Inter);
   font-weight: 500;
   text-align: left;
@@ -27,6 +27,7 @@
   font-size: clamp(10px, 5vw, 22px);
   font-family: var(--Inter);
   font-weight: 500;
+  margin-top: 20px;
 }
 .imageWrapper {
   display: flex;
@@ -42,7 +43,7 @@
   text-align: center;
   color: #212529;
   text-transform: uppercase;
-  margin-top: 114px;
+  margin: 114px 0 71px 0;
 }
 
 .bottomWrapper > p {
@@ -88,5 +89,16 @@
   .valuationCTASection > .buttonWrapper {
     margin-top: 120px;
     justify-content: center;
+  }
+}
+@media (max-width: 576px) {
+  .valuationCTASection h1 {
+    text-align: center;
+  }
+  .valuationCTASection .textWrapper {
+    margin: 40px 40px;
+  }
+  .line {
+    width: 353px;
   }
 }

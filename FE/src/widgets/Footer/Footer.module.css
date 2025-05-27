@@ -59,7 +59,7 @@ footer {
 }
 
 .contactButton {
-  font-size: clamp(21px, 5vw, 32px);
+  font-size: clamp(21px, 5vw, var(--font-size-secondary));
   background-color: #cbd8e2;
   color: #1c1829;
   font-weight: bold;

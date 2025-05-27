@@ -2,9 +2,10 @@
   max-width: 1200px;
   margin: 0 auto;
 }
-.description > span {
+.description {
   font-weight: var(--font-weight-main);
 }
+
 .descriptionWrapper .description:nth-of-type(1) {
   font-family: var(--Inter);
   max-width: 579px;
@@ -54,7 +55,12 @@
 .effectSection img {
   max-height: 682px;
 }
-
+.description strong > ul {
+  list-style: none;
+}
+.description strong > ul > li {
+  margin-top: 20px;
+}
 @media (max-width: 765px) {
   .firstTitle {
     padding: 0 0 60px 148px;

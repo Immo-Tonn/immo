@@ -3,6 +3,7 @@
   padding: 66px 0 0 0;
 }
 .firstTitle {
+  margin-bottom: 20px;
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
   font-size: clamp(10px, 5vw, 64px);
@@ -11,7 +12,7 @@
 .secondTitle {
   position: relative;
   font-weight: 900;
-  font-size: clamp(32px, 5vw, var(--font-size-main));
+  font-size: clamp(var(--font-size-secondary), 5vw, var(--font-size-main));
   text-align: center;
   color: #fbfbfe;
   font-family: var(--Inter);
@@ -30,9 +31,8 @@
 }
 .competenceSection > p {
   font-weight: var(--font-weight-secondary);
-  margin-top: 20px;
   font-family: var(--Inter);
-  margin-left: 50px;
+  margin: 20px 20px 0 50px;
   font-size: clamp(10px, 5vw, var(--font-size-small));
   max-width: 1028px;
 }

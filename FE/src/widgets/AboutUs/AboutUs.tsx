@@ -12,12 +12,15 @@ const AboutUs = () => {
   const bottomTextRef = useRef(null);
 
   useEffect(() => {
-    const cleanup = parallaxMouseEffect(
+    const cleanup = parallaxMouseEffect({
       wrapperRef,
-      logoRef,
-      textRef,
-      bottomTextRef,
-    );
+      targets: [
+        { ref: logoRef, factor: 2 },
+        { ref: textRef, factor: 1 },
+        { ref: bottomTextRef, factor: 2 },
+      ],
+    });
+
     return cleanup;
   }, []);
 
