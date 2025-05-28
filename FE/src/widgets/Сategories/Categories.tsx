@@ -8,8 +8,12 @@ const Categories = () => {
   const refs = useRef<HTMLLIElement[]>([]);
 
   useEffect(() => {
-    refs.current.forEach(ref => {
-      if (ref) fadeInOnScroll({ current: ref }, { x: -100 });
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 0 } : { x: 100, y: -50 },
+        );
     });
   }, []);
 

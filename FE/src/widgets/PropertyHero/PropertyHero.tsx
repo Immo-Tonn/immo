@@ -15,7 +15,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.innerWidth <= 768;
+      return window.innerWidth <= 765;
     }
     return false;
   });

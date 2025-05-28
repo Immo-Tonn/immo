@@ -120,6 +120,7 @@
 
 .placeholderImage {
   width: 100%;
+  font-family: var(--Roboto);
   height: 400px;
   background-color: #e0e0e0;
   display: flex;

@@ -104,6 +104,7 @@ export const fadeInOnScroll = (
     delay = 0,
     ease = 'sine.out',
     start = 'top 30%',
+    scrub = false,
   } = options;
 
   gsap.fromTo(
@@ -124,6 +125,7 @@ export const fadeInOnScroll = (
         trigger: el,
         start,
         toggleActions: 'play none none reverse',
+        scrub,
       },
     },
   );

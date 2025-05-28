@@ -2,17 +2,29 @@ import Button from '@shared/ui/Button/Button';
 import styles from './ValuationCTA.module.css';
 import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.svg';
 import { useEffect, useRef } from 'react';
-import { runningBoxShadow } from '@shared/anim/animations';
+import { fadeInOnScroll, runningBoxShadow } from '@shared/anim/animations';
+
 const ValuationCTA = () => {
-  const imgRef = useRef(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     runningBoxShadow(imgRef);
+
+    refs.current.forEach((ref, i) => {
+      if (ref) {
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 0 } : { x: 100, y: -50 },
+        );
+      }
+    });
   }, []);
 
   return (
     <section className={styles.valuationCTASection}>
-      <div className={styles.textWrapper}>
+      <div className={styles.textWrapper} ref={el => (refs.current[0] = el)}>
         <h2 className={styles.firstTitle}>
           <b>
             Viele Eigentümer fragen sich: Was ist meine Immobilie heute wert?
@@ -29,7 +41,7 @@ const ValuationCTA = () => {
           persönliche Beratung.
         </p>
       </div>
-      <div className={styles.imageWrapper}>
+      <div className={styles.imageWrapper} ref={el => (refs.current[1] = el)}>
         <h1 className={styles.secondTitle}>
           Lassen Sie Ihre Immobilie jetzt bewerten!
         </h1>
@@ -40,7 +52,7 @@ const ValuationCTA = () => {
           style={{ boxShadow: '0 4px 41px 11px rgba(0, 0, 0, 0.25)' }}
         />
       </div>
-      <div className={styles.bottomWrapper}>
+      <div className={styles.bottomWrapper} ref={el => (refs.current[2] = el)}>
         <h2 className={styles.thirdTitle}>
           warum ist eine professionelle wertermittlung so wichtig?
         </h2>
@@ -53,7 +65,7 @@ const ValuationCTA = () => {
         </p>
       </div>
 
-      <div className={styles.buttonWrapper}>
+      <div className={styles.buttonWrapper} ref={el => (refs.current[3] = el)}>
         <Button
           initialText={'Wie viel ist mein Haus wert?'}
           clickedText="Weiterleitung"
