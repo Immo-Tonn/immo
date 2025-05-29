@@ -35,6 +35,7 @@ export interface IRealEstateObjects extends Document {
   dateAdded: Date;
   status: ObjectStatus;
   images?: Array<Types.ObjectId>;
+  videos?: Array<Types.ObjectId>;
   apartments?: Types.ObjectId;
   commercial_NonResidentialBuildings?: Types.ObjectId;
   landPlots?: Types.ObjectId;
@@ -100,6 +101,12 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
       ref: "Images",
     },
   ],
+  videos: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Videos",
+    },
+  ],
   apartments: {
     type: Types.ObjectId,
     ref: "Apartments",
@@ -123,15 +130,13 @@ RealEstateObjectsSchema.pre<IRealEstateObjects>("save", function (next) {
 
   const date = this.dateAdded || new Date();
 
-  const year = date.getFullYear();
+  const year = `${date.getFullYear()}`.slice(-2);
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
   const day = `${date.getDate()}`.padStart(2, "0");
   const hours = `${date.getHours()}`.padStart(2, "0");
   const minutes = `${date.getMinutes()}`.padStart(2, "0");
-  const seconds = `${date.getSeconds()}`.padStart(2, "0");
-  const millis = `${date.getMilliseconds()}`.padStart(3, "0");
 
-  this.number = `${year}${month}${day}${hours}${minutes}${seconds}${millis}`;
+  this.number = `${year}${month}${day}${hours}${minutes}`;
 
   next();
 });

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { RealEstateObject, Image } from '@shared/types/propertyTypes';
+import { RealEstateObject, Image, Video } from '@shared/types/propertyTypes';
 
 export const usePropertyData = (id?: string) => {
   const [objectData, setObjectData] = useState<RealEstateObject | null>(null);
   const [images, setImages] = useState<Image[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,8 +25,13 @@ export const usePropertyData = (id?: string) => {
           );
           setImages(imagesRes.data);
         }
+
+        const videosRes = await axios.get<Video[]>(
+          `http://localhost:3000/api/videos/by-object?objectId=${id}`,
+        );
+        setVideos(videosRes.data);
       } catch (err) {
-        console.error('Ошибка при загрузке данных:', err);
+        console.error('Fehler beim Laden der Daten:', err);
       } finally {
         setLoading(false);
       }
@@ -34,5 +40,5 @@ export const usePropertyData = (id?: string) => {
     fetchData();
   }, [id]);
 
-  return { objectData, images, loading };
+  return { objectData, images, videos, loading };
 };

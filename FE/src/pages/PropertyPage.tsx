@@ -7,7 +7,7 @@ import ContactForm from './ContactForm';
 
 const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { objectData, images, loading } = usePropertyData(id);
+  const { objectData, images, videos, loading } = usePropertyData(id);
 
   if (loading) return <p>Laden...</p>;
   if (!objectData) return <p>Objekt nicht gefunden</p>;
@@ -17,6 +17,7 @@ const PropertyPage: React.FC = () => {
       <PropertyHero
         object={objectData}
         images={images}
+        videos={videos} 
         apartment={objectData.apartments}
         commercialBuilding={objectData.commercial_NonResidentialBuildings}
         landPlot={objectData.landPlots}
@@ -30,7 +31,7 @@ const PropertyPage: React.FC = () => {
         residentialHouse={objectData.residentialHouses}
       />
       <PropertyMap address={objectData.address} />
-      <ContactForm/>
+      <ContactForm />
     </div>
   );
 };

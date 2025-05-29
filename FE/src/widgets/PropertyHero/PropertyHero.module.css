@@ -150,6 +150,112 @@
     display: none;
 }
 
+.playIconOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.playIconOverlaySmall {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.videoModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.videoWrapper {
+    max-width: 90%;
+    max-height: 80%;
+    background: black;
+}
+
+.modalBackdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.mainVideo {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    border: none;
+}
+
+.smallVideo {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    border: none;
+    transition: filter 0.3s;
+}
+
+.carouselVideo {
+    width: 100%;
+    max-height: 400px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: none;
+}
+
+.overlayWrapper:hover .smallVideo {
+    filter: brightness(60%);
+}
+
+iframe {
+    border: none;
+}
+
+.videoFrameWrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    /* 16:9 */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.videoFrame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+
 @media (max-width: 768px) {
     .imageContainer {
         display: none;

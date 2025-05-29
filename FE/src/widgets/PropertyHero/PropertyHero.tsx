@@ -8,11 +8,13 @@ import {
   LandPlot,
   CommercialBuilding,
   Image,
+  Video,
 } from '@shared/types/propertyTypes';
 
 interface PropertyHeroProps {
   object: RealEstateObject;
-  images?: Image[];
+  images?: (Image | undefined)[];
+  videos?: (Video | undefined)[];
   apartment?: Apartment;
   commercialBuilding?: CommercialBuilding;
   landPlot?: LandPlot;
@@ -22,6 +24,7 @@ interface PropertyHeroProps {
 const PropertyHero: React.FC<PropertyHeroProps> = ({
   object,
   images = [],
+  videos = [],
   apartment,
   residentialHouse,
   landPlot,
@@ -40,8 +43,13 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const plotArea = residentialHouse?.plotArea ?? landPlot?.plotArea;
   const commercialArea = commercialBuilding?.area;
 
-  const previewImages = images.slice(0, 3);
-  const hasMoreImages = images.length > 3;
+  const filteredImages: Image[] = images.filter((img): img is Image => img !== undefined);
+  const filteredVideos: Video[] = videos.filter((vid): vid is Video => vid !== undefined);
+  const mediaItems: (Image | Video)[] = [...filteredImages, ...filteredVideos];
+
+  // Ограничиваем количество медиа ровно тремя для превью
+  const previewMedia = mediaItems.slice(0, 3);
+  const hasMoreMedia = mediaItems.length > 3;
 
   useEffect(() => {
     const updateMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -51,24 +59,27 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!isMobile || images.length <= 1) return;
+    if (!isMobile || mediaItems.length <= 1) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+      setCurrentIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
     }, 3000);
     return () => clearInterval(interval);
-  }, [images.length, isMobile]);
+  }, [mediaItems.length, isMobile]);
 
-  const handlePrev = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-  };
+const handlePrev = (e?: React.MouseEvent) => {
+  e?.stopPropagation();
+  setCurrentIndex((prevIndex) =>
+    prevIndex === 0 ? mediaItems.length - 1 : prevIndex - 1
+  );
+};
 
-  const handleNext = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+const handleNext = (e?: React.MouseEvent) => {
+  e?.stopPropagation();
+  setCurrentIndex((prevIndex) =>
+    prevIndex === mediaItems.length - 1 ? 0 : prevIndex + 1
+  );
+};
+
 
   const handleThumbClick = (index: number) => {
     setCurrentIndex(index);
@@ -78,68 +89,97 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const shouldShowStatus = status === 'sold' || status === 'reserved';
   const statusLabel = status === 'sold' ? 'VERKAUFT' : 'RESERVIERT';
 
+  const isVideo = (item: Image | Video): item is Video =>
+    'thumbnailUrl' in item && item.url.startsWith('https://iframe.mediadelivery.net/play/');
+
+  const currentMedia = mediaItems[currentIndex];
+  const firstMedia = mediaItems[0];
+
   return (
     <section className={styles.section}>
       <h1 className={styles.title}>{title}</h1>
 
-      {isMobile && images.length > 0 && (
+      {isMobile && currentMedia && (
         <div className={styles.carouselContainer}>
           <div className={styles.carouselWrapper} onClick={() => handleThumbClick(currentIndex)}>
-            {shouldShowStatus && (
-              <div className={styles.statusBadge}>{statusLabel}</div>
+            {shouldShowStatus && <div className={styles.statusBadge}>{statusLabel}</div>}
+            {isVideo(currentMedia) ? (
+              <div className={styles.videoFrameWrapper}>
+                <iframe
+                  src={currentMedia.url}
+                  title={currentMedia.title || 'Video Player'}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className={styles.videoFrame}
+                />
+              </div>
+            ) : (
+              <img
+                src={currentMedia.url}
+                alt={`Bild ${currentIndex + 1}`}
+                className={styles.carouselImage}
+              />
             )}
-            <img
-              src={images[currentIndex]?.url}
-              alt={`Bild ${currentIndex + 1}`}
-              className={styles.carouselImage}
-            />
           </div>
         </div>
       )}
 
-      {!isMobile && (
+      {!isMobile && firstMedia && (
         <div className={styles.imageContainer}>
-          {images.length > 0 && images[0] ? (
-            <>
-              <div className={styles.mainImageWrapper} onClick={() => handleThumbClick(0)}>
-                {shouldShowStatus && (
-                  <div className={styles.statusBadge}>{statusLabel}</div>
-                )}
-                <img
-                  src={images[0].url}
-                  alt="Objekt Hauptbild"
-                  className={styles.mainImage}
+          <div
+            className={styles.mainImageWrapper}
+            onClick={() => handleThumbClick(0)}
+            style={{ cursor: 'pointer' }}
+          >
+            {shouldShowStatus && <div className={styles.statusBadge}>{statusLabel}</div>}
+            {isVideo(firstMedia) ? (
+              <div className={styles.videoFrameWrapper}>
+                <iframe
+                  src={firstMedia.url}
+                  title={firstMedia.title || 'Video Player'}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className={styles.videoFrame}
                 />
               </div>
+            ) : (
+              <img src={firstMedia.url} alt="Bild" className={styles.mainImage} />
+            )}
+          </div>
 
-              <div className={styles.sideImages}>
-                {previewImages.slice(1).map((img, index) => {
-                  const actualIndex = index + 1;
-                  const isLastPreview = index === 1;
-                  return (
-                    <div
-                      key={img.id}
-                      className={`${styles.smallImageWrapper} ${
-                        isLastPreview && hasMoreImages ? styles.overlayWrapper : ''
-                      }`}
-                      onClick={() => handleThumbClick(actualIndex)}
-                    >
-                      <img
-                        src={img.url}
-                        alt={`Bild ${actualIndex + 1}`}
-                        className={styles.smallImage}
+          <div className={styles.sideImages}>
+            {previewMedia.slice(1, 3).map((item, idx) => {
+              const actualIndex = idx + 1;
+              const isLastPreview = idx === 1;
+              const uniqueKey = isVideo(item) ? `video-${item.url}` : `image-${item.url}`;
+
+              return (
+                <div
+                  key={uniqueKey}
+                  className={`${styles.smallImageWrapper} ${
+                    isLastPreview && hasMoreMedia ? styles.overlayWrapper : ''
+                  }`}
+                  onClick={() => handleThumbClick(actualIndex)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {isVideo(item) ? (
+                    <div className={styles.videoFrameWrapper} style={{ pointerEvents: 'none' }}>
+                      <iframe
+                        src={item.url}
+                        title={item.title || 'Video Player'}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className={styles.videoFrame}
                       />
-                      {isLastPreview && hasMoreImages && (
-                        <div className={styles.overlay}>Mehr Bilder</div>
-                      )}
                     </div>
-                  );
-                })}
-              </div>
-            </>
-          ) : (
-            <div className={styles.placeholderImage}>Kein Bild verfügbar</div>
-          )}
+                  ) : (
+                    <img src={item.url} alt={`Bild ${actualIndex + 1}`} className={styles.smallImage} />
+                  )}
+                  {isLastPreview && hasMoreMedia && <div className={styles.overlay}>Mehr Medien</div>}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -194,9 +234,9 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         {address.city}, {address.district}
       </div>
 
-      {showModal && images.length > 0 && (
+      {showModal && mediaItems.length > 0 && (
         <ImageGalleryModal
-          images={images}
+          images={mediaItems}
           currentIndex={currentIndex}
           onClose={() => setShowModal(false)}
           onPrev={handlePrev}

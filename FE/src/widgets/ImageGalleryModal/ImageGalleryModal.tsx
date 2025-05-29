@@ -1,20 +1,19 @@
 import React from 'react';
 import styles from './ImageGalleryModal.module.css';
-
-interface Image {
-  id: string;
-  url: string;
-  type: string;
-}
+import { Image, Video } from '@shared/types/propertyTypes';
 
 interface ImageGalleryModalProps {
-  images: Image[];
+  images: (Image | Video)[];
   currentIndex: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
   onSelect: (index: number) => void;
 }
+
+const isVideo = (item: Image | Video): item is Video => {
+  return 'thumbnailUrl' in item;
+};
 
 const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   images,
@@ -24,37 +23,77 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   onNext,
   onSelect,
 }) => {
-  const currentImage = images[currentIndex];
+  const currentItem = images[currentIndex];
+  if (!currentItem) return null;
 
-  if (!currentImage) return null;
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   return (
-    <div className={styles.modal} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.modalImageWrapper}>
-          <button className={styles.navLeft} onClick={onPrev}>‹</button>
-          <img
-            src={currentImage.url}
-            alt="Großbild"
-            className={styles.modalImage}
+    <div className={styles.videoModal} onClick={handleBackdropClick}>
+      {/* Основной медиа-блок */}
+      <div className={styles.videoWrapper}>
+        {isVideo(currentItem) ? (
+          <iframe
+            key={currentItem.url}
+            src={currentItem.url}
+            title={currentItem.title || 'Video'}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className={styles.mediaContent}
           />
-          <button className={styles.navRight} onClick={onNext}>›</button>
-        </div>
-
-        <div className={styles.thumbnails}>
-          {images.map((img, index) => (
-            <img
-              key={img.id}
-              src={img.url}
-              alt={`Thumb ${index + 1}`}
-              className={`${styles.thumbnail} ${
-                index === currentIndex ? styles.activeThumbnail : ''
-              }`}
-              onClick={() => onSelect(index)}
-            />
-          ))}
-        </div>
+        ) : (
+          <img
+            src={currentItem.url}
+            alt={`Image ${currentIndex + 1}`}
+            className={styles.mediaContent}
+          />
+        )}
       </div>
+
+      {/* Лента миниатюр */}
+      <div className={styles.thumbnailRow}>
+        {images.map((item, index) => {
+          const active = index === currentIndex;
+          const video = isVideo(item);
+          const key = (item as any)._id ?? item.url ?? `media-${index}`;
+
+          return (
+            <div
+              key={key}
+              className={`${styles.thumbnail} ${active ? styles.active : ''}`}
+              onClick={() => onSelect(index)}
+            >
+              {video ? (
+                <>
+                  <iframe
+                    src={item.url}
+                    title={item.title || 'Video Preview'}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className={styles.thumbnailIframe}
+                  />
+                  <div className={styles.playIconThumb}>▶</div>
+                </>
+              ) : (
+                <img
+                  src={item.url}
+                  alt={`Thumb ${index + 1}`}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Кнопки переключения */}
+      <button className={styles.prevButton} onClick={onPrev}>‹</button>
+      <button className={styles.nextButton} onClick={onNext}>›</button>
     </div>
   );
 };

@@ -13,6 +13,15 @@ export interface Image {
   type: string;
 }
 
+export interface Video {
+  id: string;
+  videoId: string;
+  url: string;
+  thumbnailUrl: string;
+  title?: string;
+  dateAdded: string;
+}
+
 export interface Apartment {
   floor?: number;
   totalFloors?: number;
@@ -73,6 +82,7 @@ export interface RealEstateObject {
   dateAdded: string;
   status: string;
   images?: Image[];
+  videos?: Video[];
   apartments?: Apartment;
   commercial_NonResidentialBuildings?: CommercialBuilding;
   landPlots?: LandPlot;
