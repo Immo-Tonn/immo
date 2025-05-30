@@ -46,8 +46,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const filteredImages: Image[] = images.filter((img): img is Image => img !== undefined);
   const filteredVideos: Video[] = videos.filter((vid): vid is Video => vid !== undefined);
   const mediaItems: (Image | Video)[] = [...filteredImages, ...filteredVideos];
-
-  // Ограничиваем количество медиа ровно тремя для превью
+  
   const previewMedia = mediaItems.slice(0, 3);
   const hasMoreMedia = mediaItems.length > 3;
 

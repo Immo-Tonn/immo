@@ -41,7 +41,6 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
             key={currentItem.url}
             src={currentItem.url}
             title={currentItem.title || 'Video'}
-            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className={styles.mediaContent}
@@ -73,7 +72,6 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
                   <iframe
                     src={item.url}
                     title={item.title || 'Video Preview'}
-                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className={styles.thumbnailIframe}
@@ -91,7 +89,6 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
         })}
       </div>
 
-      {/* Кнопки переключения */}
       <button className={styles.prevButton} onClick={onPrev}>‹</button>
       <button className={styles.nextButton} onClick={onNext}>›</button>
     </div>
