@@ -121,7 +121,6 @@ const ContactForm = () => {
             <Input
               isTextarea
               placeholder="Nachricht"
-              error={errors.message?.message}
               {...register('message', {
                 required: 'Nachricht ist erforderlich',
                 minLength: {
@@ -130,6 +129,9 @@ const ContactForm = () => {
                 },
               })}
             />
+            {errors.message?.message && (
+              <span className={styles.error}>{errors.message.message}</span>
+            )}
           </div>
           <div className={styles.checkboxContainer}>
             <Input
