@@ -14,20 +14,19 @@ footer {
 .footerContainer {
   display: flex;
   justify-content: space-between;
-  padding: 28px clamp(20px, 5vw, 51px) 60px clamp(20px, 5vw, 50px);
+  padding: 28px clamp(20px, 5vw, 25px) 26px clamp(20px, 5vw, 20px);
   max-width: 1024px;
   margin: 0 auto;
   align-items: flex-end;
 }
 
 .footerLeft {
-  display: flex;
-  align-items: flex-end;
-  gap: 20px;
+  display: block;
 }
 
 .footerLogo {
-  width: 195px;
+  max-width: 111px;
+  margin-bottom: 24px;
 }
 
 .footerLinks {
@@ -37,7 +36,7 @@ footer {
 }
 .footerIcons {
   display: flex;
-  gap: 20px;
+  gap: 52px;
   list-style: none;
 }
 .footerLinks li {
@@ -49,12 +48,12 @@ footer {
   color: white;
 }
 
-.footerCenter {
+.footerRight {
   font-size: 16px;
   line-height: 1.6;
   text-align: left;
   /* this is kindly bad */
-  margin: 0px 0 43px 136px;
+  margin-bottom: 126px;
   /* this is kindly bad */
 }
 
@@ -102,10 +101,8 @@ footer {
   .contactButton {
     display: none;
   }
-  .footerCenter {
-    /* this is kindly bad */
-    margin: 0px 0 187px 0;
-    /* this is kindly bad */
+  .footerLogo {
+    max-width: 133px;
   }
 }
 

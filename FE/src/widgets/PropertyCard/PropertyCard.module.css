@@ -3,8 +3,8 @@
   width: 100%;
   max-width: 600px;
   height: 300px;
-  background-color: rgb(197, 194, 194);
   overflow: hidden;
+  background-color: rgb(197, 194, 194);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
   box-sizing: border-box;
@@ -16,7 +16,6 @@
 .image {
   width: 600px;
 }
-
 .cardOverlay {
   position: absolute;
   bottom: 0;
@@ -29,18 +28,18 @@
   gap: 4px;
   box-sizing: border-box;
 }
-.cardTitle {
+.cardTitle > p {
   font-family: var(--Roboto);
   font-weight: var(--font-weight-secondary);
 }
-.street {
+.street > p {
   font-size: 20px;
   font-weight: bold;
   font-family: var(--Roboto);
   color: #f7f9fa;
 }
 
-.city {
+.city > p {
   font-size: 13px;
   font-family: var(--Roboto);
   color: #f7f9fa;

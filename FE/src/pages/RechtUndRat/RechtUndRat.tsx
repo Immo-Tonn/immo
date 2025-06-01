@@ -3,19 +3,43 @@ import styles from './RechtUndRat.module.css';
 import rechtHero from '@shared/assets/recht/hero-recht.webp';
 import rechtMain from '@shared/assets/recht/recht-und-rat.webp';
 import rechtSecondary from '@shared/assets/recht/recht-und-rat_2.webp';
+import { useEffect, useRef } from 'react';
+import { fadeInOnScroll } from '@shared/anim/animations';
 
 const RechtUndRat = () => {
+  const refs = useRef<(HTMLLIElement | null)[]>([]);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  useEffect(() => {
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 50 } : { x: 100, y: -50 },
+        );
+    });
+  }, []);
+
   return (
-    <>
-      <img src={rechtHero} className={styles.image} alt="Beratung Schritt 1" />
-      <h2>
-        RECHTLICHE SICHERHEIT & PRAKTISCHE <br />
-        TIPPS RUND UM KAUF UND VERKAUF
+    <section className={styles.rechtSection}>
+      <div className={styles.firstTitleWrapper}>
+        <h1>Recht & Rat</h1>
+      </div>
+
+      <img
+        src={rechtHero}
+        className={styles.image}
+        alt="Beratung Schritt 1"
+        ref={el => (refs.current[0] = el)}
+      />
+
+      <h2 ref={el => (refs.current[2] = el)}>
+        rechtliche sicherheit & praktische <br />
+        tipps rund um kauf und verkauf
       </h2>
 
-      <div className={styles.textBlockL}>
+      <div className={styles.textBlockL} ref={el => (refs.current[1] = el)}>
         <div className={styles.blockTitle}>
-          <h1>Vorbereitung schafft Sicherheit und Erfolg</h1>
+          <h2>Vorbereitung schafft Sicherheit und Erfolg</h2>
         </div>
         <div className={styles.blockText}>
           <p>
@@ -32,10 +56,10 @@ const RechtUndRat = () => {
 
       <hr />
 
-      <div className={styles.textBlockR}>
+      <div className={styles.textBlockR} ref={el => (refs.current[3] = el)}>
         <div className={styles.blockText}>
           <p>
-            Wir wissen, wie man eine Immobilie optimal präsentiert. <br />{' '}
+            Wir wissen, wie man eine Immobilie optimal präsentiert. <br />
             Verkäufern geben wir wertvolle Tipps zur Vorbereitung der Immobilie
             für Besichtigungen: Beleuchtung, Ordnung, neutrale Einrichtung und
             angenehme Atmosphäre – alles spielt eine Rolle. Zusätzlich bieten
@@ -45,15 +69,20 @@ const RechtUndRat = () => {
           </p>
         </div>
         <div className={styles.blockTitle}>
-          <h1>Mit Stil und Übersicht zur erfolgreichen Besichtigung</h1>
+          <h2>Mit Stil und Übersicht zur erfolgreichen Besichtigung</h2>
         </div>
       </div>
 
-      <img src={rechtMain} className={styles.image} alt="Beratung Schritt 2" />
+      <img
+        src={rechtMain}
+        className={styles.image}
+        alt="Beratung Schritt 2"
+        ref={el => (refs.current[5] = el)}
+      />
 
-      <div className={styles.textBlockL}>
+      <div className={styles.textBlockL} ref={el => (refs.current[4] = el)}>
         <div className={styles.blockTitle}>
-          <h1>Sicherheit und Struktur bei jedem Schritt.</h1>
+          <h2>Sicherheit und Struktur bei jedem Schritt.</h2>
         </div>
         <div className={styles.blockText}>
           <p>
@@ -70,7 +99,7 @@ const RechtUndRat = () => {
 
       <hr />
 
-      <div className={styles.textBlockR}>
+      <div className={styles.textBlockR} ref={el => (refs.current[6] = el)}>
         <div className={styles.blockText}>
           <p>
             Ein realistischer Preis und eine gute Verhandlungsführung sind
@@ -83,7 +112,7 @@ const RechtUndRat = () => {
           </p>
         </div>
         <div className={styles.blockTitle}>
-          <h1>Faire Preisfindung und erfolgreiche Verhandlungen</h1>
+          <h2>Faire Preisfindung und erfolgreiche Verhandlungen</h2>
         </div>
       </div>
 
@@ -91,13 +120,14 @@ const RechtUndRat = () => {
         src={rechtSecondary}
         className={styles.image}
         alt="Beratung Schritt 3"
+        ref={el => (refs.current[7] = el)}
       />
 
       <div className={styles.textBlockL}>
-        <div className={styles.blockTitle}>
-          <h1>Keine übereilten Entscheidungen treffen</h1>
+        <div className={styles.blockTitle} ref={el => (refs.current[9] = el)}>
+          <h2>Keine übereilten Entscheidungen treffen</h2>
         </div>
-        <div className={styles.blockText}>
+        <div className={styles.blockText} ref={el => (refs.current[10] = el)}>
           <p>
             Immobilientransaktionen brauchen Zeit und Klarheit. <br /> Wir
             schaffen einen geschützten Rahmen, in dem Käufer und Verkäufer in
@@ -109,7 +139,7 @@ const RechtUndRat = () => {
 
       <hr />
 
-      <p className={styles.ziel}>
+      <p className={styles.ziel} ref={el => (refs.current[8] = el)}>
         Unser Ziel ist es, Kauf und Verkauf von Immobilien klar, verständlich
         und sicher zu gestalten. <br />
         Wir setzen uns dafür ein, dass die Interessen beider Seiten
@@ -117,7 +147,7 @@ const RechtUndRat = () => {
       </p>
 
       <ContactForm />
-    </>
+    </section>
   );
 };
 

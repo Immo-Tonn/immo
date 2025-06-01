@@ -1,17 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 import logo from '@shared/assets/about-us/logo-white.svg';
-import Button from '@shared/ui/Button/Button';
 import instagram from '@shared/assets/footer/instagram.svg';
 import linkedIn from '@shared/assets/footer/linkedin.svg';
 import youtube from '@shared/assets/footer/youtube.svg';
 const Footer = () => {
-  const navigate = useNavigate();
-
-  const handleContactClick = () => {
-    navigate('/kontakt');
-  };
-
   return (
     <footer className={styles.footer}>
       <div className={styles.topStripe} />
@@ -51,20 +44,11 @@ const Footer = () => {
           </ul>
         </div>
         <div className={styles.footerRight}>
-          <div className={styles.footerCenter}>
-            <p>Sessendrupweg 54</p>
-            <p>48161 Münster</p>
-            <p>Tel.: 0251 625 60 763</p>
-            <p>Mobil: 0174 345 44 19</p>
-            <p>www.tonn-versicherung.de</p>
-          </div>
-
-          <Button
-            initialText="Kontaktieren Sie uns"
-            className={styles.contactButton}
-            clickedText="Weiterleitung"
-            onClick={handleContactClick}
-          />
+          <p>Tel.: 0251 625 60 763</p>
+          <p>Mobil: 0174 345 44 19</p>
+          <p>www.tonn-versicherung.de</p>
+          <p>Sessendrupweg 54</p>
+          <p>48161 Münster</p>
         </div>
       </div>
       <div className={styles.bottomStripe}>

@@ -16,7 +16,7 @@ const Button = ({
   useEffect(() => {
     if (disabled) {
       setText(clickedText);
-      setInternalDisabled(false); // don't lock internally when externally disabled
+      setInternalDisabled(false);
     } else if (!internalDisabled) {
       setText(initialText);
     }
@@ -24,7 +24,6 @@ const Button = ({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (type === 'submit') {
-      // Allow native form submit to proceed
       return;
     }
 

@@ -1,7 +1,5 @@
-import { url } from 'inspector';
 import ImagesModel from '../models/ImagesModel';
 
-// Заменяет storage-ссылку на CDN-ссылку
 export const transformBunnyUrl = (url: string): string => {
   return url.replace(
     'https://storage.bunnycdn.com/immobilien-media',
@@ -9,7 +7,6 @@ export const transformBunnyUrl = (url: string): string => {
   );
 };
 
-// Получить все изображения с корректными URL
 export const getAllImagesHelper = async () => {
   const images = await ImagesModel.find();
   if (!images || images.length === 0) return null;
@@ -20,7 +17,6 @@ export const getAllImagesHelper = async () => {
   }));
 };
 
-// Получить одно изображение по ID с заменой URL
 export const getImageByIdHelper = async (id: string) => {
   const image = await ImagesModel.findById(id);
   if (!image) return null;

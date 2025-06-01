@@ -53,7 +53,16 @@ export const parallaxMouseEffect = ({
 
 export const fadeInOnScroll = (
   elementRef: { current: HTMLElement | null },
-  options: any,
+  options: {
+    x?: number;
+    y?: number;
+    duration?: number;
+    delay?: number;
+    ease?: string;
+    start?: string;
+    scrub?: boolean;
+    scroller?: HTMLElement | undefined;
+  },
 ) => {
   const el = elementRef.current;
   if (!el) return;
@@ -63,11 +72,14 @@ export const fadeInOnScroll = (
     y = 0,
     duration = 0.3,
     delay = 0,
-    ease = 'sine.out',
+    ease = 'sine.inOut',
     start = 'top 30%',
     scrub = false,
+    scroller = undefined,
   } = options;
+
   el.style.pointerEvents = 'none';
+
   gsap.fromTo(
     el,
     {
@@ -87,6 +99,7 @@ export const fadeInOnScroll = (
         start,
         toggleActions: 'play none none reverse',
         scrub,
+        scroller,
         onEnter: () => (el.style.pointerEvents = 'auto'),
         onLeaveBack: () => (el.style.pointerEvents = 'none'),
       },

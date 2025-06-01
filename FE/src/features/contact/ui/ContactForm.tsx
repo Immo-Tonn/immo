@@ -2,11 +2,23 @@ import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Input from '@shared/ui/Input/Input';
 import { ContactData, sendContactForm } from '../model/model';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ContactForm.module.css';
 import { useNavigate } from 'react-router-dom';
 import Button from '@shared/ui/Button/Button';
+import { fadeInOnScroll } from '@shared/anim/animations';
 const ContactForm = () => {
+  const refs = useRef<(HTMLLIElement | null)[]>([]);
+
+  useEffect(() => {
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 50 } : { x: 100, y: -50 },
+        );
+    });
+  }, []);
   const {
     register,
     handleSubmit,
@@ -49,7 +61,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className={styles.formWrapper}>
+    <div className={styles.formWrapper} ref={el => (refs.current[1] = el)}>
       <div className={styles.container}>
         <h2 className={styles.heading}>Jetzt Kontakt aufnehmen</h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

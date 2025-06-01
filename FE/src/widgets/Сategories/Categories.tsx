@@ -29,7 +29,9 @@ const Categories = () => {
             <NavLink to={item.link} className={styles.categoryLink}>
               <p
                 className={styles.categoryTitle}
-                style={item.id === 3 ? { color: '#160c20' } : {}}
+                style={
+                  item.id === 3 || item.id === 5 ? { color: '#160c20' } : {}
+                }
               >
                 {item.title}
               </p>

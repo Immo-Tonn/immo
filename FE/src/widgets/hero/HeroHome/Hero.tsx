@@ -11,7 +11,10 @@ const HeroHome = () => {
   return (
     <section className={styles.heroSection}>
       <p className={styles.topText}>
-        Der richtige Partner für Ihren Immobilienverkauf
+        Der richtige Partner für Ihren
+        <br />
+        Immobilienverkauf
+        <br /> im Münsterland
       </p>
       <div className={styles.bottomBar}>
         <div className={styles.buttonWrapper}>

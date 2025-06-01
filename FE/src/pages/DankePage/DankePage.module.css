@@ -7,7 +7,6 @@
   flex-direction: column;
   text-align: center;
   position: relative;
-  overflow-x: hidden;
 }
 .card {
   background: #ffffff;
