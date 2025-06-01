@@ -51,45 +51,6 @@ export const parallaxMouseEffect = ({
   };
 };
 
-// export const parallaxScrolling = (
-//   topText: any,
-//   heroSection: any,
-//   bottomBar: any,
-// ) => {
-//   const text = topText.current;
-//   const section = heroSection.current;
-//   const bottom = bottomBar.current;
-//   gsap.to(text, {
-//     yPercent: 60,
-//     ease: 'circ.inOut',
-//     scrollTrigger: {
-//       trigger: section,
-//       start: 'top bottom',
-//       end: 'bottom top',
-//       scrub: 2,
-//     },
-//   });
-//   gsap.to(bottom, {
-//     yPercent: 50,
-//     ease: 'circ.in',
-//     scrollTrigger: {
-//       trigger: section,
-//       start: 'top bottom',
-//       end: 'bottom top',
-//       scrub: 2,
-//     },
-//   });
-// };
-
-// type FadeInOptions = {
-//   x?: number;
-//   y?: number;
-//   duration?: number;
-//   delay?: number;
-//   ease?: string;
-//   start?: string;
-// };
-
 export const fadeInOnScroll = (
   elementRef: { current: HTMLElement | null },
   options: any,
@@ -106,7 +67,7 @@ export const fadeInOnScroll = (
     start = 'top 30%',
     scrub = false,
   } = options;
-
+  el.style.pointerEvents = 'none';
   gsap.fromTo(
     el,
     {
@@ -126,6 +87,8 @@ export const fadeInOnScroll = (
         start,
         toggleActions: 'play none none reverse',
         scrub,
+        onEnter: () => (el.style.pointerEvents = 'auto'),
+        onLeaveBack: () => (el.style.pointerEvents = 'none'),
       },
     },
   );
