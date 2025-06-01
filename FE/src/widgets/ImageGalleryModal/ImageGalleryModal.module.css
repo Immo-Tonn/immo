@@ -32,6 +32,7 @@
     height: 200%;
     border-radius: 8px;
     object-fit: contain;
+    border: none;
 }
 
 .thumbnailRow {
@@ -57,11 +58,13 @@
     transition: all 0.2s ease-in-out;
 }
 
-.thumbnail img {
+.thumbnail img,
+.thumbnail iframe {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     border-radius: 4px;
+    pointer-events: none;
+    border: none;
 }
 
 .active {
@@ -110,12 +113,4 @@
 
 .nextButton {
     right: 10px;
-}
-
-.thumbnailIframe {
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
-    object-fit: cover;
-    pointer-events: none;
 }

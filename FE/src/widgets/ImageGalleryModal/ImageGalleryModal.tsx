@@ -15,9 +15,6 @@ const isVideo = (item: Image | Video): item is Video => {
   return 'thumbnailUrl' in item;
 };
 
-// Укажи здесь свой pull-zone Bunny Stream
-const BUNNY_PULL_ZONE = 'vz-430278';
-
 const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   images,
   currentIndex,
@@ -61,7 +58,6 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
       <div className={styles.thumbnailRow}>
         {images.map((item, index) => {
           const active = index === currentIndex;
-          const video = isVideo(item);
           const key = (item as any)._id ?? item.url ?? `media-${index}`;
 
           return (
@@ -70,18 +66,14 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
               className={`${styles.thumbnail} ${active ? styles.active : ''}`}
               onClick={() => onSelect(index)}
             >
-              {video ? (
-                <>
-                  <img
-                    src={
-                      item.thumbnailUrl ||
-                      `https://stream.bunnycdn.com/${BUNNY_PULL_ZONE}/${item.videoId}.mp4?thumb=160x90&time=10`
-                    }
-                    alt={item.title || 'Video preview'}
-                    className={styles.thumbnailImage}
-                  />
-                  <div className={styles.playIconThumb}>▶</div>
-                </>
+              {isVideo(item) ? (
+                <iframe
+                  src={item.url}
+                  title={item.title || 'Video'}
+                  className={styles.thumbnailIframe}
+                  allow="autoplay; muted"
+                  loading="lazy"
+                />
               ) : (
                 <img
                   src={item.url}

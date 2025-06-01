@@ -1,3 +1,5 @@
+import { BUNNY_LIBRARY_ID } from "../config/bunny";
+
 export const convertToIframeUrl = (originalUrl: string): string => {
   const regex = /^https:\/\/vz-(\d+)\.b-cdn\.net\/([a-f0-9\-]+)\/play$/;
   const match = originalUrl.match(regex);
@@ -15,5 +17,5 @@ export const getVideoThumbnailUrl = (originalUrl: string): string => {
   if (!match) return "";
 
   const uuid = match[1];
-  return `https://vz-430278.b-cdn.net/${uuid}/thumbnail.jpg`;
+  return `https://frame.bunnycdn.com/${BUNNY_LIBRARY_ID}/${uuid}/thumbnails/thumbnail.jpg`;
 };
