@@ -13,4 +13,8 @@ export default defineConfig({
       '@app': path.resolve(__dirname, 'src/app'),
     },
   },
+  server: {
+    // ✅ Вот это добавь
+    //historyApiFallback: true,
+  },
 });

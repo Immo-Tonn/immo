@@ -1,156 +1,202 @@
-import { useState } from 'react';
-import Input from '@shared/ui/Input/Input';
+import { useForm } from 'react-hook-form';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { useRef, useState } from 'react';
+import { sendContactForm } from '@shared/utils/sendContactForm';
+import { useNavigate } from 'react-router-dom'; // ✅ Добавлено для перехода
+import styles from './ContactForm.module.css';
+
+type ContactData = {
+  name: string;
+  surname: string;
+  email: string;
+  phone: string;
+  message: string;
+  consent: boolean;
+};
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    message: '',
-    consent: false,
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactData>();
 
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
+  const navigate = useNavigate(); // ✅ Навигатор для перехода
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isValidEmail = (email: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // ❌ Старое состояние успеха — закомментировано
+  // const [isSuccess, setIsSuccess] = useState(false);
 
-  const isValidPhone = (phone: string) => /^[0-9+]{10,15}$/.test(phone);
-
-  const isValidName = (name: string) => /^[A-Za-zÄäÖöÜüß\s'-]{2,}$/.test(name);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value, type, checked } = e.target;
-
-    if (name === 'phone') {
-      const cleaned = value.replace(/[^0-9+]/g, '');
-      setFormData(prev => ({ ...prev, [name]: cleaned }));
-    } else if (name === 'name') {
-      const cleaned = value.replace(/[^A-Za-zÄäÖöÜüß\s'-]/g, '');
-      setFormData(prev => ({ ...prev, [name]: cleaned }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !formData.name ||
-      !formData.phone ||
-      !formData.email ||
-      !formData.message
-    ) {
-      setError('Bitte füllen Sie alle Felder aus.');
+  const onSubmit = async (data: ContactData) => {
+    if (!captchaToken) {
+      setCaptchaError('Bitte bestätigen Sie das CAPTCHA.');
+      // setIsSuccess(false); // ❌ если будешь возвращать — раскомментируй
       return;
     }
 
-    if (!isValidName(formData.name)) {
-      setError('Bitte geben Sie einen gültigen Namen ein.');
-      return;
-    }
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-    if (!isValidPhone(formData.phone)) {
-      setError(
-        'Bitte geben Sie eine gültige Telefonnummer ein (10–15 Ziffern).',
+    try {
+      await sendContactForm({
+        ...data,
+        recaptchaToken: captchaToken,
+      });
+
+      reset();
+      setCaptchaToken(null);
+
+      // ✅ Новый вариант: переход на страницу Dankeseite
+      navigate('/kontakt/danke');
+
+      // ❌ Старый вариант: показать сообщение на той же странице
+      // setIsSuccess(true);
+    } catch (err: any) {
+      console.error('Fehler beim Absenden:', err);
+      // setIsSuccess(false); // ❌ если вернёшь старый подход
+      setSubmitError(
+        err.message || 'Fehler beim Versenden. Bitte erneut versuchen.',
       );
-      return;
+    } finally {
+      setIsSubmitting(false);
     }
-
-    if (!isValidEmail(formData.email)) {
-      setError('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
-      return;
-    }
-
-    if (formData.message.length < 5) {
-      setError('Ihre Nachricht ist zu kurz.');
-      return;
-    }
-
-    if (!formData.consent) {
-      setError('Bitte stimmen Sie der Datenschutzerklärung zu.');
-      return;
-    }
-
-    setError('');
-    setSubmitted(true);
-    console.log('Gesendet:', formData);
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '2rem auto' }}>
-      <h1>Kontaktformular</h1>
-      {submitted ? (
-        <p style={{ color: 'green' }}>
-          Danke! Ihre Nachricht wurde erfolgreich versendet.
-        </p>
-      ) : (
-        <form onSubmit={handleSubmit} noValidate>
-          <Input
-            label="Name:"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            placeholder="Max Mustermann"
-          />
-          <Input
-            label="Telefonnummer:"
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            placeholder="+49..."
-          />
-          <Input
-            label="E-Mail-Adresse:"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            placeholder="beispiel@email.de"
-          />
-          <Input
-            label="Ihre Nachricht:"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-            isTextarea
-            placeholder="Schreiben Sie uns etwas..."
-          />
+    <div className={styles.wrapper}>
+      <div className={styles.verticalLineLeft}></div>
+      <div className={styles.verticalLineRight}></div>
 
-          <label style={{ display: 'block', margin: '0.5rem 0' }}>
+      <div className={styles.container}>
+        <h2 className={styles.heading}>Jetzt Kontakt aufnehmen</h2>
+
+        {/* ❌ Старая реализация успеха — закомментирована */}
+        {/*
+        {isSuccess ? (
+          <p className={styles.success}>
+            Danke! Ihre Nachricht wurde erfolgreich versendet.
+          </p>
+        ) : (
+        */}
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          {[
+            {
+              name: 'name',
+              label: 'Vorname*',
+              requiredMsg: 'Vorname ist erforderlich',
+            },
+            {
+              name: 'surname',
+              label: 'Nachname*',
+              requiredMsg: 'Nachname ist erforderlich',
+            },
+            {
+              name: 'email',
+              label: 'E-Mail*',
+              requiredMsg: 'E-Mail ist erforderlich',
+              pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              patternMsg: 'Ungültige E-Mail-Adresse',
+            },
+            {
+              name: 'phone',
+              label: 'Telefon*',
+              requiredMsg: 'Telefon ist erforderlich',
+              pattern: /^[0-9+]{10,15}$/,
+              patternMsg: 'Ungültige Telefonnummer',
+            },
+          ].map(field => (
+            <div key={field.name} className={styles.inputGroup}>
+              <input
+                placeholder={field.label}
+                className={styles.input}
+                {...register(field.name as keyof ContactData, {
+                  required: field.requiredMsg,
+                  ...(field.pattern && {
+                    pattern: {
+                      value: field.pattern,
+                      message: field.patternMsg,
+                    },
+                  }),
+                })}
+              />
+              {errors[field.name as keyof ContactData] && (
+                <span className={styles.error}>
+                  {errors[field.name as keyof ContactData]?.message as string}
+                </span>
+              )}
+            </div>
+          ))}
+
+          <div className={styles.inputGroup}>
+            <textarea
+              placeholder="Nachricht"
+              className={styles.textarea}
+              {...register('message', {
+                required: 'Nachricht ist erforderlich',
+                minLength: {
+                  value: 5,
+                  message: 'Nachricht ist zu kurz',
+                },
+              })}
+            />
+            {errors.message && (
+              <span className={styles.error}>{errors.message.message}</span>
+            )}
+          </div>
+
+          <div className={styles.checkboxContainer}>
             <input
               type="checkbox"
-              name="consent"
-              checked={formData.consent}
-              onChange={handleChange}
-              required
+              {...register('consent', {
+                required: 'Bitte stimmen Sie der Datenschutzerklärung zu.',
+              })}
             />
-            &nbsp; Ich stimme der Verarbeitung meiner Daten gemäß der
-            Datenschutzerklärung zu.
-          </label>
+            <label>
+              Ja, ich habe die Datenschutzerklärung gelesen und bin damit
+              einverstanden, dass meine Angaben zur Kontaktaufnahme und für
+              Rückfragen elektronisch gespeichert und verarbeitet werden.
+            </label>
+          </div>
+          {errors.consent && (
+            <span className={styles.error}>{errors.consent.message}</span>
+          )}
 
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div className={styles.captchaContainer}>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              size="normal"
+              onChange={token => {
+                setCaptchaToken(token);
+                setCaptchaError(null);
+              }}
+              onExpired={() => {
+                setCaptchaToken(null);
+                setCaptchaError(
+                  'CAPTCHA ist abgelaufen, bitte erneut bestätigen.',
+                );
+              }}
+            />
+            {captchaError && <p className={styles.error}>{captchaError}</p>}
+          </div>
+
+          {submitError && <p className={styles.error}>{submitError}</p>}
 
           <button
+            className={styles.submitButton}
             type="submit"
-            style={{ padding: '0.7rem 1.5rem', marginTop: '1rem' }}
+            disabled={isSubmitting}
           >
-            Absenden
+            {isSubmitting ? 'Wird gesendet...' : 'ABSCHICKEN'}
           </button>
         </form>
-      )}
+        {/* )} */}
+      </div>
     </div>
   );
 };

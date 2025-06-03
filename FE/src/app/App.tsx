@@ -11,6 +11,8 @@ import Contact from '@pages/ContactForm';
 import LegalNotice from '@pages/LegalNotice';
 import CancellationPolicy from '@pages/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy';
+import DankePage from '@pages/DankePage';
+import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 
 const App = () => {
   return (
@@ -28,6 +30,8 @@ const App = () => {
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/kontakt/danke" element={<DankePage />} />
+          <Route path="/rechner" element={<MortgageCalculator />} />
         </Routes>
       </Layout>
     </Router>

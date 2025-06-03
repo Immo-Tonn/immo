@@ -29,7 +29,10 @@
       "@widgets/*": ["src/widgets/*"],
       "@pages/*": ["src/pages/*"],
       "@app/*": ["src/app/*"]
-    }
+    },
+
+    /* 👇 Добавлено для поддержки JSON-импортов */
+    "resolveJsonModule": true
   },
   "include": ["src", "src/app/main.tsx"]
 }
