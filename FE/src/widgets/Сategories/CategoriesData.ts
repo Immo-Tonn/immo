@@ -18,7 +18,7 @@ export const CategoriesData: CategoryItem[] = [
     id: 2,
     title: 'Immobilienangebote',
     image: '/src/shared/assets/categories/immo-angeboten.webp',
-    link: 'immobilienangebote',
+    link: 'immobilien',
     alt: 'immobilienangebote',
   },
   {
@@ -39,14 +39,14 @@ export const CategoriesData: CategoryItem[] = [
     id: 5,
     title: 'wertemittling',
     image: '/src/shared/assets/categories/wertemittling.webp',
-    link: 'wertemittling',
+    link: 'wertermittlung',
     alt: 'wertemittling',
   },
   {
     id: 6,
     title: 'finanzirung',
     image: '/src/shared/assets/categories/finanzirung.webp',
-    link: 'finanzirung',
+    link: 'rechner',
     alt: 'finanzirung',
   },
 ];

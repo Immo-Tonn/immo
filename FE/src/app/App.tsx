@@ -16,6 +16,7 @@ import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
 import SalesSupport from '@pages/SalesSupport/SalesSupport';
 import RechtUndRat from '@pages/RechtUndRat/RechtUndRat';
+import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 const App = () => {
   return (
     <Router>
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
           <Route path="/verkaufssupport" element={<SalesSupport />} />
           <Route path="/recht-und-rat" element={<RechtUndRat />} />
+          <Route path="/rechner" element={<MortgageCalculator />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

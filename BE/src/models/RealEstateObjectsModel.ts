@@ -35,6 +35,7 @@ export interface IRealEstateObjects extends Document {
   dateAdded: Date;
   status: ObjectStatus;
   images?: Array<Types.ObjectId>;
+  videos?: Array<Types.ObjectId>;
   apartments?: Types.ObjectId;
   commercial_NonResidentialBuildings?: Types.ObjectId;
   landPlots?: Types.ObjectId;
@@ -98,6 +99,12 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
     {
       type: Schema.Types.ObjectId,
       ref: 'Images',
+    },
+  ],
+  videos: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Videos',
     },
   ],
   apartments: {

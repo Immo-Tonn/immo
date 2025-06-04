@@ -1,9 +1,14 @@
-export function calcMonthly(
-  price: number,
-  down: number,
-  rate: number,
-  years: number,
-): number {
+export function calcMonthly({
+  price,
+  down,
+  rate,
+  years,
+}: {
+  price: number;
+  down: number;
+  rate: number;
+  years: number;
+}): number {
   const loan = price - down;
   const r = rate / 100 / 12;
   const n = years * 12;
