@@ -154,32 +154,31 @@ const MortgageCalculator = () => {
           </div>
 
           <label>
-            Grunderwerbsteuer
-            <img src={QuestionIcon} className={styles.icon} onClick={() => setModalContent(infoTexts.tax)} />
-          </label>
-          <div className={styles.inputWithPercent}>
-            <input value={tax} onChange={e => setTax(e.target.value)} />
-            <span>%</span>
-          </div>
+  Grunderwerbsteuer
+  <img src={QuestionIcon} className={styles.icon} onClick={() => setModalContent(infoTexts.tax)} />
+</label>
+<div className={styles.inputWithPercent}>
+  <input value={tax} onChange={e => setTax(e.target.value)} />
+  <span className={styles.percent}>%</span>
+</div>
 
-          <label>
-            Notar/Grundbuch
-            <img src={QuestionIcon} className={styles.icon} onClick={() => setModalContent(infoTexts.notary)} />
-          </label>
-          <div className={styles.inputWithPercent}>
-            <input value={notary} onChange={e => setNotary(e.target.value)} />
-            <span>%</span>
-          </div>
+<label>
+  Notar/Grundbuch
+  <img src={QuestionIcon} className={styles.icon} onClick={() => setModalContent(infoTexts.notary)} />
+</label>
+<div className={styles.inputWithPercent}>
+  <input value={notary} onChange={e => setNotary(e.target.value)} />
+  <span className={styles.percent}>%</span>
+</div>
 
-          <label>
-            Käufer Maklerprovision
-            <img src={QuestionIcon} className={styles.icon} onClick={() => setModalContent(infoTexts.broker)} />
-          </label>
-          <div className={styles.inputWithPercent}>
-            <input value={broker} onChange={e => setBroker(e.target.value)} />
-            <span>%</span>
-          </div>
-
+<label>
+  Käufer Maklerprovision
+  <img src={QuestionIcon} className={styles.icon} onClick={() => setModalContent(infoTexts.broker)} />
+</label>
+<div className={styles.inputWithPercent}>
+  <input value={broker} onChange={e => setBroker(e.target.value)} />
+  <span className={styles.percent}>%</span>
+</div>
           <p className={styles.sumLine}>€ Gesamtpreis: {totalCost.toFixed(2)}</p>
         </div>
 

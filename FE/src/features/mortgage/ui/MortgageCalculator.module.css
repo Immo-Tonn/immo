@@ -82,19 +82,33 @@ input[readonly] {
 
 .inputWithPercent {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .inputWithPercent input {
-  padding-right: 36px;
+  padding-right: 24px; 
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .inputWithPercent span {
   position: absolute;
-  right: 10px;
-  top: 50%;
+  left: 45px;
+  top: 40%;
   transform: translateY(-50%);
   color: #666;
   font-weight: bold;
+}
+.inputWithPercent .percent {
+  margin-left: 4px;
+}
+.percent {
+  position: absolute;
+  right: 10px;
+  color: #666;
+  font-weight: bold;
+  pointer-events: none;
 }
 
 .icon {
