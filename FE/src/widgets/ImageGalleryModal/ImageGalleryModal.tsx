@@ -56,7 +56,7 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
 
       {/* Лента миниатюр */}
       <div className={styles.thumbnailRow}>
-        {images.map((item, index) => {
+        {images.map((item: Image | Video, index) => {
           const active = index === currentIndex;
           const key = (item as any)._id ?? item.url ?? `media-${index}`;
 
@@ -66,20 +66,13 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
               className={`${styles.thumbnail} ${active ? styles.active : ''}`}
               onClick={() => onSelect(index)}
             >
-              {isVideo(item) ? (
-                <iframe
-                  src={item.url}
-                  title={item.title || 'Video'}
-                  className={styles.thumbnailIframe}
-                  allow="autoplay; muted"
-                  loading="lazy"
-                />
-              ) : (
-                <img
-                  src={item.url}
-                  alt={`Thumb ${index + 1}`}
-                  className={styles.thumbnailImage}
-                />
+              <img
+                src={isVideo(item) ? item.thumbnailUrl : item.url}
+                alt={isVideo(item) ? item.title || 'Video preview' : `Thumb ${index + 1}`}
+                className={styles.thumbnailImage}
+              />
+              {isVideo(item) && (
+                <div className={styles.playIconThumb}>▶</div>
               )}
             </div>
           );
