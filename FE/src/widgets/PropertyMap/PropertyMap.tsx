@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
-import { PropertyMapProps } from './models';
+import { Address } from '@shared/types/propertyTypes';
 import { LatLngTuple } from 'leaflet';
 import styles from './PropertyMap.module.css';
+
+interface PropertyMapProps {
+  address: Address;
+}
 
 const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
   const { district, zip, city, country } = address;
@@ -13,7 +17,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
   const [center, setCenter] = useState<LatLngTuple | null>(null);
   const [error, setError] = useState(false);
 
-  const query = `${district}, ${zip} ${city}, ${country}`;
+  const [query, setQuery] = useState(`${district}, ${zip} ${city}, ${country}`);
 
   useEffect(() => {
     const fetchBoundary = async () => {
@@ -23,40 +27,55 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
         );
         const data: any[] = await res.json();
 
+        if (
+          (!data || data.length === 0 || !data[0].geojson) &&
+          query !== `${zip} ${city}, ${country}`
+        ) {
+          setQuery(`${zip} ${city}, ${country}`);
+          return;
+        }
+
         if (!data || data.length === 0 || !data[0].geojson) {
           setError(true);
           return;
         }
 
         const geojson = data[0].geojson;
+        const coords: LatLngTuple[][] = [];
 
         if (geojson.type === 'Polygon') {
+          // polygon: [ [lng, lat], [lng, lat], ... ]
           const polygon: LatLngTuple[] = geojson.coordinates[0].map(
-            (coord: [number, number]) => [coord[1], coord[0]],
+            ([lng, lat]: [number, number]) => [lat, lng],
           );
-          setPolygonCoords([polygon]);
+          coords.push(polygon);
         } else if (geojson.type === 'MultiPolygon') {
-          const coords: LatLngTuple[][] = geojson.coordinates
-            .map((poly: [[number, number][]]) => {
-              return poly[0].map((coord: [number, number]) => [
-                coord[1],
-                coord[0],
-              ]);
-            })
-            .filter((polygon: LatLngTuple[]) => polygon.length > 0);
-          setPolygonCoords(coords);
+          // geojson.coordinates: Array<Array<Array<[number, number]>>>
+          coords.push(
+            ...geojson.coordinates.flatMap(
+              (polygon: Array<Array<[number, number]>>) =>
+                polygon.map((ring: Array<[number, number]>) =>
+                  ring.map(
+                    ([lng, lat]: [number, number]) => [lat, lng] as LatLngTuple,
+                  ),
+                ),
+            ),
+          );
         }
+
+        setPolygonCoords(coords);
 
         const lat = parseFloat(data[0].lat);
         const lon = parseFloat(data[0].lon);
         setCenter([lat, lon]);
+        setError(false);
       } catch {
         setError(true);
       }
     };
 
     fetchBoundary();
-  }, [query]);
+  }, [query, zip, city, country]);
 
   return (
     <section className={styles.mapSection}>

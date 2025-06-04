@@ -20,6 +20,18 @@ const infoTexts = {
     title: 'Käufer-Maklerprovision',
     body: 'Die Käufer-Maklerprovision richtet sich nach den Angaben im Exposé.',
   },
+  repayment: {
+    title: 'Tilgung',
+    body: '',
+  },
+  interest: {
+    title: 'Tilgung',
+    body: '',
+  },
+  repayment: {
+    title: 'Solzinsen',
+    body: '',
+  },
 };
 
 type Mode = 'calculateYears' | 'calculateRepayment';
@@ -34,6 +46,8 @@ const MortgageCalculator = () => {
   const [customTax, setCustomTax] = useState('');
   const [customNotary, setCustomNotary] = useState('');
   const [customBroker, setCustomBroker] = useState('');
+  const [customRepayment, setCustomRepayment] = useState('');
+  const [customInterest, setCustomInterest] = useState('');
   const [repayment, setRepayment] = useState('2.0');
   const [interest, setInterest] = useState('3.5');
   const [years, setYears] = useState('30');
@@ -237,7 +251,30 @@ const MortgageCalculator = () => {
             setCustomBroker,
             'broker',
           )}
-
+          {renderSelect(
+            'Tilgung',
+            repayment,
+            setRepayment,
+            customRepayment,
+            setCustomRepayment,
+            'repayment',
+          )}
+          {renderSelect(
+            'Sollzins p. a.',
+            interest,
+            setInterest,
+            customInterest,
+            setCustomInterest,
+            'repayment',
+          )}
+          {renderSelect(
+            'Laufzeit (Jahre)',
+            repayment,
+            setRepayment,
+            customRepayment,
+            setCustomRepayment,
+            'repayment',
+          )}
           <p className={styles.sumLine}>
             € Gesamtpreis: {totalCost.toFixed(2)}
           </p>

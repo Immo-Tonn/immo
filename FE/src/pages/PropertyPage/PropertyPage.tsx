@@ -8,7 +8,7 @@ import styles from './PropertyPage.module.css';
 import LoadingErrorHandler from '@shared/ui/LoadingErrorHandler/LoadingErrorHandler';
 const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { objectData, images, loading, err } = usePropertyData(id);
+  const { objectData, images, loading, err, videos } = usePropertyData(id);
 
   return (
     <div className={styles.propertyPageContainer}>
@@ -18,6 +18,7 @@ const PropertyPage: React.FC = () => {
           <PropertyHero
             object={objectData}
             images={images}
+            videos={videos}
             apartment={objectData.apartments}
             commercialBuilding={objectData.commercial_NonResidentialBuildings}
             landPlot={objectData.landPlots}

@@ -1,20 +1,20 @@
-import Button from '@shared/ui/Button/Button';
+import React from 'react';
 import styles from './ImageGalleryModal.module.css';
-
-interface Image {
-  id: string;
-  url: string;
-  type: string;
-}
+import { Image, Video } from '@shared/types/propertyTypes';
+import Button from '@shared/ui/Button/Button';
 
 interface ImageGalleryModalProps {
-  images: Image[];
+  images: (Image | Video)[];
   currentIndex: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
   onSelect: (index: number) => void;
 }
+
+const isVideo = (item: Image | Video): item is Video => {
+  return 'thumbnailUrl' in item;
+};
 
 const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   images,
@@ -24,47 +24,73 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   onNext,
   onSelect,
 }) => {
-  const currentImage = images[currentIndex];
+  const currentItem = images[currentIndex];
+  if (!currentItem) return null;
 
-  if (!currentImage) return null;
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   return (
-    <div className={styles.modal} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <div className={styles.modalImageWrapper}>
-          <Button
-            initialText="‹"
-            clickedText="‹"
-            className={styles.navLeft}
-            onClick={onPrev}
+    <div className={styles.videoModal} onClick={handleBackdropClick}>
+      <div className={styles.videoWrapper}>
+        {isVideo(currentItem) ? (
+          <iframe
+            key={currentItem.url}
+            src={currentItem.url}
+            title={currentItem.title || 'Video'}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className={styles.mediaContent}
           />
+        ) : (
           <img
-            src={currentImage.url}
-            alt="Großbild"
-            className={styles.modalImage}
+            src={currentItem.url}
+            alt={`Image ${currentIndex + 1}`}
+            className={styles.mediaContent}
           />
-          <Button
-            initialText="›"
-            clickedText="›"
-            className={styles.navRight}
-            onClick={onNext}
-          />
-        </div>
-
-        <div className={styles.thumbnails}>
-          {images.map((img, index) => (
-            <img
-              key={img.id}
-              src={img.url}
-              alt={`Thumb ${index + 1}`}
-              className={`${styles.thumbnail} ${
-                index === currentIndex ? styles.activeThumbnail : ''
-              }`}
-              onClick={() => onSelect(index)}
-            />
-          ))}
-        </div>
+        )}
       </div>
+      <div className={styles.thumbnailRow}>
+        {images.map((item: Image | Video, index) => {
+          const active = index === currentIndex;
+          const key = (item as any)._id ?? item.url ?? `media-${index}`;
+
+          return (
+            <div
+              key={key}
+              className={`${styles.thumbnail} ${active ? styles.active : ''}`}
+              onClick={() => onSelect(index)}
+            >
+              <img
+                src={isVideo(item) ? item.thumbnailUrl : item.url}
+                alt={
+                  isVideo(item)
+                    ? item.title || 'Video preview'
+                    : `Thumb ${index + 1}`
+                }
+                className={styles.thumbnailImage}
+              />
+              {isVideo(item) && <div className={styles.playIconThumb}>▶</div>}
+            </div>
+          );
+        })}
+      </div>
+
+      <Button
+        initialText="‹"
+        clickedText="‹"
+        className={styles.prevButton}
+        onClick={onPrev}
+      />
+      <Button
+        initialText="›"
+        clickedText="›"
+        className={styles.nextButton}
+        onClick={onNext}
+      />
     </div>
   );
 };

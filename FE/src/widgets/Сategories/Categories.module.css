@@ -19,7 +19,7 @@
 .categoryImage {
   max-width: 1200px;
   position: relative;
-  height: 592px;
+  height: clamp(350px, 50vw, 592px);
   object-fit: cover;
 }
 
@@ -30,7 +30,6 @@
   align-items: flex-end;
   text-transform: uppercase;
   position: relative;
-  /* margin: 0 0 54px 54px; */
 }
 
 .categoryItem:nth-child(odd) .categoryLink {
@@ -71,10 +70,10 @@
   position: absolute;
   z-index: 22;
   color: white;
-  font-size: var(--font-size-main);
+
+  font-size: clamp(18px, 5vw, var(--font-size-main));
   font-weight: var(--font-weight-main);
   font-family: var(--Inter);
-  /* margin-bottom: 27px; */
   padding: 54px;
 }
 
@@ -83,8 +82,10 @@
     gap: 50px;
     padding: 86px 0 64px 0;
   }
-  .categoryImage {
-    max-width: 770px;
-    height: 477px;
+}
+@media (max-width: 576px) {
+  .categoriesList {
+    gap: 50px;
+    padding: 86px 0 64px 0;
   }
 }

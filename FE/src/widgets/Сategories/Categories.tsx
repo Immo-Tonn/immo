@@ -26,7 +26,11 @@ const Categories = () => {
             className={styles.categoryItem}
             ref={el => (refs.current[i] = el)}
           >
-            <NavLink to={item.link} className={styles.categoryLink}>
+            <NavLink
+              to={item.link}
+              className={styles.categoryLink}
+              style={item.id === 5 ? { display: 'block' } : {}}
+            >
               <p
                 className={styles.categoryTitle}
                 style={

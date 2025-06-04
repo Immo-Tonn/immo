@@ -70,7 +70,7 @@
 }
 
 .blockText > p {
-  font-size: 24px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
   font-family: var(--Roboto);
 }
@@ -125,7 +125,7 @@ hr {
 
 @media (max-width: 576px) {
   h2 {
-    font-size: 24px;
+    font-size: var(--font-size-small);
   }
 
   .textBlockR .blockText,

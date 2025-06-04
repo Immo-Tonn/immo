@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import styles from './AboutUs.module.css';
-import whiteLogo from '@shared/assets/about-us/logo-white.svg';
 import DynamicText from '@widgets/DynamicText/DynamicText';
 import DynamicTitle from '@widgets/DynamicTitle/DynamicTitle';
 import { parallaxMouseEffect } from '@shared/anim/animations';
@@ -26,29 +25,43 @@ const AboutUs = () => {
 
   return (
     <section className={styles.aboutUsSection}>
-      <h3 className={`${styles.firstTitleMobile}`}>
-        Mehr als nur Immobilien – eine Partnerschaft, die für Sie entfaltet
-      </h3>
-      <span className={styles.line}></span>
       <div className={styles.contentWrapper} ref={wrapperRef}>
-        <img
-          src={whiteLogo}
-          alt="logo"
-          className={`${styles.logoDesktop}`}
-          ref={logoRef}
-        />
-
         <div className={styles.textBlock} ref={textRef}>
-          <DynamicTitle />
-          <DynamicText />
+          <div className={styles.titleWrapper}>
+            <h1>
+              Ihr zuverlässiger Partner für <br />
+              Immobilien in NRW – <br />
+              Das dürfen Sie von uns erwarten:
+            </h1>
+            <div className={styles.textWrapper}>
+              <p>
+                Mit einem professionellen Immobilienmakler an Ihrer Seite können
+                Sie sicherstellen, dass der gesamte Prozess – von der ersten
+                Idee bis zum erfolgreichen Abschluss – effizient, sicher und in
+                Ihrem besten Interesse verläuft.
+              </p>
+              <p>
+                Seit 1985 sind wir im <strong>Münsterland</strong> auf den
+                Verkauf von Bestands‑ und Neubauimmobilien spezialisiert und
+                nutzen exklusive Vermarktungsstrategien sowie ein über
+                Jahrzehnte gewachsenes regionales Netzwerk, um für jedes Objekt
+                das optimale Ergebnis zu erzielen.
+              </p>
+              <p>
+                Unser erfahrenes Team begleitet Sie persönlich, hält Ihnen den
+                Rücken frei und entwickelt sich kontinuierlich weiter, damit Sie
+                jederzeit den besten Service erhalten.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       <p className={styles.textBottom} ref={bottomTextRef}>
-        Ihr Maklerteam für Wohnimmobilien, Geschäftshäuser und hochwertige
-        Investment
+        <b>
+          Ihr Maklerteam für Wohnimmobilien, <br />
+          Geschäftshäuser und hochwertige Investment
+        </b>
       </p>
-
-      <span className={styles.line}></span>
     </section>
   );
 };

@@ -9,6 +9,7 @@ import commercial_NonResidentialBuildingsRoutes from './routes/commercial_NonRes
 import landPlotRoutes from './routes/landPlotsRoutes';
 import residentialHousesRoutes from './routes/residentialHousesRoutes';
 import emailRoutes from './routes/emailRoutes';
+import videosRoutes from './routes/videosRoutes';
 
 const app: Application = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +18,7 @@ app.use(cors());
 
 app.use('/api/objects', realEstateRoutes);
 app.use('/api/images', imagesRoutes);
+app.use('/api/videos', videosRoutes);
 app.use('/api/apartments', apartmentRoutes);
 app.use(
   '/api/commercial_NonResidentialBuildings',

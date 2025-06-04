@@ -9,18 +9,19 @@ export type CategoryItem = {
 export const CategoriesData: CategoryItem[] = [
   {
     id: 1,
-    title: 'Verkaufssupport',
-    image: '/src/shared/assets/categories/verkaufssupport.webp',
-    link: 'verkaufssupport',
-    alt: 'verkaufssupport',
-  },
-  {
-    id: 2,
     title: 'Immobilienangebote',
     image: '/src/shared/assets/categories/immo-angeboten.webp',
     link: 'immobilien',
     alt: 'immobilienangebote',
   },
+  {
+    id: 2,
+    title: 'Verkaufssupport',
+    image: '/src/shared/assets/categories/verkaufssupport.webp',
+    link: 'verkaufssupport',
+    alt: 'verkaufssupport',
+  },
+
   {
     id: 3,
     title: 'Recht und Rat',

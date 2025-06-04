@@ -60,7 +60,7 @@
   width: 100%;
   max-width: 700px;
   line-height: 1.6;
-  font-size: 24px;
+  font-size: var(--font-size-small);
   margin: 10px 20px;
 }
 
