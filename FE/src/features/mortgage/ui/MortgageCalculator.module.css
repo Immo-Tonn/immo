@@ -82,12 +82,12 @@ input[readonly] {
 
 .inputWithPercent {
   position: relative;
-  display: flex;
+   display: flex;
   align-items: center;
 }
 
 .inputWithPercent input {
-  padding-right: 24px; 
+      padding-right: 24px; 
   width: 100%;
   box-sizing: border-box;
 }
