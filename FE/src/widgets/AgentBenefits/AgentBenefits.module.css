@@ -1,7 +1,6 @@
 .whyAgentSection {
   max-width: 800px;
   width: 100%;
-  margin: 0 auto;
   padding: 20px 0;
   display: flex;
   flex-direction: row;
@@ -34,11 +33,25 @@
 }
 
 .whyAgentH3 {
-  text-align: center;
+  text-align: left;
+  font-family: var(--Roboto);
   margin-bottom: 30px;
-  color: #333;
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: 0.1em;
+  color: #000;
+  text-transform: uppercase;
 }
-
+.whyAgentH4 {
+  text-align: left;
+}
+.whyAgentLi > p {
+  text-align: left;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: #000;
+}
 .whyAgentUl {
   list-style: none;
   padding: 0;
@@ -78,38 +91,44 @@
   line-height: 1.5;
 }
 
-.whyAgentPMobile {
-  font-size: 0.8em;
-}
-
-/* --- Immo Tonn Section Styles --- */
 .immoTonnImageBackground {
   position: relative;
-  width: 100%;
-  height: 450px;
-  background-image: url(/public/images/immo-tonn.svg);
-  background-size: cover;
-  background-position: center;
-  margin-bottom: 20px;
-  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 762px;
 }
 
+.immoTonnImageBackground::before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 762px;
+  background-image: url('@shared/assets/salessupport/immo-tonn-content.webp');
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
+  width: 100%;
+}
+.contentWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+}
 .immoTonnImageBackgroundMobile {
   height: 200px;
 }
 
 .immoTonnOverlayText {
   position: absolute;
-  right: 40px;
-  bottom: 100px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  bottom: 181px;
   font-size: var(--font-size-main);
-  font-weight: bold;
   color: white;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 8px 15px;
-  border-radius: 5px;
-  text-align: right;
-  line-height: 1.2;
+  font-family: var(--Roboto);
+  z-index: 2;
+  padding-right: 45px;
 }
 
 .immoTonnOverlayTextMobile {

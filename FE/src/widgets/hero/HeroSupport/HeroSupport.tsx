@@ -1,25 +1,30 @@
-// src/components/SalesSupport/HeaderSection.tsx
 import React from 'react';
 import styles from './HeroSupport.module.css';
-import salesSupportImg from '@shared/assets/salessupport/sales-support-image.webp';
+import { fadeInOnScroll } from '@shared/anim/animations';
+import { useEffect, useRef } from 'react';
 interface HeaderSectionProps {
   isMobile: boolean;
 }
 
 const HeroSupport: React.FC<HeaderSectionProps> = ({ isMobile }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    fadeInOnScroll(ref, { x: 100 });
+  }, []);
   return (
-    <div className={styles.imageContainer}>
-      <img
-        src={salesSupportImg}
-        alt="sales-support-image"
-        className={styles.image}
-      />
-      <div
-        className={`${styles.textOverlay} ${isMobile ? styles.textOverlayMobile : ''}`}
-      >
-        VERKAUFSSUPPORT - MEHR ALS NUR VERMITTLUNG - RUNDUM-SERVICE VOM PROFI
+    <section className={styles.heroValuationSection} ref={ref}>
+      <div className={styles.textWrapper}>
+        <div
+          className={`${styles.textOverlay} ${isMobile ? styles.textOverlayMobile : ''}`}
+        >
+          <p>
+            verkaufssupport - mehr als <br />
+            nur vermittlung - rundum-service vom <br />
+            profi
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

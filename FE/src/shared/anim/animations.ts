@@ -61,7 +61,6 @@ export const fadeInOnScroll = (
     ease?: string;
     start?: string;
     scrub?: boolean;
-    scroller?: HTMLElement | undefined;
   },
 ) => {
   const el = elementRef.current;
@@ -75,7 +74,6 @@ export const fadeInOnScroll = (
     ease = 'sine.inOut',
     start = 'top 30%',
     scrub = false,
-    scroller = undefined,
   } = options;
 
   el.style.pointerEvents = 'none';
@@ -99,7 +97,6 @@ export const fadeInOnScroll = (
         start,
         toggleActions: 'play none none reverse',
         scrub,
-        scroller,
         onEnter: () => (el.style.pointerEvents = 'auto'),
         onLeaveBack: () => (el.style.pointerEvents = 'none'),
       },

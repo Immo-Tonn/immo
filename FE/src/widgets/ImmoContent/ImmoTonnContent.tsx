@@ -1,3 +1,4 @@
+import Button from '@shared/ui/Button/Button';
 import styles from './ImmoTonnContent.module.css';
 
 interface ImmoTonnContentSectionProps {
@@ -33,66 +34,71 @@ const ImmoTonnContent: React.FC<ImmoTonnContentSectionProps> = ({
   ];
 
   return (
-    <div
-      className={`${styles.immoTonnContentSection} ${isMobile ? styles.immoTonnContentSectionMobile : isTablet ? styles.immoTonnContentSectionTablet : ''}`}
-    >
-      {isMobile ? (
-        <>
-          <ul className={styles.immoTonnTextListMobile}>
-            {listItemData.map((item, index) => (
-              <li key={index} className={styles.immoTonnTextListItemWrapper}>
-                <h4 className={styles.immoTonnTextH4Mobile}>{item.title}</h4>
-                <p className={styles.immoTonnTextPMobile}>{item.description}</p>
-              </li>
-            ))}
-          </ul>
-          <div className={styles.immoTonnPhraseLine}></div>
-          <div className={styles.immoTonnBigPhraseMobile}>
-            Verlässlich. <br />
-            Persönlich. <br />
-            Vor Ort.
-          </div>
-        </>
-      ) : isTablet ? (
-        <>
-          <div className={styles.immoTonnLeftSectionWrapper}>
-            <div className={styles.immoTonnLine}></div>
-            <p className={styles.immoTonnBigPhraseTablet}>
+    <>
+      <div
+        className={`${styles.immoTonnContentSection} ${isMobile ? styles.immoTonnContentSectionMobile : isTablet ? styles.immoTonnContentSectionTablet : ''}`}
+      >
+        {isMobile ? (
+          <>
+            <ul className={styles.immoTonnTextListMobile}>
+              {listItemData.map((item, index) => (
+                <li key={index} className={styles.immoTonnTextListItemWrapper}>
+                  <h4 className={styles.immoTonnTextH4Mobile}>{item.title}</h4>
+                  <p className={styles.immoTonnTextPMobile}>
+                    {item.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <div className={styles.immoTonnPhraseLine}></div>
+            <div className={styles.immoTonnBigPhraseMobile}>
               Verlässlich. <br />
               Persönlich. <br />
               Vor Ort.
-            </p>
-          </div>
-          <ul className={styles.immoTonnTextListTablet}>
-            {listItemData.map((item, index) => (
-              <li key={index} className={styles.immoTonnTextListItemWrapper}>
-                <h4 className={styles.immoTonnTextH4Tablet}>{item.title}</h4>
-                <p className={styles.immoTonnTextPTab}>{item.description}</p>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <>
-          <div className={styles.immoTonnBigPhraseDesktop}>
-            Verlässlich. <br />
-            Persönlich. <br />
-            Vor Ort.
-          </div>
-          <div className={styles.immoTonnLine}></div>
-          <ul className={styles.immoTonnTextListDesktop}>
-            {listItemData.map((item, index) => (
-              <li key={index} className={styles.immoTonnTextListItemWrapper}>
-                <h4 className={styles.immoTonnTextH4Desktop}>{item.title}</h4>
-                <p className={styles.immoTonnTextPDesktop}>
-                  {item.description}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-    </div>
+            </div>
+          </>
+        ) : isTablet ? (
+          <>
+            <div className={styles.immoTonnLeftSectionWrapper}>
+              <div className={styles.immoTonnLine}></div>
+              <p className={styles.immoTonnBigPhraseTablet}>
+                Verlässlich. <br />
+                Persönlich. <br />
+                Vor Ort.
+              </p>
+            </div>
+            <ul className={styles.immoTonnTextListTablet}>
+              {listItemData.map((item, index) => (
+                <li key={index} className={styles.immoTonnTextListItemWrapper}>
+                  <h4 className={styles.immoTonnTextH4Tablet}>{item.title}</h4>
+                  <p className={styles.immoTonnTextPTab}>{item.description}</p>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <>
+            <div className={styles.immoTonnBigPhraseDesktop}>
+              Verlässlich. <br />
+              Persönlich. <br />
+              Vor Ort.
+            </div>
+            <div className={styles.immoTonnLine}></div>
+            <ul className={styles.immoTonnTextListDesktop}>
+              {listItemData.map((item, index) => (
+                <li key={index} className={styles.immoTonnTextListItemWrapper}>
+                  <h4 className={styles.immoTonnTextH4Desktop}>{item.title}</h4>
+                  <p className={styles.immoTonnTextPDesktop}>
+                    {item.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+      <Button initialText="KONTAKTAUFNEHMEN" clickedText="Weiterleitung..." />
+    </>
   );
 };
 export default ImmoTonnContent;

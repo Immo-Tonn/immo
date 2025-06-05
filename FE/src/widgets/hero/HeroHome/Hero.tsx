@@ -3,20 +3,26 @@ import styles from './HeroHome.module.css';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
 const HeroHome = () => {
-  const ref = useRef(null);
+  const refs = useRef<(HTMLLIElement | null)[]>([]);
   useEffect(() => {
-    fadeInOnScroll(ref, { y: 100 });
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 50 } : { x: 100, y: -50 },
+        );
+    });
   }, []);
 
   return (
     <section className={styles.heroSection}>
-      <p className={styles.topText}>
+      <p className={styles.topText} ref={el => (refs.current[1] = el)}>
         Der richtige Partner für Ihren
         <br />
         Immobilienverkauf
         <br /> im Münsterland
       </p>
-      <div className={styles.bottomBar}>
+      <div className={styles.bottomBar} ref={el => (refs.current[2] = el)}>
         <div className={styles.buttonWrapper}>
           <Button
             initialText="Kostenlose Wertermittlung"

@@ -17,16 +17,15 @@ const SalesSupport: React.FC = () => {
   const isTablet = screenWidth <= 765;
 
   return (
-    <div className={styles.container}>
+    <>
       <HeroSupport isMobile={isMobile} />
-
       <div
         className={`${styles.mainContentWrapper} ${isMobile ? styles.mainContentWrapperMobile : isTablet ? styles.mainContentWrapperTablet : ''}`}
       >
         <AgentBenefits isMobile={isMobile} isTablet={isTablet} />
         <ImmoTonnContent isMobile={isMobile} isTablet={isTablet} />
       </div>
-    </div>
+    </>
   );
 };
 

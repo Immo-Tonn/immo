@@ -8,7 +8,7 @@ import { fadeInOnScroll } from '@shared/anim/animations';
 
 const RechtUndRat = () => {
   const refs = useRef<(HTMLLIElement | null)[]>([]);
-  const imgRef = useRef<HTMLImageElement | null>(null);
+
   useEffect(() => {
     refs.current.forEach((ref, i) => {
       if (ref)
@@ -21,16 +21,17 @@ const RechtUndRat = () => {
 
   return (
     <section className={styles.rechtSection}>
-      <div className={styles.firstTitleWrapper}>
-        <h1>Recht & Rat</h1>
+      <div className={styles.imageWrapper}>
+        <img
+          src={rechtHero}
+          className={styles.image}
+          alt="Beratung Schritt 1"
+          ref={el => (refs.current[0] = el)}
+        />
+        <div className={styles.firstTitleWrapper}>
+          <h1>Recht & Rat</h1>
+        </div>
       </div>
-
-      <img
-        src={rechtHero}
-        className={styles.image}
-        alt="Beratung Schritt 1"
-        ref={el => (refs.current[0] = el)}
-      />
 
       <h2 ref={el => (refs.current[2] = el)}>
         rechtliche sicherheit & praktische <br />

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './AgentBenefits.module.css';
+import { fadeInOnScroll } from '@shared/anim/animations';
 
 interface AgentBenefitsSectionProps {
   isMobile: boolean;
@@ -10,17 +11,19 @@ const AgentBenefits: React.FC<AgentBenefitsSectionProps> = ({
   isMobile,
   isTablet,
 }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    fadeInOnScroll(ref, { y: 100, x: -40 });
+  }, []);
   return (
-    <>
+    <section ref={ref}>
       <div
         className={`${styles.whyAgentSection} ${isTablet ? styles.whyAgentSectionTablet : ''}`}
       >
         <div
           className={`${styles.whyAgentContentWithLine} ${isTablet ? styles.whyAgentContentWithLineTablet : ''}`}
         >
-          <h3 className={styles.whyAgentH3}>
-            WARUM EIN <br /> MAKLER?
-          </h3>
+          <h3 className={styles.whyAgentH3}>warum ein makler?</h3>
           <ul className={styles.whyAgentUl}>
             <li className={styles.whyAgentLi}>
               <h4
@@ -31,8 +34,8 @@ const AgentBenefits: React.FC<AgentBenefitsSectionProps> = ({
               <p
                 className={`${styles.whyAgentP} ${isMobile ? styles.whyAgentPMobile : ''}`}
               >
-                Fundierte Marktkenntnisse sichern den optimalen Angebotspreis
-                für Ihre Immobilie.
+                Der Makler analysiert den Markt und empfiehlt den optimalen
+                Angebotspreis für Ihre Immobilie.
               </p>
             </li>
             <li className={styles.whyAgentLi}>
@@ -81,13 +84,15 @@ const AgentBenefits: React.FC<AgentBenefitsSectionProps> = ({
       <div
         className={`${styles.immoTonnImageBackground} ${isMobile ? styles.immoTonnImageBackgroundMobile : ''}`}
       >
-        <h3
-          className={`${styles.immoTonnOverlayText} ${isMobile ? styles.immoTonnOverlayTextMobile : ''}`}
-        >
-          IMMO <br /> TONN
-        </h3>
+        <div className={styles.contentWrapper}>
+          <h3
+            className={`${styles.immoTonnOverlayText} ${isMobile ? styles.immoTonnOverlayTextMobile : ''}`}
+          >
+            IMMO <br /> TONN
+          </h3>
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 export default AgentBenefits;

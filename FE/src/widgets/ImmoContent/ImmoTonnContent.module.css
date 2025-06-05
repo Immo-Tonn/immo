@@ -1,4 +1,3 @@
-/* src/components/SalesSupport/ImmoTonnContentSection.module.css */
 .immoTonnContentSection {
   position: relative;
   width: 100%;
@@ -6,12 +5,10 @@
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
-  min-height: auto;
   margin-bottom: 20px;
   display: grid;
   grid-template-columns: 1fr 2px 2fr;
   gap: 65px;
-  align-items: start;
 }
 
 .immoTonnContentSectionMobile {
@@ -34,7 +31,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 0;
 }
 
 .immoTonnBigPhraseDesktop {
@@ -43,10 +39,8 @@
   color: #333;
   z-index: 2;
   font-size: 1.8em;
-  text-align: left; /* Default desktop alignment */
+  text-align: left;
   max-width: 100%;
-  width: auto;
-  margin-bottom: 0;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
   align-self: end;
@@ -60,8 +54,6 @@
   font-size: 1.4em;
   text-align: center;
   max-width: 100%;
-  width: auto;
-  margin-bottom: 0;
 }
 
 .immoTonnBigPhraseMobile {
@@ -72,7 +64,6 @@
   font-size: 1.2em;
   text-align: center;
   max-width: 100%;
-  width: auto;
   margin-bottom: 20px;
 }
 
@@ -80,7 +71,6 @@
   background-color: black;
   z-index: 1;
   width: 2px;
-  height: auto;
   display: block; /* Always visible on desktop/tablet grid */
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -137,7 +127,6 @@
   margin-bottom: 15px;
   background-color: #fff;
   padding: 10px 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 

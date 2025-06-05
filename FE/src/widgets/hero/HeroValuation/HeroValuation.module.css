@@ -2,14 +2,6 @@
   background-color: white;
   color: black;
 }
-.contentWrapper {
-  display: flex;
-  flex-direction: column-reverse;
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 675px;
-}
 
 .heroValuationSection > p {
   display: none;
@@ -19,7 +11,14 @@
   color: #000;
   padding: 20px;
 }
-
+.contentWrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 675px;
+}
 .contentWrapper::before {
   position: absolute;
   content: '';
@@ -54,7 +53,7 @@
   height: 89px;
 }
 
-.textWrapper p {
+.textWrapper > p {
   color: white;
   font-family: var(--Inter);
   font-size: clamp(24px, 4.5vw, 40px);
