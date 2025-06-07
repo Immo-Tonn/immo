@@ -10,16 +10,7 @@ const RealEstate = () => {
   const refs = useRef<(HTMLLIElement | null)[]>([]);
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  const getScroller = () => {
-    const isMobile = window.innerWidth <= 765;
-    const list = listRef.current;
-    const isScrollable = list && list.scrollHeight > list.clientHeight;
-
-    return isMobile || !isScrollable ? undefined : list;
-  };
-
   useEffect(() => {
-    const scroller = getScroller();
     refs.current.forEach((ref, i) => {
       if (ref)
         fadeInOnScroll(
@@ -27,7 +18,6 @@ const RealEstate = () => {
           {
             x: i % 2 === 0 ? -100 : 100,
             y: i % 2 === 0 ? 0 : -50,
-            scroller,
           },
         );
     });
@@ -46,6 +36,7 @@ const RealEstate = () => {
                 object={obj}
                 images={images}
                 ref={el => (refs.current[i] = el)}
+                residentialHouse={obj.residentialHouses}
               />
             ))}
           </ul>

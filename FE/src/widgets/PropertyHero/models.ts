@@ -5,7 +5,7 @@ export interface Address {
 }
 
 export interface Image {
-  id: string;
+  _id: string;
   url: string;
   type: string;
 }

@@ -95,7 +95,6 @@
   font-size: 16px;
   font-family: var(--Roboto);
   border: none;
-  cursor: pointer;
   text-transform: uppercase;
   max-width: 200px;
 }

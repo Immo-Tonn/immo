@@ -183,7 +183,7 @@ input[readonly] {
   cursor: pointer;
 }
 
-.modal > button:hover {
+.modal button:hover {
   background-color: #3a334d;
 }
 
