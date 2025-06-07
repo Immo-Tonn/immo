@@ -64,8 +64,8 @@ input[readonly] {
   position: relative;
 }
 
-.inputWithIcon input,
-.inputWithIcon select {
+.inputWithIcon > input,
+.inputWithIcon > select {
   width: 100%;
   padding-right: 40px;
 }
@@ -173,7 +173,7 @@ input[readonly] {
   font-size: 16px;
 }
 
-.modal button {
+.modal > button {
   margin-top: 24px;
   padding: 10px 16px;
   background-color: #1c1829;
@@ -183,7 +183,7 @@ input[readonly] {
   cursor: pointer;
 }
 
-.modal button:hover {
+.modal > button:hover {
   background-color: #3a334d;
 }
 

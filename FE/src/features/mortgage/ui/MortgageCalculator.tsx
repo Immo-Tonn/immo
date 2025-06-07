@@ -156,7 +156,11 @@ const MortgageCalculator = () => {
       <div className={styles.modal}>
         <h3>{title}</h3>
         <p>{body}</p>
-        <button onClick={onClose}>Schließen</button>
+        <Button
+          onClick={onClose}
+          initialText="Schließen"
+          clickedText="im Prozess..."
+        />
       </div>
     </div>
   );

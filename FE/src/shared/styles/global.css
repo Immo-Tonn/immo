@@ -27,7 +27,6 @@ body {
   overflow-x: hidden;
 }
 button {
-  width: 100%;
   cursor: pointer;
   background-color: #1b4965;
   color: white;
