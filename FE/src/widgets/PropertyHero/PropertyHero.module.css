@@ -259,7 +259,7 @@ iframe {
   border-radius: 8px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
   .imageContainer {
     display: none;
   }

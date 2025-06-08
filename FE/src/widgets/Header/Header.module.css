@@ -1,5 +1,3 @@
-/* Header.module.css */
-
 .headerWrapper {
   background-color: #1c1829;
   color: white;
@@ -14,7 +12,7 @@
   margin: 0 auto;
 }
 
-.logo img {
+.logo {
   max-height: 136px;
 }
 
@@ -65,7 +63,6 @@
   font-size: 14px;
 }
 
-/* Mobile Styles */
 @media (max-width: 765px) {
   .headerTop {
     display: flex;
@@ -73,4 +70,30 @@
   .nav {
     gap: 10px;
   }
+}
+
+@media (max-width: 576px) {
+  .contact {
+    display: none;
+  }
+  .nav {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+    color: white;
+    margin-bottom: 16px;
+  }
+
+  .headerTop {
+    align-items: center;
+  }
+
+  .logo {
+    max-height: 100px;
+  }
+}
+.burger {
+  display: none;
 }

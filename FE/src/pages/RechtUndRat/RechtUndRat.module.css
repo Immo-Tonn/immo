@@ -86,7 +86,7 @@ hr {
   width: 80%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
   p {
     font-size: 18px;
   }

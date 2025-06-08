@@ -1,72 +1,94 @@
 .heroSection {
   position: relative;
-  margin: 0 auto;
   height: 793px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #160c20;
   color: white;
+  overflow: hidden;
+}
+.heroContentWrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-
 .heroSection::before {
   content: '';
   position: absolute;
-  top: 0;
   left: 50%;
-  transform: translateX(-50%);
   max-width: 1200px;
+  transform: translateX(-50%);
+  width: 100%;
   height: 793px;
   background-image: url('@shared/assets/hero/banner.webp');
   background-size: cover;
   background-position: center;
+  z-index: 1;
+}
+
+.topTextWrapper {
+  position: relative;
+  padding-left: 3rem;
+  padding-top: 80px;
   z-index: 2;
-  width: 100%;
+  max-width: 1200px;
 }
 
 .topText {
-  margin-top: 42px;
-  text-align: center;
+  text-align: left;
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
   font-size: clamp(30px, 5vw, 40px);
+  line-height: 1.2;
   color: #fff;
-  z-index: 99;
+  max-width: 700px;
+  z-index: 2;
 }
+
 .bottomBar {
-  margin: 0 auto;
-  z-index: 99;
-  width: 100%;
+  position: relative;
+  z-index: 2;
   max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.bottomBar .buttonWrapper:first-child Button {
+
+.buttonWrapper:first-child Button {
   padding: 0 41px 11px 41px;
-  font-family: var(--Inter);
-  font-weight: var(--font-weight-secondary);
-  border: none;
+  font-family: var(--Monserat);
+  font-weight: var(--font-weight-main);
   font-size: clamp(36px, 5vw, var(--font-size-main));
   background-color: transparent;
+  color: #eae3cf;
+  border: none;
   line-height: 122%;
   text-align: center;
-  color: #eae3cf;
 }
-.bottomBar .buttonWrapper:last-child Button {
+
+.buttonWrapper:last-child Button {
   padding: 0 41px 11px 41px;
   font-family: var(--Inter);
-  font-weight: var(--font-weight-secondary);
-  border: none;
-  background-color: transparent;
+  font-weight: var(--font-weight-main);
   font-size: clamp(10px, 5vw, var(--font-size-secondary));
-  text-align: center;
+  background-color: transparent;
   color: #f5f5f5;
+  border: none;
+  text-align: center;
 }
+
 @media (max-width: 765px) {
   .topText {
-    padding-left: var(--font-size-main);
     text-align: left;
   }
 }

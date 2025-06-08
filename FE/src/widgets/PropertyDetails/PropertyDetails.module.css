@@ -118,7 +118,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
   .calcButton {
     font-size: 20px;
     padding: 0.5rem 1rem;

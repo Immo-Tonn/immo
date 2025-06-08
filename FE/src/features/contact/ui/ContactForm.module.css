@@ -103,7 +103,7 @@
   background-color: #161818;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
   .container {
     width: 100%;
     padding: 0 20px;

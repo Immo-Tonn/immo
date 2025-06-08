@@ -1,36 +1,35 @@
 import Button from '@shared/ui/Button/Button';
 import styles from './HeroHome.module.css';
-import { useEffect, useRef } from 'react';
-import { fadeInOnScroll } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 const HeroHome = () => {
-  const refs = useRef<(HTMLLIElement | null)[]>([]);
-  useEffect(() => {
-    refs.current.forEach((ref, i) => {
-      if (ref)
-        fadeInOnScroll(
-          { current: ref },
-          i % 2 === 0 ? { x: -100, y: 50 } : { x: 100, y: -50 },
-        );
-    });
-  }, []);
-
   return (
     <section className={styles.heroSection}>
-      <p className={styles.topText} ref={el => (refs.current[1] = el)}>
-        Der richtige Partner für Ihren
-        <br />
-        Immobilienverkauf
-        <br /> im Münsterland
-      </p>
-      <div className={styles.bottomBar} ref={el => (refs.current[2] = el)}>
-        <div className={styles.buttonWrapper}>
-          <Button
-            initialText="Kostenlose Wertermittlung"
-            clickedText="Weiterleitung"
-          />
+      <div className={styles.heroContentWrapper}>
+        <div className={styles.topTextWrapper}>
+          <p className={styles.topText}>
+            Der richtige Partner für Ihren
+            <br />
+            Immobilienverkauf
+            <br />
+            im Münsterland
+          </p>
         </div>
-        <div className={styles.buttonWrapper}>
-          <Button initialText="direkt anfordern" clickedText="Weiterleitung" />
+
+        <div className={styles.bottomBar}>
+          <div className={styles.buttonWrapper}>
+            <Link to="/wertermittlung">
+              <Button
+                initialText="Kostenlose Wertermittlung"
+                clickedText="Weiterleitung..."
+              />
+            </Link>
+          </div>
+          <div className={styles.buttonWrapper}>
+            <Button
+              initialText="direkt anfordern"
+              clickedText="Weiterleitung..."
+            />
+          </div>
         </div>
       </div>
     </section>
