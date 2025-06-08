@@ -42,7 +42,7 @@ const DankePage = () => {
         <p>Ihre Nachricht wurde erfolgreich versendet.</p>
         <Button
           initialText="Zurück zur Startseite"
-          clickedText="Weiterleitung"
+          clickedText="Weiterleitung..."
           onClick={() => navigate('/')}
         />
       </div>

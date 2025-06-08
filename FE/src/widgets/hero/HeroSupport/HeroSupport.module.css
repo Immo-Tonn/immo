@@ -1,13 +1,13 @@
 .textOverlay {
   text-transform: uppercase;
-  color: white;
   padding: 15px;
   text-align: center;
   font-size: 36px;
   background-color: rgba(20, 31, 40, 0.7);
   z-index: 2;
 }
-
+.heroValuationSection {
+}
 .textOverlay > p {
   color: white;
   padding: 0 31px 30px 99px;
@@ -29,7 +29,6 @@
 .textWrapper::before {
   position: absolute;
   content: '';
-  top: 0;
   left: 50%;
   transform: translateX(-50%);
   height: 675px;

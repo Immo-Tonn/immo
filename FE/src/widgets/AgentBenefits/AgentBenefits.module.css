@@ -8,17 +8,10 @@
   justify-content: center;
 }
 
-.whyAgentSectionTablet {
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0;
-}
-
 .whyAgentContentWithLine {
   flex-grow: 1;
   max-width: 600px;
-  box-sizing: border-box;
-  padding-right: 30px;
+  padding-right: 50px;
   border-right: 2px solid black;
   width: 100%;
 }
@@ -45,13 +38,7 @@
 .whyAgentH4 {
   text-align: left;
 }
-.whyAgentLi > p {
-  text-align: left;
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: 0.1em;
-  color: #000;
-}
+
 .whyAgentUl {
   list-style: none;
   padding: 0;
@@ -61,34 +48,25 @@
 }
 
 .whyAgentLi {
-  background-color: #fff;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   line-height: 1.6;
   margin-bottom: 20px;
-  width: 90%;
-  box-sizing: border-box;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  border-radius: 5px;
 }
 
 .whyAgentH4 {
-  color: #333;
+  font-family: var(--Roboto);
   margin-bottom: 5px;
-  font-size: 1.1em;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.1em;
 }
-
-.whyAgentH4Mobile {
-  font-size: 1em;
-}
-
 .whyAgentP {
-  color: #555;
-  font-size: 0.95em;
-  line-height: 1.5;
+  font-family: var(--Roboto);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.1em;
 }
 
 .immoTonnImageBackground {
@@ -101,7 +79,6 @@
 .immoTonnImageBackground::before {
   position: absolute;
   content: '';
-  top: 0;
   left: 50%;
   transform: translateX(-50%);
   height: 762px;

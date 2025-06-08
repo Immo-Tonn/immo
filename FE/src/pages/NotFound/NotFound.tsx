@@ -25,7 +25,7 @@ const NotFound = () => {
         <Link to="/">
           <Button
             initialText=" Zurück zur Startseite"
-            clickedText="Weiterleitung.."
+            clickedText="Weiterleitung....."
             className={styles.homeBtn}
           />
         </Link>

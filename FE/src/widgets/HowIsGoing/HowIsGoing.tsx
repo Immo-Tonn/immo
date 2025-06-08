@@ -45,7 +45,7 @@ const HowIsGoing = () => {
         >
           <Button
             initialText="Kostenlose Wertermittlung starten"
-            clickedText="Weiterleitung..."
+            clickedText="Weiterleitung......"
           />
         </div>
       </div>

@@ -254,7 +254,7 @@ const FiveSteps = () => {
             <Button
               className={styles.verkaufButton}
               initialText="Verkauf"
-              clickedText="Weiterleitung"
+              clickedText="Weiterleitung..."
             />
           </div>
         </div>

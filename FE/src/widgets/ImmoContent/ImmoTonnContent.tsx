@@ -97,7 +97,10 @@ const ImmoTonnContent: React.FC<ImmoTonnContentSectionProps> = ({
           </>
         )}
       </div>
-      <Button initialText="KONTAKTAUFNEHMEN" clickedText="Weiterleitung..." />
+      <Button
+        initialText="KONTAKTAUFNEHMEN"
+        clickedText="Weiterleitung......"
+      />
     </>
   );
 };

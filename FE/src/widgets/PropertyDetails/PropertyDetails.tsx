@@ -47,7 +47,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         <div className={styles.floatingButtonWrapper}>
           <Button
             initialText="Finanzierungsrechner"
-            clickedText="Weiterleitung"
+            clickedText="Weiterleitung..."
             className={styles.calcButton}
             onClick={() => navigate('/finanzierung')}
           />
@@ -105,7 +105,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           <div className={styles.rightButton}>
             <Button
               initialText="Finanzierungsrechner"
-              clickedText="Weiterleitung"
+              clickedText="Weiterleitung..."
               className={styles.calcButton}
               onClick={() => navigate('/finanzierung')}
             />

@@ -20,14 +20,14 @@ const HeroHome = () => {
             <Link to="/wertermittlung">
               <Button
                 initialText="Kostenlose Wertermittlung"
-                clickedText="Weiterleitung..."
+                clickedText="Weiterleitung......"
               />
             </Link>
           </div>
           <div className={styles.buttonWrapper}>
             <Button
               initialText="direkt anfordern"
-              clickedText="Weiterleitung..."
+              clickedText="Weiterleitung......"
             />
           </div>
         </div>

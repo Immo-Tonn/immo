@@ -68,7 +68,7 @@ const ValuationCTA = () => {
       <div className={styles.buttonWrapper} ref={el => (refs.current[3] = el)}>
         <Button
           initialText={'Wie viel ist mein Haus wert?'}
-          clickedText="Weiterleitung"
+          clickedText="Weiterleitung..."
         />
       </div>
     </section>
