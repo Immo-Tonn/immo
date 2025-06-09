@@ -2,6 +2,7 @@
   margin-top: 30px;
   display: flex;
   justify-content: center;
+  height: 100vh;
 }
 .verticalLineRight {
   width: 1px;
