@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './HeroSupport.module.css';
 import { fadeInOnScroll } from '@shared/anim/animations';
-import { useEffect, useRef } from 'react';
-interface HeaderSectionProps {
-  isMobile: boolean;
-}
 
-const HeroSupport: React.FC<HeaderSectionProps> = ({ isMobile }) => {
-  const ref = useRef(null);
+const HeroSupport: React.FC = () => {
+  const ref = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
-    fadeInOnScroll(ref, { x: 100 });
+    if (ref.current) {
+      fadeInOnScroll(ref, { x: 100 });
+    }
   }, []);
+
   return (
     <section className={styles.heroValuationSection} ref={ref}>
       <div className={styles.textWrapper}>
-        <div
-          className={`${styles.textOverlay} ${isMobile ? styles.textOverlayMobile : ''}`}
-        >
+        <div className={styles.textOverlay}>
           <p>
             verkaufssupport - mehr als <br />
             nur vermittlung - rundum-service vom <br />

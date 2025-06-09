@@ -34,11 +34,18 @@ footer {
   list-style: none;
   font-size: 16px;
 }
+.footerIcons > li > a > img {
+  transition: transform 0.3s ease;
+}
+.footerIcons > li > a > img:hover {
+  animation: wiggleRotate 0.6s ease-in-out;
+}
 .footerIcons {
   display: flex;
   gap: 52px;
   list-style: none;
 }
+
 .footerLinks li {
   margin-bottom: 8px;
 }
@@ -52,9 +59,7 @@ footer {
   font-size: 16px;
   line-height: 1.6;
   text-align: left;
-  /* this is kindly bad */
   margin-bottom: 126px;
-  /* this is kindly bad */
 }
 
 .contactButton {
@@ -106,8 +111,29 @@ footer {
   }
 }
 
-@media (max-width: 572px) {
+@media (max-width: 576px) {
   .bottomBar {
     display: block;
+  }
+}
+
+@keyframes wiggleRotate {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+  20% {
+    transform: rotate(-10deg) translateY(-2px);
+  }
+  40% {
+    transform: rotate(10deg) translateY(-2px);
+  }
+  60% {
+    transform: rotate(-6deg) translateY(0);
+  }
+  80% {
+    transform: rotate(6deg) translateY(1px);
+  }
+  100% {
+    transform: rotate(0deg) translateY(0);
   }
 }

@@ -1,15 +1,16 @@
 import Button from '@shared/ui/Button/Button';
 import styles from './ImmoTonnContent.module.css';
+import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { fadeInOnScroll } from '@shared/anim/animations';
 
-interface ImmoTonnContentSectionProps {
-  isMobile: boolean;
-  isTablet: boolean;
-}
+const ImmoTonnContent: React.FC = () => {
+  const ref = useRef(null);
 
-const ImmoTonnContent: React.FC<ImmoTonnContentSectionProps> = ({
-  isMobile,
-  isTablet,
-}) => {
+  useEffect(() => {
+    fadeInOnScroll(ref, { x: 100, y: -50 });
+  }, []);
+
   const listItemData = [
     {
       title: 'Rechtliche Sicherheit',
@@ -35,73 +36,33 @@ const ImmoTonnContent: React.FC<ImmoTonnContentSectionProps> = ({
 
   return (
     <>
-      <div
-        className={`${styles.immoTonnContentSection} ${isMobile ? styles.immoTonnContentSectionMobile : isTablet ? styles.immoTonnContentSectionTablet : ''}`}
-      >
-        {isMobile ? (
-          <>
-            <ul className={styles.immoTonnTextListMobile}>
-              {listItemData.map((item, index) => (
-                <li key={index} className={styles.immoTonnTextListItemWrapper}>
-                  <h4 className={styles.immoTonnTextH4Mobile}>{item.title}</h4>
-                  <p className={styles.immoTonnTextPMobile}>
-                    {item.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <div className={styles.immoTonnPhraseLine}></div>
-            <div className={styles.immoTonnBigPhraseMobile}>
-              Verlässlich. <br />
-              Persönlich. <br />
-              Vor Ort.
-            </div>
-          </>
-        ) : isTablet ? (
-          <>
-            <div className={styles.immoTonnLeftSectionWrapper}>
-              <div className={styles.immoTonnLine}></div>
-              <p className={styles.immoTonnBigPhraseTablet}>
-                Verlässlich. <br />
-                Persönlich. <br />
-                Vor Ort.
-              </p>
-            </div>
-            <ul className={styles.immoTonnTextListTablet}>
-              {listItemData.map((item, index) => (
-                <li key={index} className={styles.immoTonnTextListItemWrapper}>
-                  <h4 className={styles.immoTonnTextH4Tablet}>{item.title}</h4>
-                  <p className={styles.immoTonnTextPTab}>{item.description}</p>
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <>
-            <div className={styles.immoTonnBigPhraseDesktop}>
-              Verlässlich. <br />
-              Persönlich. <br />
-              Vor Ort.
-            </div>
-            <div className={styles.immoTonnLine}></div>
-            <ul className={styles.immoTonnTextListDesktop}>
-              {listItemData.map((item, index) => (
-                <li key={index} className={styles.immoTonnTextListItemWrapper}>
-                  <h4 className={styles.immoTonnTextH4Desktop}>{item.title}</h4>
-                  <p className={styles.immoTonnTextPDesktop}>
-                    {item.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+      <section className={styles.immoTonnContentSection} ref={ref}>
+        <div className={styles.immoTonnLeftSectionWrapper}>
+          <p className={styles.immoTonnBigPhrase}>
+            Verlässlich. <br /> Persönlich. <br /> Vor Ort.
+          </p>
+          <span className={styles.immoTonnLine}></span>
+        </div>
+        <ul className={styles.immoTonnTextList}>
+          {listItemData.map((item, index) => (
+            <li key={index} className={styles.immoTonnTextListItemWrapper}>
+              <h4 className={styles.immoTonnTextH4}>{item.title}</h4>
+              <p className={styles.immoTonnTextP}>{item.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <div className={styles.buttonWrapper}>
+        <Link to="/kontakt">
+          <Button
+            className={styles.salesSupportButton}
+            initialText="KONTAKTAUFNEHMEN"
+            clickedText="Weiterleitung..."
+          />
+        </Link>
       </div>
-      <Button
-        initialText="KONTAKTAUFNEHMEN"
-        clickedText="Weiterleitung......"
-      />
     </>
   );
 };
+
 export default ImmoTonnContent;

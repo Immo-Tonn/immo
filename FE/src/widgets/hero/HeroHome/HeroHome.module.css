@@ -93,8 +93,12 @@
   }
 }
 
-@media (max-width: 572px) {
+@media (max-width: 576px) {
   .bottomBar {
     display: block;
+  }
+  .buttonWrapper {
+    display: flex;
+    justify-content: center;
   }
 }
