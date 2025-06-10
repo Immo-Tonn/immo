@@ -8,7 +8,6 @@
   max-width: 1200px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
   margin: 0 auto;
 }
 
@@ -24,30 +23,57 @@
 
 .nav a {
   font-weight: var(--font-weight-secondary);
-  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-small));
+  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
   text-align: center;
   color: #d9d9d9;
   margin-bottom: 16px;
+  text-decoration: none;
 }
+
+.nav a:hover {
+  color: white;
+}
+
+.nav a.active {
+  color: white;
+}
+
+.listItemText {
+  display: flex;
+  justify-content: center;
+  color: white !important;
+  margin: 0;
+  align-items: center;
+  font-size: clamp(16px, 3vw, 20px) !important;
+}
+
 .contact {
   font-size: 12px;
-  line-height: 1.5;
   text-align: right;
 }
 
 .headerContacts {
   margin-top: 5px;
   align-items: center;
-  font-size: clamp(10px, 5vw, 14px);
+  font-size: clamp(10px, 2vw, 14px);
   text-align: left;
   list-style: none;
   margin-bottom: 20px;
+  padding: 0;
 }
 
 .headerContacts li {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 8px;
+}
+
+.contactIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
 }
 
 .contactIcon img {
@@ -59,30 +85,94 @@
 .contactText {
   text-decoration: none;
   color: white;
-  line-height: 1.4;
   font-size: 14px;
+  transition: opacity 0.2s ease;
 }
 
-@media (max-width: 765px) {
-  .headerTop {
-    display: flex;
+.contactText:hover {
+  opacity: 0.8;
+}
+
+.burger {
+  display: none;
+  color: white;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activeLink {
+  color: white !important;
+  font-weight: bold;
+}
+
+.drawerLogo {
+  height: 114px;
+}
+
+.locationIcon {
+  width: 26px;
+  height: 26px;
+}
+
+.burgerButton {
+  display: none !important;
+  color: white !important;
+}
+
+.drawerCloseButton {
+  color: white !important;
+}
+
+.drawerPaper {
+  background-color: #1c1829 !important;
+}
+
+.drawerList {
+  display: flex !important;
+  padding: 0 !important;
+}
+
+.drawerListItem {
+  padding: 0 !important;
+}
+
+@media (max-width: 576px) {
+  .burgerButton {
+    display: block !important;
+    margin-bottom: 16px;
   }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    max-height: 114px;
+  }
+
   .nav {
-    gap: 10px;
+    gap: 20px;
+  }
+
+  .nav a {
+    font-size: clamp(12px, 2vw, 16px);
   }
 }
 
+/* Mobile styles */
 @media (max-width: 576px) {
   .contact {
     display: none;
   }
+
   .nav {
     display: none;
   }
 
   .burger {
     display: block;
-    color: white;
     margin-bottom: 16px;
   }
 
@@ -93,7 +183,8 @@
   .logo {
     max-height: 100px;
   }
-}
-.burger {
-  display: none;
+
+  .headerWrapper {
+    padding: 0;
+  }
 }

@@ -72,7 +72,7 @@ export const fadeInOnScroll = (
     duration = 0.3,
     delay = 0,
     ease = 'sine.inOut',
-    start = 'top 30%',
+    start = 'top 10%',
     scrub = false,
   } = options;
 
@@ -99,11 +99,13 @@ export const fadeInOnScroll = (
         scrub,
         onEnter: () => (el.style.pointerEvents = 'auto'),
         onLeaveBack: () => (el.style.pointerEvents = 'none'),
+        // Добавляем пассивные слушатели
+        passiveWheelEvents: true, // Для событий колесика мыши
+        passiveTouchEvents: true, // Для touch-событий
       },
     },
   );
 };
-
 export const runningBoxShadow = (ref: any) => {
   const el = ref.current;
   if (!el) return;

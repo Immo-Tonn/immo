@@ -27,7 +27,7 @@ const RealEstate = () => {
     <>
       <LoadingErrorHandler loading={loading} error={err} />
       {!loading && !err && objectData && (
-        <section className={styles.container}>
+        <section className={styles.realEstateSection}>
           <h1 className={styles.title}>Immobilienangebote</h1>
           <ul className={styles.cardList} ref={listRef}>
             {objectData.map((obj, i) => (

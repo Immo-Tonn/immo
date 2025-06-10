@@ -2,6 +2,7 @@ import Button from '@shared/ui/Button/Button';
 import styles from './HowIsGoing.module.css';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 const HowIsGoing = () => {
   const refs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -43,10 +44,12 @@ const HowIsGoing = () => {
           className={styles.buttonWrapper}
           ref={el => (refs.current[3] = el)}
         >
-          <Button
-            initialText="Kostenlose Wertermittlung starten"
-            clickedText="Weiterleitung......"
-          />
+          <Link to="/kontakt">
+            <Button
+              initialText="Kontakt knüpfen"
+              clickedText="Weiterleitung..."
+            />
+          </Link>
         </div>
       </div>
     </section>

@@ -5,10 +5,19 @@ import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
 
 const ImmoTonnContent: React.FC = () => {
-  const ref = useRef(null);
+  const refs = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
-    fadeInOnScroll(ref, { x: 100, y: -50 });
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          {
+            x: i % 2 === 0 ? 50 : -100,
+            y: i % 2 === 0 ? 0 : -50,
+          },
+        );
+    });
   }, []);
 
   const listItemData = [
@@ -36,14 +45,17 @@ const ImmoTonnContent: React.FC = () => {
 
   return (
     <>
-      <section className={styles.immoTonnContentSection} ref={ref}>
+      <section className={styles.immoTonnContentSection}>
         <div className={styles.immoTonnLeftSectionWrapper}>
           <p className={styles.immoTonnBigPhrase}>
             Verlässlich. <br /> Persönlich. <br /> Vor Ort.
           </p>
           <span className={styles.immoTonnLine}></span>
         </div>
-        <ul className={styles.immoTonnTextList}>
+        <ul
+          className={styles.immoTonnTextList}
+          ref={el => (refs.current[0] = el)}
+        >
           {listItemData.map((item, index) => (
             <li key={index} className={styles.immoTonnTextListItemWrapper}>
               <h4 className={styles.immoTonnTextH4}>{item.title}</h4>

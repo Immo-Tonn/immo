@@ -1,17 +1,10 @@
 .immoTonnContentSection {
   max-width: 1200px;
-  margin: 0 auto 20px auto;
-  padding: 20px 0 152px;
+  margin: 0 auto;
+  padding: 80px 20px 152px;
   display: grid;
   grid-template-columns: 1fr 2px 2fr;
-  gap: 65px;
   align-items: flex-end;
-}
-
-.immoTonnLeftSectionWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .immoTonnBigPhrase {
@@ -19,7 +12,11 @@
   font-size: var(--font-size-main);
   font-family: var(--Roboto);
   color: #000;
-  text-align: center;
+  text-align: left;
+  line-height: 1.2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .immoTonnLine {
@@ -32,10 +29,12 @@
   list-style: none;
   grid-column: 3 / 4;
   grid-row: 1 / 2;
+  margin-left: 65px;
+  border-left: 1px solid;
 }
 
 .immoTonnTextListItemWrapper {
-  margin-bottom: 15px;
+  margin: 0 25px 0 65px;
   padding: 10px 15px;
   box-sizing: border-box;
 }
@@ -53,11 +52,13 @@
   font-weight: 400;
   font-size: 20px;
   letter-spacing: 0.1em;
+  line-height: 1.6;
 }
 
 .buttonWrapper {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
 }
 
 .salesSupportButton {
@@ -71,13 +72,15 @@
   font-weight: 400;
   font-size: 32px;
   color: #fcfdff;
+  margin-bottom: 85px;
 }
 
 @media (max-width: 765px) {
   .immoTonnContentSection {
-    grid-template-columns: auto 1fr;
-    gap: 20px;
-    padding: 10px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 10px 80px;
+    text-align: center;
   }
 
   .immoTonnBigPhrase {
@@ -92,6 +95,19 @@
     font-size: 0.85em;
     line-height: 1.6;
   }
+
+  .immoTonnLine {
+    height: 2px;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .salesSupportButton {
+    width: 100%;
+    max-width: 500px;
+    font-size: 24px;
+    height: 70px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -99,37 +115,40 @@
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
-    padding: 10px 0;
+    padding: 40px 10px 80px;
   }
 
   .immoTonnTextList {
     text-align: left;
+    width: 90%;
+    border-bottom: 1px solid black;
+    border-left: none;
+    margin-left: 0;
   }
 
   .immoTonnLine {
-    height: 1px;
-    width: 464px;
+    display: none;
   }
 
   .immoTonnBigPhrase {
     font-size: 48px;
     text-align: left;
+    margin-bottom: 20px;
   }
 
   .immoTonnTextH4 {
     font-size: 1em;
-    text-align: center;
+    text-align: left;
   }
 
   .immoTonnTextP {
     font-size: 0.8em;
     line-height: 1.6;
-    text-align: center;
-  }
-  .immoTonnTextH4 {
     text-align: left;
   }
-  .immoTonnTextP {
-    text-align: left;
+
+  .salesSupportButton {
+    font-size: 20px;
+    height: 60px;
   }
 }
