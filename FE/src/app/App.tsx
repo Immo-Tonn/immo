@@ -17,6 +17,7 @@ import PropertyPage from '@pages/PropertyPage/PropertyPage';
 import SalesSupport from '@pages/SalesSupport/SalesSupport';
 import RechtUndRat from '@pages/RechtUndRat/RechtUndRat';
 import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
+import 'leaflet/dist/leaflet.css';
 const App = () => {
   return (
     <Router>
