@@ -6,6 +6,13 @@ import {
   BUNNY_ACCESS_KEY,
 } from "../config/bunny";
 
+// Заменяет storage-ссылку на CDN-ссылку
+const transformBunnyUrl = (url: string): string =>
+  url.replace(
+    "https://storage.bunnycdn.com/immobilien-media",
+    "https://immobilien-cdn.b-cdn.net"
+  );
+
 export const uploadToBunny = async (
   localFilePath: string,
   originalName: string
@@ -51,7 +58,8 @@ export const uploadToBunny = async (
 
     fs.unlinkSync(localFilePath);
 
-    return `https://${BUNNY_STORAGE_HOST}/${BUNNY_STORAGE_ZONE}/${fileName}`;
+    const storageUrl = `https://${BUNNY_STORAGE_HOST}/${BUNNY_STORAGE_ZONE}/${fileName}`;
+    return transformBunnyUrl(storageUrl); // ✅ возвращаем сразу CDN-ссылку
   } catch (error: any) {
     if (fs.existsSync(localFilePath)) {
       fs.unlinkSync(localFilePath);

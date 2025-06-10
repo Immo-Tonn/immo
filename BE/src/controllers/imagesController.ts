@@ -5,19 +5,14 @@ import { uploadToBunny } from "../utils/uploadImages";
 import { deleteFromBunny } from "../utils/deleteImages";
 import path from "path";
 import fs from "fs";
-import {
-  getAllImagesHelper,
-  getImageByIdHelper,
-  getImagesByObjectIdHelper,
-} from "../utils/getImages";
 
 export const getAllImages = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const images = await getAllImagesHelper();
-    if (!images) {
+    const images = await ImagesModel.find();
+    if (!images || images.length === 0) {
       res.status(404).json({ message: "Keine Bilder gefunden" });
       return;
     }
@@ -35,7 +30,7 @@ export const getImageById = async (
   res: Response
 ): Promise<void> => {
   try {
-    const image = await getImageByIdHelper(req.params.id);
+    const image = await ImagesModel.findById(req.params.id);
 
     if (!image) {
       res.status(404).json({ message: "Bild nicht gefunden" });
@@ -65,9 +60,9 @@ export const getImagesByObjectId = async (
       return;
     }
 
-    const images = await getImagesByObjectIdHelper(objectId);
+    const images = await ImagesModel.find({ realEstateObject: objectId });
 
-    if (!images) {
+    if (!images || images.length === 0) {
       res
         .status(404)
         .json({ message: "Keine Bilder für dieses Objekt gefunden" });
@@ -150,7 +145,7 @@ export const updateImage = async (
       return;
     }
 
-    let updatedData: any = { ...req.body };
+    const updatedData: any = { ...req.body };
 
     if (file) {
       const newUrl = await uploadToBunny(localFilePath, file.originalname);
