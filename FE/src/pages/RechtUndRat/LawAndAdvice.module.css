@@ -62,7 +62,7 @@
 }
 
 .blockTitle > h2 {
-  font-size: 40px;
+  font-size: clamp(24px, 6vw, 40px);
   font-weight: bold;
   margin-top: 100px;
   font-family: var(--Roboto);
@@ -80,7 +80,7 @@
   text-align: center;
   margin-top: 80px;
   font-weight: 400;
-  font-size: 24px;
+  font-size: clamp(20px, 4vw, 24px);
 }
 
 hr {

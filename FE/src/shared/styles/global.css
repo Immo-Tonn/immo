@@ -13,8 +13,8 @@
   --font-weight-main: 600;
   --font-weight-secondary: 400;
 }
-
 a {
+  position: relative;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -22,19 +22,36 @@ a {
     color 200ms;
 }
 
+a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background-color: white;
+  transition: width 300ms ease;
+}
+
 a:hover {
   color: white;
   transform: scale(1.2);
+}
+
+a:hover::after {
+  width: 100%;
 }
 
 * {
   padding: 0;
   margin: 0;
 }
+
 html,
 body {
   overflow-x: hidden;
 }
+
 button {
   cursor: pointer;
   background-color: #1b4965;

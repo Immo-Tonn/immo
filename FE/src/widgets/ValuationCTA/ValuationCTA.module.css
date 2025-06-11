@@ -51,7 +51,7 @@
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
   color: #212529;
-  font-size: clamp(16px, 2.2vw, 22px);
+  font-size: clamp(16px, 3vw, 22px);
   max-width: 557px;
   margin-left: clamp(40px, 8vw, 94px);
 }

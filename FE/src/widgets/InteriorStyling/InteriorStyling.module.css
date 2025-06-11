@@ -31,7 +31,7 @@
 
   text-align: center;
   color: #000;
-  margin-left: 50px;
+  margin: 0 clamp(10px, 4vw, 20px) 0 clamp(20px, 6vw, 50px);
 }
 .lineWrapper {
   display: flex;
