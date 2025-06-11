@@ -45,14 +45,12 @@ export const createLandPlot = async (
   try {
     const { realEstateObject, ...LandPlotsData } = req.body;
 
-    // 1. Проверка: существует ли объект недвижимости
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
 
-    // Проверка на соответствие типа в обьекте недвижимости
     if (realEstate.type !== ObjectType.LAND) {
       res.status(400).json({
         message: 'Der Eigenschaftstyp stimmt nicht überein.',
@@ -67,7 +65,6 @@ export const createLandPlot = async (
       return;
     }
 
-    // 2. Создаём новую квартиру и связываем с объектом
     const newLandPlot = new LandPlotsModel({
       ...LandPlotsData,
       realEstateObject,
@@ -75,11 +72,9 @@ export const createLandPlot = async (
 
     const savedLandPlot = await newLandPlot.save();
 
-    // 3. Добавляем ID квартиры в объект недвижимости
     realEstate.landPlots = savedLandPlot._id as Types.ObjectId;
     await realEstate.save();
 
-    // 4. Ответ клиенту
     res.status(201).json(savedLandPlot);
   } catch (error) {
     res.status(500).json({
@@ -116,7 +111,6 @@ export const deleteLandPlot = async (
   res: Response,
 ): Promise<void> => {
   try {
-    // 1. Удаляем по ID
     const deleted = await LandPlotsModel.findByIdAndDelete(req.params.id);
     if (!deleted) {
       res.status(404).json({
@@ -125,12 +119,10 @@ export const deleteLandPlot = async (
       return;
     }
 
-    // 2. Удаляем ID квартиры из соответствующего объекта недвижимости
     await RealEstateObjectsModel.findByIdAndUpdate(deleted.realEstateObject, {
       $unset: { landPlots: '' },
     });
 
-    // 3. Ответ клиенту
     res.status(200).json({
       message: 'Zusätzliche Informationen zum Objekt Grundstück entfernt',
     });

@@ -10,7 +10,6 @@ export const uploadToBunnyVideo = async (
 ): Promise<{ videoId: string; videoUrl: string; thumbnailUrl: string }> => {
   const fileBuffer = fs.readFileSync(filePath);
 
-  // 1. Create video entry
   const videoId = await new Promise<string>((resolve, reject) => {
     const data = JSON.stringify({ title });
 
@@ -48,7 +47,6 @@ export const uploadToBunnyVideo = async (
     req.end();
   });
 
-  // 2. Upload video binary
   await new Promise<void>((resolve, reject) => {
     const req = https.request(
       {
@@ -77,10 +75,8 @@ export const uploadToBunnyVideo = async (
     req.end();
   });
 
-  // Удаляем локальный файл после успешной загрузки
   fs.unlinkSync(filePath);
 
-  // Формируем публичные URL для видео и превью
   return {
     videoId,
     videoUrl: `https://vz-${BUNNY_LIBRARY_ID}.b-cdn.net/${videoId}/play`,

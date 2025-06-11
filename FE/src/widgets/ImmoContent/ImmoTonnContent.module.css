@@ -84,7 +84,7 @@
   }
 
   .immoTonnBigPhrase {
-    font-size: 1.4em;
+    font-size: 2.4em;
   }
 
   .immoTonnTextH4 {
@@ -108,6 +108,10 @@
     font-size: 24px;
     height: 70px;
   }
+  .immoTonnTextList {
+    text-align: left;
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 576px) {
@@ -124,6 +128,7 @@
     border-bottom: 1px solid black;
     border-left: none;
     margin-left: 0;
+    padding-bottom: 71px;
   }
 
   .immoTonnLine {

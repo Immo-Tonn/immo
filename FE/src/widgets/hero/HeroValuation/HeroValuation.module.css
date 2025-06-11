@@ -22,11 +22,10 @@
 .contentWrapper::before {
   position: absolute;
   content: '';
-  top: 0;
   left: 50%;
   transform: translateX(-50%);
   height: 675px;
-  background-image: url('@shared/assets/hero-valuation/hero-valuation.webp');
+  background-image: url('@shared/assets/hero-valuation/hero-valuation-photo.webp');
   background-size: cover;
   background-position: center;
   z-index: 2;

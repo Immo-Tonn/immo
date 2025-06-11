@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './PropertyHero.module.css';
 import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
 import {
@@ -33,7 +33,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth <= 768 : false,
+    typeof window !== 'undefined' ? window.innerWidth <= 765 : false,
   );
 
   const { title, address, price, status } = object;
@@ -56,7 +56,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const hasMoreMedia = mediaItems.length > 3;
 
   useEffect(() => {
-    const updateMobile = () => setIsMobile(window.innerWidth <= 768);
+    const updateMobile = () => setIsMobile(window.innerWidth <= 765);
     updateMobile();
     window.addEventListener('resize', updateMobile);
     return () => window.removeEventListener('resize', updateMobile);
@@ -141,7 +141,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             style={{ cursor: 'pointer' }}
           >
             {shouldShowStatus && (
-              <div className={styles.statusBadge}>{statusLabel}</div>
+              <span className={styles.statusBadge}>{statusLabel}</span>
             )}
             {isVideo(firstMedia) ? (
               <div className={styles.videoFrameWrapper}>

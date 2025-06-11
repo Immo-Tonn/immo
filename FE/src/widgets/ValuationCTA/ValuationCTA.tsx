@@ -3,6 +3,7 @@ import styles from './ValuationCTA.module.css';
 import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.svg';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll, runningBoxShadow } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 
 const ValuationCTA = () => {
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -16,7 +17,9 @@ const ValuationCTA = () => {
       if (ref) {
         fadeInOnScroll(
           { current: ref },
-          i % 2 === 0 ? { x: -100, y: 0 } : { x: 100, y: -50 },
+          i % 2 === 0
+            ? { x: -100, y: 0, duration: 0.3 }
+            : { x: 100, y: -50, duration: 0.2 },
         );
       }
     });
@@ -66,10 +69,12 @@ const ValuationCTA = () => {
       </div>
 
       <div className={styles.buttonWrapper} ref={el => (refs.current[3] = el)}>
-        <Button
-          initialText={'Wie viel ist mein Haus wert?'}
-          clickedText="Weiterleitung..."
-        />
+        <Link to="/rechner">
+          <Button
+            initialText="Wie viel ist mein Haus wert?"
+            clickedText="Weiterleitung..."
+          />
+        </Link>
       </div>
     </section>
   );

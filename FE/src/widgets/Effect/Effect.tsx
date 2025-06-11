@@ -7,24 +7,34 @@ const Effect = () => {
   const wrapperRef = useRef(null);
   const elem1 = useRef(null);
   const elem2 = useRef(null);
-  const elem3 = useRef(null);
-  const ref = useRef(null);
-
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
-    fadeInOnScroll(ref, { y: -60, x: -120 });
+    refs.current.forEach((ref, i) => {
+      if (ref) {
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0
+            ? { x: -100, y: 0, duration: 0.3 }
+            : { x: 100, y: -50, duration: 0.2 },
+        );
+      }
+    });
     const cleanup = parallaxMouseEffect({
       wrapperRef,
       targets: [
         { ref: elem1, factor: 2 },
         { ref: elem2, factor: 1 },
-        { ref: elem3, factor: 2 },
       ],
     });
     return cleanup;
   }, []);
+
   return (
-    <section className={styles.effectSection} ref={ref}>
-      <div className={styles.descriptionWrapper}>
+    <section className={styles.effectSection}>
+      <div
+        className={styles.descriptionWrapper}
+        ref={el => (refs.current[0] = el)}
+      >
         <span className={styles.line}></span>
         <p className={styles.description}>
           Objektstyling ist mehr als Dekoration. Es ist die Kunst, Räume
@@ -34,16 +44,21 @@ const Effect = () => {
           zweite Chance bekommt.
         </p>
       </div>
-      <div className={styles.imageWrapper} ref={wrapperRef}>
-        <img
-          src={effectPhoto}
-          alt="effect-photo"
-          className={styles.effectPhoto}
-          ref={elem1}
-        />
-        <h2 ref={elem2}>Licht. Perspektive. Wirkung.</h2>
+      <div ref={el => (refs.current[5] = el)}>
+        <div className={styles.imageWrapper} ref={wrapperRef}>
+          <img
+            src={effectPhoto}
+            alt="effect-photo"
+            className={styles.effectPhoto}
+            ref={elem1}
+          />
+          <h2 ref={elem2}>Licht. Perspektive. Wirkung.</h2>
+        </div>
       </div>
-      <div className={styles.descriptionWrapper}>
+      <div
+        className={styles.descriptionWrapper}
+        ref={el => (refs.current[1] = el)}
+      >
         <p className={styles.description}>
           Mit dem richtigen Blickwinkel und dem Spiel aus Schatten und Licht
           lassen wir Räume größer, wärmer und lebendiger wirken.
@@ -62,7 +77,11 @@ const Effect = () => {
           </strong>
         </p>
       </div>
-      <img src={effectBuild} alt="effect-build" />
+      <img
+        src={effectBuild}
+        alt="effect-build"
+        ref={el => (refs.current[2] = el)}
+      />
     </section>
   );
 };

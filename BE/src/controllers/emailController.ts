@@ -41,7 +41,6 @@ export const sendContactEmail = async (req: Request, res: Response) => {
         .json({ message: 'reCAPTCHA-Überprüfung fehlgeschlagen' });
     }
     const transporter = nodemailer.createTransport({
-      // service: "gmail", - it's too much
       host: 'smtp.strato.de',
       port: 465,
       secure: true,

@@ -88,3 +88,12 @@ export interface RealEstateObject {
   residentialHouses?: ResidentialHouse;
   freeWith?: string;
 }
+
+export interface PropertyHeroProps {
+  object: RealEstateObject;
+  images?: Image[];
+  apartment?: Apartment;
+  residentialHouse?: ResidentialHouse;
+  landPlot?: LandPlot;
+  commercialBuilding?: CommercialBuilding;
+}

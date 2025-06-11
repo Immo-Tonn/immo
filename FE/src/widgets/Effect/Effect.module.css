@@ -83,3 +83,22 @@
     margin-left: 30px;
   }
 }
+@media (max-width: 576px) {
+  .imageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+  .effectSection h2 {
+    margin-left: 0;
+    text-align: left;
+    max-width: 343px;
+    margin-top: 81px;
+  }
+  .effectSection > img {
+    max-height: 576px;
+    height: 324px;
+    object-fit: cover;
+  }
+}

@@ -30,14 +30,6 @@
   text-decoration: none;
 }
 
-.nav a:hover {
-  color: white;
-}
-
-.nav a.active {
-  color: white;
-}
-
 .listItemText {
   display: flex;
   justify-content: center;
@@ -147,7 +139,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
   .logo {
     max-height: 114px;
   }
@@ -161,7 +153,6 @@
   }
 }
 
-/* Mobile styles */
 @media (max-width: 576px) {
   .contact {
     display: none;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
 import { Address } from '@shared/types/propertyTypes';
 import { LatLngTuple } from 'leaflet';
@@ -43,13 +43,11 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
         const coords: LatLngTuple[][] = [];
 
         if (geojson.type === 'Polygon') {
-          // polygon: [ [lng, lat], [lng, lat], ... ]
           const polygon: LatLngTuple[] = geojson.coordinates[0].map(
             ([lng, lat]: [number, number]) => [lat, lng],
           );
           coords.push(polygon);
         } else if (geojson.type === 'MultiPolygon') {
-          // geojson.coordinates: Array<Array<Array<[number, number]>>>
           coords.push(
             ...geojson.coordinates.flatMap(
               (polygon: Array<Array<[number, number]>>) =>

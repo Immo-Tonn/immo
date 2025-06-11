@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import styles from './PropertyCard.module.css';
-import { PropertyHeroProps } from '../PropertyHero/models';
+import { PropertyHeroProps } from '@shared/types/propertyTypes';
 import { NavLink } from 'react-router-dom';
 
 const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(

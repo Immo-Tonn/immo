@@ -1,16 +1,24 @@
 import { useEffect, useRef } from 'react';
 import styles from './AboutUs.module.css';
-import DynamicText from '@widgets/DynamicText/DynamicText';
-import DynamicTitle from '@widgets/DynamicTitle/DynamicTitle';
-import { parallaxMouseEffect } from '@shared/anim/animations';
+import { fadeInOnScroll, parallaxMouseEffect } from '@shared/anim/animations';
 
 const AboutUs = () => {
   const wrapperRef = useRef(null);
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const bottomTextRef = useRef(null);
-
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
+    refs.current.forEach((ref, i) => {
+      if (ref) {
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0
+            ? { x: -100, y: 0, duration: 0.3 }
+            : { x: 100, y: -50, duration: 0.2 },
+        );
+      }
+    });
     const cleanup = parallaxMouseEffect({
       wrapperRef,
       targets: [
@@ -19,7 +27,6 @@ const AboutUs = () => {
         { ref: bottomTextRef, factor: 2 },
       ],
     });
-
     return cleanup;
   }, []);
 
@@ -27,13 +34,19 @@ const AboutUs = () => {
     <section className={styles.aboutUsSection}>
       <div className={styles.contentWrapper} ref={wrapperRef}>
         <div className={styles.textBlock} ref={textRef}>
-          <div className={styles.titleWrapper}>
+          <div
+            className={styles.titleWrapper}
+            ref={el => (refs.current[0] = el)}
+          >
             <h1>
               Ihr zuverlässiger Partner für <br />
               Immobilien in NRW – <br />
               Das dürfen Sie von uns erwarten:
             </h1>
-            <div className={styles.textWrapper}>
+            <div
+              className={styles.textWrapper}
+              ref={el => (refs.current[1] = el)}
+            >
               <p>
                 Mit einem professionellen Immobilienmakler an Ihrer Seite können
                 Sie sicherstellen, dass der gesamte Prozess – von der ersten
@@ -56,12 +69,14 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-      <p className={styles.textBottom} ref={bottomTextRef}>
-        <b>
-          Ihr Maklerteam für Wohnimmobilien, <br />
-          Geschäftshäuser und hochwertige Investment
-        </b>
-      </p>
+      <div ref={el => (refs.current[3] = el)}>
+        <p className={styles.textBottom} ref={bottomTextRef}>
+          <b>
+            Ihr Maklerteam für Wohnimmobilien, <br />
+            Geschäftshäuser und hochwertige Investment
+          </b>
+        </p>
+      </div>
     </section>
   );
 };
