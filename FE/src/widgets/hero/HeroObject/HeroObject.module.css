@@ -27,5 +27,5 @@
   color: #fff;
   z-index: 2;
   text-shadow: 6px 2px 4px rgba(0, 0, 0, 0.5);
-  padding: 0 0 163px 168px;
+  padding: 0 0 clamp(80px, 15vh, 163px) clamp(80px, 12vw, 168px);
 }

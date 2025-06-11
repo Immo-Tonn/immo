@@ -80,7 +80,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
       <h2 className={styles.title}>KARTE</h2>
 
       <div className={styles.infoLine}>
-        <span>{district},</span>{' '}
+        <span>{district},</span>
         <span>
           {zip} {city}
         </span>

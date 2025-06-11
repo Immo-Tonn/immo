@@ -47,13 +47,14 @@
 }
 
 .competenceSection > img {
-  margin-top: 91px;
+  margin-top: clamp(40px, 6vh, 91px);
+
   max-width: 1200px;
 }
 
 @media (max-width: 765px) {
   .competenceSection > img {
-    margin-top: 91px;
+    margin-top: clamp(40px, 6vh, 91px);
     max-width: 768px;
   }
 }

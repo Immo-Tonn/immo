@@ -1,5 +1,5 @@
 .heroValuationSection {
-  /* можно добавить отступы, фон, если нужно */
+  margin-bottom: 40px;
 }
 
 .textWrapper {
@@ -18,7 +18,7 @@
   transform: translateX(-50%);
   height: 675px;
   width: 100%;
-  background-image: url('@shared/assets/hero-valuation/hero-valuation-photo.webp');
+  background-image: url('@shared/assets/salessupport/sales-support-image.webp');
   background-size: cover;
   background-position: center;
   box-shadow: -10px 18px 19px 8px rgba(0.25, 0, 0, 0.25);
@@ -44,14 +44,15 @@
   text-align: left;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   letter-spacing: 0.1em;
+  font-size: clamp(22px, 3vw, 36px);
 }
 
 @media (max-width: 765px) {
   .textWrapper {
-    height: 300px;
+    height: 500px;
   }
   .textWrapper::before {
-    height: 300px;
+    height: 500px;
   }
   .textOverlay {
     font-size: var(--font-size-size-xs);
@@ -59,6 +60,14 @@
   }
   .textOverlay > p {
     padding: 0 1rem 1rem 1rem;
-    text-align: center;
+    text-align: left;
+  }
+}
+@media (max-width: 765px) {
+  .textWrapper {
+    height: 381px;
+  }
+  .textWrapper::before {
+    height: 381px;
   }
 }

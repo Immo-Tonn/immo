@@ -1,15 +1,16 @@
 import ContactForm from '@features/contact/ui/ContactForm';
-import styles from './RechtUndRat.module.css';
-import rechtHero from '@shared/assets/recht/hero-recht.webp';
-import rechtMain from '@shared/assets/recht/recht-und-rat.webp';
-import rechtSecondary from '@shared/assets/recht/recht-und-rat_2.webp';
+import styles from './LawAndAdvice.module.css';
+import rechtHero from '@shared/assets/law-and-advice/hero-law.webp';
+import rechtMain from '@shared/assets/law-and-advice/law-and-advice.webp';
+import rechtSecondary from '@shared/assets/law-and-advice/law-and-advice_2.webp';
 import { useEffect, useRef } from 'react';
-import { fadeInOnScroll } from '@shared/anim/animations';
+import { fadeInOnScroll, runningBoxShadow } from '@shared/anim/animations';
 
-const RechtUndRat = () => {
+const LawAndAdvice = () => {
   const refs = useRef<(HTMLLIElement | null)[]>([]);
-
+  const imgRef = useRef<HTMLImageElement | null>(null);
   useEffect(() => {
+    runningBoxShadow(imgRef);
     refs.current.forEach((ref, i) => {
       if (ref)
         fadeInOnScroll(
@@ -46,7 +47,7 @@ const RechtUndRat = () => {
           <p>
             Wir begleiten Sie von Anfang an. <br /> Für Verkäufer helfen wir bei
             der Zusammenstellung aller notwendigen Unterlagen – wie
-            Grundbuchauszug, Energieausweis und Informationen zu Renovierungen.{' '}
+            Grundbuchauszug, Energieausweis und Informationen zu Renovierungen.
             <br /> Käufern stellen wir alle verfügbaren Objektunterlagen
             transparent zur Verfügung und erklären die Details verständlich –
             von der rechtlichen Situation bis zu technischen Merkmalen und
@@ -73,14 +74,14 @@ const RechtUndRat = () => {
           <h2>Mit Stil und Übersicht zur erfolgreichen Besichtigung</h2>
         </div>
       </div>
-
-      <img
-        src={rechtMain}
-        className={styles.image}
-        alt="Beratung Schritt 2"
-        ref={el => (refs.current[5] = el)}
-      />
-
+      <div ref={el => (refs.current[5] = el)}>
+        <img
+          src={rechtMain}
+          className={styles.image}
+          alt="Beratung Schritt 2"
+          ref={imgRef}
+        />
+      </div>
       <div className={styles.textBlockL} ref={el => (refs.current[4] = el)}>
         <div className={styles.blockTitle}>
           <h2>Sicherheit und Struktur bei jedem Schritt.</h2>
@@ -90,7 +91,7 @@ const RechtUndRat = () => {
             Rechtliche Klarheit ist die Grundlage für Vertrauen. <br /> Wir
             prüfen den Eigentumsnachweis, mögliche Belastungen, Baugenehmigungen
             und die Richtigkeit aller Unterlagen. <br /> Verkäufern helfen wir,
-            potenzielle rechtliche Hürden im Vorfeld zu beseitigen. <br />{' '}
+            potenzielle rechtliche Hürden im Vorfeld zu beseitigen. <br />
             Käufern erklären wir die Dokumente verständlich und beraten zu allen
             wichtigen Vertragspunkten. <br /> Auf Wunsch empfehlen wir Ihnen
             Notare aus unserem Partnernetzwerk – für eine sichere Abwicklung.
@@ -152,4 +153,4 @@ const RechtUndRat = () => {
   );
 };
 
-export default RechtUndRat;
+export default LawAndAdvice;

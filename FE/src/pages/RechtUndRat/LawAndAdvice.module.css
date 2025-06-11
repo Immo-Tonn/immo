@@ -89,7 +89,7 @@ hr {
 }
 
 @media (max-width: 765px) {
-  p {
+  .blockText > p {
     font-size: 18px;
   }
 

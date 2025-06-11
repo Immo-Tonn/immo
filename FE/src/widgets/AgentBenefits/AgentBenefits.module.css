@@ -101,6 +101,9 @@
   .immoTonnTextList {
     border: none;
   }
+  .immoTonnImageBackground {
+    height: 464px;
+  }
   .immoTonnTextListItemWrapper {
     text-align: left;
   }
@@ -117,14 +120,13 @@
   }
 
   .immoTonnImageBackground {
-    height: 240px;
-    aspect-ratio: auto;
+    height: 349px;
   }
 
   .immoTonnOverlayText {
     font-size: 20px;
   }
   .whyAgentUl {
-    padding: 65px;
+    padding: clamp(32px, 6vw, 65px);
   }
 }

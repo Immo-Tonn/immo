@@ -79,7 +79,7 @@
   .immoTonnContentSection {
     grid-template-columns: 1fr;
     gap: 30px;
-    padding: 40px 10px 80px;
+    padding: clamp(24px, 4vh, 40px) clamp(4px, 2vw, 10px) clamp(40px, 8vh, 80px);
     text-align: center;
   }
 
@@ -119,7 +119,6 @@
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
-    padding: 40px 10px 80px;
   }
 
   .immoTonnTextList {
