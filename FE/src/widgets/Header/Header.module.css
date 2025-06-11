@@ -166,6 +166,9 @@
 }
 
 @media (max-width: 576px) {
+  .headerTop {
+    display: flex;
+  }
   .contact {
     display: none;
   }
