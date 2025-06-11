@@ -23,7 +23,14 @@ const PrivacyPolicy = () => {
         kurz als "Daten" bezeichnet) wir zu welchen Zwecken und in welchem
         Umfang im Rahmen der Bereitstellung unserer Applikation verarbeiten. Die
         verwendeten Begriffe sind nicht geschlechtsspezifisch. Stand: 3. Juni
-        2025
+        2025 Erstellt mit dem{' '}
+        <a
+          href="https://datenschutz-generator.de"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Datenschutz-Generator.de von Dr. Thomas Schwenke
+        </a>
       </p>
       <h2>Inhaltsübersicht</h2>
       <ul>
@@ -52,10 +59,15 @@ const PrivacyPolicy = () => {
 
       <h2>Verantwortlicher</h2>
       <p>
-        Andreas Tonn Sessendrupweg 54 48161 Münster E-Mail-Adresse:
-        tonn_andreas@web.de
+        Andreas Tonn
+        <br />
+        Sessendrupweg 54
+        <br />
+        48161 Münster
+        <br />
+        E-Mail-Adresse:{' '}
+        <a href="mailto:tonn_andreas@web.de">tonn_andreas@web.de</a>
       </p>
-
       <h2>Übersicht der Verarbeitungen</h2>
       <p>
         Die nachfolgende Übersicht fasst die Arten der verarbeiteten Daten und
@@ -158,7 +170,6 @@ const PrivacyPolicy = () => {
 
       <h3>Nationale Datenschutzregelungen in Deutschland: </h3>
       <p>
-        {' '}
         Zusätzlich zu den Datenschutzregelungen der DSGVO gelten nationale
         Regelungen zum Datenschutz in Deutschland. Hierzu gehört insbesondere
         das Gesetz zum Schutz vor Missbrauch personenbezogener Daten bei der
@@ -248,8 +259,15 @@ const PrivacyPolicy = () => {
         nach dem DPF zertifiziert sind und ob Standardvertragsklauseln
         vorliegen. Weitere Informationen zum DPF und eine Liste der
         zertifizierten Unternehmen finden Sie auf der Website des
-        US-Handelsministeriums unter https://www.dataprivacyframework.gov/ (in
-        englischer Sprache).
+        US-Handelsministeriums unter{' '}
+        <a
+          href="https://www.dataprivacyframework.gov/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.dataprivacyframework.gov/
+        </a>{' '}
+        (in englischer Sprache).
       </p>
       <p>
         Für Datenübermittlungen in andere Drittländer gelten entsprechende
@@ -258,8 +276,13 @@ const PrivacyPolicy = () => {
         Übermittlungen. Informationen zu Drittlandtransfers und geltenden
         Angemessenheitsbeschlüssen können Sie dem Informationsangebot der
         EU-Kommission entnehmen:
-        https://commission.europa.eu/law/law-topic/data-protection/international-dimension
-        -data-protection_en?prefLang=d
+        <a
+          href="https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection_en?prefLang=de"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection_en?prefLang=de
+        </a>
       </p>
 
       <h2>Allgemeine Informationen zur Datenspeicherung und Löschung </h2>
@@ -795,12 +818,30 @@ const PrivacyPolicy = () => {
           (z. B. Speicherplatz und/oder Rechenkapazitäten); Dienstanbieter:
           Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen,
           Deutschland; Rechtsgrundlagen: Berechtigte Interessen (Art. 6 Abs. 1
-          S. 1 lit. f) DSGVO); Website: https://www.hetzner.com;
-          Datenschutzerklärung:
-          https://www.hetzner.com/de/rechtliches/datenschutz.
-          Auftragsverarbeitungsvertrag:
-          https://docs.hetzner.com/de/general/general-terms-and-conditions/data-privac
-          y-faq/.
+          S. 1 lit. f) DSGVO); Website:{' '}
+          <a
+            href="https://www.hetzner.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.hetzner.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.hetzner.com/de/rechtliches/datenschutz"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.hetzner.com/de/rechtliches/datenschutz
+          </a>
+          ; Auftragsverarbeitungsvertrag:{' '}
+          <a
+            href="https://docs.hetzner.com/de/general/general-terms-and-conditions/data-privacy-faq/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://docs.hetzner.com/de/general/general-terms-and-conditions/data-privacy-faq/
+          </a>
         </li>
         <li>
           STRATO: Leistungen auf dem Gebiet der Bereitstellung von
@@ -808,9 +849,23 @@ const PrivacyPolicy = () => {
           (z. B. Speicherplatz und/oder Rechenkapazitäten); Dienstanbieter:
           STRATO AG, Pascalstraße 10,10587 Berlin, Deutschland;
           Rechtsgrundlagen: Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f)
-          DSGVO); Website: https://www.strato.de; Datenschutzerklärung:
-          https://www.strato.de/datenschutz/. Auftragsverarbeitungsvertrag: Wird
-          vom Dienstanbieter bereitgestellt.
+          DSGVO); Website:{' '}
+          <a
+            href="https://www.strato.de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.strato.de
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.strato.de/datenschutz/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.strato.de/datenschutz/
+          </a>
+          ; Auftragsverarbeitungsvertrag: bereitgestellt.
         </li>
         <li>
           bunny.net: Content-Delivery-Network (CDN) - Dienst, mit dessen Hilfe
@@ -820,8 +875,19 @@ const PrivacyPolicy = () => {
           werden können; Dienstanbieter: BUNNYWAY d.o.o., Cesta komandanta
           Staneta 4A, 1215 Medvode, Slowenien; Rechtsgrundlagen: Berechtigte
           Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
-          https://bunny.net; Datenschutzerklärung: https://bunny.net/privacy/.
-          Auftragsverarbeitungsvertrag: Wird vom Dienstanb
+          <a href="https://bunny.net" target="_blank" rel="noopener noreferrer">
+            https://bunny.net
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://bunny.net/privacy/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://bunny.net/privacy/
+          </a>
+          . Auftragsverarbeitungsvertrag: Wird vom Dienstanbieter
+          bereitgestellt.
         </li>
       </ul>
 
@@ -911,15 +977,29 @@ const PrivacyPolicy = () => {
           zur Speicherung, Auslesen und Verarbeitung von Informationen auf
           Endgeräten der Nutzer sowie deren Verarbeitung; Dienstanbieter:
           Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:
-          https://www.cookiebot.com/de; Datenschutzerklärung:
-          https://www.cookiebot.com/de/privacy-policy/;
-          Auftragsverarbeitungsvertrag: Wird vom Dienstanbieter bereitgestellt;
-          Weitere Informationen: Gespeicherte Daten (auf dem Server des
-          Dienstleisters): Die IP-Nummer des Nutzers in anonymisierter Form (die
-          letzten drei Ziffern werden auf 0 gesetzt), Datum und Uhrzeit der
-          Zustimmung, Browserangaben, die URL, von der die Zustimmung gesendet
-          wurde, Ein anonymer, zufälliger und verschlüsselter Schlüsselwert. der
-          Einwilligungsstatus des Nutzers.
+          <a
+            href="https://www.cookiebot.com/de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.cookiebot.com/de
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.cookiebot.com/de/privacy-policy/;
+"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.cookiebot.com/de/privacy-policy/
+          </a>
+          ; Auftragsverarbeitungsvertrag: Wird vom Dienstanbieter
+          bereitgestellt; Weitere Informationen: Gespeicherte Daten (auf dem
+          Server des Dienstleisters): Die IP-Nummer des Nutzers in
+          anonymisierter Form (die letzten drei Ziffern werden auf 0 gesetzt),
+          Datum und Uhrzeit der Zustimmung, Browserangaben, die URL, von der die
+          Zustimmung gesendet wurde, Ein anonymer, zufälliger und
+          verschlüsselter Schlüsselwert. der Einwilligungsstatus des Nutzers.
         </li>
       </ul>
 
@@ -1261,22 +1341,72 @@ const PrivacyPolicy = () => {
           weitergeleitet wird; Dienstanbieter: Google Ireland Limited, Gordon
           House, Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung
           (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:
-          https://marketingplatform.google.com/intl/de/about/analytics/;
-          Sicherheitsmaßnahmen: IP-Masking (Pseudonymisierung der IP-Adresse);
-          Datenschutzerklärung: https://policies.google.com/privacy;
-          Auftragsverarbeitungsvertrag:
-          https://business.safety.google/adsprocessorterms/; Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln
-          (https://business.safety.google/adsprocessorterms), Data Privacy
-          Framework (DPF)Standardvertragsklauseln (
-          https://business.safety.google/adsprocessorterms);
-          Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:
-          https://tools.google.com/dlpage/gaoptout?hl=de, Einstellungen für die
-          Darstellung von Werbeeinblendungen:
-          https://myadcenter.google.com/personalizationoff. Weitere
-          Informationen: https://business.safety.google/adsservices/ (Arten der
-          Verarbeitung sowie der verarbeiteten Daten).
+          <a
+            href="https://marketingplatform.google.com/intl/de/about/analytics/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://marketingplatform.google.com/intl/de/about/analytics/
+          </a>
+          ; Sicherheitsmaßnahmen: IP-Masking (Pseudonymisierung der IP-Adresse);
+          Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Auftragsverarbeitungsvertrag:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms/
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
+          Standardvertragsklauseln ({' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln ({' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ); Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:{' '}
+          <a
+            href="https://tools.google.com/dlpage/gaoptout?hl=de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://tools.google.com/dlpage/gaoptout?hl=de
+          </a>
+          , Einstellungen für die Darstellung von Werbeeinblendungen:{' '}
+          <a
+            href="https://myadcenter.google.com/personalizationoff"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://myadcenter.google.com/personalizationoff
+          </a>
+          . Weitere Informationen:{' '}
+          <a
+            href="https://business.safety.google/adsservices/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsservices/
+          </a>{' '}
+          (Arten der Verarbeitung sowie der verarbeiteten Daten).
         </li>
         <li>
           Google als Empfänger der Einwilligung: Die von Nutzern im Rahmen eines
@@ -1302,8 +1432,21 @@ const PrivacyPolicy = () => {
           werden; Dienstanbieter: Google Ireland Limited, Gordon House, Barrow
           Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art. 6 Abs.
           1 S. 1 lit. a) DSGVO); Website:
-          https://support.google.com/analytics/answer/9976101?hl=de.
-          Datenschutzerklärung: https://policies.google.com/privacy.
+          <a
+            href="https://support.google.com/analytics/answer/9976101?hl=de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://support.google.com/analytics/answer/9976101?hl=de
+          </a>
+          . Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
         </li>
         <li>
           Google Analytics (Serverseitige Nutzung): Wir verwenden Google
@@ -1333,18 +1476,56 @@ const PrivacyPolicy = () => {
           (und die IDbasierten Entsprechungen); Dienstanbieter: Google Ireland
           Limited, Gordon House, Barrow Street, Dublin 4, Irland;
           Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
-          Website:
-          https://marketingplatform.google.com/intl/de/about/analytics/;
-          Datenschutzerklärung: https://policies.google.com/privacy;
-          Auftragsverarbeitungsvertrag:
-          https://business.safety.google/adsprocessorterms/; Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln
-          (https://business.safety.google/adsprocessorterms/), Data Privacy
-          Framework (DPF)Standardvertragsklauseln (
-          https://business.safety.google/adsprocessorterms/). Weitere
-          Informationen: https://business.safety.google/adsservices/ (Arten der
-          Verarbeitung sowie der verarbeiteten Daten).
+          Website:{' '}
+          <a
+            href="https://marketingplatform.google.com/intl/de/about/analytics/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://marketingplatform.google.com/intl/de/about/analytics/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Auftragsverarbeitungsvertrag:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms/
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
+          Standardvertragsklauseln (
+          <a
+            href="https://business.safety.google/adsprocessorterms/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms/
+          </a>
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
+          <a
+            href="https://business.safety.google/adsprocessorterms/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms/
+          </a>
+          ). Weitere Informationen:{' '}
+          <a
+            href="https://business.safety.google/adsservices/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsservices/
+          </a>{' '}
+          (Arten der Verarbeitung sowie der verarbeiteten Daten).
         </li>
         <li>
           Google Signals (Google- Analytics-Funktion): Google-Signals sind
@@ -1367,18 +1548,56 @@ const PrivacyPolicy = () => {
           Google-Konten angemeldet sind und die Anzeigenpersonalisierung
           aktiviert haben; Dienstanbieter: Google Ireland Limited, Gordon House,
           Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art.
-          6 Abs. 1 S. 1 lit. a) DSGVO); Website:
-          https://support.google.com/analytics/answer/7532985?hl=de;
-          Datenschutzerklärung: https://policies.google.com/privacy;
-          Auftragsverarbeitungsvertrag:
-          https://business.safety.google/adsprocessorterms; Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln
-          (https://business.safety.google/adsprocessorterms), Data Privacy
-          Framework (DPF)Standardvertragsklauseln (
-          https://business.safety.google/adsprocessorterms). Weitere
-          Informationen: https://business.safety.google/adsservices/ (Arten der
-          Verarbeitung sowie der verarbeiteten Daten).
+          6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
+          <a
+            href="https://support.google.com/analytics/answer/7532985?hl=de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://support.google.com/analytics/answer/7532985?hl=de
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Auftragsverarbeitungsvertrag:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
+          Standardvertragsklauseln (
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ). Weitere Informationen:{' '}
+          <a
+            href="https://business.safety.google/adsservices/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsservices/
+          </a>{' '}
+          (Arten der Verarbeitung sowie der verarbeiteten Daten).
         </li>
         <li>
           Zielgruppenbildung mit Google Analytics: Wir nutzen Google Analytics,
@@ -1393,24 +1612,70 @@ const PrivacyPolicy = () => {
           unsere Anzeigen möglichst gut mit den potenziellen Interessen der
           Nutzer übereinstimmen; Dienstanbieter: Google Ireland Limited, Gordon
           House, Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung
-          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:
-          https://marketingplatform.google.com; Rechtsgrundlagen:
-          https://business.safety.google/adsprocessorterms/;
-          Datenschutzerklärung: https://policies.google.com/privacy;
-          Auftragsverarbeitungsvertrag:
-          https://business.safety.google/adsprocessorterms/; Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF), Data Privacy
-          Framework (DPF); Weitere Informationen: Arten der Verarbeitung sowie
-          der verarbeiteten Daten: https://business.safety.google/adsservices/.
-          Datenverarbeitungsbedingungen für Google Werbeprodukte und
-          Standardvertragsklauseln für Drittlandtransfers von Daten:
-          https://business.safety.google/adsprocessorterms.
+          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
+          <a
+            href="https://marketingplatform.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://marketingplatform.google.com
+          </a>
+          ; Rechtsgrundlagen:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Auftragsverarbeitungsvertrag:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms/
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF); Weitere Informationen: Arten der Verarbeitung
+          sowie der verarbeiteten Daten:{' '}
+          <a
+            href="https://business.safety.google/adsservices/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsservices/
+          </a>
+          ; Datenverarbeitungsbedingungen für Google Werbeprodukte und
+          Standardvertragsklauseln für Drittlandtransfers von Daten:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
         </li>
         <li>
           Keine Erhebung detaillierter Standort- und Gerätedaten
           (GoogleAnalytics-Funktion): Es werden keine detaillierten Standort-
-          und Gerätedaten erfasst (weitere Informationen:
-          https://support.google.com/analytics/answer/12017362)
+          und Gerätedaten erfasst (weitere Informationen:{' '}
+          <a
+            href="https://support.google.com/analytics/answer/12017362"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://support.google.com/analytics/answer/12017362
+          </a>
+          ).
         </li>
         <li>
           Google Tag Manager: Wir verwenden den Google Tag Manager, eine
@@ -1434,15 +1699,48 @@ const PrivacyPolicy = () => {
           weiterführenden Abschnitte dieser Datenschutzerklärung;
           Dienstanbieter: Google Ireland Limited, Gordon House, Barrow Street,
           Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1
-          lit. a) DSGVO); Website: https://marketingplatform.google.com;
-          Datenschutzerklärung: https://policies.google.com/privacy;
-          Auftragsverarbeitungsvertrag:
-          https://business.safety.google/adsprocessorterms. Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln
-          (https://business.safety.google/adsprocessorterms), Data Privacy
-          Framework (DPF)Standardvertragsklauseln (
-          https://business.safety.google/adsprocessorterms).
+          lit. a) DSGVO); Website:{' '}
+          <a
+            href="https://marketingplatform.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://marketingplatform.google.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Auftragsverarbeitungsvertrag:{' '}
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          . Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
+          Standardvertragsklauseln (
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
+          <a
+            href="https://business.safety.google/adsprocessorterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsprocessorterms
+          </a>
+          ).
         </li>
         <li>
           Hotjar Observe: Software zur Analyse und Optimierung von
@@ -1454,14 +1752,41 @@ const PrivacyPolicy = () => {
           (sog. Heatmaps und Recordings) gehören können; Dienstanbieter: Hotjar
           Ltd., 3 Lyons Range, 20 Bisazza Street, Sliema SLM 1640, Malta;
           Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
-          Website: https://www.hotjar.com; Datenschutzerklärung:
-          https://www.hotjar.com/legal/policies/privacy; Löschung von Daten: Die
-          Cookies, die Hotjar nutzt, haben eine unterschiedliche "Lebensdauer";
-          manche bleiben bis zu 365 Tagen, manche nur während des aktuellen
-          Besuchs gültig; Cookie-Richtlinie:
-          https://www.hotjar.com/legal/policies/cookie-information.
-          Widerspruchsmöglichkeit (Opt-Out):
-          https://www.hotjar.com/legal/compliance/opt-out
+          Website:{' '}
+          <a
+            href="https://www.hotjar.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.hotjar.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.hotjar.com/legal/policies/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.hotjar.com/legal/policies/privacy
+          </a>
+          ; Löschung von Daten: Die Cookies, die Hotjar nutzt, haben eine
+          unterschiedliche "Lebensdauer"; manche bleiben bis zu 365 Tagen,
+          manche nur während des aktuellen Besuchs gültig; Cookie-Richtlinie:{' '}
+          <a
+            href="https://www.hotjar.com/legal/policies/cookie-information"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.hotjar.com/legal/policies/cookie-information
+          </a>
+          . Widerspruchsmöglichkeit (Opt-Out):{' '}
+          <a
+            href="https://www.hotjar.com/legal/compliance/opt-out"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.hotjar.com/legal/compliance/opt-out
+          </a>
+          .
         </li>
 
         <li>
@@ -1470,16 +1795,29 @@ const PrivacyPolicy = () => {
           insbesondere für den Einsatz von Cookies und ähnlichen Technologien
           zur Speicherung, Auslesen und Verarbeitung von Informationen auf
           Endgeräten der Nutzer sowie deren Verarbeitung; Dienstanbieter:
-          Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:
-          https://www.cookiebot.com/de; Datenschutzerklärung:
-          https://www.cookiebot.com/de/privacy-policy/;
-          Auftragsverarbeitungsvertrag: Wird vom Dienstanbieter bereitgestellt;
-          Weitere Informationen: Gespeicherte Daten (auf dem Server des
-          Dienstleisters): Die IP-Nummer des Nutzers in anonymisierter Form (die
-          letzten drei Ziffern werden auf 0 gesetzt), Datum und Uhrzeit der
-          Zustimmung, Browserangaben, die URL, von der die Zustimmung gesendet
-          wurde, Ein anonymer, zufälliger und verschlüsselter Schlüsselwert. der
-          Einwilligungsstatus des Nutzers.
+          Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:{' '}
+          <a
+            href="https://www.cookiebot.com/de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.cookiebot.com/de
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.cookiebot.com/de/privacy-policy/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.cookiebot.com/de/privacy-policy/
+          </a>
+          ; Auftragsverarbeitungsvertrag: Wird vom Dienstanbieter
+          bereitgestellt; Weitere Informationen: Gespeicherte Daten (auf dem
+          Server des Dienstleisters): Die IP-Nummer des Nutzers in
+          anonymisierter Form (die letzten drei Ziffern werden auf 0 gesetzt),
+          Datum und Uhrzeit der Zustimmung, Browserangaben, die URL, von der die
+          Zustimmung gesendet wurde, Ein anonymer, zufälliger und
+          verschlüsselter Schlüsselwert. der Einwilligungsstatus des Nutzers.
         </li>
       </ul>
 
@@ -1574,13 +1912,49 @@ const PrivacyPolicy = () => {
         Gebiete gerichtet angeboten werden:{' '}
       </p>
 
-      <p>a) Europa: https://www.youronlinechoices.eu.</p>
+      <p>
+        a) Europa:{' '}
+        <a
+          href="https://www.youronlinechoices.eu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.youronlinechoices.eu
+        </a>
+      </p>
 
-      <p>b) Kanada: https://www.youradchoices.ca/choices. </p>
+      <p>
+        b) Kanada:{' '}
+        <a
+          href="https://www.youradchoices.ca/choices"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.youradchoices.ca/choices
+        </a>{' '}
+      </p>
 
-      <p>c) USA: https://www.aboutads.info/choices.</p>
+      <p>
+        c) USA:{' '}
+        <a
+          href="https://www.aboutads.info/choices"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.aboutads.info/choices
+        </a>
+      </p>
 
-      <p>d) Gebietsübergreifend: https://optout.aboutads.info. </p>
+      <p>
+        d) Gebietsübergreifend:{' '}
+        <a
+          href="https://optout.aboutads.info"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://optout.aboutads.info
+        </a>
+      </p>
 
       <ul>
         <li>
@@ -1635,14 +2009,41 @@ const PrivacyPolicy = () => {
           einzelne Nutzer; Dienstanbieter: Google Ireland Limited, Gordon House,
           Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art.
           6 Abs. 1 S. 1 lit. a) DSGVO), Berechtigte Interessen (Art. 6 Abs. 1 S.
-          1 lit. f) DSGVO); Website: https://marketingplatform.google.com;
-          Datenschutzerklärung: https://policies.google.com/privacy; Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF), Data Privacy
-          Framework (DPF); Weitere Informationen: Arten der Verarbeitung sowie
-          der verarbeiteten Daten: https://business.safety.google/adsservices/.
-          Datenverarbeitungsbedingungen zwischen Verantwortlichen und
-          Standardvertragsklauseln für Drittlandtransfers von Daten:
-          https://business.safety.google/adscontrollerterms.
+          1 lit. f) DSGVO); Website:{' '}
+          <a
+            href="https://marketingplatform.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://marketingplatform.google.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF); Weitere Informationen: Arten der Verarbeitung
+          sowie der verarbeiteten Daten:{' '}
+          <a
+            href="https://business.safety.google/adsservices/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adsservices/
+          </a>
+          . Datenverarbeitungsbedingungen zwischen Verantwortlichen und
+          Standardvertragsklauseln für Drittlandtransfers von Daten:{' '}
+          <a
+            href="https://business.safety.google/adscontrollerterms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://business.safety.google/adscontrollerterms
+          </a>
         </li>
         <li>
           Erweiterte Conversions für Google Ads: Wenn Nutzer auf unsere
@@ -1654,8 +2055,15 @@ const PrivacyPolicy = () => {
           abgeglichen, um die Interaktion der Nutzer mit den Anzeigen (z. B.
           Klicks oder Views) und damit deren Leistung besser auswerten und
           verbessern zu können; Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S.
-          1 lit. a) DSGVO). Website:
-          https://support.google.com/google-ads/answer/9888656.
+          1 lit. a) DSGVO). Website:{' '}
+          <a
+            href="https://support.google.com/google-ads/answer/9888656"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://support.google.com/google-ads/answer/9888656
+          </a>
+          .
         </li>
       </ul>
       <h2>Präsenzen in sozialen Netzwerken (Social Media) </h2>
@@ -1739,9 +2147,23 @@ const PrivacyPolicy = () => {
           Nachrichtenversand, Abonnieren von Profilen und Seiten;
           Dienstanbieter: Meta Platforms Ireland Limited, Merrion Road, Dublin
           4, D04 X2K5, Irland; Rechtsgrundlagen: Berechtigte Interessen (Art. 6
-          Abs. 1 S. 1 lit. f) DSGVO); Website: https://www.instagram.com;
-          Datenschutzerklärung: https://privacycenter.instagram.com/policy/.
-          Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Abs. 1 S. 1 lit. f) DSGVO); Website:{' '}
+          <a
+            href="https://www.instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.instagram.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://privacycenter.instagram.com/policy/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://privacycenter.instagram.com/policy/
+          </a>
+          . Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
           Privacy Framework (DPF).
         </li>
         <li>
@@ -1758,32 +2180,78 @@ const PrivacyPolicy = () => {
           Branche, Hierarchieebene, Unternehmensgröße und Beschäftigungsstatus.
           Datenschutzinformationen zur Verarbeitung von Nutzerdaten durch
           LinkedIn können den Datenschutzhinweisen von LinkedIn entnommen
-          werden: https://www.linkedin.com/legal/privacy-policy. Wir haben mit
-          LinkedIn Irland eine spezielle Vereinbarung geschlossen („Page
-          Insights Joint Controller Addendum",
-          https://legal.linkedin.com/pages-joint-controller-addendum), in der
-          insbesondere geregelt wird, welche Sicherheitsmaßnahmen LinkedIn
-          beachten muss und in der LinkedIn sich bereit erklärt hat, die Rechte
-          der Betroffenen zu erfüllen (d. h. Nutzer können z. B. Auskunfts- oder
-          Löschungsanfragen direkt an LinkedIn richten). Die Rechte der Nutzer
-          (insbesondere das Recht auf Auskunft, Löschung, Widerspruch und
-          Beschwerde bei der zuständigen Aufsichtsbehörde) werden durch die
-          Vereinbarungen mit LinkedIn nicht eingeschränkt. Die gemeinsame
-          Verantwortlichkeit beschränkt sich auf die Erhebung und Übermittlung
-          der Daten an LinkedIn Irland Unlimited Company, ein Unternehmen mit
-          Sitz in der EU. Die weitere Verarbeitung der Daten obliegt
-          ausschließlich LinkedIn Irland Unlimited Company, insbesondere was die
-          Übermittlung der Daten an die Muttergesellschaft LinkedIn Corporation
-          in den USA betrifft; Dienstanbieter: LinkedIn Ireland Unlimited
-          Company, Wilton Place, Dublin 2, Irland; Rechtsgrundlagen: Berechtigte
-          Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
-          https://www.linkedin.com; Datenschutzerklärung:
-          https://www.linkedin.com/legal/privacy-policy; Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln (https://legal.linkedin.com/dpa), Data
-          Privacy Framework (DPF)Standardvertragsklauseln
-          (https://legal.linkedin.com/dpa). Widerspruchsmöglichkeit (Opt-Out):
-          https://www.linkedin.com/psettings/guest-controls/retargeting-opt-out
+          werden:{' '}
+          <a
+            href="https://www.linkedin.com/legal/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.linkedin.com/legal/privacy-policy
+          </a>
+          . Wir haben mit LinkedIn Irland eine spezielle Vereinbarung
+          geschlossen ( „Page Insights Joint Controller Addendum“ (
+          <a
+            href="https://legal.linkedin.com/pages-joint-controller-addendum"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://legal.linkedin.com/pages-joint-controller-addendum
+          </a>
+          ), in der insbesondere geregelt wird, welche Sicherheitsmaßnahmen
+          LinkedIn beachten muss und in der LinkedIn sich bereit erklärt hat,
+          die Rechte der Betroffenen zu erfüllen (d. h. Nutzer können z. B.
+          Auskunfts- oder Löschungsanfragen direkt an LinkedIn richten). Die
+          Rechte der Nutzer (insbesondere das Recht auf Auskunft, Löschung,
+          Widerspruch und Beschwerde bei der zuständigen Aufsichtsbehörde)
+          werden durch die Vereinbarungen mit LinkedIn nicht eingeschränkt. Die
+          gemeinsame Verantwortlichkeit beschränkt sich auf die Erhebung und
+          Übermittlung der Daten an LinkedIn Irland Unlimited Company, ein
+          Unternehmen mit Sitz in der EU. Die weitere Verarbeitung der Daten
+          obliegt ausschließlich LinkedIn Irland Unlimited Company, insbesondere
+          was die Übermittlung der Daten an die Muttergesellschaft LinkedIn
+          Corporation in den USA betrifft; Dienstanbieter: LinkedIn Ireland
+          Unlimited Company, Wilton Place, Dublin 2, Irland; Rechtsgrundlagen:
+          Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
+          <a
+            href="https://www.linkedin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.linkedin.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.linkedin.com/legal/privacy-policy; "
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.linkedin.com/legal/privacy-policy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
+          Standardvertragsklauseln (
+          <a
+            href="https://legal.linkedin.com/dpa"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://legal.linkedin.com/dpa
+          </a>
+          ), Data Privacy Framework (DPF)Standardvertragsklauseln (
+          <a
+            href="https://legal.linkedin.com/dpa"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://legal.linkedin.com/dpa
+          </a>
+          ). Widerspruchsmöglichkeit (Opt-Out):{' '}
+          <a
+            href="https://www.linkedin.com/psettings/guest-controls/retargeting-opt-out"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.linkedin.com/psettings/guest-controls/retargeting-opt-out
+          </a>
         </li>
         <li>
           TikTok: Soziales Netzwerk, ermöglicht das Teilen von Fotos und Videos,
@@ -1792,21 +2260,62 @@ const PrivacyPolicy = () => {
           Earlsfort Terrace, Dublin, D02 T380, Irland und TikTok Information
           Technologies UK Limited, Kaleidoscope, 4 Lindsey Street, London,
           United Kingdom, EC1A 9HP; Rechtsgrundlagen: Einwilligung (Art. 6 Abs.
-          1 S. 1 lit. a) DSGVO); Website: https://www.tiktok.com;
-          Datenschutzerklärung: https://www.tiktok.com/de/privacy-policy.
-          Grundlage Drittlandtransfers: Standardvertragsklauseln
-          (https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms),
-          Standardvertragsklauseln
-          (https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms).
+          1 S. 1 lit. a) DSGVO); Website:{' '}
+          <a
+            href="https://www.tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.tiktok.com
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://www.tiktok.com/de/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.tiktok.com/de/privacy-policy
+          </a>
+          . Grundlage Drittlandtransfers: Standardvertragsklauseln (
+          <a
+            href="https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms
+          </a>
+          ), Standardvertragsklauseln (
+          <a
+            href="https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms
+          </a>
+          ).
         </li>
         <li>
           YouTube: Soziales Netzwerk und Videoplattform; Dienstanbieter: Google
           Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
           Rechtsgrundlagen: Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f)
-          DSGVO); Datenschutzerklärung: https://policies.google.com/privacy;
-          Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
-          Privacy Framework (DPF). Widerspruchsmöglichkeit (Opt-Out):
-          https://myadcenter.google.com/personalizationoff.
+          DSGVO); Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF). Widerspruchsmöglichkeit (Opt-Out):{' '}
+          <a
+            href="https://myadcenter.google.com/personalizationoff"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://myadcenter.google.com/personalizationoff
+          </a>
+          .
         </li>
       </ul>
 
@@ -1961,10 +2470,30 @@ const PrivacyPolicy = () => {
           schalten; Dienstanbieter: Google Ireland Limited, Gordon House, Barrow
           Street, Dublin 4, Irland; Rechtsgrundlagen: Berechtigte Interessen
           (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
-          https://fonts.google.com/; Datenschutzerklärung:
-          https://policies.google.com/privacy; Grundlage Drittlandtransfers:
-          Data Privacy Framework (DPF), Data Privacy Framework (DPF). Weitere
-          Informationen: https://developers.google.com/fonts/faq/privacy?hl=de
+          <a
+            href="https://fonts.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https:https://fonts.google.com/
+          </a>
+          ; Datenschutzerklärung:
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF). Weitere Informationen:{' '}
+          <a
+            href="https://developers.google.com/fonts/faq/privacy?hl=de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://developers.google.com/fonts/faq/privacy?hl=de
+          </a>
         </li>
         <li>
           Google Maps: Wir binden die Landkarten des Dienstes "Google Maps" des
@@ -1972,10 +2501,24 @@ const PrivacyPolicy = () => {
           IPAdressen und Standortdaten der Nutzer gehören; Dienstanbieter:
           Google Cloud EMEA Limited, 70 Sir John Rogerson’s Quay, Dublin 2,
           Irland; Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1 lit. a)
-          DSGVO); Website: https://mapsplatform.google.com/;
-          Datenschutzerklärung: https://policies.google.com/privacy. Grundlage
-          Drittlandtransfers: Data Privacy Framework (DPF), Data Privacy
-          Framework (DPF).
+          DSGVO); Website:{' '}
+          <a
+            href="https://fonts.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://fonts.google.com/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          . Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF).
         </li>
         <li>
           Google Maps APIs und SDKs: Schnittstellen zu den Karten- und
@@ -1984,10 +2527,24 @@ const PrivacyPolicy = () => {
           Bereitstellung von ergänzenden Informationen zu Stand- und sonstigen
           Orten erlauben; Dienstanbieter: Google Cloud EMEA Limited, 70 Sir John
           Rogerson’s Quay, Dublin 2, Irland; Rechtsgrundlagen: Einwilligung
-          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:
-          https://mapsplatform.google.com/; Datenschutzerklärung:
-          https://policies.google.com/privacy. Grundlage Drittlandtransfers:
-          Data Privacy Framework (DPF), Data Privacy Framework (DPF).
+          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
+          <a
+            href="https://mapsplatform.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://mapsplatform.google.com/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          . Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF).
         </li>
         <li>
           reCAPTCHA: Wir binden die Funktion "reCAPTCHA" ein, um erkennen zu
@@ -2004,26 +2561,80 @@ const PrivacyPolicy = () => {
           Interesse, unser Onlineangebot vor missbräuchlichem automatisiertem
           Crawling und Spam zu schützen; Dienstanbieter: Google Ireland Limited,
           Gordon House, Barrow Street, Dublin 4, Irland; Rechtsgrundlagen:
-          Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
-          https://www.google.com/recaptcha/; Datenschutzerklärung:
-          https://policies.google.com/privacy; Grundlage Drittlandtransfers:
-          Data Privacy Framework (DPF), Data Privacy Framework (DPF).
-          Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:
-          https://tools.google.com/dlpage/gaoptout?hl=de, Einstellungen für die
-          Darstellung von Werbeeinblendungen:
-          https://myadcenter.google.com/personalizationoff.
+          Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:{' '}
+          <a
+            href="https://www.google.com/recaptcha/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.google.com/recaptcha/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF). Widerspruchsmöglichkeit (Opt-Out):
+          Opt-Out-Plugin:{' '}
+          <a
+            href="https://tools.google.com/dlpage/gaoptout?hl=de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://tools.google.com/dlpage/gaoptout?hl=de
+          </a>
+          , Einstellungen für die Darstellung von Werbeeinblendungen:{' '}
+          <a
+            href="https://myadcenter.google.com/personalizationoff"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://myadcenter.google.com/personalizationoff
+          </a>
+          .
         </li>
         <li>
           YouTube-Videos: Videoinhalte; Dienstanbieter: Google Ireland Limited,
           Gordon House, Barrow Street, Dublin 4, Irland; Rechtsgrundlagen:
-          Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:
-          https://www.youtube.com; Datenschutzerklärung:
-          https://policies.google.com/privacy; Grundlage Drittlandtransfers:
-          Data Privacy Framework (DPF), Data Privacy Framework (DPF).
-          Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:
-          https://tools.google.com/dlpage/gaoptout?hl=de, Einstellungen für die
-          Darstellung von Werbeeinblendungen:
-          https://myadcenter.google.com/personalizationoff.
+          Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
+          <a
+            href="https://www.youtube.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.youtube.com/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF). Widerspruchsmöglichkeit (Opt-Out):
+          Opt-Out-Plugin:{' '}
+          <a
+            href="https://tools.google.com/dlpage/gaoptout?hl=de"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://tools.google.com/dlpage/gaoptout?hl=de
+          </a>
+          , Einstellungen für die Darstellung von Werbeeinblendungen:{' '}
+          <a
+            href="https://myadcenter.google.com/personalizationoff"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://myadcenter.google.com/personalizationoff
+          </a>
+          .
         </li>
         <li>
           YouTube-Videos: Innerhalb unseres Onlineangebotes sind Videos
@@ -2042,12 +2653,32 @@ const PrivacyPolicy = () => {
           Cookies kann bis zu zwei Jahre betragen; Dienstanbieter: Google
           Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
           Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
-          Website: https://www.youtube.com; Datenschutzerklärung:
-          https://policies.google.com/privacy; Grundlage Drittlandtransfers:
-          Data Privacy Framework (DPF), Data Privacy Framework (DPF). Weitere
-          Informationen:
-          https://support.google.com/youtube/answer/171780?hl=de-DE#zippy=%2Ctu
-          rn-on-privacy-enhanced-mode%2Cerweiterten-datenschutzmodus-aktivieren.
+          Website:{' '}
+          <a
+            href="https://www.youtube.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.youtube.com/
+          </a>
+          ; Datenschutzerklärung:{' '}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://policies.google.com/privacy
+          </a>
+          ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
+          Privacy Framework (DPF). Weitere Informationen:{' '}
+          <a
+            href="https://support.google.com/youtube/answer/171780?hl=de-DE#zippy=%2Cturn-on-privacy-enhanced-mode%2Cerweiterten-datenschutzmodus-aktivieren"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://support.google.com/youtube/answer/171780?hl=de-DE#zippy=%2Cturn-on-privacy-enhanced-mode%2Cerweiterten-datenschutzmodus-aktivieren
+          </a>
+          .
         </li>
       </ul>
 

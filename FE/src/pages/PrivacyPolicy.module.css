@@ -2,9 +2,14 @@
   max-width: 70%;
   margin: 0 auto;
   padding: 40px 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
   line-height: 1.6;
-  color: #333;
+  max-width: 1200px;
+  color: #1c1829;
+  background-color: #f5f5f5;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  margin: 2rem auto;
 }
 
 h1,
@@ -23,4 +28,9 @@ ul {
 
 p {
   margin-bottom: 1em;
+}
+
+a {
+  color: #0056b3;
+  text-decoration: underline;
 }
