@@ -1,4 +1,7 @@
 import styles from './PrivacyPolicy.module.css';
+import PrivacyPolicyTwo from './PrivacyPolicyTwo.tsx';
+import PrivacyPolicyThree from './PrivacyPolicyThree.tsx';
+
 const PrivacyPolicy = () => {
   return (
     <div className={styles.container}>
@@ -1002,6 +1005,8 @@ const PrivacyPolicy = () => {
           verschlüsselter Schlüsselwert. der Einwilligungsstatus des Nutzers.
         </li>
       </ul>
+      <PrivacyPolicyTwo />
+      <PrivacyPolicyThree />
     </div>
   );
 };

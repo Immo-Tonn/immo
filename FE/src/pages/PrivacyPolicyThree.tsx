@@ -1,4 +1,5 @@
 import styles from './PrivacyPolicy.module.css';
+
 const PrivacyPolicyThree = () => {
   return (
     <div className={styles.container}>
