@@ -22,7 +22,7 @@ const Button = ({
     }
   }, [disabled, clickedText, initialText, internalDisabled]);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     if (type === 'submit') {
       return;
     }

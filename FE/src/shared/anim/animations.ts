@@ -69,7 +69,7 @@ export const fadeInOnScroll = (
   const {
     x = 0,
     y = 0,
-    duration = 0.37,
+    duration = 0.47,
     delay = 0,
     ease = 'sine.inOut',
     start = 'top 70%',

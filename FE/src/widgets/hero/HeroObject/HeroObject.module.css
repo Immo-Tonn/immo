@@ -21,7 +21,7 @@
 }
 .firstTitle {
   max-width: 373px;
-  font-size: clamp(32px, 10vw, 64px);
+  font-size: clamp(var(--font-size-secondary), 10vw, var(--font-size-big));
   font-family: var(--Inter);
   font-weight: 700;
   color: #fff;

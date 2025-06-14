@@ -27,7 +27,7 @@
 .formWrapper > p {
   font-family: var(--Lato);
   font-weight: 700;
-  font-size: clamp(32px, 5vw, 64px);
+  font-size: clamp(var(--font-size-secondary), 5vw, var(--font-size-big));
 
   text-align: center;
   color: #000;

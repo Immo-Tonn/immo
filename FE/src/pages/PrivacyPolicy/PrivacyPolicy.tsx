@@ -1,4 +1,6 @@
-import styles from './PrivacyPolicy.module.css';
+import PrivacyPolicyThree from '@widgets/PrivacyPoliceComponents/PrivacyPolicyThree';
+import styles from '@shared/styles/PrivacyPolicy.module.css';
+import PrivacyPolicyTwo from '@widgets/PrivacyPoliceComponents/PrivacyPolicyTwo';
 const PrivacyPolicy = () => {
   return (
     <div className={styles.container}>
@@ -2953,6 +2955,8 @@ const PrivacyPolicy = () => {
           eingesetzt.
         </li>
       </ul>
+      <PrivacyPolicyTwo />
+      <PrivacyPolicyThree />
     </div>
   );
 };

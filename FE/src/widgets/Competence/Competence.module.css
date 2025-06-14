@@ -6,7 +6,7 @@
   margin-bottom: 20px;
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
-  font-size: clamp(10px, 5vw, 64px);
+  font-size: clamp(10px, 5vw, var(--font-size-big));
   color: #000;
 }
 .secondTitle {
