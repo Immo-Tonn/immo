@@ -23,24 +23,9 @@ a {
     color 200ms;
 }
 
-a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  height: 2px;
-  width: 0;
-  background-color: white;
-  transition: width 300ms ease;
-}
-
 a:hover {
   color: white;
   transform: scale(1.2);
-}
-
-a:hover::after {
-  width: 100%;
 }
 
 * {

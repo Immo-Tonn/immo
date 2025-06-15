@@ -62,6 +62,16 @@ footer {
   margin-bottom: 126px;
 }
 
+li > a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background-color: white;
+  transition: width 300ms ease;
+}
 .contactButton {
   font-size: clamp(21px, 5vw, var(--font-size-secondary));
   background-color: #cbd8e2;

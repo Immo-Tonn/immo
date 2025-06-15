@@ -21,15 +21,6 @@
   align-items: flex-end;
 }
 
-.nav a {
-  font-weight: var(--font-weight-secondary);
-  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
-  text-align: center;
-  color: #d9d9d9;
-  margin-bottom: 16px;
-  text-decoration: none;
-}
-
 .listItemText {
   display: flex;
   justify-content: center;
@@ -73,13 +64,33 @@
   text-decoration: none;
   color: white;
   font-size: 14px;
-  transition: opacity 0.2s ease;
+  transition: width 300ms ease;
 }
 
-.contactText:hover {
-  opacity: 0.8;
+.nav a {
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
+  text-align: center;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+  text-decoration: none;
 }
-
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background-color: white;
+  transition: width 300ms ease;
+}
+.nav a:hover::after {
+  width: 100%;
+}
+.contactText:hover::after {
+  width: 100%;
+}
 .burger {
   display: none;
   color: white;
