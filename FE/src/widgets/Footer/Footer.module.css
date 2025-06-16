@@ -46,23 +46,28 @@ footer {
   list-style: none;
 }
 
-.footerLinks li {
+.footerLinks > li {
   margin-bottom: 8px;
 }
 
-.footerLinks li a {
+.footerLinks > li > a {
   text-decoration: none;
   color: white;
 }
 
 .footerRight {
-  font-size: clamp(12px, 2vw, 16px);
-  line-height: 1.6;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 126px;
 }
 
-li > a::after {
+.footerRight > a {
+  font-size: clamp(12px, 2vw, 16px);
+  line-height: 1.6;
+  text-align: left;
+  color: white;
+}
+.footerLinks > li > a::after {
   content: '';
   position: absolute;
   left: 0;
@@ -89,7 +94,7 @@ li > a::after {
   justify-content: center;
 }
 
-.bottomStripe p {
+.bottomStripe > p {
   font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-xs);
   color: #fff;
@@ -102,6 +107,7 @@ li > a::after {
 .contactButton:hover {
   background-color: #9cb2c3;
 }
+
 @media (max-width: 765px) {
   .footerLeft {
     display: block;

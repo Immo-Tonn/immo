@@ -18,9 +18,19 @@ const HowIsGoing = () => {
   }, []);
   return (
     <section className={styles.howIsGoingSection}>
-      <div className={styles.textBlock} ref={el => (refs.current[0] = el)}>
+      <div
+        className={styles.textBlock}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         <h3>Was wir bei der Bewertung berücksichtigen:</h3>
-        <div className={styles.listWrapper} ref={el => (refs.current[1] = el)}>
+        <div
+          className={styles.listWrapper}
+          ref={el => {
+            refs.current[1] = el;
+          }}
+        >
           <ul>
             <li>Aktuelle Markt- und Nachfragesituation</li>
             <li>Lage und Mikrolage der Immobilien</li>
@@ -30,7 +40,12 @@ const HowIsGoing = () => {
           </ul>
         </div>
         <h3>Wie läuft die Bewertung ab?</h3>
-        <div className={styles.listWrapper} ref={el => (refs.current[2] = el)}>
+        <div
+          className={styles.listWrapper}
+          ref={el => {
+            refs.current[2] = el;
+          }}
+        >
           <ol>
             <li>Unverbindliches Erstgespräch – telefonisch oder vor Ort</li>
             <li>Analyse der Objektunterlagen und Besichtigung</li>

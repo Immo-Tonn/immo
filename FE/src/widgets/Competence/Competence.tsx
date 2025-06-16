@@ -17,7 +17,12 @@ const Competence = () => {
   }, []);
   return (
     <section className={styles.competenceSection}>
-      <h2 className={styles.firstTitle} ref={el => (refs.current[0] = el)}>
+      <h2
+        className={styles.firstTitle}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         Vertrauen durch Kompetenz
       </h2>
       <span className={styles.line}></span>
@@ -35,7 +40,9 @@ const Competence = () => {
       <img
         src={lightBuilding}
         alt="light-house"
-        ref={el => (refs.current[3] = el)}
+        ref={el => {
+          refs.current[3] = el;
+        }}
       />
 
       <div className={styles.titleWrapper}>

@@ -1,6 +1,6 @@
 import Button from '@shared/ui/Button/Button';
 import styles from './ValuationCTA.module.css';
-import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.svg';
+import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.webp';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll, runningBoxShadow } from '@shared/anim/animations';
 import { Link } from 'react-router-dom';
@@ -51,6 +51,7 @@ const ValuationCTA = () => {
         <img
           ref={imgRef}
           src={valuationPhoto}
+          className={styles.valuationPhoto}
           alt="valuation-photo"
           style={{ boxShadow: '0 4px 41px 11px rgba(0, 0, 0, 0.25)' }}
         />

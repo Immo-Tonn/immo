@@ -65,6 +65,7 @@
 }
 
 .overlay {
+  font-family: var(--Roboto);
   position: absolute;
   top: 0;
   left: 0;
@@ -120,6 +121,7 @@
 }
 
 .address {
+  font-family: var(--Roboto);
   margin-top: 45px;
   font-size: 26px;
   text-align: left;
@@ -259,7 +261,23 @@ iframe {
   border: none;
   border-radius: 8px;
 }
-
+.placeholderWrapper {
+  font-family: var(--Roboto);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  background-color: #e0e0e0;
+  color: #555;
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+.placeholderText {
+  font-size: 1rem;
+  font-weight: 500;
+}
 @media (max-width: 765px) {
   .imageContainer {
     display: none;

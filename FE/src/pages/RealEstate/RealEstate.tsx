@@ -36,7 +36,9 @@ const RealEstate = () => {
                 key={obj._id}
                 object={obj}
                 images={images}
-                ref={el => (refs.current[i] = el)}
+                ref={el => {
+                  refs.current[i] = el;
+                }}
                 residentialHouse={obj.residentialHouses}
               />
             ))}

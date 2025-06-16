@@ -68,15 +68,13 @@ export const fadeInOnScroll = (
 
   const {
     x = 0,
-    y = 0,
-    duration = 0.47,
+    y = 40, // default y for nice slide effect
+    duration = 0.6,
     delay = 0,
-    ease = 'sine.inOut',
-    start = 'top 70%',
+    ease = 'power2.out',
+    start = 'top 80%',
     scrub = false,
   } = options;
-
-  el.style.pointerEvents = 'none';
 
   gsap.fromTo(
     el,
@@ -97,12 +95,11 @@ export const fadeInOnScroll = (
         start,
         toggleActions: 'play none none reverse',
         scrub,
-        onEnter: () => (el.style.pointerEvents = 'auto'),
-        onLeaveBack: () => (el.style.pointerEvents = 'none'),
       },
     },
   );
 };
+
 export const runningBoxShadow = (ref: any) => {
   const el = ref.current;
   if (!el) return;

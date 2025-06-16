@@ -43,7 +43,7 @@ const Header: React.FC = () => {
     <header>
       <div className={styles.headerWrapper}>
         <div className={styles.headerTop}>
-          <img className={styles.logo} src={logo} alt="Logo" />
+          <img className={styles.logo} src={logo} alt="logo" />
 
           <nav className={styles.nav}>
             {navLinks.map(link => (
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
           <IconButton
             className={styles.burgerButton}
             onClick={toggleDrawer(true)}
-            aria-label="Открыть меню"
+            aria-label="Open menu"
           >
             <MenuIcon />
           </IconButton>
@@ -78,11 +78,11 @@ const Header: React.FC = () => {
             }}
           >
             <div className={styles.drawerHeader}>
-              <img src={logo} alt="Logo" className={styles.drawerLogo} />
+              <img src={logo} alt="logo-mobile" className={styles.drawerLogo} />
               <IconButton
                 onClick={toggleDrawer(false)}
                 className={styles.drawerCloseButton}
-                aria-label="Закрыть меню"
+                aria-label="Close menu"
               >
                 <CloseIcon />
               </IconButton>
@@ -110,7 +110,7 @@ const Header: React.FC = () => {
             <ul className={styles.headerContacts}>
               <li>
                 <div className={styles.contactIcon}>
-                  <img src={telephone} alt="Телефон" />
+                  <img src={telephone} alt="Phone" />
                 </div>
                 <a href="tel:01743454419" className={styles.contactText}>
                   0174 345 44 19
@@ -118,7 +118,7 @@ const Header: React.FC = () => {
               </li>
               <li>
                 <div className={styles.contactIcon}>
-                  <img src={eMail} alt="Email" />
+                  <img src={eMail} alt="email" />
                 </div>
                 <a
                   href="mailto:tonn_andreas@web.de"
@@ -131,7 +131,7 @@ const Header: React.FC = () => {
                 <div className={styles.contactIcon}>
                   <img
                     src={location}
-                    alt="Местоположение"
+                    alt="adress"
                     style={{ width: '26px', height: '26px' }}
                   />
                 </div>
@@ -145,7 +145,7 @@ const Header: React.FC = () => {
                 </a>
               </li>
               <li>
-                <div className={styles.contactIcon}></div>
+                <span className={styles.contactIcon}></span>
                 <a
                   href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster/@52.000885,7.5495001,17z/data=!3m1!4b1!4m6!3m5!1s0x47b9b0fb68b86337:0x6c01106fad5b0129!8m2!3d52.000885!4d7.552075!16s%2Fg%2F11bw3zj4mf?entry=ttu&g_ep=EgoyMDI1MDQzMC4xIKXMDSoASAFQAw%3D%3D"
                   className={styles.contactText}

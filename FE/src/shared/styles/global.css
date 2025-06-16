@@ -15,7 +15,6 @@
   --font-weight-secondary: 400;
 }
 a {
-  position: relative;
   text-decoration: none;
   cursor: pointer;
   transition:

@@ -14,7 +14,8 @@
   transform: scale(1.05);
 }
 .image {
-  width: 600px;
+  object-fit: contain;
+  width: 100%;
 }
 .cardTitle {
   font-family: var(--Roboto);

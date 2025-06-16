@@ -62,7 +62,12 @@ const ContactForm = () => {
   };
 
   return (
-    <div className={styles.formWrapper} ref={el => (refs.current[1] = el)}>
+    <div
+      className={styles.formWrapper}
+      ref={el => {
+        refs.current[1] = el;
+      }}
+    >
       <div className={styles.container}>
         <h2 className={styles.heading}>Jetzt Kontakt aufnehmen</h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

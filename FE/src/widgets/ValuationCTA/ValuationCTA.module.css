@@ -55,7 +55,9 @@
   max-width: 557px;
   margin-left: clamp(40px, 8vw, 94px);
 }
-
+.valuationPhoto {
+  max-width: 664px;
+}
 .buttonWrapper {
   display: flex;
   justify-content: flex-end;

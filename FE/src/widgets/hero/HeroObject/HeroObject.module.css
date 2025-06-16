@@ -13,7 +13,7 @@
   left: 50%;
   transform: translateX(-50%);
   height: 675px;
-  background-image: url('@shared/assets/hero-object/hero-photo.svg');
+  background-image: url('@shared/assets/hero-object/hero-photo.webp');
   background-size: cover;
   background-position: center;
   z-index: 2;
