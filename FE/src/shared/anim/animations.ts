@@ -68,13 +68,15 @@ export const fadeInOnScroll = (
 
   const {
     x = 0,
-    y = 40, // default y for nice slide effect
-    duration = 0.6,
+    y = 40,
+    duration = 0.47,
     delay = 0,
-    ease = 'power2.out',
-    start = 'top 80%',
+    ease = 'sine.inOut',
+    start = 'top 70%',
     scrub = false,
   } = options;
+
+  el.style.pointerEvents = 'none';
 
   gsap.fromTo(
     el,
@@ -95,6 +97,8 @@ export const fadeInOnScroll = (
         start,
         toggleActions: 'play none none reverse',
         scrub,
+        onEnter: () => (el.style.pointerEvents = 'auto'),
+        onLeaveBack: () => (el.style.pointerEvents = 'none'),
       },
     },
   );

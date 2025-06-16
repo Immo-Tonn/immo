@@ -4,10 +4,10 @@ import effectBuild from '@shared/assets/effect/effect-build.webp';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll, parallaxMouseEffect } from '@shared/anim/animations';
 const Effect = () => {
-  const wrapperRef = useRef(null);
-  const elem1 = useRef(null);
-  const elem2 = useRef(null);
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  const wrapperRef = useRef<any | null>(null);
+  const elem1 = useRef<any | null>(null);
+  const elem2 = useRef<any | null>(null);
+  const refs = useRef<(any | null)[]>([]);
   useEffect(() => {
     refs.current.forEach((ref, i) => {
       if (ref) {
@@ -33,7 +33,9 @@ const Effect = () => {
     <section className={styles.effectSection}>
       <div
         className={styles.descriptionWrapper}
-        ref={el => (refs.current[0] = el)}
+        ref={el => {
+          refs.current[0] = el;
+        }}
       >
         <span className={styles.line}></span>
         <p className={styles.description}>
@@ -44,7 +46,11 @@ const Effect = () => {
           zweite Chance bekommt.
         </p>
       </div>
-      <div ref={el => (refs.current[5] = el)}>
+      <div
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <div className={styles.imageWrapper} ref={wrapperRef}>
           <img
             src={effectPhoto}
@@ -57,7 +63,9 @@ const Effect = () => {
       </div>
       <div
         className={styles.descriptionWrapper}
-        ref={el => (refs.current[1] = el)}
+        ref={el => {
+          refs.current[2] = el;
+        }}
       >
         <p className={styles.description}>
           Mit dem richtigen Blickwinkel und dem Spiel aus Schatten und Licht
@@ -80,7 +88,9 @@ const Effect = () => {
       <img
         src={effectBuild}
         alt="effect-build"
-        ref={el => (refs.current[2] = el)}
+        ref={el => {
+          refs.current[3] = el;
+        }}
       />
     </section>
   );

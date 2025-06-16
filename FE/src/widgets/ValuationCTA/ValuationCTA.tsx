@@ -27,7 +27,12 @@ const ValuationCTA = () => {
 
   return (
     <section className={styles.valuationCTASection}>
-      <div className={styles.textWrapper} ref={el => (refs.current[0] = el)}>
+      <div
+        className={styles.textWrapper}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         <h2 className={styles.firstTitle}>
           <b>
             Viele Eigentümer fragen sich: Was ist meine Immobilie heute wert?
@@ -44,7 +49,12 @@ const ValuationCTA = () => {
           persönliche Beratung.
         </p>
       </div>
-      <div className={styles.imageWrapper} ref={el => (refs.current[1] = el)}>
+      <div
+        className={styles.imageWrapper}
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <h1 className={styles.secondTitle}>
           Lassen Sie Ihre Immobilie jetzt bewerten!
         </h1>
@@ -56,7 +66,12 @@ const ValuationCTA = () => {
           style={{ boxShadow: '0 4px 41px 11px rgba(0, 0, 0, 0.25)' }}
         />
       </div>
-      <div className={styles.bottomWrapper} ref={el => (refs.current[2] = el)}>
+      <div
+        className={styles.bottomWrapper}
+        ref={el => {
+          refs.current[2] = el;
+        }}
+      >
         <h2 className={styles.thirdTitle}>
           warum ist eine professionelle wertermittlung so wichtig?
         </h2>
@@ -69,8 +84,13 @@ const ValuationCTA = () => {
         </p>
       </div>
 
-      <div className={styles.buttonWrapper} ref={el => (refs.current[3] = el)}>
-        <Link to="/rechner">
+      <div
+        className={styles.buttonWrapper}
+        ref={el => {
+          refs.current[3] = el;
+        }}
+      >
+        <Link to="/finanzierung">
           <Button
             initialText="Wie viel ist mein Haus wert?"
             clickedText="Weiterleitung..."

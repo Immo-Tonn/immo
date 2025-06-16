@@ -57,7 +57,9 @@ const HowIsGoing = () => {
         </div>
         <div
           className={styles.buttonWrapper}
-          ref={el => (refs.current[3] = el)}
+          ref={el => {
+            refs.current[3] = el;
+          }}
         >
           <Link to="/kontakt">
             <Button
