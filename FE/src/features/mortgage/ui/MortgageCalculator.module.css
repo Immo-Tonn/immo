@@ -82,25 +82,26 @@ input[readonly] {
 
 .inputWithPercent {
   position: relative;
-   display: flex;
-  align-items: center;
+   /* display: flex;
+  align-items: center; */
 }
 
 .inputWithPercent input {
       padding-right: 24px; 
-  width: 100%;
-  box-sizing: border-box;
+  /* width: 100%;
+  box-sizing: border-box; */
 }
 
 .inputWithPercent span {
   position: absolute;
-  left: 45px;
-  top: 40%;
+  /* left: 45px; */
+   right: 10px;
+  top: 50%;
   transform: translateY(-50%);
   color: #666;
   font-weight: bold;
 }
-.inputWithPercent .percent {
+/* .inputWithPercent .percent {
   margin-left: 4px;
 }
 .percent {
@@ -109,7 +110,7 @@ input[readonly] {
   color: #666;
   font-weight: bold;
   pointer-events: none;
-}
+} */
 
 .icon {
   width: 18px;
@@ -139,8 +140,9 @@ input[readonly] {
 .sumLine {
   font-weight: bold;
   margin-top: 12px;
-  border-top: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
   padding-top: 12px;
+  border-bottom: 1px solid #ccc;
 }
 
 .rateLabel {
@@ -252,7 +254,8 @@ input[readonly] {
 }
 .error {
   color: red;
-  font-size: 13px;
-  margin-top: -8px;
-  margin-bottom: 8px;
+  /* font-size: 13px; */
+   font-size: 0.85rem;
+    margin-top: 4px;
+  /* margin-bottom: 8px; */
 }
