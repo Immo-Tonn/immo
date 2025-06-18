@@ -1,0 +1,92 @@
+.aboutUsSection {
+  background: rgba(82, 110, 137, 0.16);
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logoWrapper {
+  height: auto;
+  display: flex;
+}
+.line {
+  width: 100%;
+  max-width: 720px;
+  border-bottom: 2px solid black;
+  margin: 80px 0 115px 0;
+}
+
+.logo {
+  max-width: 226px;
+  height: auto;
+  margin: 20px 0;
+}
+
+.contentWrapper {
+  display: flex;
+}
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 68px;
+}
+
+.textBlock h1 {
+  max-width: 720px;
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: #160c20;
+  margin-bottom: 16px;
+}
+
+.textBlock p {
+  text-align: center;
+  max-width: 625px;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 24px;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: #160c20;
+}
+
+.textBottom {
+  font-family: 'Inter', sans-serif;
+  margin-top: 40px;
+  max-width: 636px;
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  color: #120922;
+}
+
+@media (max-width: 765px) {
+  .logo {
+    max-width: 134px;
+  }
+  .logoWrapper {
+    height: 100%;
+    justify-content: flex-start;
+  }
+  .textBlock {
+    margin-left: 0;
+  }
+  .textBlock p {
+    max-width: 540px;
+  }
+  .line {
+    max-width: 539px;
+    margin: 40px 0 40px 0;
+  }
+}
+
+@media (max-width: 572px) {
+  .logo {
+    max-width: 185px;
+  }
+}
