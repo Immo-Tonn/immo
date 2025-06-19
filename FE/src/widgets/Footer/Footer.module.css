@@ -1,0 +1,113 @@
+footer {
+  background-color: #1c1829;
+  color: white;
+  font-family: var(--Inter);
+  margin: 0 auto;
+}
+
+.topStripe {
+  background-color: #2b3e56;
+  height: 53px;
+  width: 100%;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 28px clamp(20px, 5vw, 25px) 26px clamp(20px, 5vw, 20px);
+  max-width: 1024px;
+  margin: 0 auto;
+  align-items: flex-end;
+}
+
+.footerLeft {
+  display: block;
+}
+
+.footerLogo {
+  max-width: 111px;
+  margin-bottom: 24px;
+}
+
+.footerLinks {
+  font-family: var(--Inter);
+  list-style: none;
+  font-size: 16px;
+}
+.footerIcons {
+  display: flex;
+  gap: 52px;
+  list-style: none;
+}
+.footerLinks li {
+  margin-bottom: 8px;
+}
+
+.footerLinks li a {
+  text-decoration: none;
+  color: white;
+}
+
+.footerRight {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: left;
+  /* this is kindly bad */
+  margin-bottom: 126px;
+  /* this is kindly bad */
+}
+
+.contactButton {
+  font-size: clamp(21px, 5vw, var(--font-size-secondary));
+  background-color: #cbd8e2;
+  color: #1c1829;
+  font-weight: bold;
+  border: none;
+}
+
+.bottomStripe {
+  background-color: #2b3e56;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottomStripe p {
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-xs);
+  color: #fff;
+}
+
+.contactButton[disabled] {
+  color: white;
+  background-color: #557289;
+}
+.contactButton:hover {
+  background-color: #9cb2c3;
+}
+@media (max-width: 765px) {
+  .footerLeft {
+    display: block;
+  }
+  .footerLeft .footerLinks li {
+    margin-top: 20px;
+  }
+  .footerIcons img {
+    width: 30px;
+    height: 27px;
+  }
+  .contactButton {
+    display: none;
+  }
+  .footerLogo {
+    max-width: 133px;
+  }
+}
+
+@media (max-width: 572px) {
+  .bottomBar {
+    display: block;
+  }
+}

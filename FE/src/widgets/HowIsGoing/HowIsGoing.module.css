@@ -1,0 +1,60 @@
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.textBlock h3 {
+  margin: 20px;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-main);
+  font-size: clamp(var(--font-size-secondary), 5vw, 40px);
+  color: #000;
+}
+.textBlock ol,
+.textBlock ul {
+  display: flex;
+  flex-direction: column;
+  font-weight: var(--font-weight-secondary);
+  font-family: var(--Inter);
+  font-size: var(--font-size-small);
+  color: #000;
+  max-width: 600px;
+}
+
+.textBlock .listWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 256px;
+}
+.buttonWrapper Button {
+  max-width: 832px;
+  height: 113px;
+  margin-top: 113px;
+  background-color: #1c1829;
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(10px, 5vw, 36px);
+  color: #fcfdff;
+}
+.howIsGoingSection {
+  margin-top: 91px;
+}
+
+@media (max-width: 765px) {
+  .textBlock {
+    align-items: center;
+  }
+  .textBlock > h3 {
+    text-align: center;
+  }
+}
+@media (max-width: 576px) {
+  .textBlock .textWrapper {
+    max-width: 353px;
+  }
+}

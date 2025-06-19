@@ -1,0 +1,131 @@
+/* ---------- базовая обёртка ---------- */
+.headerWrapper {
+  background-color: #1c1829;
+  color: white;
+  font-family: var(--Inter);
+}
+
+/* ---------- шапка ---------- */
+.headerTop {
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 0 auto;
+  padding-inline: 16px;
+}
+
+/* ---------- логотип ---------- */
+.logo {
+  max-height: 136px;
+  height: auto;
+  width: auto;
+}
+
+/* ---------- навигация (desktop) ---------- */
+.nav {
+  display: flex;
+  gap: 30px;
+  align-items: flex-end;
+}
+
+.nav a {
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-small));
+  text-align: center;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+
+.nav a.active {
+  color: #ffffff;
+}
+
+/* ---------- контакты (desktop) ---------- */
+.contact {
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.headerContacts {
+  margin-top: 5px;
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.headerContacts li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contactIcon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.contactText {
+  text-decoration: none;
+  color: white;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+/* ---------- бургер‑кнопка ---------- */
+.burger {
+  display: none;
+}
+
+/* ---------- drawer (mobile) ---------- */
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 8px 16px;
+  padding-block: 4px;
+}
+
+.drawerLogo {
+  height: 114px;
+}
+
+/* блок‑обёртка для выпадашки админа в mobile */
+.mobileAdminBlock {
+  padding: 8px 16px 24px;
+}
+
+/* ---------- адаптив ---------- */
+@media (max-width: 765px) {
+  .nav {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact {
+    display: none;
+  }
+  .nav {
+    display: none;
+  }
+  .burger {
+    display: block;
+    color: white;
+    margin-bottom: 16px;
+  }
+  .headerTop {
+    align-items: center;
+  }
+  .logo {
+    max-height: 100px;
+  }
+  /* admin dropdown подстраиваемся под mobile */
+  .adminDropdownContent {
+    position: static;
+    width: 100%;
+    margin-top: 10px;
+  }
+}

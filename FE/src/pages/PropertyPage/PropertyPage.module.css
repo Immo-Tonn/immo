@@ -1,0 +1,95 @@
+.propertyPageContainer {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.refreshButton {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.refreshButton:hover {
+  background-color: #138496;
+}
+
+.refreshButton:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+/* Стили для кнопок администратора */
+.adminActions {
+  position: absolute;
+  /* top: 1rem; */
+  right: 1rem;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.editButton,
+.deleteButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
+}
+
+.editButton {
+  background-color: #1b4965;
+  color: white;
+}
+
+.editButton:hover {
+  background-color: #14374e;
+  transform: translateY(-1px);
+}
+
+.deleteButton {
+  background-color: #751c12;
+  color: white;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .adminActions {
+    position: relative;
+    top: 0;
+    right: 0;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .editButton,
+  .deleteButton {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .adminActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .editButton,
+  .deleteButton {
+    width: 100%;
+    padding: 12px;
+  }
+}

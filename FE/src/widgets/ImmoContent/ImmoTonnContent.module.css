@@ -1,0 +1,172 @@
+.immoTonnContentSection {
+  position: relative;
+  width: 100%;
+  max-width: 1294px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 2px 2fr;
+  gap: 65px;
+}
+
+.immoTonnContentSectionMobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 0; /* Reset gap for mobile */
+}
+
+.immoTonnContentSectionTablet {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  padding: 10px;
+}
+
+.immoTonnLeftSectionWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.immoTonnBigPhraseDesktop {
+  font-weight: bold;
+  line-height: 1.2;
+  color: #333;
+  z-index: 2;
+  font-size: 1.8em;
+  text-align: left;
+  max-width: 100%;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  align-self: end;
+}
+
+.immoTonnBigPhraseTablet {
+  font-weight: bold;
+  line-height: 1.2;
+  color: #333;
+  z-index: 2;
+  font-size: 1.4em;
+  text-align: center;
+  max-width: 100%;
+}
+
+.immoTonnBigPhraseMobile {
+  font-weight: bold;
+  line-height: 1.2;
+  color: #333;
+  z-index: 2;
+  font-size: 1.2em;
+  text-align: center;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.immoTonnLine {
+  background-color: black;
+  z-index: 1;
+  width: 2px;
+  display: block; /* Always visible on desktop/tablet grid */
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  align-self: stretch;
+  margin: 0 auto;
+}
+
+.immoTonnContentSectionMobile .immoTonnLine {
+  display: none; /* Hide on mobile */
+}
+
+/* New: Style for horizontal line on mobile */
+.immoTonnPhraseLine {
+  width: 80%;
+  height: 2px;
+  background-color: black;
+  margin: 20px auto;
+}
+
+.immoTonnTextListDesktop {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+  text-align: left;
+  width: 100%;
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  margin-left: 0;
+}
+
+.immoTonnTextListTablet {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+  text-align: left;
+  width: 100%;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  margin-left: 0;
+}
+
+.immoTonnTextListMobile {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+}
+
+.immoTonnTextListItemWrapper {
+  margin-bottom: 15px;
+  background-color: #fff;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.immoTonnTextH4Desktop {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.immoTonnTextH4Tablet {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.immoTonnTextH4Mobile {
+  font-size: 1em;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+  text-align: center; /* Ensure mobile text is centered */
+}
+
+.immoTonnTextPDesktop {
+  color: #777;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+.immoTonnTextPTab {
+  color: #777;
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+.immoTonnTextPMobile {
+  color: #777;
+  font-size: 0.8em;
+  line-height: 1.6;
+  text-align: center; /* Ensure mobile text is centered */
+}
