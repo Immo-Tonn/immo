@@ -1,5 +1,5 @@
 footer {
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   color: white;
   font-family: var(--Inter);
   margin: 0 auto;
@@ -80,7 +80,7 @@ footer {
 .contactButton {
   font-size: clamp(21px, 5vw, var(--font-size-secondary));
   background-color: #cbd8e2;
-  color: #1c1829;
+  color: var(--secondary-color);
   font-weight: bold;
   border: none;
 }

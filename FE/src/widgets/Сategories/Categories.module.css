@@ -2,7 +2,7 @@
   display: flex;
   overflow-x: hidden;
   justify-content: center;
-  background-color: #160c20;
+  background-color: var(--main-color);
 }
 
 .categoriesList {

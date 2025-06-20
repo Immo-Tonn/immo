@@ -49,7 +49,7 @@
 
 .immoTonnTextP {
   font-family: var(--Roboto);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: 20px;
   letter-spacing: 0.1em;
   line-height: 1.6;
@@ -65,11 +65,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   font-family: var(--Roboto);
   width: 622px;
   height: 85px;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-secondary);
   color: #fcfdff;
   margin-bottom: 85px;

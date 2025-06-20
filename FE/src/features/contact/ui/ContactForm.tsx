@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@shared/ui/Button/Button';
 import { fadeInOnScroll } from '@shared/anim/animations';
 const ContactForm = () => {
-  const refs = useRef<(HTMLLIElement | null)[]>([]);
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     refs.current.forEach((ref, i) => {

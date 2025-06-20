@@ -3,10 +3,10 @@ import styles from './AboutUs.module.css';
 import { fadeInOnScroll, parallaxMouseEffect } from '@shared/anim/animations';
 
 const AboutUs = () => {
-  const wrapperRef = useRef(null);
-  const logoRef = useRef(null);
-  const textRef = useRef(null);
-  const bottomTextRef = useRef(null);
+  const wrapperRef = useRef<any | null>(null);
+  const logoRef = useRef<any | null>(null);
+  const textRef = useRef<any | null>(null);
+  const bottomTextRef = useRef<any | null>(null);
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
     refs.current.forEach((ref, i) => {
@@ -36,7 +36,9 @@ const AboutUs = () => {
         <div className={styles.textBlock} ref={textRef}>
           <div
             className={styles.titleWrapper}
-            ref={el => (refs.current[0] = el)}
+            ref={el => {
+              refs.current[0] = el;
+            }}
           >
             <h1>
               Ihr zuverlässiger Partner für <br />
@@ -45,7 +47,9 @@ const AboutUs = () => {
             </h1>
             <div
               className={styles.textWrapper}
-              ref={el => (refs.current[1] = el)}
+              ref={el => {
+                refs.current[1] = el;
+              }}
             >
               <p>
                 Mit einem professionellen Immobilienmakler an Ihrer Seite können
@@ -69,7 +73,11 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-      <div ref={el => (refs.current[3] = el)}>
+      <div
+        ref={el => {
+          refs.current[3] = el;
+        }}
+      >
         <p className={styles.textBottom} ref={bottomTextRef}>
           <b>
             Ihr Maklerteam für Wohnimmobilien, <br />

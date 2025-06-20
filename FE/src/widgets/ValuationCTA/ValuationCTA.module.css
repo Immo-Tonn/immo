@@ -67,7 +67,7 @@
     font-weight: var(--font-weight-secondary);
     font-size: var(--font-size-secondary);
     font-family: var(--Inter);
-    background-color: #1c1829;
+    background-color: var(--secondary-color);
     max-width: 539px;
     height: clamp(100px, 10vh, 74px);
   }

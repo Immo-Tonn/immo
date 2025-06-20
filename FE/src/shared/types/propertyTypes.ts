@@ -8,6 +8,7 @@ export interface Address {
 }
 
 export interface Image {
+  _id: string;
   id: string;
   url: string;
   type: string;
@@ -80,7 +81,7 @@ export interface RealEstateObject {
   price: number;
   dateAdded: string;
   status: string;
-  images?: Image[];
+  images?: string[];
   videos?: Video[];
   apartments?: Apartment;
   commercial_NonResidentialBuildings?: CommercialBuilding;
@@ -91,7 +92,7 @@ export interface RealEstateObject {
 
 export interface PropertyHeroProps {
   object: RealEstateObject;
-  images?: Image[];
+  images?: string[];
   apartment?: Apartment;
   residentialHouse?: ResidentialHouse;
   landPlot?: LandPlot;

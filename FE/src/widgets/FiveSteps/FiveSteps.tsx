@@ -6,6 +6,7 @@ import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import Button from '@shared/ui/Button/Button';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 
 const FiveSteps = () => {
   const refs = useRef<(HTMLDivElement | null)[]>([]);
@@ -24,7 +25,12 @@ const FiveSteps = () => {
 
   return (
     <section className={styles.fiveStepsSection}>
-      <div className={styles.firstTitleWrap} ref={el => (refs.current[1] = el)}>
+      <div
+        className={styles.firstTitleWrap}
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <h3 className={styles.firstTitle}>
           Mehr als nur Immobilien – eine Partnerschaft, <br />
           die für Sie entfaltet
@@ -37,7 +43,12 @@ const FiveSteps = () => {
       </div>
 
       <div className={styles.contentWrapper}>
-        <div className={styles.itemList} ref={el => (refs.current[2] = el)}>
+        <div
+          className={styles.itemList}
+          ref={el => {
+            refs.current[2] = el;
+          }}
+        >
           <Accordion
             sx={{
               m: 0,
@@ -260,11 +271,13 @@ const FiveSteps = () => {
           </Accordion>
 
           <div className={styles.buttonWrapper}>
-            <Button
-              className={styles.verkaufButton}
-              initialText="Verkauf"
-              clickedText="Weiterleitung..."
-            />
+            <Link to="/kontakt">
+              <Button
+                className={styles.verkaufButton}
+                initialText="Verkauf"
+                clickedText="Weiterleitung..."
+              />
+            </Link>
           </div>
         </div>
       </div>

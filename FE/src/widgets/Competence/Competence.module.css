@@ -41,7 +41,7 @@
   width: 1214px;
   height: 297px;
   align-items: center;
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   width: 100%;
   justify-content: center;
 }

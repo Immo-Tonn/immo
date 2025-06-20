@@ -50,7 +50,7 @@
   line-height: 1.6;
   font-weight: var(--font-weight-big);
   letter-spacing: 0.1em;
-  color: #160c20;
+  color: var(--main-color);
   margin-bottom: 90px;
 }
 .textWrapper {
@@ -66,7 +66,7 @@
   font-weight: var(--font-weight-secondary);
   font-size: 16px;
   letter-spacing: 0.1em;
-  color: #160c20;
+  color: var(--main-color);
 }
 @media (max-width: 765px) {
   .contentWrapper {

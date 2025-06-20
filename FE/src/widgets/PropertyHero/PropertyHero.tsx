@@ -111,7 +111,12 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   return (
     <section className={styles.section}>
-      <h1 className={styles.title} ref={el => (refs.current[0] = el)}>
+      <h1
+        className={styles.title}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         {title}
       </h1>
 
@@ -121,7 +126,9 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             <div
               className={styles.carouselWrapper}
               onClick={() => handleThumbClick(currentIndex)}
-              ref={el => (refs.current[1] = el)}
+              ref={el => {
+                refs.current[1] = el;
+              }}
             >
               {shouldShowStatus && (
                 <div className={styles.statusBadge}>{statusLabel}</div>
@@ -129,7 +136,9 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
               {isVideo(currentMedia) ? (
                 <div
                   className={styles.videoFrameWrapper}
-                  ref={el => (refs.current[2] = el)}
+                  ref={el => {
+                    refs.current[2] = el;
+                  }}
                 >
                   <iframe
                     src={currentMedia.url}
@@ -160,7 +169,9 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
       ) : firstMedia ? (
         <div
           className={styles.imageContainer}
-          ref={el => (refs.current[3] = el)}
+          ref={el => {
+            refs.current[3] = el;
+          }}
         >
           <div
             className={styles.mainImageWrapper}
@@ -191,7 +202,12 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             )}
           </div>
 
-          <div className={styles.sideImages} ref={el => (refs.current[4] = el)}>
+          <div
+            className={styles.sideImages}
+            ref={el => {
+              refs.current[4] = el;
+            }}
+          >
             {previewMedia.slice(1, 3).map((item, idx) => {
               const actualIndex = idx + 1;
               const isLastPreview = idx === 1;
@@ -251,7 +267,12 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         </div>
       )}
 
-      <div className={styles.features} ref={el => (refs.current[6] = el)}>
+      <div
+        className={styles.features}
+        ref={el => {
+          refs.current[6] = el;
+        }}
+      >
         <div className={styles.feature}>
           <h3>{price.toLocaleString()} €</h3>
           <h6>Kaufpreis</h6>
@@ -298,7 +319,12 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         )}
       </div>
 
-      <div className={styles.address} ref={el => (refs.current[7] = el)}>
+      <div
+        className={styles.address}
+        ref={el => {
+          refs.current[7] = el;
+        }}
+      >
         {address.city}, {address.district}
       </div>
 

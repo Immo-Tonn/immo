@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { fadeInOnScroll, parallaxMouseEffect } from '@shared/anim/animations';
 import { useEffect, useRef } from 'react';
 const HeroHome = () => {
-  const wrapperRef = useRef(null);
-  const textRef = useRef(null);
+  const wrapperRef = useRef<any | null>(null);
+  const textRef = useRef<any | null>(null);
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
     refs.current.forEach((ref, i) => {
@@ -28,7 +28,9 @@ const HeroHome = () => {
     <section className={styles.heroSection}>
       <div
         className={styles.heroContentWrapper}
-        ref={el => (refs.current[0] = el)}
+        ref={el => {
+          refs.current[0] = el;
+        }}
       >
         <div className={styles.topTextWrapper} ref={wrapperRef}>
           <p className={styles.topText} ref={textRef}>
@@ -40,20 +42,27 @@ const HeroHome = () => {
           </p>
         </div>
 
-        <div className={styles.bottomBar} ref={el => (refs.current[2] = el)}>
+        <div
+          className={styles.bottomBar}
+          ref={el => {
+            refs.current[2] = el;
+          }}
+        >
           <div className={styles.buttonWrapper}>
             <Link to="/wertermittlung">
               <Button
                 initialText="Kostenlose Wertermittlung"
-                clickedText="Weiterleitung......"
+                clickedText="Weiterleitung..."
               />
             </Link>
           </div>
           <div className={styles.buttonWrapper}>
-            <Button
-              initialText="direkt anfordern"
-              clickedText="Weiterleitung......"
-            />
+            <Link to="/kontakt">
+              <Button
+                initialText="direkt anfordern"
+                clickedText="Weiterleitung..."
+              />
+            </Link>
           </div>
         </div>
       </div>

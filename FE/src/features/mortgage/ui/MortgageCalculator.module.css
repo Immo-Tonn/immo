@@ -4,13 +4,13 @@
   margin: 0 auto;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   background: #fff;
 }
 
 .title {
   font-size: 36px;
-  font-weight: 600;
+  font-weight: var(--font-weight-main);
   text-align: center;
   color: #212529;
   margin-bottom: 40px;
@@ -107,7 +107,7 @@ input[readonly] {
 .btn {
   width: 100%;
   height: 48px;
-  background: #1c1829;
+  background: var(--secondary-color);
   color: white;
   font-size: 16px;
   border: none;
@@ -136,7 +136,7 @@ input[readonly] {
 
 .monthly {
   font-size: var(--font-size-size-xs);
-  color: #1c1829;
+  color: var(--secondary-color);
   font-weight: bold;
   transition: all 0.5s ease-in-out;
 }
@@ -168,7 +168,7 @@ input[readonly] {
   line-height: 1.6;
 }
 
-.modal p {
+.modal > p {
   margin: 0;
   font-size: 16px;
 }
@@ -176,7 +176,7 @@ input[readonly] {
 .modal > button {
   margin-top: 24px;
   padding: 10px 16px;
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   color: #fff;
   border: none;
   font-size: 15px;

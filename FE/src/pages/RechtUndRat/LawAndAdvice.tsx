@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react';
 import { fadeInOnScroll, runningBoxShadow } from '@shared/anim/animations';
 
 const LawAndAdvice = () => {
-  const refs = useRef<(HTMLLIElement | null)[]>([]);
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   const imgRef = useRef<HTMLImageElement | null>(null);
   useEffect(() => {
     runningBoxShadow(imgRef);
@@ -27,19 +27,30 @@ const LawAndAdvice = () => {
           src={rechtHero}
           className={styles.image}
           alt="Beratung Schritt 1"
-          ref={el => (refs.current[0] = el)}
+          ref={el => {
+            refs.current[0] = el;
+          }}
         />
         <div className={styles.firstTitleWrapper}>
           <h1>Recht & Rat</h1>
         </div>
       </div>
 
-      <h2 ref={el => (refs.current[2] = el)}>
+      <h2
+        ref={el => {
+          refs.current[2] = el;
+        }}
+      >
         rechtliche sicherheit & praktische <br />
         tipps rund um kauf und verkauf
       </h2>
 
-      <div className={styles.textBlockL} ref={el => (refs.current[1] = el)}>
+      <div
+        className={styles.textBlockL}
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <div className={styles.blockTitle}>
           <h2>Vorbereitung schafft Sicherheit und Erfolg</h2>
         </div>
@@ -58,7 +69,12 @@ const LawAndAdvice = () => {
 
       <hr />
 
-      <div className={styles.textBlockR} ref={el => (refs.current[3] = el)}>
+      <div
+        className={styles.textBlockR}
+        ref={el => {
+          refs.current[3] = el;
+        }}
+      >
         <div className={styles.blockText}>
           <p>
             Wir wissen, wie man eine Immobilie optimal präsentiert. <br />
@@ -74,7 +90,11 @@ const LawAndAdvice = () => {
           <h2>Mit Stil und Übersicht zur erfolgreichen Besichtigung</h2>
         </div>
       </div>
-      <div ref={el => (refs.current[5] = el)}>
+      <div
+        ref={el => {
+          refs.current[5] = el;
+        }}
+      >
         <img
           src={rechtMain}
           className={styles.image}
@@ -82,7 +102,12 @@ const LawAndAdvice = () => {
           ref={imgRef}
         />
       </div>
-      <div className={styles.textBlockL} ref={el => (refs.current[4] = el)}>
+      <div
+        className={styles.textBlockL}
+        ref={el => {
+          refs.current[4] = el;
+        }}
+      >
         <div className={styles.blockTitle}>
           <h2>Sicherheit und Struktur bei jedem Schritt.</h2>
         </div>
@@ -101,7 +126,12 @@ const LawAndAdvice = () => {
 
       <hr />
 
-      <div className={styles.textBlockR} ref={el => (refs.current[6] = el)}>
+      <div
+        className={styles.textBlockR}
+        ref={el => {
+          refs.current[6] = el;
+        }}
+      >
         <div className={styles.blockText}>
           <p>
             Ein realistischer Preis und eine gute Verhandlungsführung sind
@@ -122,14 +152,26 @@ const LawAndAdvice = () => {
         src={rechtSecondary}
         className={styles.image}
         alt="Beratung Schritt 3"
-        ref={el => (refs.current[7] = el)}
+        ref={el => {
+          refs.current[7] = el;
+        }}
       />
 
       <div className={styles.textBlockL}>
-        <div className={styles.blockTitle} ref={el => (refs.current[9] = el)}>
+        <div
+          className={styles.blockTitle}
+          ref={el => {
+            refs.current[9] = el;
+          }}
+        >
           <h2>Keine übereilten Entscheidungen treffen</h2>
         </div>
-        <div className={styles.blockText} ref={el => (refs.current[10] = el)}>
+        <div
+          className={styles.blockText}
+          ref={el => {
+            refs.current[10] = el;
+          }}
+        >
           <p>
             Immobilientransaktionen brauchen Zeit und Klarheit. <br /> Wir
             schaffen einen geschützten Rahmen, in dem Käufer und Verkäufer in
@@ -141,7 +183,12 @@ const LawAndAdvice = () => {
 
       <hr />
 
-      <p className={styles.ziel} ref={el => (refs.current[8] = el)}>
+      <p
+        className={styles.ziel}
+        ref={el => {
+          refs.current[8] = el;
+        }}
+      >
         Unser Ziel ist es, Kauf und Verkauf von Immobilien klar, verständlich
         und sicher zu gestalten. <br />
         Wir setzen uns dafür ein, dass die Interessen beider Seiten

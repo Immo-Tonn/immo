@@ -58,7 +58,7 @@
 
 .whyAgentP {
   font-family: var(--Roboto);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: 20px;
   letter-spacing: 0.1em;
 }

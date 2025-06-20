@@ -20,7 +20,7 @@
 
 .firstTitleWrapper > h1 {
   font-family: var(--Roboto);
-  font-weight: 600;
+  font-weight: var(--font-weight-main);
   font-size: clamp(var(--font-size-main), 10vw, 96px);
   color: #fff;
   text-shadow: 6px 2px 4px rgba(0, 0, 0, 0.5);
@@ -79,7 +79,7 @@
   max-width: 981px;
   text-align: center;
   margin-top: 80px;
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: clamp(20px, 4vw, var(--font-size-small));
 }
 

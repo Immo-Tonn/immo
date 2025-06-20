@@ -13,7 +13,10 @@
   --font-weight-big: 800;
   --font-weight-main: 600;
   --font-weight-secondary: 400;
+  --main-color: #160c20;
+  --secondary-color: #1c1829;
 }
+
 a {
   text-decoration: none;
   cursor: pointer;
