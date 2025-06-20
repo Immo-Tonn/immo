@@ -12,8 +12,6 @@ const RealEstate = () => {
   const refs = useRef<(HTMLLIElement | null)[]>([]);
   const listRef = useRef<HTMLUListElement | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
-  // Проверка авторизации администратора
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     setIsAdmin(!!token);

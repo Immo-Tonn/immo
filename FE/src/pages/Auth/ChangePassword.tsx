@@ -1,4 +1,3 @@
-// src/pages/Auth/ChangePassword.tsx
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
@@ -17,7 +16,6 @@ const ChangePassword: React.FC = () => {
     useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Checking authorization when component loading
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
@@ -25,23 +23,10 @@ const ChangePassword: React.FC = () => {
     }
   }, [navigate]);
 
-  // Password validation
   const validatePassword = (password: string): string | null => {
     if (password.length < 8) {
       return 'Password must be at least 8 characters long';
     }
-
-    //     if (!/\d/.test(password)) {
-    //       return "Пароль должен содержать хотя бы одну цифру";
-    //     }
-
-    //     if (!/[A-Z]/.test(password)) {
-    //       return "Пароль должен содержать хотя бы одну заглавную букву";
-    //     }
-
-    //     if (!/[a-z]/.test(password)) {
-    //       return "Пароль должен содержать хотя бы одну строчную букву";
-    //     }
 
     if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
       return 'The password must contain at least one special character.';
@@ -50,33 +35,27 @@ const ChangePassword: React.FC = () => {
     return null;
   };
 
-  // Обработчик смены пароля
   const handleChangePassword = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
-    // Сбрасываем предыдущие сообщения
     setError('');
     setSuccess('');
 
-    // Проверка заполнения всех полей
     if (!currentPassword || !newPassword || !confirmPassword) {
       setError('Please fill in all fields');
       return;
     }
 
-    // Проверка совпадения паролей
     if (newPassword !== confirmPassword) {
       setError('New password and confirmation do not match');
       return;
     }
 
-    // Проверка, что новый пароль отличается от текущего
     if (newPassword === currentPassword) {
       setError('The new password must be different from the current one.');
       return;
     }
 
-    // Проверка сложности пароля
     const passwordError = validatePassword(newPassword);
     if (passwordError) {
       setError(passwordError);
@@ -86,25 +65,20 @@ const ChangePassword: React.FC = () => {
     try {
       setLoading(true);
 
-      // Получаем токен из localStorage
       const token = sessionStorage.getItem('adminToken');
 
-      // Отправляем запрос на смену пароля
       await axios.put(
         '/auth/change-password',
         { currentPassword, newPassword, confirmPassword },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      // Успешная смена пароля
       setSuccess('Password successfully changed');
 
-      // Очищаем поля формы
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
 
-      // Через 2 секунды перенаправляем на главную страницу
       setTimeout(() => {
         navigate('/immobilien');
       }, 2000);
@@ -115,7 +89,6 @@ const ChangePassword: React.FC = () => {
     }
   };
 
-  //   // Индикатор сложности пароля
   // const getPasswordStrength = (
   //   password: string
   // ): {
@@ -179,7 +152,6 @@ const ChangePassword: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showCurrentPassword ? 'text' : 'password'}
-              // type="password"
               id="currentPassword"
               value={currentPassword}
               onChange={e => setCurrentPassword(e.target.value)}
@@ -197,7 +169,7 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
-                // padding: '0 10px',
+
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',

@@ -26,9 +26,7 @@ const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
             <span className={styles.status}>{status}</span>
             <div className={styles.cardOverlay}>
               <p className={styles.cardTitle}>{title}</p>
-
               <p className={styles.address}>{address?.city}</p>
-
               <div className={styles.details}>
                 {price !== undefined && <p>Kaufpreis: {price} € </p>}
                 {livingArea !== undefined && (
