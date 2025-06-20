@@ -18,18 +18,14 @@ const PropertyPage: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-  // Проверка авторизации администратора
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     setIsAdmin(!!token);
   }, []);
-
-  // Обработчик редактирования (только для админа)
   const handleEdit = () => {
     navigate(`/edit-object/${id}`);
   };
 
-  // Функция принудительного обновления данных
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
@@ -42,7 +38,6 @@ const PropertyPage: React.FC = () => {
     }
   };
 
-  // Обработчик удаления (только для админа)
   const handleDelete = async () => {
     if (!window.confirm('Wirklich löschen? Diese Aktion ist unwiderruflich.')) {
       return;
@@ -50,8 +45,6 @@ const PropertyPage: React.FC = () => {
 
     try {
       await axios.delete(`/objects/${id}`);
-
-      // Удаляем объект из подтвержденных
       const confirmedObjects = JSON.parse(
         localStorage.getItem('confirmedObjects') || '[]',
       );
@@ -81,7 +74,6 @@ const PropertyPage: React.FC = () => {
     <div className={styles.propertyPageContainer}>
       <LoadingErrorHandler loading={loading} error={err} />
 
-      {/* Admin buttons */}
       {isAdmin && (
         <div className={styles.adminActions}>
           <button className={styles.editButton} onClick={handleEdit}>
@@ -90,18 +82,8 @@ const PropertyPage: React.FC = () => {
           <button className={styles.deleteButton} onClick={handleDelete}>
             Löschen
           </button>
-          {/* Data refresh button
-          <button 
-            className={styles.refreshButton} 
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-          >
-            {isRefreshing ? 'Aktualisieren...' : '🔄 Daten aktualisieren'}
-          </button> */}
         </div>
       )}
-
-      {/* Data refresh button */}
       <button
         className={styles.refreshButton}
         onClick={handleRefresh}

@@ -25,22 +25,6 @@
   margin-bottom: 32px;
 }
 
-@media (max-width: 765px) {
-  .cardList {
-    grid-template-columns: 1fr;
-    padding: 0 16px;
-  }
-}
-
-@media (max-width: 576px) {
-  .cardList {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    height: auto;
-    padding: 0 12px;
-  }
-}
-/* ./src/pages/RealEstate/RealEstate.module.css */
 .container {
   padding: 20px;
   max-width: 1200px;
@@ -50,13 +34,11 @@
   align-items: center;
 }
 
-/* Заголовок страницы с кнопкой для админа */
 .pageHeader {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 30px;
-  border-bottom: 2px solid #f0f0f0;
   padding-bottom: 20px;
   width: 100%;
 }
@@ -86,7 +68,6 @@
   background-color: #14374e;
 }
 
-/* Статистика для админа */
 .statsSection {
   display: flex;
   gap: 30px;
@@ -109,6 +90,7 @@
 }
 
 .statLabel {
+  font-family: var(--Roboto);
   font-size: 14px;
   color: #666;
   margin-top: 5px;
@@ -125,8 +107,8 @@
   list-style: none;
 }
 
-/* Информационная секция для администратора */
 .adminInfo {
+  font-family: var(--Roboto);
   background-color: #e3f2fd;
   border: 1px solid #2196f3;
   border-radius: 8px;
@@ -148,7 +130,6 @@
   line-height: 1.6;
 }
 
-/* Состояние "нет объектов" */
 .noProperties {
   text-align: center;
   padding: 80px 20px;
@@ -179,8 +160,11 @@
   line-height: 1.6;
 }
 
-/* Адаптивные стили */
-@media (max-width: 768px) {
+@media (max-width: 765px) {
+  .cardList {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
   .container {
     padding: 20px 15px;
   }
@@ -209,7 +193,6 @@
 
   .cardList {
     grid-template-columns: 1fr;
-    max-height: 80vh;
     overflow-y: auto;
     padding: 0 16px;
   }

@@ -32,7 +32,6 @@ const RealEstate = () => {
     });
   }, [objectData]);
 
-  // Обработчик создания нового объекта (только для админа)
   const handleCreateNew = () => {
     navigate('/create-object');
   };
@@ -42,9 +41,7 @@ const RealEstate = () => {
       <LoadingErrorHandler loading={loading} error={err} />
       {!loading && !err && (
         <section className={styles.container}>
-          {/* Заголовок страницы с кнопкой для админа */}
           <div className={styles.pageHeader}>
-            {/* Статистика для админа */}
             {isAdmin && objectData && (
               <div className={styles.statsSection}>
                 <div className={styles.statItem}>
@@ -56,15 +53,12 @@ const RealEstate = () => {
               </div>
             )}
             <h1 className={styles.title}>Immobilienangebote</h1>
-            {/* Кнопка создания объекта для админа */}
             {isAdmin && (
               <button className={styles.createButton} onClick={handleCreateNew}>
                 + Objekt erstellen
               </button>
             )}
           </div>
-
-          {/* Сетка объектов или сообщение об отсутствии */}
           {objectData && objectData.length > 0 ? (
             <ul className={styles.cardList} ref={listRef}>
               {objectData.map((obj, i) => (
@@ -101,8 +95,6 @@ const RealEstate = () => {
               </div>
             )
           )}
-
-          {/*admin info section */}
           {isAdmin && objectData && objectData.length > 0 && (
             <div className={styles.adminInfo}>
               <h4>Informationen für Administratoren</h4>

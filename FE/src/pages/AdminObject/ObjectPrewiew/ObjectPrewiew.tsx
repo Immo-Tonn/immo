@@ -29,19 +29,16 @@ const ObjectPreview = () => {
     return '';
   };
 
-  // Функция для открытия модального окна с изображением
   const openImageModal = (index: number) => {
     setCurrentImageIndex(index);
     setIsModalOpen(true);
   };
 
-  // Функция для закрытия модального окна
   const closeImageModal = () => {
     setIsModalOpen(false);
     setCurrentImageIndex(0);
   };
 
-  // Функции навигации в модальном окне
   const handlePrev = () => {
     const allMedia = [...images, ...videos];
     setCurrentImageIndex(prev => (prev === 0 ? allMedia.length - 1 : prev - 1));
@@ -56,7 +53,6 @@ const ObjectPreview = () => {
     setCurrentImageIndex(index);
   };
 
-  // Загрузка данных объекта
   useEffect(() => {
     const fetchObjectData = async () => {
       if (!id) {
@@ -69,13 +65,10 @@ const ObjectPreview = () => {
         setLoading(true);
         console.log('Загружаем данные для объекта с ID:', id);
 
-        // основные данные объекта
         const objectResponse = await axios.get(`/objects/${id}`);
         const mainObjectData = objectResponse.data;
         setObjectData(mainObjectData);
         console.log('Основные данные объекта загружены:', mainObjectData);
-
-        // изображения объекта
         try {
           console.log('Загружаем изображения для объекта:', id);
           const imagesResponse = await axios.get(
@@ -93,17 +86,15 @@ const ObjectPreview = () => {
           setImages([]);
         }
 
-        // видео объекта
         try {
           console.log('Загружаем видео для объекта:', id);
           const videosResponse = await axios.get(
             `/videos/by-object?objectId=${id}`,
           );
           if (videosResponse.data && Array.isArray(videosResponse.data)) {
-            // Преобразуем видео в формат, совместимый с галереей
             const processedVideos = videosResponse.data.map(video => ({
               ...video,
-              url: `https://iframe.mediadelivery.net/embed/430278/${video.videoId}`, // iframe URL
+              url: `https://iframe.mediadelivery.net/embed/430278/${video.videoId}`,
               thumbnailUrl:
                 video.thumbnailUrl ||
                 `https://vz-973fa28c-a7d.b-cdn.net/${video.videoId}/preview.webp`,
@@ -122,7 +113,6 @@ const ObjectPreview = () => {
           setVideos([]);
         }
 
-        // специфические данные
         try {
           console.log(
             'Пытаемся загрузить специфические данные для типа:',
@@ -268,9 +258,7 @@ const ObjectPreview = () => {
     fetchObjectData();
   }, [id]);
 
-  // Обработчик подтверждения - создание карточки на странице Immobilien
   const handleConfirm = () => {
-    // Сохраняем флаг о том, что объект подтвержден (для отображения на странице Immobilien)
     if (objectData && objectData._id) {
       const confirmedObjects = JSON.parse(
         localStorage.getItem('confirmedObjects') || '[]',
@@ -286,12 +274,10 @@ const ObjectPreview = () => {
     navigate('/immobilien');
   };
 
-  // Обработчик редактирования
   const handleEdit = () => {
     navigate(`/edit-object/${id}`);
   };
 
-  // Отображение специфических данных в зависимости от типа объекта
   const renderSpecificData = () => {
     if (!specificData) {
       return (
@@ -590,11 +576,7 @@ const ObjectPreview = () => {
   if (!objectData) {
     return <div className={styles.error}>Objekt nicht gefunden</div>;
   }
-
-  // Получаем номер объекта
   const objectNumber = formatObjectNumber(objectData._id);
-
-  // Объединяем изображения и видео для галереи
   const allMedia = [...images, ...videos];
 
   return (
@@ -604,11 +586,9 @@ const ObjectPreview = () => {
       {action && (
         <div className={styles.successMessage}>{getSuccessMessage()}</div>
       )}
-
-      {/* Номер объекта */}
       <div className={styles.objectNumberSection}>
         <div className={styles.objectNumber}>
-          <span className={styles.objectNumberLabel}>Objektnummer::</span>
+          <span className={styles.objectNumberLabel}>Objektnummer:</span>
           <span className={styles.objectNumberValue}>{objectNumber}</span>
         </div>
       </div>
@@ -651,7 +631,7 @@ const ObjectPreview = () => {
                 <h4>{video.title || `Video ${index + 1}`}</h4>
                 <div
                   className={styles.videoThumbnailContainer}
-                  onClick={() => openImageModal(images.length + index)} // ИСПРАВЛЕНО: правильный индекс
+                  onClick={() => openImageModal(images.length + index)}
                 >
                   <img
                     src={video.thumbnailUrl}
@@ -720,7 +700,6 @@ const ObjectPreview = () => {
         )}
       </div>
 
-      {/* Специфические данные объекта */}
       {renderSpecificData()}
 
       <div className={styles.actionButtons}>
