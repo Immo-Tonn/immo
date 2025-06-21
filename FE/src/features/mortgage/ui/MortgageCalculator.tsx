@@ -92,7 +92,7 @@ const customBrokerError = broker === 'custom' && customBroker !== '' && !isValid
 // const formatCurrencyDE = (num: number) => {
 //   return num.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 // };
-
+const [priceError, setPriceError] = useState("");
 
 const formatCurrencyDE = (num: number | null | undefined) => {
   if (num === null || num === undefined || isNaN(num)) return '';
@@ -272,9 +272,18 @@ const handleCalc = () => {
         <div className={styles.col}>
           <label>Immobilienpreis (€)</label>
           <div className={styles.inputWithIcon}>
-            <input value={price} onChange={e => setPrice(e.target.value)} />
+            <input
+  value={price}
+  onChange={e => {
+    const val = e.target.value.replace(/\D/g, ''); // удаляем всё, кроме цифр
+    if (val.length <= 11) {
+      setPrice(val);
+    }
+  }}
+/>
             <img src={MarkerIcon} alt="marker" className={styles.markerIcon} />
           </div>
+          
 
           {renderSelect('Grunderwerbsteuer', tax, setTax, customTax, setCustomTax, 'tax', taxOptions, undefined, customTaxError)}
           {renderSelect('Notar/Grundbuch', notary, setNotary, customNotary, setCustomNotary, 'notary', notaryOptions, undefined, customNotaryError)}
