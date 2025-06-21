@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import styles from './PropertyCard.module.css';
-import { PropertyHeroProps } from '../PropertyHero/models';
+import { PropertyHeroProps } from '@shared/types/propertyTypes';
 import { NavLink } from 'react-router-dom';
 
 const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
@@ -26,15 +26,13 @@ const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
             <span className={styles.status}>{status}</span>
             <div className={styles.cardOverlay}>
               <p className={styles.cardTitle}>{title}</p>
-
               <p className={styles.address}>{address?.city}</p>
-
               <div className={styles.details}>
-                {price !== undefined && <p>Kaufpreis: {price} €|</p>}
+                {price !== undefined && <p>Kaufpreis: {price} € </p>}
                 {livingArea !== undefined && (
-                  <p>Wohnfläche: {livingArea} m² </p>
+                  <p>| Wohnfläche: {livingArea} m² | </p>
                 )}
-                {numberOfRooms !== undefined && <p>|{numberOfRooms} Zimmer</p>}
+                {numberOfRooms !== undefined && <p> {numberOfRooms} Zimmer</p>}
               </div>
             </div>
           </div>

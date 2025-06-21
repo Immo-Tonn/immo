@@ -68,11 +68,11 @@ export const fadeInOnScroll = (
 
   const {
     x = 0,
-    y = 0,
-    duration = 0.3,
+    y = 40,
+    duration = 0.47,
     delay = 0,
     ease = 'sine.inOut',
-    start = 'top 30%',
+    start = 'top 70%',
     scrub = false,
   } = options;
 
@@ -124,7 +124,6 @@ export const runningBoxShadow = (ref: any) => {
         const angle = progress * Math.PI * 2;
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
-
         el.style.boxShadow = `${x.toFixed(2)}px ${y.toFixed(2)}px ${blur}px ${color}`;
       },
     },

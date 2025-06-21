@@ -4,18 +4,25 @@ import cors from 'cors';
 import connectDb from './config/db';
 import realEstateRoutes from './routes/realEstateObjectsRoutes';
 import imagesRoutes from './routes/imagesRoutes';
+import authRoutes from './routes/authRoutes';
 import apartmentRoutes from './routes/apartmentsRoutes';
 import commercial_NonResidentialBuildingsRoutes from './routes/commercial_NonResidentialBuildingsRoutes';
 import landPlotRoutes from './routes/landPlotsRoutes';
 import residentialHousesRoutes from './routes/residentialHousesRoutes';
 import emailRoutes from './routes/emailRoutes';
 import videosRoutes from './routes/videosRoutes';
+import {
+  errorLogger,
+  errorHandler,
+  setupUncaughtErrorHandlers,
+} from './middlewares/errorMiddleware';
 
+setupUncaughtErrorHandlers();
 const app: Application = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-
+app.use('/api/auth', authRoutes);
 app.use('/api/objects', realEstateRoutes);
 app.use('/api/images', imagesRoutes);
 app.use('/api/videos', videosRoutes);

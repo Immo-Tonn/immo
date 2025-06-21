@@ -17,16 +17,29 @@ const Competence = () => {
   }, []);
   return (
     <section className={styles.competenceSection}>
-      <h2 className={styles.firstTitle} ref={el => (refs.current[0] = el)}>
+      <h2
+        className={styles.firstTitle}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         Vertrauen durch Kompetenz
       </h2>
       <span className={styles.line}></span>
-      <p ref={el => (refs.current[1] = el)}>
+      <p
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         Unsere Kunden besitzen nicht nur Immobilien – sie sind oft auch bei uns
         versichert. Das heißt: Wir kennen ihre Situation, ihre Immobilie und
         ihre Bedürfnisse.
       </p>
-      <p ref={el => (refs.current[2] = el)}>
+      <p
+        ref={el => {
+          refs.current[2] = el;
+        }}
+      >
         Genau darin liegt unser Vorteil: Wir kombinieren Wissen aus zwei Welten
         – Immobilienbewertung und Versicherungsberatung – für eine ganzheitliche
         Betreuung.
@@ -35,11 +48,18 @@ const Competence = () => {
       <img
         src={lightBuilding}
         alt="light-house"
-        ref={el => (refs.current[3] = el)}
+        ref={el => {
+          refs.current[3] = el;
+        }}
       />
 
       <div className={styles.titleWrapper}>
-        <h2 className={styles.secondTitle} ref={el => (refs.current[4] = el)}>
+        <h2
+          className={styles.secondTitle}
+          ref={el => {
+            refs.current[4] = el;
+          }}
+        >
            Jetzt unverbindlich anfragen – Ihr Immo Tonn Team ist für Sie da!
         </h2>
       </div>

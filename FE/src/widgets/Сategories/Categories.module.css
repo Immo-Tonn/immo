@@ -2,7 +2,7 @@
   display: flex;
   overflow-x: hidden;
   justify-content: center;
-  background-color: #160c20;
+  background-color: var(--main-color);
 }
 
 .categoriesList {
@@ -70,11 +70,12 @@
   position: absolute;
   z-index: 22;
   color: white;
-
   font-size: clamp(18px, 5vw, var(--font-size-main));
   font-weight: var(--font-weight-main);
   font-family: var(--Inter);
   padding: 54px;
+  padding-inline-start: clamp(124px, 5vw, 80px);
+  padding-inline-end: clamp(124px, 5vw, 80px);
 }
 
 @media (max-width: 765px) {
@@ -87,5 +88,10 @@
   .categoriesList {
     gap: 50px;
     padding: 86px 0 64px 0;
+  }
+  .categoryTitle {
+    padding: 54px;
+    padding-inline-start: clamp(160px, 5vw, 80px);
+    padding-inline-end: clamp(160px, 5vw, 80px);
   }
 }

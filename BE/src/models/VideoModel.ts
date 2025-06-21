@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IVideo extends Document {
   id: Types.ObjectId;
@@ -29,7 +29,7 @@ const VideoSchema: Schema<IVideo> = new Schema({
   },
   realEstateObject: {
     type: Schema.Types.ObjectId,
-    ref: "RealEstateObjects",
+    ref: 'RealEstateObjects',
     required: true,
   },
   dateAdded: {
@@ -38,5 +38,5 @@ const VideoSchema: Schema<IVideo> = new Schema({
   },
 });
 
-const VideoModel = mongoose.model<IVideo>("Videos", VideoSchema);
+const VideoModel = mongoose.model<IVideo>('Videos', VideoSchema);
 export default VideoModel;

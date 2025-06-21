@@ -47,7 +47,7 @@ export const CategoriesData: CategoryItem[] = [
     id: 6,
     title: 'finanzirung',
     image: '/src/shared/assets/categories/finanzirung.webp',
-    link: 'rechner',
+    link: 'finanzierung',
     alt: 'finanzirung',
   },
 ];

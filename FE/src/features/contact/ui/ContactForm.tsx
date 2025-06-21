@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@shared/ui/Button/Button';
 import { fadeInOnScroll } from '@shared/anim/animations';
 const ContactForm = () => {
-  const refs = useRef<(HTMLLIElement | null)[]>([]);
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     refs.current.forEach((ref, i) => {
@@ -62,7 +62,12 @@ const ContactForm = () => {
   };
 
   return (
-    <div className={styles.formWrapper} ref={el => (refs.current[1] = el)}>
+    <div
+      className={styles.formWrapper}
+      ref={el => {
+        refs.current[1] = el;
+      }}
+    >
       <div className={styles.container}>
         <h2 className={styles.heading}>Jetzt Kontakt aufnehmen</h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

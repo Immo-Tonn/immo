@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
 
 const Categories = () => {
-  const refs = useRef<HTMLLIElement[]>([]);
+  const refs = useRef<any[]>([]);
 
   useEffect(() => {
     refs.current.forEach((ref, i) => {
@@ -24,7 +24,9 @@ const Categories = () => {
           <li
             key={item.id}
             className={styles.categoryItem}
-            ref={el => (refs.current[i] = el)}
+            ref={el => {
+              refs.current[i] = el;
+            }}
           >
             <NavLink
               to={item.link}

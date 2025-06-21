@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
 import { Address } from '@shared/types/propertyTypes';
 import { LatLngTuple } from 'leaflet';
 import styles from './PropertyMap.module.css';
+
 interface PropertyMapProps {
   address: Address;
 }

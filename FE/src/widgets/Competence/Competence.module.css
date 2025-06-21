@@ -6,7 +6,7 @@
   margin-bottom: 20px;
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
-  font-size: clamp(10px, 5vw, 64px);
+  font-size: clamp(10px, 5vw, var(--font-size-big));
   color: #000;
 }
 .secondTitle {
@@ -41,19 +41,20 @@
   width: 1214px;
   height: 297px;
   align-items: center;
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   width: 100%;
   justify-content: center;
 }
 
 .competenceSection > img {
-  margin-top: 91px;
+  margin-top: clamp(40px, 6vh, 91px);
+
   max-width: 1200px;
 }
 
 @media (max-width: 765px) {
   .competenceSection > img {
-    margin-top: 91px;
+    margin-top: clamp(40px, 6vh, 91px);
     max-width: 768px;
   }
 }

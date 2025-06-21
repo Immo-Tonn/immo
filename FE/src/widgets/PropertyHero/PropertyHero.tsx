@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './PropertyHero.module.css';
 import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
 import {
@@ -10,6 +10,7 @@ import {
   Image,
   Video,
 } from '@shared/types/propertyTypes';
+import { fadeInOnScroll } from '@shared/anim/animations';
 
 interface PropertyHeroProps {
   object: RealEstateObject;
@@ -32,9 +33,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth <= 768 : false,
-  );
+  const [isMobile, setIsMobile] = useState(false);
 
   const { title, address, price, status } = object;
 
@@ -54,6 +53,17 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const previewMedia = mediaItems.slice(0, 3);
   const hasMoreMedia = mediaItems.length > 3;
+  const refs = useRef<(HTMLLIElement | HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 50 } : { x: 100, y: -50 },
+        );
+    });
+  }, []);
 
   useEffect(() => {
     const updateMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -101,40 +111,68 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}>{title}</h1>
+      <h1
+        className={styles.title}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
+        {title}
+      </h1>
 
-      {isMobile && currentMedia && (
-        <div className={styles.carouselContainer}>
-          <div
-            className={styles.carouselWrapper}
-            onClick={() => handleThumbClick(currentIndex)}
-          >
-            {shouldShowStatus && (
-              <div className={styles.statusBadge}>{statusLabel}</div>
-            )}
-            {isVideo(currentMedia) ? (
-              <div className={styles.videoFrameWrapper}>
-                <iframe
+      {isMobile ? (
+        currentMedia ? (
+          <div className={styles.carouselContainer}>
+            <div
+              className={styles.carouselWrapper}
+              onClick={() => handleThumbClick(currentIndex)}
+              ref={el => {
+                refs.current[1] = el;
+              }}
+            >
+              {shouldShowStatus && (
+                <div className={styles.statusBadge}>{statusLabel}</div>
+              )}
+              {isVideo(currentMedia) ? (
+                <div
+                  className={styles.videoFrameWrapper}
+                  ref={el => {
+                    refs.current[2] = el;
+                  }}
+                >
+                  <iframe
+                    src={currentMedia.url}
+                    title={currentMedia.title || 'Video Player'}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className={styles.videoFrame}
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <img
                   src={currentMedia.url}
-                  title={currentMedia.title || 'Video Player'}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className={styles.videoFrame}
+                  alt={`Bild ${currentIndex + 1}`}
+                  className={styles.carouselImage}
+                  loading="lazy"
                 />
-              </div>
-            ) : (
-              <img
-                src={currentMedia.url}
-                alt={`Bild ${currentIndex + 1}`}
-                className={styles.carouselImage}
-              />
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      )}
-
-      {!isMobile && firstMedia && (
-        <div className={styles.imageContainer}>
+        ) : (
+          <div className={styles.placeholderWrapper}>
+            <span className={styles.placeholderText}>
+              Es wurden noch keine Fotos oder Videos hochgeladen.
+            </span>
+          </div>
+        )
+      ) : firstMedia ? (
+        <div
+          className={styles.imageContainer}
+          ref={el => {
+            refs.current[3] = el;
+          }}
+        >
           <div
             className={styles.mainImageWrapper}
             onClick={() => handleThumbClick(0)}
@@ -151,18 +189,25 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className={styles.videoFrame}
+                  loading="lazy"
                 />
               </div>
             ) : (
               <img
                 src={firstMedia.url}
-                alt="Bild"
+                alt={`Bild 1`}
                 className={styles.mainImage}
+                loading="lazy"
               />
             )}
           </div>
 
-          <div className={styles.sideImages}>
+          <div
+            className={styles.sideImages}
+            ref={el => {
+              refs.current[4] = el;
+            }}
+          >
             {previewMedia.slice(1, 3).map((item, idx) => {
               const actualIndex = idx + 1;
               const isLastPreview = idx === 1;
@@ -190,6 +235,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className={styles.videoFrame}
+                        loading="lazy"
                       />
                     </div>
                   ) : (
@@ -197,6 +243,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                       src={item.url}
                       alt={`Bild ${actualIndex + 1}`}
                       className={styles.smallImage}
+                      loading="lazy"
                     />
                   )}
                   {isLastPreview && hasMoreMedia && (
@@ -207,9 +254,25 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             })}
           </div>
         </div>
+      ) : (
+        <div
+          className={styles.placeholderWrapper}
+          ref={el => {
+            refs.current[5] = el;
+          }}
+        >
+          <span className={styles.placeholderText}>
+            Es wurden noch keine Fotos oder Videos hochgeladen.
+          </span>
+        </div>
       )}
 
-      <div className={styles.features}>
+      <div
+        className={styles.features}
+        ref={el => {
+          refs.current[6] = el;
+        }}
+      >
         <div className={styles.feature}>
           <h3>{price.toLocaleString()} €</h3>
           <h6>Kaufpreis</h6>
@@ -256,7 +319,12 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         )}
       </div>
 
-      <div className={styles.address}>
+      <div
+        className={styles.address}
+        ref={el => {
+          refs.current[7] = el;
+        }}
+      >
         {address.city}, {address.district}
       </div>
 

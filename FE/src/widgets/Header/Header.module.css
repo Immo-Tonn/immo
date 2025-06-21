@@ -1,5 +1,5 @@
 .headerWrapper {
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   color: white;
   font-family: var(--Inter);
 }
@@ -8,7 +8,6 @@
   max-width: 1200px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
   margin: 0 auto;
 }
 
@@ -22,35 +21,40 @@
   align-items: flex-end;
 }
 
-.nav a {
-  font-weight: var(--font-weight-secondary);
-  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-small));
-  text-align: center;
-  color: #d9d9d9;
-  margin-bottom: 16px;
-}
-.contact {
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: right;
+.listItemText {
+  display: flex;
+  justify-content: center;
+  color: white !important;
+  margin: 0;
+  align-items: center;
+  font-size: clamp(16px, 3vw, 20px) !important;
 }
 
 .headerContacts {
   margin-top: 5px;
   align-items: center;
-  font-size: clamp(10px, 5vw, 14px);
+  font-size: clamp(10px, 2vw, 14px);
   text-align: left;
   list-style: none;
   margin-bottom: 20px;
+  padding: 0;
 }
 
-.headerContacts li {
+.headerContacts > li {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 8px;
 }
 
-.contactIcon img {
+.contactIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+}
+
+.contactIcon > img {
   width: 20px;
   height: 20px;
   object-fit: contain;
@@ -59,30 +63,144 @@
 .contactText {
   text-decoration: none;
   color: white;
-  line-height: 1.4;
   font-size: 14px;
+  transition:
+    transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 200ms;
+}
+
+.nav a {
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
+  text-align: center;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background-color: white;
+  transition: width 300ms ease;
+}
+.nav a:hover::after {
+  width: 100%;
+}
+.contactText:hover::after {
+  width: 100%;
+}
+.burger {
+  display: none;
+  color: white;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activeLink {
+  color: white !important;
+  font-weight: bold;
+}
+
+.drawerLogo {
+  height: 114px;
+}
+
+.locationIcon {
+  width: 26px;
+  height: 26px;
+}
+
+.headerWrapper .headerTop .burgerButton {
+  display: none;
+  color: white;
+}
+
+.drawerHeader .drawerCloseButton {
+  color: white;
+}
+
+.drawerPaper {
+  background-color: #1c1829 !important;
+
+  a:hover {
+    transform: scale(1);
+  }
+}
+
+.drawerList {
+  display: flex !important;
+  padding: 0 !important;
+}
+
+.drawerListItem {
+  padding: 0 !important;
 }
 
 @media (max-width: 765px) {
-  .headerTop {
-    display: flex;
+  .logo {
+    max-height: 114px;
+    grid-row: 1 / span 2;
+    grid-column: 1;
+    margin-right: 15px;
   }
+
   .nav {
-    gap: 10px;
+    grid-row: 2;
+    grid-column: 2 / 4;
+    gap: 20px;
+  }
+  .contact {
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 20px;
+  }
+  .contactText {
+    font-size: 10px;
+  }
+  .nav a {
+    font-size: clamp(12px, 8vw, 20px);
+    margin-bottom: 8px;
+  }
+  .headerTop {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .headerContacts {
+    margin-bottom: 0;
+  }
+  .headerContacts li {
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 576px) {
+  .headerTop {
+    display: flex;
+  }
   .contact {
     display: none;
   }
+
+  .burgerButton {
+    display: block !important;
+    margin-bottom: 16px;
+  }
+
   .nav {
     display: none;
   }
 
   .burger {
     display: block;
-    color: white;
     margin-bottom: 16px;
   }
 
@@ -93,7 +211,8 @@
   .logo {
     max-height: 100px;
   }
-}
-.burger {
-  display: none;
+
+  .headerWrapper {
+    padding: 0;
+  }
 }

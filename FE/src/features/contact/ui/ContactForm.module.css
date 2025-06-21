@@ -2,6 +2,7 @@
   margin-top: 30px;
   display: flex;
   justify-content: center;
+  min-height: 100dvh;
 }
 .verticalLineRight {
   width: 1px;
@@ -22,7 +23,7 @@
 .heading {
   font-size: var(--font-size-main);
   font-family: 'Roboto', sans-serif;
-  font-weight: 800;
+  font-weight: --font-weight-big;
   color: #212529;
   margin-bottom: 30px;
 }
@@ -110,7 +111,7 @@
   }
 
   .heading {
-    font-size: 32px;
+    font-size: var(--font-size-secondary);
     text-align: center;
   }
 

@@ -15,8 +15,15 @@ import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
 import SalesSupport from '@pages/SalesSupport/SalesSupport';
-import RechtUndRat from '@pages/RechtUndRat/RechtUndRat';
-import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
+import LawAndAdvice from '@pages/LawAndAdvice/LawAndAdvice';
+import Login from '@pages/Auth/Login';
+import Register from '@pages/Auth/Register';
+import ObjectPreview from '@pages/AdminObject/ObjectPrewiew/ObjectPrewiew';
+import ForgotPassword from '@pages/Auth/ForgotPassword';
+import ProtectedRoute from '@features/utils/ProtectedRoute';
+import ChangePassword from '@pages/Auth/ChangePassword';
+import CreateObject from '@pages/AdminObject/CreateObject/CreateObject';
+import 'leaflet/dist/leaflet.css';
 const App = () => {
   return (
     <Router>
@@ -32,12 +39,43 @@ const App = () => {
           <Route path="/kontakt" element={<ContactForm />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-          <Route path="/kontakt/danke" element={<DankePage />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
+          <Route path="/kontakt/danke" element={<DankePage />} />
           <Route path="/verkaufssupport" element={<SalesSupport />} />
-          <Route path="/recht-und-rat" element={<RechtUndRat />} />
-          <Route path="/rechner" element={<MortgageCalculator />} />
+          <Route path="/recht-und-rat" element={<LawAndAdvice />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/add-property" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/change-password"
+            element={<ProtectedRoute>{<ChangePassword />}</ProtectedRoute>}
+          />
+
+          <Route
+            path="/create-object"
+            element={
+              <ProtectedRoute>
+                <CreateObject />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/preview-object/:id"
+            element={
+              <ProtectedRoute>
+                <ObjectPreview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-object/:id"
+            element={
+              <ProtectedRoute>
+                <CreateObject />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Layout>
     </Router>

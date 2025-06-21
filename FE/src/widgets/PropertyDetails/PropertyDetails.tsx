@@ -49,7 +49,9 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             initialText="Finanzierungsrechner"
             clickedText="Weiterleitung..."
             className={styles.calcButton}
-            onClick={() => navigate('/finanzierung')}
+            onClick={() =>
+              navigate('/finanzierung', { state: { price: object.price } })
+            }
           />
         </div>
 
@@ -107,7 +109,9 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               initialText="Finanzierungsrechner"
               clickedText="Weiterleitung..."
               className={styles.calcButton}
-              onClick={() => navigate('/finanzierung')}
+              onClick={() =>
+                navigate('/finanzierung', { state: { price: object.price } })
+              }
             />
           </div>
         </div>

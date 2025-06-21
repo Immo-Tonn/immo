@@ -1,41 +1,33 @@
 .whyAgentSection {
-  max-width: 800px;
-  width: 100%;
-  padding: 20px 0;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.wrapper {
+  margin: 0 auto;
+  padding: 44px 0 152px 0;
 }
 
 .whyAgentContentWithLine {
-  flex-grow: 1;
   max-width: 600px;
-  padding-right: 50px;
+  padding-right: 90px;
   border-right: 2px solid black;
-  width: 100%;
-}
-
-.whyAgentContentWithLineTablet {
-  padding-right: 0;
-  border-right: none;
-  border-bottom: 2px solid black;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  max-width: 100%;
 }
 
 .whyAgentH3 {
-  text-align: left;
   font-family: var(--Roboto);
-  margin-bottom: 30px;
   font-weight: 700;
-  font-size: 36px;
+  font-size: clamp(
+    var(--font-size-small),
+    3vw + 20px,
+    var(--font-size-secondary)
+  );
   letter-spacing: 0.1em;
   color: #000;
   text-transform: uppercase;
-}
-.whyAgentH4 {
+  margin-bottom: 30px;
   text-align: left;
 }
 
@@ -44,7 +36,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .whyAgentLi {
@@ -57,59 +49,88 @@
 
 .whyAgentH4 {
   font-family: var(--Roboto);
-  margin-bottom: 5px;
-  font-weight: 800;
-  font-size: 22px;
+  font-weight: --font-weight-big;
+  font-size: clamp(16px, 2vw + 14px, 20px);
   letter-spacing: 0.1em;
+  margin-bottom: 5px;
+  text-align: left;
 }
+
 .whyAgentP {
   font-family: var(--Roboto);
-  font-weight: 400;
+  font-weight: var(--font-weight-secondary);
   font-size: 20px;
   letter-spacing: 0.1em;
 }
 
 .immoTonnImageBackground {
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 762px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .immoTonnImageBackground::before {
-  position: absolute;
   content: '';
-  left: 50%;
-  transform: translateX(-50%);
-  height: 762px;
+  position: absolute;
+  inset: 0;
   background-image: url('@shared/assets/salessupport/immo-tonn-content.webp');
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  z-index: 2;
-  width: 100%;
+  z-index: 1;
 }
+
 .contentWrapper {
+  position: relative;
   display: flex;
-  flex-direction: row-reverse;
-}
-.immoTonnImageBackgroundMobile {
-  height: 200px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 70%;
+  padding-right: 45px;
+  z-index: 2;
 }
 
 .immoTonnOverlayText {
-  position: absolute;
-  font-weight: 800;
+  font-weight: --font-weight-big;
   letter-spacing: 0.1em;
-  bottom: 181px;
-  font-size: var(--font-size-main);
+  font-size: clamp(var(--font-size-small), 4vw, var(--font-size-main));
   color: white;
   font-family: var(--Roboto);
-  z-index: 2;
-  padding-right: 45px;
+  text-align: right;
 }
 
-.immoTonnOverlayTextMobile {
-  font-size: var(--font-size-size-xs);
-  right: 15px;
-  bottom: 40px;
+@media (max-width: 765px) {
+  .immoTonnTextList {
+    border: none;
+  }
+  .immoTonnImageBackground {
+    height: 464px;
+  }
+  .immoTonnTextListItemWrapper {
+    text-align: left;
+  }
+  .whyAgentContentWithLine {
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .whyAgentH3 {
+    text-align: center;
+  }
+
+  .immoTonnImageBackground {
+    height: 349px;
+  }
+
+  .immoTonnOverlayText {
+    font-size: 20px;
+  }
+  .whyAgentUl {
+    padding: clamp(32px, 6vw, 65px);
+  }
 }
