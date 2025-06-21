@@ -11,71 +11,112 @@ interface PropertyMapProps {
 const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
   const { district, zip, city, country } = address;
 
+  const [fuseCountry, setFuseCountry] = useState<Fuse<string> | null>(null);
   const [polygonCoords, setPolygonCoords] = useState<LatLngTuple[][] | null>(
     null,
   );
   const [center, setCenter] = useState<LatLngTuple | null>(null);
   const [error, setError] = useState(false);
 
-  const [query, setQuery] = useState(`${district}, ${zip} ${city}, ${country}`);
-
   useEffect(() => {
-    const fetchBoundary = async () => {
+    const fetchCountries = async () => {
       try {
         const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&q=${encodeURIComponent(query)}`,
+          'https://restcountries.com/v3.1/all?fields=name,translations',
         );
-        const data: any[] = await res.json();
 
-        if (
-          (!data || data.length === 0 || !data[0].geojson) &&
-          query !== `${zip} ${city}, ${country}`
-        ) {
-          setQuery(`${zip} ${city}, ${country}`);
-          return;
+        if (!res.ok) {
+          throw new Error(`HTTP error ${res.status}`);
         }
 
-        if (!data || data.length === 0 || !data[0].geojson) {
-          setError(true);
-          return;
+        const countriesRaw = await res.json();
+
+        if (!Array.isArray(countriesRaw)) {
+          throw new Error('API returned unexpected structure');
         }
 
-        const geojson = data[0].geojson;
-        const coords: LatLngTuple[][] = [];
+        const countryNames: string[] = countriesRaw.flatMap((c: any) => {
+          const names = [c.name?.common].filter(Boolean);
+          const german = c.translations?.deu?.common;
+          if (german && !names.includes(german)) names.push(german);
+          return names;
+        });
 
-        if (geojson.type === 'Polygon') {
-          // polygon: [ [lng, lat], [lng, lat], ... ]
-          const polygon: LatLngTuple[] = geojson.coordinates[0].map(
-            ([lng, lat]: [number, number]) => [lat, lng],
-          );
-          coords.push(polygon);
-        } else if (geojson.type === 'MultiPolygon') {
-          // geojson.coordinates: Array<Array<Array<[number, number]>>>
-          coords.push(
-            ...geojson.coordinates.flatMap(
-              (polygon: Array<Array<[number, number]>>) =>
-                polygon.map((ring: Array<[number, number]>) =>
-                  ring.map(
-                    ([lng, lat]: [number, number]) => [lat, lng] as LatLngTuple,
-                  ),
-                ),
-            ),
-          );
-        }
-
-        setPolygonCoords(coords);
-
-        const lat = parseFloat(data[0].lat);
-        const lon = parseFloat(data[0].lon);
-        setCenter([lat, lon]);
-        setError(false);
-      } catch {
-        setError(true);
+        const fuse = new Fuse(countryNames, { threshold: 0.4 });
+        setFuseCountry(fuse);
+      } catch (e) {
+        console.error('Fehler beim Laden der Länderliste:', e);
       }
     };
 
-    fetchBoundary();
-  }, [query, zip, city, country]);
+    fetchCountries();
+  }, []);
+
+  useEffect(() => {
+    if (!fuseCountry) return;
+
+    const tryQueries = async (baseCountry: string): Promise<boolean> => {
+      const queries = [
+        `${district}, ${zip} ${city}, ${baseCountry}`,
+        `${zip} ${city}, ${baseCountry}`,
+        `${city}, ${baseCountry}`,
+        `${baseCountry}`,
+      ];
+
+      for (const query of queries) {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&q=${encodeURIComponent(query)}`,
+          );
+          const data = await res.json();
+          if (!data.length || !data[0].geojson) continue;
+
+          const geo = data[0].geojson;
+          const coords: LatLngTuple[][] =
+            geo.type === 'Polygon'
+              ? [
+                  geo.coordinates[0].map(([lng, lat]: [number, number]) => [
+                    lat,
+                    lng,
+                  ]),
+                ]
+              : geo.coordinates.flatMap((poly: any[][]) =>
+                  poly.map((ring: any[]) =>
+                    ring.map(([lng, lat]: [number, number]) => [lat, lng]),
+                  ),
+                );
+
+          setPolygonCoords(coords);
+          setCenter([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+          setError(false);
+          return true;
+        } catch (err) {
+          console.warn('Fehler beim Kartenabruf:', query, err);
+        }
+      }
+
+      return false;
+    };
+
+    const fetchWithFallback = async () => {
+      const found = await tryQueries(country);
+      if (found) return;
+
+      const corrected = fuseCountry.search(country)[0]?.item;
+      if (!corrected || corrected.toLowerCase() === country.toLowerCase()) {
+        setError(true);
+        return;
+      }
+
+      console.warn(
+        `Land nicht erkannt: "${country}", versuche stattdessen "${corrected}"`,
+      );
+      const fallbackFound = await tryQueries(corrected);
+      if (!fallbackFound) setError(true);
+    };
+
+    fetchWithFallback();
+  }, [fuseCountry, district, zip, city, country]);
 
   return (
     <section className={styles.mapSection}>
