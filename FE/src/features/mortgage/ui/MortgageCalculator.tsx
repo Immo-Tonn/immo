@@ -253,34 +253,118 @@ const MortgageCalculator = () => {
     setMonthly(monthlyPayment);
     setLoanAmount(darlehen.toFixed(2) as any);
   };
-
   const exportPDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('ImmoTonn Finanzierungsrechner', 20, 20);
+
+    // --- Фирменная шапка ("логотип" текстом) ---
+    doc.setFontSize(32); // IT
+    doc.setFont('times', 'bolditalic');
+    //doc.text('I     T', 22, 28); // Между I и T — побольше пробелов
+
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'normal');
+    doc.text('IMMO  TONN', 22, 36);
+    doc.setFontSize(10);
+    doc.text('EST. 1985', 22, 41);
+
+    // --- Разделительная линия ---
+    doc.setLineWidth(0.5);
+    doc.line(20, 45, 190, 45);
+
+    // --- Основной заголовок ---
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Finanzierungsrechner', 105, 55, { align: 'center' });
+
+    // --- Дата создания PDF ---
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Erstellt am: ${new Date().toLocaleDateString()}`, 170, 60, {
+      align: 'right',
+    });
+
+    // --- Основные данные по расчёту ---
+    doc.setFontSize(13);
+    let y = 70;
+    const rowGap = 10;
+
+    doc.text('Immobilienpreis:', 25, y);
+    doc.text(`€ ${price}`, 110, y);
+
+    y += rowGap;
+    doc.text('Eigenkapital:', 25, y);
+    doc.text(`€ ${equity}`, 110, y);
+
+    y += rowGap;
+    doc.text('Grunderwerbsteuer:', 25, y);
+    doc.text(`${tax === 'custom' ? customTax : tax}%`, 110, y);
+
+    y += rowGap;
+    doc.text('Notar/Grundbuch:', 25, y);
+    doc.text(`${notary === 'custom' ? customNotary : notary}%`, 110, y);
+
+    y += rowGap;
+    doc.text('Maklerprovision:', 25, y);
+    doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
+
+    y += rowGap;
+    doc.text('Darlehenssumme:', 25, y);
+    doc.text(`€ ${loanAmount}`, 110, y);
+
+    y += rowGap;
+    doc.text('Zinssatz:', 25, y);
+    doc.text(`${interest}%`, 110, y);
+
+    y += rowGap;
+    doc.text('Tilgung:', 25, y);
+    doc.text(`${repayment}%`, 110, y);
+
+    y += rowGap;
+    doc.text('Laufzeit:', 25, y);
+    doc.text(`${years} Jahre`, 110, y);
+
+    // --- Monatliche Rate (акцентно, крупно, с цветом) ---
+    y += rowGap + 6;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(15, 68, 106); // Глубокий фирменный синий
+    doc.text('Monatliche Rate:', 25, y);
+    doc.text(`€ ${monthly?.toFixed(2) || '0.00'}`, 110, y);
+
+    // Сброс стиля
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+
+    // --- Footer: контакты ---
+    doc.setLineWidth(0.5);
+    doc.line(20, 240, 190, 240);
+
+    let contactY = 250;
     doc.setFontSize(12);
-    doc.text(`Immobilienpreis: €${price}`, 20, 40);
-    doc.text(`Eigenkapital: €${equity}`, 20, 50);
-    doc.text(
-      `Grunderwerbsteuer: ${tax === 'custom' ? customTax : tax}%`,
-      20,
-      60,
-    );
-    doc.text(
-      `Notar/Grundbuch: ${notary === 'custom' ? customNotary : notary}%`,
-      20,
-      70,
-    );
-    doc.text(
-      `Maklerprovision: ${broker === 'custom' ? customBroker : broker}%`,
-      20,
-      80,
-    );
-    doc.text(`Darlehenssumme: €${loanAmount}`, 20, 90);
-    doc.text(`Zinssatz: ${interest}%`, 20, 100);
-    doc.text(`Tilgung: ${repayment}%`, 20, 110);
-    doc.text(`Laufzeit: ${years} Jahre`, 20, 120);
-    doc.text(`Monatliche Rate: €${monthly?.toFixed(2) || '0.00'}`, 20, 140);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kontakt', 105, contactY, { align: 'center' });
+
+    contactY += 7;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text('0174 345 44 19', 105, contactY, { align: 'center' });
+
+    contactY += 7;
+    doc.text('tonn_andreas@web.de', 105, contactY, { align: 'center' });
+
+    contactY += 7;
+    doc.text('Sessendrupweg 54', 105, contactY, { align: 'center' });
+
+    contactY += 6;
+    doc.text('48161 Münster', 105, contactY, { align: 'center' });
+
+    contactY += 8;
+    doc.setFontSize(10);
+    doc.setTextColor(15, 68, 106);
+    doc.text('www.immotonn.de', 105, contactY, { align: 'center' });
+    doc.setTextColor(0, 0, 0);
+
     doc.save('Finanzierung.pdf');
   };
 
