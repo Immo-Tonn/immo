@@ -15,7 +15,7 @@ const formatGermanCurrency = (num: number) => {
 const infoTexts = {
   tax: {
     title: 'Grunderwerbsteuer',
-    body: 'Die Grunderwerbsteuer wird automatisch auf Basis des Bundeslands berechnet.',
+    body: 'Die Höhe der Grunderwerbsteuer ist in Deutschland nicht einheitlich und variiert je nach Bundesland.',
   },
   notary: {
     title: 'Notar & Grundbuch',
@@ -285,9 +285,12 @@ const handleCalc = () => {
           </div>
           
 
-          {renderSelect('Grunderwerbsteuer', tax, setTax, customTax, setCustomTax, 'tax', taxOptions, undefined, customTaxError)}
-          {renderSelect('Notar/Grundbuch', notary, setNotary, customNotary, setCustomNotary, 'notary', notaryOptions, undefined, customNotaryError)}
-          {renderSelect('Käufer Maklerprovision', broker, setBroker, customBroker, setCustomBroker, 'broker', brokerOptions, undefined, customBrokerError)}
+          {renderSelect('Grunderwerbsteuer', tax, setTax, customTax, setCustomTax, 'tax', taxOptions, undefined, customTaxError,
+        setModalContent)}
+          {renderSelect('Notar/Grundbuch', notary, setNotary, customNotary, setCustomNotary, 'notary', notaryOptions, undefined, customNotaryError,
+        setModalContent)}
+          {renderSelect('Käufer Maklerprovision', broker, setBroker, customBroker, setCustomBroker, 'broker', brokerOptions, undefined, customBrokerError,
+        setModalContent)}
 
           <p className={styles.sumLine}>€ Gesamtpreis: {formatGermanCurrency(totalCost)}</p>
         </div>
@@ -404,7 +407,8 @@ const renderSelect = (
   infoKey: keyof typeof infoTexts,
   options: string[],
   modeToggle?: () => void,
-  showError?: boolean
+  showError?: boolean,
+  onInfoClick?: (info: { title: string; body: string }) => void // <-- добавлено
 ) => {
   const showCustom = value === 'custom';
 
@@ -413,10 +417,10 @@ const renderSelect = (
       <label>
         {label}
         <img
-          src={QuestionIcon}
-          className={styles.icon}
-          onClick={() => setModalContent(infoTexts[infoKey])}
-        />
+  src={QuestionIcon}
+  className={styles.icon}
+  onClick={() => onInfoClick?.(infoTexts[infoKey])}
+/>
       </label>
       <div className={styles.selectWrapper}>
         <select
