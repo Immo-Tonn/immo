@@ -1,7 +1,5 @@
-// immo/FE/src/pages/Auth/Register.tsx
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import Layout from "../../components/Layout";
 import axios from '@features/utils/axiosConfig';
 
 const Register: React.FC = () => {
@@ -11,34 +9,32 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [adminExists, setAdminExists] = useState<boolean>(false); // Изначально считаем, что админа нет
-  const [checkingAdmin, setCheckingAdmin] = useState<boolean>(true); // Состояние проверки
+  const [adminExists, setAdminExists] = useState<boolean>(false);
+  const [checkingAdmin, setCheckingAdmin] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Проверка наличия администратора в системе
   useEffect(() => {
     const checkAdminExists = async (): Promise<void> => {
       try {
         setCheckingAdmin(true);
-        // Добавим логирование для отладки
-        console.log('Проверка наличия админа...');
+
+        console.log('Checking for an admin...');
 
         const response = await axios.get('/auth/admin-exists');
-        console.log('Ответ сервера:', response.data);
+        console.log('Server response:', response.data);
 
         const exists = (response.data as { adminExists: boolean }).adminExists;
-        console.log('Админ существует:', exists);
+        console.log('Admin exists', exists);
 
         setAdminExists(exists);
 
-        // Если админ уже существует, перенаправляем на страницу входа
         if (exists) {
-          console.log('Перенаправление на страницу входа...');
+          console.log('Redirect to login page...');
           navigate('/add-property');
         }
       } catch (error) {
-        console.error('Ошибка при проверке админа:', error);
+        console.error('Error checking admin:', error);
       } finally {
         setCheckingAdmin(false);
       }
@@ -47,46 +43,22 @@ const Register: React.FC = () => {
     checkAdminExists();
   }, [navigate]);
 
-  // Обработчик регистрации
   const handleRegister = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-
-    // Проверка наличия всех полей
     if (!email || !fullName || !username || !password) {
       setError('Пожалуйста, заполните все поля');
       return;
     }
 
-    // Проверка формата email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Введите корректный email');
       return;
     }
-
-    // // Проверка длины пароля
-    // if (password.length < 8) {
-    //   setError('Пароль должен содержать минимум 8 символов');
-    //   return;
-    // }
-
-    // Валидация пароля
     const validatePassword = (password: string): string | null => {
       if (password.length < 8) {
         return 'Пароль должен содержать минимум 8 символов';
       }
-
-      //     if (!/\d/.test(password)) {
-      //       return "Пароль должен содержать хотя бы одну цифру";
-      //     }
-
-      //     if (!/[A-Z]/.test(password)) {
-      //       return "Пароль должен содержать хотя бы одну заглавную букву";
-      //     }
-
-      //     if (!/[a-z]/.test(password)) {
-      //       return "Пароль должен содержать хотя бы одну строчную букву";
-      //     }
 
       if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
         return 'Пароль должен содержать хотя бы один специальный символ';
@@ -95,7 +67,6 @@ const Register: React.FC = () => {
       return null;
     };
 
-    // Проверка сложности пароля
     const passwordError = validatePassword(password);
     if (passwordError) {
       setError(passwordError);
@@ -106,8 +77,7 @@ const Register: React.FC = () => {
       setLoading(true);
       setError('');
 
-      // Добавим логирование
-      console.log('Отправка данных регистрации...');
+      console.log('Sending registration data...');
 
       await axios.post('/auth/register', {
         email,
@@ -116,22 +86,19 @@ const Register: React.FC = () => {
         password,
       });
 
-      console.log('Регистрация успешна, перенаправление...');
+      console.log('Registration successful, redirecting...');
 
-      // После успешной регистрации перенаправляем на страницу входа
       navigate('/add-property');
     } catch (error: any) {
-      console.error('Ошибка регистрации:', error.response?.data || error);
-      setError(error.response?.data?.message || 'Ошибка регистрации');
+      console.error('Registration error:', error.response?.data || error);
+      setError(error.response?.data?.message || 'Registration error');
     } finally {
       setLoading(false);
     }
   };
 
-  // Если идет проверка, показываем индикатор загрузки
   if (checkingAdmin) {
     return (
-      // <Layout>
       <div
         style={{
           maxWidth: '400px',
@@ -140,10 +107,9 @@ const Register: React.FC = () => {
           textAlign: 'center',
         }}
       >
-        <h1>Проверка системы...</h1>
-        <p>Пожалуйста, подождите...</p>
+        <h1>Checking system...</h1>
+        <p>Please wait...</p>
       </div>
-      // </Layout>
     );
   }
 
@@ -228,7 +194,6 @@ const Register: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
-                // type="password"
                 id="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

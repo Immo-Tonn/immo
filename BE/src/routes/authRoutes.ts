@@ -19,7 +19,6 @@ router.get('/admin-exists', checkAdminExists);
 // Admin registration
 router.post('/register', registerAdmin);
 
-// Admin Authorization
 router.post('/add-property', loginAdmin);
 
 // Remove admin registration (protected route)

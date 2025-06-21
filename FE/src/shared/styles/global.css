@@ -29,6 +29,10 @@ a:hover {
   color: white;
   transform: scale(1.2);
 }
+p > a:hover {
+  color: #000000;
+  transform: scale(1.2);
+}
 
 * {
   padding: 0;

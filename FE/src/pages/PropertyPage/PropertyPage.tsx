@@ -8,6 +8,7 @@ import { usePropertyData } from '@shared/api/usePropertyData';
 import ContactForm from '@features/contact/ui/ContactForm';
 import styles from './PropertyPage.module.css';
 import LoadingErrorHandler from '@shared/ui/LoadingErrorHandler/LoadingErrorHandler';
+import Button from '@shared/ui/Button/Button';
 
 const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -76,21 +77,28 @@ const PropertyPage: React.FC = () => {
 
       {isAdmin && (
         <div className={styles.adminActions}>
-          <button className={styles.editButton} onClick={handleEdit}>
-            Bearbeiten
-          </button>
-          <button className={styles.deleteButton} onClick={handleDelete}>
-            Löschen
-          </button>
+          <Button
+            className={styles.editButton}
+            initialText="Bearbeiten"
+            clickedText="Im Prozess"
+            onClick={handleEdit}
+          />
+
+          <Button
+            className={styles.deleteButton}
+            initialText="Löschen"
+            clickedText="Im Prozess"
+            onClick={handleDelete}
+          />
         </div>
       )}
-      <button
+      <Button
         className={styles.refreshButton}
         onClick={handleRefresh}
         disabled={isRefreshing}
-      >
-        {isRefreshing ? 'Aktualisieren...' : '🔄 Daten aktualisieren'}
-      </button>
+        initialText="🔄 Daten aktualisieren"
+        clickedText="Aktualisieren"
+      />
 
       {!loading && objectData && (
         <>

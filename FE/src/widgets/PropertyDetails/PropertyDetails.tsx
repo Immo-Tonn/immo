@@ -103,12 +103,11 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-            <Link to="/rechner">
+            <Link to="/finanzierung">
               <Button
                 initialText="Finanzierungsrechner"
                 clickedText="Weiterleitung..."
                 className={styles.calcButton}
-                onClick={() => navigate('/finanzierung')}
               />
             </Link>
           </div>

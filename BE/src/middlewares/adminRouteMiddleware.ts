@@ -1,6 +1,5 @@
-// immo/BE/src/middleware/adminRouteMiddleware.ts
-import { Request, Response, NextFunction } from "express";
-import { protect } from "./authMiddleware";
+import { Request, Response, NextFunction } from 'express';
+import { protect } from './authMiddleware';
 
 /**
  * Middleware for protecting real estate management routes
@@ -9,20 +8,16 @@ import { protect } from "./authMiddleware";
 export const protectObjectRoutes = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
-  // Using existing middleware protect to check authorization
   await protect(req, res, () => {
-    // If protect did not abort execution (i.e. the user is authorized),
-    // check the presence of the user in the request (must be added to protect)
     if (!req.user) {
       res.status(403).json({
-        message: "Access Denied. Administrator rights required.",
+        message: 'Access Denied. Administrator rights required.',
       });
       return;
     }
 
-    // If all checks are passed, we continue executing the request.
     next();
   });
 };
@@ -34,21 +29,16 @@ export const protectObjectRoutes = async (
 export const protectImageRoutes = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
-  // Using existing middleware protect to check authorization
   await protect(req, res, () => {
-    // If protect did not abort execution (i.e. the user is authorized),
-    // check the presence of the user in the request (must be added to protect)
     if (!req.user) {
       res.status(403).json({
         message:
-          "Access Denied. Administrator rights are required to manage images.",
+          'Access Denied. Administrator rights are required to manage images.',
       });
       return;
     }
-
-    // If all checks are passed, we continue executing the request.
     next();
   });
 };
@@ -60,21 +50,16 @@ export const protectImageRoutes = async (
 export const protectVideoRoutes = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
-  // Using existing middleware protect to check authorization
   await protect(req, res, () => {
-    // If protect did not abort execution (i.e. the user is authorized),
-    // check the presence of the user in the request (must be added to protect)
     if (!req.user) {
       res.status(403).json({
         message:
-          "Access Denied. Administrator rights are required to manage media.",
+          'Access Denied. Administrator rights are required to manage media.',
       });
       return;
     }
-
-    // If all checks are passed, we continue executing the request.
     next();
   });
 };

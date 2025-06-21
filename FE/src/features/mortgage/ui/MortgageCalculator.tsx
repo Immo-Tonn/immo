@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import CountUp from 'react-countup';
 import jsPDF from 'jspdf';
 import styles from './MortgageCalculator.module.css';
@@ -7,10 +8,17 @@ import MarkerIcon from '@shared/assets/morgage-calculator/marker.svg';
 import Input from '@shared/ui/Input/Input';
 import Button from '@shared/ui/Button/Button';
 
+const formatGermanCurrency = (num: number) => {
+  return num
+    .toFixed(2)
+    .replace('.', ',')
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
 const infoTexts = {
   tax: {
     title: 'Grunderwerbsteuer',
-    body: 'Die Grunderwerbsteuer wird automatisch auf Basis des Bundeslands berechnet.',
+    body: 'Die Höhe der Grunderwerbsteuer ist in Deutschland nicht einheitlich und variiert je nach Bundesland.',
   },
   notary: {
     title: 'Notar & Grundbuch',
@@ -25,14 +33,15 @@ const infoTexts = {
 type Mode = 'calculateYears' | 'calculateRepayment';
 
 const MortgageCalculator = () => {
+  const location = useLocation();
   const [price, setPrice] = useState('');
   const [equity, setEquity] = useState('');
-  const [loanAmount, setLoanAmount] = useState('');
+  const [loanAmount, setLoanAmount] = useState<number | null>(null);
   const [tax, setTax] = useState('6.5');
-  const [repayment, setRepayment] = useState('2.0');
   const [notary, setNotary] = useState('1.5');
-  const [interest, setInterest] = useState('3.5');
   const [broker, setBroker] = useState('2.0');
+  const [repayment, setRepayment] = useState('2.0');
+  const [interest, setInterest] = useState('3.5');
   const [years, setYears] = useState('30');
   const [monthly, setMonthly] = useState<number | null>(null);
   const [modalContent, setModalContent] = useState<{
@@ -40,30 +49,46 @@ const MortgageCalculator = () => {
     body: string;
   } | null>(null);
   const [mode, setMode] = useState<Mode>('calculateYears');
+  const [customTax, setCustomTax] = useState('');
+  const [customNotary, setCustomNotary] = useState('');
+  const [customBroker, setCustomBroker] = useState('');
+  const [validationError, setValidationError] = useState('');
   const [dynamicRepaymentOptions, setDynamicRepaymentOptions] = useState<
     string[]
   >([]);
   const [dynamicLaufzeitOptions, setDynamicLaufzeitOptions] = useState<
     string[]
   >([]);
+  const [equityTooHighError, setEquityTooHighError] = useState(false);
+  const [equityDecimalError, setEquityDecimalError] = useState(false);
+  const [interestDecimalError, setInterestDecimalError] = useState(false);
+  const [interestRangeError, setInterestRangeError] = useState(false);
 
-  const formatNumber = (val: string) =>
-    val
-      .replace(',', '.')
-      .replace('%', '')
-      .replace(/[^\d.]/g, '');
+  const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
+
+  const customTaxError =
+    tax === 'custom' && customTax !== '' && !isValidPercent(customTax);
+  const customNotaryError =
+    notary === 'custom' && customNotary !== '' && !isValidPercent(customNotary);
+  const customBrokerError =
+    broker === 'custom' && customBroker !== '' && !isValidPercent(customBroker);
+
+  const parseValue = (val: string, fallback: any) =>
+    parseFloat((val === 'custom' ? fallback : val).replace(',', '.')) || 0;
 
   const parsedPrice = parseFloat(price) || 0;
-  const parsedEquity = parseFloat(equity) || 0;
-  const parsedInterest = parseFloat(formatNumber(interest)) || 0;
-  const parsedRepayment = parseFloat(formatNumber(repayment)) || 0;
+  const parsedEquity = parseFloat(equity.replace(',', '.')) || 0;
+  const parsedInterest = parseFloat(interest) || 0;
+  const parsedRepayment = parseFloat(repayment) || 0;
   const parsedYears = parseInt(years) || 0;
 
-  const notaryCost =
-    (parsedPrice * (parseFloat(formatNumber(notary)) || 0)) / 100;
-  const brokerCost =
-    (parsedPrice * (parseFloat(formatNumber(broker)) || 0)) / 100;
-  const taxCost = (parsedPrice * (parseFloat(formatNumber(tax)) || 0)) / 100;
+  const parsedTax = parseValue(tax, customTax);
+  const parsedNotary = parseValue(notary, customNotary);
+  const parsedBroker = parseValue(broker, customBroker);
+
+  const notaryCost = (parsedPrice * parsedNotary) / 100;
+  const brokerCost = (parsedPrice * parsedBroker) / 100;
+  const taxCost = (parsedPrice * parsedTax) / 100;
 
   const totalAdditionalCosts = notaryCost + brokerCost + taxCost;
   const totalCost = parsedPrice + totalAdditionalCosts;
@@ -83,10 +108,56 @@ const MortgageCalculator = () => {
     new Set([...fixedLaufzeitOptions, ...dynamicLaufzeitOptions]),
   ).sort((a, b) => parseInt(a) - parseInt(b));
 
+  const formatCurrencyDE = (num: number) => {
+    if (num === null || num === undefined || isNaN(num)) return '';
+    return num.toLocaleString('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const handleEquityChange = (val: string) => {
+    const parts = val.split(/[,\.]/);
+    let formattedVal = val;
+    if (parts.length === 2) {
+      const [integerPart, decimalPart = ''] = parts;
+      const limitedDecimal = decimalPart.slice(0, 3);
+      formattedVal = integerPart + ',' + limitedDecimal;
+      setEquityDecimalError(limitedDecimal.length > 2);
+    } else {
+      setEquityDecimalError(false);
+    }
+    setEquity(formattedVal);
+    const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
+    setEquityTooHighError(valNum > totalCost);
+  };
+
+  const handleInterestChange = (val: string) => {
+    setInterest(val);
+    const parts = val.split(/[,\.]/);
+    if (parts.length === 2 && parts[1].length > 1) {
+      setInterestDecimalError(true);
+    } else {
+      setInterestDecimalError(false);
+    }
+    const normalized = val.replace(',', '.');
+    const parsed = parseFloat(normalized);
+    if (!isNaN(parsed)) {
+      setInterestRangeError(parsed <= 0 || parsed >= 14);
+    } else {
+      setInterestRangeError(false);
+    }
+  };
+
+  useEffect(() => {
+    if (location.state && location.state.price) {
+      setPrice(String(location.state.price));
+    }
+  }, [location.state]);
+
   useEffect(() => {
     if (!darlehen || parsedInterest === 0) return;
     const r = parsedInterest / 100;
-
     if (mode === 'calculateYears' && parsedRepayment > 0) {
       const annuitaet = darlehen * (r + parsedRepayment / 100);
       const n =
@@ -99,7 +170,6 @@ const MortgageCalculator = () => {
         setYears(nRounded);
       }
     }
-
     if (mode === 'calculateRepayment' && parsedYears > 0) {
       const n = parsedYears;
       const annuitaet =
@@ -118,131 +188,275 @@ const MortgageCalculator = () => {
     }
   }, [repayment, years, interest, totalCost, equity, mode]);
 
+  useEffect(() => {
+    if (!isNaN(darlehen) && darlehen > 0) {
+      setLoanAmount(darlehen);
+    } else {
+      setLoanAmount(null);
+    }
+  }, [
+    price,
+    equity,
+    tax,
+    notary,
+    broker,
+    customTax,
+    customNotary,
+    customBroker,
+  ]);
+
+  useEffect(() => {
+    setMonthly(null);
+  }, [
+    price,
+    equity,
+    tax,
+    notary,
+    broker,
+    customTax,
+    customNotary,
+    customBroker,
+    repayment,
+    years,
+    interest,
+  ]);
+
   const handleCalc = () => {
+    setValidationError('');
+    setMonthly(null);
+    if (!equity || equity.trim() === '') {
+      setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
+      return;
+    }
+    if (
+      (tax === 'custom' && (!customTax || customTaxError)) ||
+      (notary === 'custom' && (!customNotary || customNotaryError)) ||
+      (broker === 'custom' && (!customBroker || customBrokerError))
+    ) {
+      setValidationError(
+        'Bitte korrigieren Sie die Eingabefehler in den benutzerdefinierten Feldern.',
+      );
+      return;
+    }
     const validRepayment = parsedRepayment > 0;
     const validYears = parsedYears > 0;
     const validInterest = parsedInterest > 0;
-
     if (!(validRepayment && validYears && validInterest)) {
-      setMonthly(null);
       return;
     }
-
     const r = parsedInterest / 100 / 12;
     const n = parsedYears * 12;
-
     const monthlyPayment =
       (darlehen * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     setMonthly(monthlyPayment);
-    setLoanAmount(darlehen.toFixed(2));
+    setLoanAmount(darlehen.toFixed(2) as any);
   };
 
   const exportPDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('ImmoTonn Finanzierungsrechner', 20, 20);
+    doc.setFontSize(32);
+    doc.setFont('times', 'bolditalic');
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'normal');
+    doc.text('IMMO  TONN', 22, 36);
+    doc.setFontSize(10);
+    doc.text('EST. 1985', 22, 41);
+    doc.setLineWidth(0.5);
+    doc.line(20, 45, 190, 45);
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Finanzierungsrechner', 105, 55, { align: 'center' });
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Erstellt am: ${new Date().toLocaleDateString()}`, 170, 60, {
+      align: 'right',
+    });
+    doc.setFontSize(13);
+    let y = 70;
+    const rowGap = 10;
+    doc.text('Immobilienpreis:', 25, y);
+    doc.text(`€ ${price}`, 110, y);
+    y += rowGap;
+    doc.text('Eigenkapital:', 25, y);
+    doc.text(`€ ${equity}`, 110, y);
+    y += rowGap;
+    doc.text('Grunderwerbsteuer:', 25, y);
+    doc.text(`${tax === 'custom' ? customTax : tax}%`, 110, y);
+    y += rowGap;
+    doc.text('Notar/Grundbuch:', 25, y);
+    doc.text(`${notary === 'custom' ? customNotary : notary}%`, 110, y);
+    y += rowGap;
+    doc.text('Maklerprovision:', 25, y);
+    doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
+    y += rowGap;
+    doc.text('Darlehenssumme:', 25, y);
+    doc.text(`€ ${loanAmount}`, 110, y);
+    y += rowGap;
+    doc.text('Zinssatz:', 25, y);
+    doc.text(`${interest}%`, 110, y);
+    y += rowGap;
+    doc.text('Tilgung:', 25, y);
+    doc.text(`${repayment}%`, 110, y);
+    y += rowGap;
+    doc.text('Laufzeit:', 25, y);
+    doc.text(`${years} Jahre`, 110, y);
+    y += rowGap + 6;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(15, 68, 106);
+    doc.text('Monatliche Rate:', 25, y);
+    doc.text(`€ ${monthly?.toFixed(2) || '0.00'}`, 110, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.setLineWidth(0.5);
+    doc.line(20, 240, 190, 240);
+    let contactY = 250;
     doc.setFontSize(12);
-    doc.text(`Immobilienpreis: €${price}`, 20, 40);
-    doc.text(`Eigenkapital: €${equity}`, 20, 50);
-    doc.text(`Grunderwerbsteuer: ${tax}%`, 20, 60);
-    doc.text(`Notar/Grundbuch: ${notary}%`, 20, 70);
-    doc.text(`Maklerprovision: ${broker}%`, 20, 80);
-    doc.text(`Darlehenssumme: €${loanAmount}`, 20, 90);
-    doc.text(`Zinssatz: ${interest}%`, 20, 100);
-    doc.text(`Tilgung: ${repayment}%`, 20, 110);
-    doc.text(`Laufzeit: ${years} Jahre`, 20, 120);
-    doc.text(`Monatliche Rate: €${monthly?.toFixed(2) || '0.00'}`, 20, 140);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kontakt', 105, contactY, { align: 'center' });
+    contactY += 7;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text('0174 345 44 19', 105, contactY, { align: 'center' });
+    contactY += 7;
+    doc.text('tonn_andreas@web.de', 105, contactY, { align: 'center' });
+    contactY += 7;
+    doc.text('Sessendrupweg 54', 105, contactY, { align: 'center' });
+    contactY += 6;
+    doc.text('48161 Münster', 105, contactY, { align: 'center' });
+    contactY += 8;
+    doc.setFontSize(10);
+    doc.setTextColor(15, 68, 106);
+    doc.text('www.immotonn.de', 105, contactY, { align: 'center' });
+    doc.setTextColor(0, 0, 0);
     doc.save('Finanzierung.pdf');
   };
+
+  const taxOptions = ['3.5', '5.0', '5.5', '6.0', '6.5'];
+  const notaryOptions = Array.from({ length: 11 }, (_, i) =>
+    (1.0 + i * 0.1).toFixed(1),
+  );
+  const brokerOptions = Array.from({ length: 7 }, (_, i) =>
+    (1.0 + i * 0.5).toFixed(1),
+  );
 
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Immobilien Finanzierung Rechner</h2>
       <div className={styles.grid}>
         <div className={styles.col}>
-          <label>Immobilienpreis (€)</label>
+          <label htmlFor="price">Immobilienpreis (€)</label>
           <div className={styles.inputWithIcon}>
-            <Input value={price} onChange={e => setPrice(e.target.value)} />
+            <input
+              id="price"
+              name="price"
+              value={price}
+              onChange={e => {
+                const val = e.target.value.replace(/\D/g, '');
+                if (val.length <= 11) {
+                  setPrice(val);
+                }
+              }}
+            />
             <img src={MarkerIcon} alt="marker" className={styles.markerIcon} />
           </div>
-
-          <label>
-            Grunderwerbsteuer
-            <img
-              src={QuestionIcon}
-              className={styles.icon}
-              onClick={() => setModalContent(infoTexts.tax)}
-            />
-          </label>
-          <div className={styles.inputWithPercent}>
-            <Input value={tax} onChange={e => setTax(e.target.value)} />
-            <span className={styles.percent}>%</span>
-          </div>
-
-          <label>
-            Notar/Grundbuch
-            <img
-              src={QuestionIcon}
-              className={styles.icon}
-              onClick={() => setModalContent(infoTexts.notary)}
-            />
-          </label>
-          <div className={styles.inputWithPercent}>
-            <Input value={notary} onChange={e => setNotary(e.target.value)} />
-            <span className={styles.percent}>%</span>
-          </div>
-
-          <label>
-            Käufer Maklerprovision
-            <img
-              src={QuestionIcon}
-              className={styles.icon}
-              onClick={() => setModalContent(infoTexts.broker)}
-            />
-          </label>
-          <div className={styles.inputWithPercent}>
-            <Input value={broker} onChange={e => setBroker(e.target.value)} />
-            <span className={styles.percent}>%</span>
-          </div>
-
+          {renderSelect(
+            'Grunderwerbsteuer',
+            tax,
+            setTax,
+            customTax,
+            setCustomTax,
+            'tax',
+            taxOptions,
+            undefined,
+            customTaxError,
+            setModalContent,
+          )}
+          {renderSelect(
+            'Notar/Grundbuch',
+            notary,
+            setNotary,
+            customNotary,
+            setCustomNotary,
+            'notary',
+            notaryOptions,
+            undefined,
+            customNotaryError,
+            setModalContent,
+          )}
+          {renderSelect(
+            'Käufer Maklerprovision',
+            broker,
+            setBroker,
+            customBroker,
+            setCustomBroker,
+            'broker',
+            brokerOptions,
+            undefined,
+            customBrokerError,
+            setModalContent,
+          )}
           <p className={styles.sumLine}>
-            € Gesamtpreis: {totalCost.toFixed(2)}
+            € Gesamtpreis: {formatGermanCurrency(totalCost)}
           </p>
         </div>
-
         <div className={styles.col}>
-          <label>Eigenkapital</label>
+          <label htmlFor="equity">Eigenkapital</label>
           <div className={styles.inputWithIcon}>
-            <Input value={equity} onChange={e => setEquity(e.target.value)} />
+            <input
+              id="equity"
+              name="equity"
+              value={equity}
+              onChange={e => handleEquityChange(e.target.value)}
+            />
             <img src={MarkerIcon} alt="marker" className={styles.markerIcon} />
           </div>
-
-          <label>Tilgung</label>
-          <select
-            value={repayment}
-            onChange={e => {
-              setMode('calculateYears');
-              setRepayment(e.target.value);
-            }}
-          >
-            {repaymentOptions.map(opt => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-
-          <label>Sollzins p. a.</label>
+          {equityTooHighError && (
+            <p className={styles.error}>
+              Eigenkapital muss kleiner als der Gesamtpreis sein.
+            </p>
+          )}
+          {equityDecimalError && (
+            <p className={styles.error}>
+              Es dürfen nicht mehr als zwei Ziffern nach dem Komma eingegeben
+              werden.
+            </p>
+          )}
+          {renderSelect(
+            'Tilgung',
+            repayment,
+            setRepayment,
+            '',
+            () => {},
+            'tax',
+            repaymentOptions,
+            () => setMode('calculateYears'),
+          )}
+          <label htmlFor="interest">Sollzins p. a.</label>
           <div className={styles.inputWithIcon}>
-            <Input
+            <input
+              id="interest"
+              name="interest"
               value={interest}
-              onChange={e => setInterest(e.target.value)}
+              onChange={e => handleInterestChange(e.target.value)}
             />
             <img src={MarkerIcon} className={styles.markerIcon} />
           </div>
-
-          <label>Laufzeit (Jahre)</label>
+          {interestDecimalError && (
+            <p className={styles.error}>
+              Nach dem Komma darf nur eine Ziffer eingegeben werden.
+            </p>
+          )}
+          {interestRangeError && (
+            <p className={styles.error}>
+              Der Sollzins muss größer als 0 und kleiner als 14 sein.
+            </p>
+          )}
+          <label htmlFor="years">Laufzeit (Jahre)</label>
           <select
+            id="years"
+            name="years"
             value={years}
             onChange={e => {
               setMode('calculateRepayment');
@@ -256,36 +470,59 @@ const MortgageCalculator = () => {
             ))}
           </select>
         </div>
-
         <div className={styles.col}>
-          <label>Darlehenssumme</label>
-          <Input value={loanAmount} readOnly />
+          <label htmlFor="loanAmount">Darlehenssumme</label>
+          <input
+            id="loanAmount"
+            name="loanAmount"
+            value={formatCurrencyDE(loanAmount)}
+            readOnly
+          />
           <div className={styles.rateLabel}>Monatliche Rate</div>
           {monthly !== null && (
             <div className={styles.monthly}>
-              <CountUp end={monthly} decimals={2} prefix="€ " duration={1.5} />
+              <CountUp
+                end={monthly}
+                decimals={2}
+                prefix="€ "
+                duration={1.5}
+                formattingFn={formatGermanCurrency}
+              />
             </div>
           )}
           <Button
+            initialText="Berechnen"
+            clickedText="im Prozess"
             onClick={handleCalc}
             className={styles.btn}
-            initialText=" Berechnen"
-            clickedText="im Prozess..."
           />
           <Button
             onClick={exportPDF}
             className={styles.btn}
             initialText="Export als PDF"
-            clickedText="im Prozess..."
+            clickedText="im Prozess"
           />
+          {validationError && (
+            <p className={styles.error}>
+              Die monatliche Rate wird nach der Eingabe gültiger Werte
+              berechnet.
+            </p>
+          )}
         </div>
       </div>
-
       <p className={styles.hint}>
-        <strong>Wichtiger Hinweis:</strong> Die hier berechnete monatliche Rate
-        stellt lediglich eine unverbindliche Beispielrechnung dar...
+        <strong>Wichtiger Hinweis:</strong>
+        <br />
+        Die hier berechnete monatliche Rate stellt lediglich eine unverbindliche
+        Beispielrechnung dar
+        <br />
+        und dient nur zur ersten Orientierung. Sie ersetzt keine individuelle
+        Finanzierungsberatung. Die <br /> tatsächlichen Konditionen können je
+        nach Anbieter, Bonität und weiteren Faktoren abweichen.
+        <br />
+        Für die Richtigkeit, Vollständigkeit und Aktualität der Angaben wird
+        keine Haftung übernommen.
       </p>
-
       {modalContent && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -300,3 +537,75 @@ const MortgageCalculator = () => {
 };
 
 export default MortgageCalculator;
+
+function renderSelect(
+  label: any,
+  value: any,
+  onChange: any,
+  customValue: any,
+  setCustomValue: any,
+  infoKey: any,
+  options: any,
+  modeToggle: any,
+  showError: any,
+  onInfoClick: any,
+) {
+  const showCustom = value === 'custom';
+  return (
+    <>
+      <label>
+        {label}
+        <img
+          src={QuestionIcon}
+          className={styles.icon}
+          onClick={() => onInfoClick?.(infoTexts[infoKey])}
+          alt={`${label} info`}
+        />
+      </label>
+      <div className={styles.selectWrapper}>
+        <select
+          value={value}
+          onChange={e => {
+            const selected = e.target.value;
+            if (
+              infoKey === 'tax' ||
+              infoKey === 'notary' ||
+              infoKey === 'broker'
+            ) {
+              onChange(selected);
+            } else {
+              modeToggle?.();
+              onChange(selected);
+            }
+          }}
+          className={styles.select}
+        >
+          {options.map(opt => (
+            <option key={opt} value={opt}>
+              {opt}%
+            </option>
+          ))}
+          <option value="custom">eigener Wert</option>
+        </select>
+        {showCustom && (
+          <div className={styles.inputWithPercent}>
+            <Input
+              id={`${infoKey}-custom`}
+              name={`${infoKey}-custom`}
+              value={customValue}
+              onChange={e => setCustomValue(e.target.value)}
+              label={`Custom ${label}`}
+            />
+            <span>%</span>
+          </div>
+        )}
+      </div>
+      {showError && (
+        <p className={styles.error}>
+          Bitte geben Sie einen gültigen Wert zwischen 0 und 10 ein (max. eine
+          Nachkommastelle).
+        </p>
+      )}
+    </>
+  );
+}

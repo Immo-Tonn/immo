@@ -16,6 +16,7 @@ import {
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
 import { updateImageOrder } from '../../../features/utils/realEstateService';
+import Button from '@shared/ui/Button/Button';
 
 interface ObjectData {
   type: ObjectType;
@@ -1219,13 +1220,13 @@ const CreateObject = () => {
                     alt={`Vorhandenes Bild ${index + 1}`}
                     className={styles.previewImage}
                   />
-                  <button
-                    type="button"
+                  <Button
                     className={styles.removeImageBtn}
                     onClick={() => removeExistingImage(index)}
-                  >
-                    ✕
-                  </button>
+                    initialText="✕"
+                    clickedText="✕"
+                  />
+
                   <button
                     type="button"
                     className={styles.setMainImageBtn}

@@ -61,7 +61,7 @@ const HowIsGoing = () => {
             refs.current[3] = el;
           }}
         >
-          <Link to="/kontakt">
+          <Link to="/kontakt" style={{ marginTop: '113px' }}>
             <Button
               initialText="Kontakt knüpfen"
               clickedText="Weiterleitung..."

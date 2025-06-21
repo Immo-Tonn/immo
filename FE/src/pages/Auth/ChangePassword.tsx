@@ -89,48 +89,16 @@ const ChangePassword: React.FC = () => {
     }
   };
 
-  // const getPasswordStrength = (
-  //   password: string
-  // ): {
-  //   text: string;
-  //   color: string;
-  //   width: string;
-  // } => {
-  //   if (!password) {
-  //     return { text: "", color: "#e0e0e0", width: "0%" };
-  //   }
-
-  //     const criteria = [
-  //       password.length >= 8,
-  //       /\d/.test(password),
-  //       /[A-Z]/.test(password),
-  //       /[a-z]/.test(password),
-  //       /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
-  //     ];
-
-  //     const metCriteria = criteria.filter((c) => c).length;
-
-  //     switch (metCriteria) {
-  //       case 0:
-  //       case 1:
-  //         return { text: "Очень слабый", color: "#f44336", width: "20%" };
-  //       case 2:
-  //         return { text: "Слабый", color: "#ff9800", width: "40%" };
-  //       case 3:
-  //         return { text: "Средний", color: "#ffeb3b", width: "60%" };
-  //       case 4:
-  //         return { text: "Хороший", color: "#8bc34a", width: "80%" };
-  //       case 5:
-  //         return { text: "Сильный", color: "#4caf50", width: "100%" };
-  //       default:
-  //         return { text: "", color: "#e0e0e0", width: "0%" };
-  //   }
-  // };
-
-  // const passwordStrength = getPasswordStrength(newPassword);
-
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+    <div
+      style={{
+        maxWidth: '400px',
+        margin: '0 auto',
+        minHeight: '100dvh',
+        padding: '20px',
+        fontFamily: 'var(--Roboto)',
+      }}
+    >
       <h1>Passwortänderung</h1>
 
       {error && (
@@ -169,7 +137,6 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
-
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -189,12 +156,11 @@ const ChangePassword: React.FC = () => {
             htmlFor="newPassword"
             style={{ display: 'block', marginBottom: '5px' }}
           >
-            Новый пароль:
+            Neues Passwort:
           </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showNewPassword ? 'text' : 'password'}
-              // type="password"
               id="newPassword"
               value={newPassword}
               onChange={e => setNewPassword(e.target.value)}
@@ -212,7 +178,7 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
-                // padding: '0 10px',
+
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -234,25 +200,7 @@ const ChangePassword: React.FC = () => {
                   borderRadius: '3px',
                   overflow: 'hidden',
                 }}
-              >
-                {/* <div
-                  style={{
-                    height: "100%",
-                    width: passwordStrength.width,
-                    backgroundColor: passwordStrength.color,
-                    transition: "width 0.3s ease",
-                  }}
-                ></div> */}
-              </div>
-              {/* <div
-                style={{
-                  fontSize: "12px",
-                  marginTop: "3px",
-                  color: passwordStrength.color,
-                }}
-              >
-                {passwordStrength.text}
-              </div> */}
+              ></div>
             </div>
           )}
         </div>
@@ -263,7 +211,6 @@ const ChangePassword: React.FC = () => {
             style={{
               display: 'block',
               marginBottom: '5px',
-              // position: "relative",
             }}
           >
             Passwortbestätigung:
@@ -271,7 +218,6 @@ const ChangePassword: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showConfirmPassword ? 'text' : 'password'}
-              // type="password"
               id="confirmPassword"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
@@ -289,7 +235,6 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
-                // padding: '0 10px',
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -325,7 +270,7 @@ const ChangePassword: React.FC = () => {
               flex: '1',
             }}
           >
-            {loading ? 'Сохранение...' : 'Сменить пароль'}
+            {loading ? 'Speichern...' : 'Kennword ändern'}
           </button>
 
           <Link
@@ -345,17 +290,6 @@ const ChangePassword: React.FC = () => {
           </Link>
         </div>
       </form>
-
-      {/* <div style={{ marginTop: "20px", fontSize: "14px" }}>
-        <h3>Требования к паролю:</h3>
-        <ul style={{ paddingLeft: "20px" }}>
-          <li>Минимум 8 символов</li>
-          <li>Минимум 1 цифра</li>
-          <li>Минимум 1 заглавная буква</li>
-          <li>Минимум 1 строчная буква</li>
-          <li>Минимум 1 специальный символ (!@#$%^&*()_+...)</li>
-        </ul>
-      </div> */}
     </div>
   );
 };

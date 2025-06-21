@@ -17,7 +17,7 @@ const LegalNotice: React.FC = () => {
 
       <h2>Kontaktmöglichkeiten</h2>
       <p>
-        E-Mail-Adresse:{' '}
+        E-Mail-Adresse:
         <a href="mailto:tonn_andreas@web.de">tonn_andreas@web.de</a>
         <br />
         Telefon: <a href="tel:+491743454419">+49 174 345 44 19</a>
@@ -52,7 +52,7 @@ const LegalNotice: React.FC = () => {
         <br />
         48151 Münster
         <br />
-        Website:{' '}
+        Website:
         <a
           href="https://www.ihk.de/nordwestfalen/"
           target="_blank"
@@ -66,7 +66,7 @@ const LegalNotice: React.FC = () => {
       <p>
         Bildquellen und Urheberrechtshinweise:
         <br />
-        Wir verwenden auf unserer Homepage nur Fotos von{' '}
+        Wir verwenden auf unserer Homepage nur Fotos von
         <a
           href="https://www.pexels.com"
           target="_blank"

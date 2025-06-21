@@ -1,8 +1,6 @@
-// immo/BE/src/models/AdminModel.ts
 import mongoose, { Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-// Интерфейс для документа администратора
 export interface IAdmin extends Document {
   email: string;
   fullName: string;
@@ -11,7 +9,6 @@ export interface IAdmin extends Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-// Создаем схему
 const AdminSchema: Schema = new Schema({
   email: {
     type: String,
@@ -38,14 +35,12 @@ const AdminSchema: Schema = new Schema({
   },
 });
 
-// Хэширование пароля перед сохранением
 AdminSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
   }
   try {
     const salt = await bcrypt.genSalt(10);
-    // Явное приведение типов для решения проблемы типизации
     const passwordToHash = this.password as string;
     const hashedPassword = await bcrypt.hash(passwordToHash, salt);
     this.password = hashedPassword;
@@ -55,11 +50,10 @@ AdminSchema.pre('save', async function (next) {
   }
 });
 
-// Метод для сравнения паролей
 AdminSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ): Promise<boolean> {
-  const hashedPassword = this.password as string; // Явное приведение типа
+  const hashedPassword = this.password as string;
   return bcrypt.compare(candidatePassword, hashedPassword);
 };
 

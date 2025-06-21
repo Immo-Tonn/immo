@@ -67,23 +67,33 @@ const Effect = () => {
           refs.current[2] = el;
         }}
       >
-        <p className={styles.description}>
-          Mit dem richtigen Blickwinkel und dem Spiel aus Schatten und Licht
-          lassen wir Räume größer, wärmer und lebendiger wirken.
-          <br /> Jedes Detail wird gezielt inszeniert – damit Ihre Immobilie
-          nicht nur im Foto glänzt, sondern beim ersten Schritt über die
-          Schwelle begeistert.
-          <br />
-          Ihre Vorteile auf einen Blick:
-          <strong>
-            <ul>
-              <li>Höhere Sichtbarkeit auf Plattformen</li>
-              <li>Mehr Anfragen & schnellere Verkäufe</li>
-              <li>Preissteigerung von bis zu 15 %</li>
-              <li>Alles aus einer Hand – stilvoll & stressfrei</li>
-            </ul>
-          </strong>
-        </p>
+        <div>
+          <p className={styles.description}>
+            Mit dem richtigen Blickwinkel und dem Spiel aus Schatten und Licht
+            lassen wir Räume größer, wärmer und lebendiger wirken.
+            <br /> Jedes Detail wird gezielt inszeniert – damit Ihre Immobilie
+            nicht nur im Foto glänzt, sondern beim ersten Schritt über die
+            Schwelle begeistert.
+            <br />
+            <span className={styles.advantagesTitle}>
+              Ihre Vorteile auf einen Blick:
+            </span>
+          </p>
+          <ul className={styles.advantagesList}>
+            <li>
+              <strong>Höhere Sichtbarkeit auf Plattformen</strong>
+            </li>
+            <li>
+              <strong>Mehr Anfragen & schnellere Verkäufe</strong>
+            </li>
+            <li>
+              <strong>Preissteigerung von bis zu 15 %</strong>
+            </li>
+            <li>
+              <strong>Alles aus einer Hand – stilvoll & stressfrei</strong>
+            </li>
+          </ul>
+        </div>
       </div>
       <img
         src={effectBuild}

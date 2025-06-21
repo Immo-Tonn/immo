@@ -34,7 +34,6 @@
 }
 .buttonWrapper Button {
   max-width: 832px;
-  margin-top: 113px;
   background-color: var(--secondary-color);
   font-weight: var(--font-weight-secondary);
   font-size: clamp(10px, 5vw, 36px);

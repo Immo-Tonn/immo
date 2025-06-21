@@ -271,7 +271,7 @@ const FiveSteps = () => {
           </Accordion>
 
           <div className={styles.buttonWrapper}>
-            <Link to="/kontakt">
+            <Link style={{ margin: '109px 19px 60px 0' }} to="/kontakt">
               <Button
                 className={styles.verkaufButton}
                 initialText="Verkauf"

@@ -1,45 +1,40 @@
-import multer from "multer";
-import path from "path";
-import { Request, Response, NextFunction } from "express";
-import fs from "fs";
+import multer from 'multer';
+import path from 'path';
+import { Request, Response, NextFunction } from 'express';
+import fs from 'fs';
 
-import { uploadToBunny } from "../utils/uploadImages";
-import { deleteFromBunny } from "../utils/deleteImages";
+import { uploadToBunny } from '../utils/uploadImages';
+import { deleteFromBunny } from '../utils/deleteImages';
 
-// Create a directory for temporary downloads
-const uploadsDir = path.join(process.cwd(), "uploads");
+const uploadsDir = path.join(process.cwd(), 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Setting up storage for temporary files
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    // Generate a unique file name
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
     cb(null, `${uniqueSuffix}${ext}`);
   },
 });
 
-// File Type Filter
 const fileFilter = (
   req: Request,
   file: Express.Multer.File,
-  cb: multer.FileFilterCallback
+  cb: multer.FileFilterCallback,
 ) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Nur JPG, PNG und WebP-Dateien sind zulässig!"));
+    cb(new Error('Nur JPG, PNG und WebP-Dateien sind zulässig!'));
   }
 };
 
-// Setting up multer
 const upload = multer({
   storage: storage,
   limits: {
@@ -48,18 +43,17 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-// Middleware for handling file upload errors
 export const handleUploadErrors = (
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (err instanceof multer.MulterError) {
-    if (err.code === "LIMIT_FILE_SIZE") {
+    if (err.code === 'LIMIT_FILE_SIZE') {
       return res
         .status(400)
-        .json({ message: "Die Datei ist zu groß. Max. 5MB." });
+        .json({ message: 'Die Datei ist zu groß. Max. 5MB.' });
     }
     return res
       .status(400)
@@ -70,12 +64,8 @@ export const handleUploadErrors = (
   next();
 };
 
-// Export middleware to upload a single file
-export const uploadSingleImage = upload.single("image");
+export const uploadSingleImage = upload.single('image');
 
-// Export middleware to upload multiple files
-export const uploadMultipleImages = upload.array("images", 10); // максимум 10 изображений
+export const uploadMultipleImages = upload.array('images', 10);
 
-// Export functions from utilities (to make them easier to use)
 export { uploadToBunny, deleteFromBunny };
-

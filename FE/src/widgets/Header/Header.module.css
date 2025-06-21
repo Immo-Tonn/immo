@@ -40,7 +40,7 @@
   padding: 0;
 }
 
-.headerContacts li {
+.headerContacts > li {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -54,7 +54,7 @@
   min-width: 26px;
 }
 
-.contactIcon img {
+.contactIcon > img {
   width: 20px;
   height: 20px;
   object-fit: contain;
@@ -118,17 +118,21 @@
   height: 26px;
 }
 
-.burgerButton {
-  display: none !important;
-  color: white !important;
+.headerWrapper .headerTop .burgerButton {
+  display: none;
+  color: white;
 }
 
-.drawerCloseButton {
-  color: white !important;
+.drawerHeader .drawerCloseButton {
+  color: white;
 }
 
 .drawerPaper {
   background-color: #1c1829 !important;
+
+  a:hover {
+    transform: scale(1);
+  }
 }
 
 .drawerList {

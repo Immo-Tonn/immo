@@ -64,7 +64,7 @@ const PrivacyPolicyTwo = () => {
         </li>
       </ul>
       <h3>
-        Weitere Hinweise zu Verarbeitungsprozessen, Verfahren und Diensten:{' '}
+        Weitere Hinweise zu Verarbeitungsprozessen, Verfahren und Diensten:
       </h3>
       <ul>
         <li>
@@ -117,7 +117,7 @@ const PrivacyPolicyTwo = () => {
           Gerät und der Software der Nutzern abhängig sein. Bei
           Erläuterungsbedarf können sich Nutzer an uns wenden. Wir weisen darauf
           hin, dass die Versagung oder Widerruf der jeweiligen Berechtigungen
-          die Funktionsfähigkeit unsere Applikation beeinflussen kann.{' '}
+          die Funktionsfähigkeit unsere Applikation beeinflussen kann.
         </li>
         <li>
           Verarbeitung von gespeicherten Kontakten: Im Rahmen der Nutzung
@@ -167,7 +167,7 @@ const PrivacyPolicyTwo = () => {
         E-Mail, Telefon oder via soziale Medien) sowie im Rahmen bestehender
         Nutzer- und Geschäftsbeziehungen werden die Angaben der anfragenden
         Personen verarbeitet, soweit dies zur Beantwortung der Kontaktanfragen
-        und etwaiger angefragter Maßnahmen erforderlich ist.{' '}
+        und etwaiger angefragter Maßnahmen erforderlich ist.
       </p>
 
       <ul>
@@ -230,7 +230,7 @@ const PrivacyPolicyTwo = () => {
         welcher Zeit unser Onlineangebot oder dessen Funktionen beziehungsweise
         Inhalte am häufigsten genutzt werden, oder zur Wiederverwendung
         einladen. Ebenso ist es uns möglich, nachzuvollziehen, welche Bereiche
-        der Optimierung bedürfen.{' '}
+        der Optimierung bedürfen.
       </p>
       <p>
         Neben der Webanalyse können wir auch Testverfahren einsetzen, um etwa
@@ -247,7 +247,7 @@ const PrivacyPolicyTwo = () => {
         Computersystem sowie Angaben zu Nutzungszeiten. Sofern sich Nutzer in
         die Erhebung ihrer Standortdaten uns gegenüber oder gegenüber den
         Anbietern der von uns eingesetzten Dienste einverstanden erklärt haben,
-        ist auch die Verarbeitung von Standortdaten möglich{' '}
+        ist auch die Verarbeitung von Standortdaten möglich
       </p>
       <p>
         Darüber hinaus werden die IP-Adressen der Nutzer gespeichert. Jedoch
@@ -258,7 +258,7 @@ const PrivacyPolicyTwo = () => {
         Pseudonyme. Das heißt, wir als auch die Anbieter der eingesetzten
         Software kennen nicht die tatsächliche Identität der Nutzer, sondern nur
         die zum Zweck der jeweiligen Verfahren in deren Profilen gespeicherten
-        Angaben{' '}
+        Angaben
       </p>
       <p>
         Hinweise zu Rechtsgrundlagen: Sofern wir die Nutzer um deren
@@ -268,7 +268,7 @@ const PrivacyPolicyTwo = () => {
         h. Interesse an effizienten, wirtschaftlichen und empfängerfreundlichen
         Leistungen) verarbeitet. In diesem Zusammenhang möchten wir Sie auch auf
         die Informationen zur Verwendung von Cookies in dieser
-        Datenschutzerklärung hinweisen.{' '}
+        Datenschutzerklärung hinweisen.
       </p>
       <ul>
         <li>
@@ -349,7 +349,7 @@ const PrivacyPolicyTwo = () => {
             https://marketingplatform.google.com/intl/de/about/analytics/
           </a>
           ; Sicherheitsmaßnahmen: IP-Masking (Pseudonymisierung der IP-Adresse);
-          Datenschutzerklärung:{' '}
+          Datenschutzerklärung:
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
@@ -357,7 +357,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://policies.google.com/privacy
           </a>
-          ; Auftragsverarbeitungsvertrag:{' '}
+          ; Auftragsverarbeitungsvertrag:
           <a
             href="https://business.safety.google/adsprocessorterms/"
             target="_blank"
@@ -366,7 +366,7 @@ const PrivacyPolicyTwo = () => {
             https://business.safety.google/adsprocessorterms/
           </a>
           ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln ({' '}
+          Standardvertragsklauseln (
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
@@ -374,7 +374,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://business.safety.google/adsprocessorterms
           </a>
-          ), Data Privacy Framework (DPF) Standardvertragsklauseln ({' '}
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
@@ -382,7 +382,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://business.safety.google/adsprocessorterms
           </a>
-          ); Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:{' '}
+          ); Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:
           <a
             href="https://tools.google.com/dlpage/gaoptout?hl=de"
             target="_blank"
@@ -390,7 +390,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://tools.google.com/dlpage/gaoptout?hl=de
           </a>
-          , Einstellungen für die Darstellung von Werbeeinblendungen:{' '}
+          , Einstellungen für die Darstellung von Werbeeinblendungen:
           <a
             href="https://myadcenter.google.com/personalizationoff"
             target="_blank"
@@ -398,14 +398,14 @@ const PrivacyPolicyTwo = () => {
           >
             https://myadcenter.google.com/personalizationoff
           </a>
-          . Weitere Informationen:{' '}
+          . Weitere Informationen:
           <a
             href="https://business.safety.google/adsservices/"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsservices/
-          </a>{' '}
+          </a>
           (Arten der Verarbeitung sowie der verarbeiteten Daten).
         </li>
         <li>
@@ -439,7 +439,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://support.google.com/analytics/answer/9976101?hl=de
           </a>
-          . Datenschutzerklärung:{' '}
+          . Datenschutzerklärung:
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
@@ -476,7 +476,7 @@ const PrivacyPolicyTwo = () => {
           (und die IDbasierten Entsprechungen); Dienstanbieter: Google Ireland
           Limited, Gordon House, Barrow Street, Dublin 4, Irland;
           Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
-          Website:{' '}
+          Website:
           <a
             href="https://marketingplatform.google.com/intl/de/about/analytics/"
             target="_blank"
@@ -484,7 +484,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://marketingplatform.google.com/intl/de/about/analytics/
           </a>
-          ; Datenschutzerklärung:{' '}
+          ; Datenschutzerklärung:
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
@@ -492,7 +492,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://policies.google.com/privacy
           </a>
-          ; Auftragsverarbeitungsvertrag:{' '}
+          ; Auftragsverarbeitungsvertrag:
           <a
             href="https://business.safety.google/adsprocessorterms/"
             target="_blank"
@@ -517,14 +517,14 @@ const PrivacyPolicyTwo = () => {
           >
             https://business.safety.google/adsprocessorterms/
           </a>
-          ). Weitere Informationen:{' '}
+          ). Weitere Informationen:
           <a
             href="https://business.safety.google/adsservices/"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsservices/
-          </a>{' '}
+          </a>
           (Arten der Verarbeitung sowie der verarbeiteten Daten).
         </li>
         <li>
@@ -548,7 +548,7 @@ const PrivacyPolicyTwo = () => {
           Google-Konten angemeldet sind und die Anzeigenpersonalisierung
           aktiviert haben; Dienstanbieter: Google Ireland Limited, Gordon House,
           Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art.
-          6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
+          6 Abs. 1 S. 1 lit. a) DSGVO); Website:
           <a
             href="https://support.google.com/analytics/answer/7532985?hl=de"
             target="_blank"
@@ -556,7 +556,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://support.google.com/analytics/answer/7532985?hl=de
           </a>
-          ; Datenschutzerklärung:{' '}
+          ; Datenschutzerklärung:
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
@@ -564,7 +564,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://policies.google.com/privacy
           </a>
-          ; Auftragsverarbeitungsvertrag:{' '}
+          ; Auftragsverarbeitungsvertrag:
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
@@ -589,14 +589,14 @@ const PrivacyPolicyTwo = () => {
           >
             https://business.safety.google/adsprocessorterms
           </a>
-          ). Weitere Informationen:{' '}
+          ). Weitere Informationen:
           <a
             href="https://business.safety.google/adsservices/"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsservices/
-          </a>{' '}
+          </a>
           (Arten der Verarbeitung sowie der verarbeiteten Daten).
         </li>
         <li>
@@ -612,7 +612,7 @@ const PrivacyPolicyTwo = () => {
           unsere Anzeigen möglichst gut mit den potenziellen Interessen der
           Nutzer übereinstimmen; Dienstanbieter: Google Ireland Limited, Gordon
           House, Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung
-          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
+          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:
           <a
             href="https://marketingplatform.google.com"
             target="_blank"
@@ -620,7 +620,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://marketingplatform.google.com
           </a>
-          ; Rechtsgrundlagen:{' '}
+          ; Rechtsgrundlagen:
           <a
             href="https://business.safety.google/adsprocessorterms/"
             target="_blank"
@@ -628,7 +628,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://business.safety.google/adsprocessorterms/
           </a>
-          ; Datenschutzerklärung:{' '}
+          ; Datenschutzerklärung:
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
@@ -636,7 +636,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://policies.google.com/privacy
           </a>
-          ; Auftragsverarbeitungsvertrag:{' '}
+          ; Auftragsverarbeitungsvertrag:
           <a
             href="https://business.safety.google/adsprocessorterms/"
             target="_blank"
@@ -646,7 +646,7 @@ const PrivacyPolicyTwo = () => {
           </a>
           ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF), Data
           Privacy Framework (DPF); Weitere Informationen: Arten der Verarbeitung
-          sowie der verarbeiteten Daten:{' '}
+          sowie der verarbeiteten Daten:
           <a
             href="https://business.safety.google/adsservices/"
             target="_blank"
@@ -655,7 +655,7 @@ const PrivacyPolicyTwo = () => {
             https://business.safety.google/adsservices/
           </a>
           ; Datenverarbeitungsbedingungen für Google Werbeprodukte und
-          Standardvertragsklauseln für Drittlandtransfers von Daten:{' '}
+          Standardvertragsklauseln für Drittlandtransfers von Daten:
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
@@ -667,7 +667,7 @@ const PrivacyPolicyTwo = () => {
         <li>
           Keine Erhebung detaillierter Standort- und Gerätedaten
           (GoogleAnalytics-Funktion): Es werden keine detaillierten Standort-
-          und Gerätedaten erfasst (weitere Informationen:{' '}
+          und Gerätedaten erfasst (weitere Informationen:
           <a
             href="https://support.google.com/analytics/answer/12017362"
             target="_blank"
@@ -699,7 +699,7 @@ const PrivacyPolicyTwo = () => {
           weiterführenden Abschnitte dieser Datenschutzerklärung;
           Dienstanbieter: Google Ireland Limited, Gordon House, Barrow Street,
           Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1
-          lit. a) DSGVO); Website:{' '}
+          lit. a) DSGVO); Website:
           <a
             href="https://marketingplatform.google.com"
             target="_blank"
@@ -707,7 +707,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://marketingplatform.google.com
           </a>
-          ; Datenschutzerklärung:{' '}
+          ; Datenschutzerklärung:
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
@@ -715,7 +715,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://policies.google.com/privacy
           </a>
-          ; Auftragsverarbeitungsvertrag:{' '}
+          ; Auftragsverarbeitungsvertrag:
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
@@ -752,7 +752,7 @@ const PrivacyPolicyTwo = () => {
           (sog. Heatmaps und Recordings) gehören können; Dienstanbieter: Hotjar
           Ltd., 3 Lyons Range, 20 Bisazza Street, Sliema SLM 1640, Malta;
           Rechtsgrundlagen: Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
-          Website:{' '}
+          Website:
           <a
             href="https://www.hotjar.com"
             target="_blank"
@@ -760,7 +760,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://www.hotjar.com
           </a>
-          ; Datenschutzerklärung:{' '}
+          ; Datenschutzerklärung:
           <a
             href="https://www.hotjar.com/legal/policies/privacy"
             target="_blank"
@@ -770,7 +770,7 @@ const PrivacyPolicyTwo = () => {
           </a>
           ; Löschung von Daten: Die Cookies, die Hotjar nutzt, haben eine
           unterschiedliche "Lebensdauer"; manche bleiben bis zu 365 Tagen,
-          manche nur während des aktuellen Besuchs gültig; Cookie-Richtlinie:{' '}
+          manche nur während des aktuellen Besuchs gültig; Cookie-Richtlinie:
           <a
             href="https://www.hotjar.com/legal/policies/cookie-information"
             target="_blank"
@@ -778,7 +778,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://www.hotjar.com/legal/policies/cookie-information
           </a>
-          . Widerspruchsmöglichkeit (Opt-Out):{' '}
+          . Widerspruchsmöglichkeit (Opt-Out):
           <a
             href="https://www.hotjar.com/legal/compliance/opt-out"
             target="_blank"
@@ -795,7 +795,7 @@ const PrivacyPolicyTwo = () => {
           insbesondere für den Einsatz von Cookies und ähnlichen Technologien
           zur Speicherung, Auslesen und Verarbeitung von Informationen auf
           Endgeräten der Nutzer sowie deren Verarbeitung; Dienstanbieter:
-          Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:{' '}
+          Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:
           <a
             href="https://www.cookiebot.com/de"
             target="_blank"
@@ -803,7 +803,7 @@ const PrivacyPolicyTwo = () => {
           >
             https://www.cookiebot.com/de
           </a>
-          ; Datenschutzerklärung:{' '}
+          ; Datenschutzerklärung:
           <a
             href="https://www.cookiebot.com/de/privacy-policy/"
             target="_blank"
@@ -827,10 +827,9 @@ const PrivacyPolicyTwo = () => {
         worunter insbesondere die Vermarktung von Werbeflächen oder die
         Darstellung von werbenden und sonstigen Inhalten (zusammenfassend als
         „Inhalte" bezeichnet) anhand potenzieller Interessen der Nutzer sowie
-        die Messung ihrer Effektivität fallen können.{' '}
+        die Messung ihrer Effektivität fallen können.
       </p>
       <p>
-        {' '}
         Zu diesen Zwecken werden sogenannte Nutzerprofile angelegt und in einer
         Datei (der sogenannte „Cookie") gespeichert oder ähnliche Verfahren
         genutzt, mittels derer die für die Darstellung der vorgenannten Inhalte
@@ -850,7 +849,7 @@ const PrivacyPolicyTwo = () => {
         B. E-Mail-Adressen oder Namen) gespeichert, sondern Pseudonyme. Das
         heißt, wir als auch die Anbieter der Onlinemarketingverfahren kennen
         nicht die tatsächliche Nutzeridentität, sondern nur die in deren
-        Profilen gespeicherten Angaben{' '}
+        Profilen gespeicherten Angaben
       </p>
 
       <p>
@@ -870,10 +869,9 @@ const PrivacyPolicyTwo = () => {
         Netzwerk die Nutzerprofile mit den vorgenannten Angaben verbindet. Wir
         bitten darum, zu beachten, dass Nutzer mit den Anbietern zusätzliche
         Abreden treffen können, etwa durch Einwilligung im Rahmen der
-        Registrierung.{' '}
+        Registrierung.
       </p>
       <p>
-        {' '}
         Wir erhalten grundsätzlich nur Zugang zu zusammengefassten Informationen
         über den Erfolg unserer Werbeanzeigen. Jedoch können wir im Rahmen
         sogenannter Konversionsmessungen prüfen, welche unserer
@@ -885,7 +883,7 @@ const PrivacyPolicyTwo = () => {
       <p>
         Solange nicht anders angegeben, bitten wir Sie, davon auszugehen, dass
         eingesetzte Cookies für einen Zeitraum von zwei Jahren gespeichert
-        werden.{' '}
+        werden.
       </p>
     </div>
   );
