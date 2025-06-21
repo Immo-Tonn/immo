@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import CountUp from 'react-countup';
 import jsPDF from 'jspdf';
 import styles from './MortgageCalculator.module.css';
-import QuestionIcon from '@shared/assets/calculator/question.svg';
-import MarkerIcon from '@shared/assets/calculator/marker.svg';
+import QuestionIcon from '@shared/assets/morgage-calculator/question.svg';
+import MarkerIcon from '@shared/assets/morgage-calculator/marker.svg';
 import Input from '@shared/ui/Input/Input';
 const formatGermanCurrency = (num: number) => {
   return num
