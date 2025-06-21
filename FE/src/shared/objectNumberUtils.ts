@@ -9,12 +9,12 @@ export const formatObjectNumber = (objectId: string): string => {
   if (!objectId || objectId.length < 12) {
     return 'OBJ-INVALID';
   }
-  
+
   // Берем первые 8 символов ID и разбиваем на группы по 4
   const shortId = objectId.substring(0, 8).toUpperCase();
   const part1 = shortId.substring(0, 4);
   const part2 = shortId.substring(4, 8);
-  
+
   return `OBJ-${part1}-${part2}`;
 };
 
@@ -27,12 +27,9 @@ export const parseObjectNumber = (objectNumber: string): string => {
   if (!objectNumber || !objectNumber.startsWith('OBJ-')) {
     return '';
   }
-  
+
   // Удаляем префикс и дефисы, приводим к нижнему регистру
-  return objectNumber
-    .replace('OBJ-', '')
-    .replace(/-/g, '')
-    .toLowerCase();
+  return objectNumber.replace('OBJ-', '').replace(/-/g, '').toLowerCase();
 };
 
 /**
@@ -59,9 +56,9 @@ export const formatObjectDisplayInfo = (objectData: any) => {
     maximumFractionDigits: 0,
   }).format(objectData.price);
 
-  const address = objectData.address ? 
-    `${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}` : 
-    objectData.location || 'Адрес не указан';
+  const address = objectData.address
+    ? `${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}`
+    : objectData.location || 'Адрес не указан';
 
   return {
     objectNumber,
@@ -70,6 +67,9 @@ export const formatObjectDisplayInfo = (objectData: any) => {
     title: objectData.title,
     type: objectData.type,
     description: objectData.description,
-    mainImage: objectData.images && objectData.images.length > 0 ? objectData.images[0] : null,
+    mainImage:
+      objectData.images && objectData.images.length > 0
+        ? objectData.images[0]
+        : null,
   };
 };
