@@ -64,8 +64,8 @@ input[readonly] {
   position: relative;
 }
 
-.inputWithIcon > input,
-.inputWithIcon > select {
+.inputWithIcon input,
+.inputWithIcon select {
   width: 100%;
   padding-right: 40px;
 }
@@ -82,20 +82,36 @@ input[readonly] {
 
 .inputWithPercent {
   position: relative;
+  /* display: flex;
+  align-items: center; */
 }
 
 .inputWithPercent input {
-  padding-right: 36px;
+  padding-right: 24px;
+  /* width: 100%;
+  box-sizing: border-box; */
 }
 
 .inputWithPercent span {
   position: absolute;
+  /* left: 45px; */
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: #666;
   font-weight: bold;
 }
+
+/* .inputWithPercent .percent {
+  margin-left: 4px;
+}
+.percent {
+  position: absolute;
+  right: 10px;
+  color: #666;
+  font-weight: bold;
+  pointer-events: none;
+} */
 
 .icon {
   width: 18px;
@@ -125,8 +141,9 @@ input[readonly] {
 .sumLine {
   font-weight: bold;
   margin-top: 12px;
-  border-top: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
   padding-top: 12px;
+  border-bottom: 1px solid #ccc;
 }
 
 .rateLabel {
@@ -135,7 +152,7 @@ input[readonly] {
 }
 
 .monthly {
-  font-size: var(--font-size-size-xs);
+  font-size: 20px;
   color: #1c1829;
   font-weight: bold;
   transition: all 0.5s ease-in-out;
@@ -153,6 +170,30 @@ input[readonly] {
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
 }
 
 .modal {
@@ -173,7 +214,7 @@ input[readonly] {
   font-size: 16px;
 }
 
-.modal > button {
+.modal button {
   margin-top: 24px;
   padding: 10px 16px;
   background-color: #1c1829;
@@ -194,10 +235,7 @@ input[readonly] {
   line-height: 1.5;
 }
 
-@media (max-width: 765px) {
-  .wrapper {
-    height: 100%;
-  }
+@media (max-width: 770px) {
   .grid {
     flex-direction: column;
     align-items: center;
@@ -217,30 +255,11 @@ input[readonly] {
   flex-direction: column;
   gap: 12px;
 }
+
 .error {
   color: red;
-  font-size: 13px;
-  margin-top: -8px;
-  margin-bottom: 8px;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
+  /* font-size: 13px; */
+  font-size: 0.85rem;
+  margin-top: 4px;
+  /* margin-bottom: 8px; */
 }

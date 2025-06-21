@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './PropertyDetails.module.css';
 import { PropertyDetailsProps, getPropertyDetails } from './models';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '@shared/ui/Button/Button';
 
 const DetailRow = ({ label, value }: { label: string; value: any }) => (
@@ -49,7 +49,9 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             initialText="Finanzierungsrechner"
             clickedText="Weiterleitung..."
             className={styles.calcButton}
-            onClick={() => navigate('/finanzierung')}
+            onClick={() =>
+              navigate('/finanzierung', { state: { price: object.price } })
+            }
           />
         </div>
 
@@ -103,14 +105,14 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-            <Link to="/rechner">
-              <Button
-                initialText="Finanzierungsrechner"
-                clickedText="Weiterleitung..."
-                className={styles.calcButton}
-                onClick={() => navigate('/finanzierung')}
-              />
-            </Link>
+            <Button
+              initialText="Finanzierungsrechner"
+              clickedText="Weiterleitung..."
+              className={styles.calcButton}
+              onClick={() =>
+                navigate('/finanzierung', { state: { price: object.price } })
+              }
+            />
           </div>
         </div>
       </aside>
