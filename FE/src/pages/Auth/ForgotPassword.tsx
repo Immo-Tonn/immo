@@ -50,8 +50,17 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <h1>Passwort-Wiederherstellung</h1>
+    <div
+      style={{
+        maxWidth: '400px',
+        margin: '0 auto',
+        padding: '20px',
+        minHeight: '100dvh',
+      }}
+    >
+      <h1 style={{ fontFamily: 'var(--Roboto)' }}>
+        Passwort-Wiederherstellung
+      </h1>
 
       {error && (
         <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>
@@ -64,7 +73,11 @@ const ForgotPassword: React.FC = () => {
         <div style={{ marginBottom: '15px' }}>
           <label
             htmlFor="email"
-            style={{ display: 'block', marginBottom: '5px' }}
+            style={{
+              display: 'block',
+              marginBottom: '5px',
+              fontFamily: 'var(--Roboto)',
+            }}
           >
             Email:
           </label>
@@ -96,7 +109,10 @@ const ForgotPassword: React.FC = () => {
         </button>
 
         <div style={{ marginTop: '20px' }}>
-          <Link to="/add-property" style={{ color: '#2196F3' }}>
+          <Link
+            to="/add-property"
+            style={{ color: '#2196F3', fontFamily: 'var(--Roboto)' }}
+          >
             Zurück zum Login
           </Link>
         </div>
