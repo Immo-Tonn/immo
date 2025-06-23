@@ -178,7 +178,6 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
-
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
