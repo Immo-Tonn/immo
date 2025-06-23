@@ -9,7 +9,7 @@ export const usePropertyData = (id?: string) => {
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<Video[]>([]);
 
-  // Функция для обновления данных
+  // Function for updating data
   const fetchData = useCallback(async () => {
     if (!id) {
       console.warn('usePropertyData: ID is undefined, skipping request');
@@ -17,7 +17,7 @@ export const usePropertyData = (id?: string) => {
     }
 
     try {
-      console.log('Загружаем данные объекта:', id);
+      console.log('Loading object data:', id);
       
       const objectRes = await axios.get<RealEstateObject>(
         `http://localhost:3000/api/objects/${id}`,
@@ -25,27 +25,27 @@ export const usePropertyData = (id?: string) => {
       const data = objectRes.data;
       setObjectData(data);
 
-      // ВАЖНО: Всегда загружаем изображения заново
+      // IMPORTANT: Always re-upload images
       if (data._id) {
         try {
           const imagesRes = await axios.get<Image[]>(
             `http://localhost:3000/api/images/by-object?objectId=${data._id}`,
           );
-          console.log('Изображения загружены:', imagesRes.data);
+          console.log('Images uploaded:', imagesRes.data);
           setImages(imagesRes.data);
         } catch (imgError) {
           console.warn('Ошибка при загрузке изображений:', imgError);
           setImages([]);
         }
 
-        // Загружаем видео
+        // Uploading video
         try {
           const videosRes = await axios.get<Video[]>(
             `http://localhost:3000/api/videos/by-object?objectId=${data._id}`,
           );
           setVideos(videosRes.data);
         } catch (videoError) {
-          console.warn('Ошибка при загрузке видео:', videoError);
+          console.warn('Error loading video:', videoError);
           setVideos([]);
         }
       }
@@ -59,12 +59,12 @@ export const usePropertyData = (id?: string) => {
     }
   }, [id]);
 
-  // Первоначальная загрузка данных
+  // Initial data loading
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Обновление при возвращении на вкладку
+  // Refresh when returning to tab
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden && id) {
@@ -80,7 +80,7 @@ export const usePropertyData = (id?: string) => {
   return { objectData, images, videos, loading, err, refreshData: fetchData };
 };
 
-// Хук для списка объектов (без ID)
+// Hook for list of objects (without ID)
 export const usePropertysData = () => {
   const [objectData, setObjectData] = useState<RealEstateObject[]>([]);
   const [err, setErr] = useState<string | null>(null);
@@ -98,14 +98,14 @@ export const usePropertysData = () => {
         const data = objectRes.data;
         setObjectData(data);
 
-        // Загружаем все изображения
+        // Loading all images
         const imagesRes = await axios.get<Image[]>(
           `http://localhost:3000/api/images/`,
         );
         setImages(imagesRes.data);
 
         setErr(null);
-        console.log('Загружены объекты:', data.length, 'изображения:', imagesRes.data.length);
+        console.log('Geladene Objekte:', data.length, 'Bilder:', imagesRes.data.length);
       } catch (err: any) {
         console.error('Fehler beim Laden der Daten:', err);
         setErr(err?.message || 'Unbekannter Fehler');
@@ -119,87 +119,3 @@ export const usePropertysData = () => {
 
   return { objectData, images, loading, err };
 };
-
-// import { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { RealEstateObject, Image, Video } from '@shared/types/propertyTypes';
-
-// export const usePropertyData = (id?: string) => {
-//   const [objectData, setObjectData] = useState<RealEstateObject | null>(null);
-//   const [err, setErr] = useState<RealEstateObject | null>(null);
-//   const [images, setImages] = useState<Image[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [videos, setVideos] = useState<Video[]>([]);
-
-//   useEffect(() => {
-//     if (!id) {
-//       console.warn('usePropertyData: ID is undefined, skipping request');
-//       return
-//     } 
-
-//     const fetchData = async () => {
-//       try {
-//         const objectRes = await axios.get<RealEstateObject>(
-//           `http://localhost:3000/api/objects/${id}`,
-//         );
-//         const data = objectRes.data;
-//         setObjectData(data);
-
-//         if (data.images && data.images?.length > 0) {
-//           const imagesRes = await axios.get<Image[]>(
-//             `http://localhost:3000/api/images/by-object?objectId=${id}`,
-//           );
-//           setImages(imagesRes.data);
-//         }
-//         setErr(null);
-//         const videosRes = await axios.get<Video[]>(
-//           `http://localhost:3000/api/videos/by-object?objectId=${id}`,
-//         );
-//         setVideos(videosRes.data);
-//       } catch (err: any) {
-//         console.error('Fehler beim Laden der Daten:', err);
-//         setErr(err?.message || 'Unbekannter Fehler');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchData();
-//   }, [id]);
-
-//   return { objectData, images, videos, loading, err };
-// };
-
-// export const usePropertysData = () => {
-//   const [objectData, setObjectData] = useState<RealEstateObject[]>([]);
-//   const [err, setErr] = useState<string | null>(null);
-//   const [images, setImages] = useState<Image[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const objectRes = await axios.get<RealEstateObject[]>(
-//           `http://localhost:3000/api/objects/`,
-//         );
-//         const data = objectRes.data;
-//         setObjectData(data);
-
-//         const imagesRes = await axios.get<Image[]>(
-//           `http://localhost:3000/api/images/`,
-//         );
-//         setImages(imagesRes.data);
-
-//         setErr(null);
-//       } catch (err: any) {
-//         console.error('Fehler beim Laden der Daten:', err);
-//         setErr(err?.message || 'Unbekannter Fehler');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return { objectData, images, loading, err };
-// };

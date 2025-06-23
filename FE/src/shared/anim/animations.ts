@@ -1,6 +1,6 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { gsap } from 'gsap';
-import { ParallaxOptions } from './models';
+import { ParallaxOptions } from './model';
 gsap.registerPlugin(ScrollTrigger);
 
 export const parallaxMouseEffect = ({

@@ -46,7 +46,7 @@ const RealEstate = () => {
           {/* Заголовок страницы с кнопкой для админа */}
           <div className={styles.pageHeader}>
             {/* Статистика для админа */}
-            {isAdmin && objectData && (
+            {/* {isAdmin && objectData && ( */}
               <div className={styles.statsSection}>
                 <div className={styles.statItem}>
                   <span className={styles.statNumber}>{objectData.length}</span>
@@ -55,7 +55,7 @@ const RealEstate = () => {
                   </span>
                 </div>
               </div>
-            )}
+            {/* )} */}
             <h1 className={styles.title}>Immobilienangebote</h1>
             {/* Кнопка создания объекта для админа */}
             {isAdmin && (
@@ -96,7 +96,7 @@ const RealEstate = () => {
                     className={styles.createFirstButton}
                     onClick={handleCreateNew}
                   >
-                    Создать первый объект
+                    Erstes Objekt erstellen
                   </button>
                 )}
               </div>

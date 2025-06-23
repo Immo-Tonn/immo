@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
 import styles from './ObjectPrewiew.module.css';
-import { ObjectType } from '../../../features/utils/types';
+import { ObjectType } from '@features/utils/types';
 import { formatObjectNumber } from '@shared/objectNumberUtils';
 import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal'; // ИСПРАВЛЕНО: правильный импорт
 
@@ -217,10 +217,10 @@ const ObjectPreview = () => {
   const handleConfirm = () => {
     // Сохраняем флаг о том, что объект подтвержден (для отображения на странице Immobilien)
     if (objectData && objectData._id) {
-      const confirmedObjects = JSON.parse(localStorage.getItem('confirmedObjects') || '[]');
+      const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
       if (!confirmedObjects.includes(objectData._id)) {
         confirmedObjects.push(objectData._id);
-        localStorage.setItem('confirmedObjects', JSON.stringify(confirmedObjects));
+        sessionStorage.setItem('confirmedObjects', JSON.stringify(confirmedObjects));
       }
     }
     navigate('/immobilien');

@@ -51,9 +51,9 @@ const PropertyPage: React.FC = () => {
       await axios.delete(`/objects/${id}`);
       
       // Удаляем объект из подтвержденных
-      const confirmedObjects = JSON.parse(localStorage.getItem('confirmedObjects') || '[]');
+      const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
       const updatedConfirmed = confirmedObjects.filter((objId: string) => objId !== id);
-      localStorage.setItem('confirmedObjects', JSON.stringify(updatedConfirmed));
+      sessionStorage.setItem('confirmedObjects', JSON.stringify(updatedConfirmed));
       
       alert('Das Objekt ist erfolgreich gelöscht');
       navigate('/immobilien');

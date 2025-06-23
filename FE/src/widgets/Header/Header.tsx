@@ -57,8 +57,8 @@ const Header = () => {
 
   /* выход из системы */
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminInfo');
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminInfo');
     setIsAdmin(false);
     dispatchLogoutEvent();
     navigate('/');

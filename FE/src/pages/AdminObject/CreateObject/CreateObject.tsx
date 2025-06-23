@@ -8,17 +8,17 @@ import {
   DragEvent,
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ObjectType } from '../../../features/utils/types';
+import { ObjectType } from '@features/utils/types';
 import {
   createCompleteRealEstateObject,
   updateCompleteRealEstateObject,
   fetchObjectForEdit,
-} from '../../../features/utils/realEstateService';
+   updateImageOrder
+} from '@features/utils/realEstateService';
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
-import { updateImageOrder } from '../../../features/utils/realEstateService';
 
-// Определяем тип для objectData
+// Determine the type for objectData
 interface ObjectData {
   type: ObjectType;
   title: string;
@@ -53,7 +53,7 @@ const CreateObject = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false); // State for drag & drop
   const dropZoneRef = useRef<HTMLDivElement>(null); // ref for drag & drop
 
-  // Состояние для основного объекта недвижимости
+  // Status for the main property
   const [objectData, setObjectData] = useState<ObjectData>({
     type: ObjectType.APARTMENT,
     title: '',
@@ -72,10 +72,10 @@ const CreateObject = () => {
     price: '',
   });
 
-  // Состояние для специфических данных в зависимости от типа
+  // Status for specific data depending on the type
   const [specificData, setSpecificData] = useState<Record<string, any>>({});
 
-  // Функция валидации обязательных полей
+  // Validation function for mandatory fields
   const validateRequiredFields = (): boolean => {
     // Проверяем основные обязательные поля
     if (
@@ -91,7 +91,7 @@ const CreateObject = () => {
       return false;
     }
 
-    // Проверяем специфические обязательные поля в зависимости от типа
+    // Checking specific mandatory fields depending on the type
     switch (objectData.type) {
       case ObjectType.APARTMENT:
         return !!specificData.livingArea;
@@ -110,15 +110,15 @@ const CreateObject = () => {
     }
   };
 
-  // Состояние для отслеживания валидности формы
+  // State for tracking form validity
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
-  // Проверяем валидность формы при изменении данных
+  // Validate the form when changing data
   useEffect(() => {
     setIsFormValid(validateRequiredFields());
   }, [objectData, specificData]);
 
-  // Загрузка данных для редактирования
+  // Loading data for editing
   useEffect(() => {
     if (isEditMode && id) {
       const loadObjectData = async () => {
@@ -136,7 +136,7 @@ const CreateObject = () => {
           console.log('Loaded images:', images);
           console.log('Loaded videos:', videos);
 
-          // Заполняем основные данные
+          // Filling in the main data
           setObjectData({
             type: loadedObjectData.type,
             title: loadedObjectData.title,
@@ -155,16 +155,16 @@ const CreateObject = () => {
             price: loadedObjectData.price.toString(),
           });
 
-          // Заполняем специфические данные
+          // Filling in specific data
           if (loadedSpecificData) {
             const { _id, realEstateObject, __v, ...cleanSpecificData } =
               loadedSpecificData;
             setSpecificData(cleanSpecificData);
           }
 
-          // Устанавливаем существующие изображения
+          // Installing existing images
           setExistingImages(images || []);
-          // Устанавливаем существующие видео
+          // Installing existing video
           setExistingVideos(videos || []);
         } catch (err: any) {
           setError('Fehler beim Laden der Objektdaten zur Bearbeitung');
@@ -177,7 +177,7 @@ const CreateObject = () => {
     }
   }, [isEditMode, id]);
 
-  // Очистка предпросмотров при размонтировании компонента
+  // Clearing previews when unmounting a component
   useEffect(() => {
     return () => {
       previews.forEach(preview => {
@@ -188,7 +188,7 @@ const CreateObject = () => {
     };
   }, [previews]);
 
-  // Обработчик изменения основных полей объекта
+  //Handler for changing the main object fields
   const handleObjectChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
@@ -211,7 +211,7 @@ const CreateObject = () => {
         ...objectData,
         type: value as ObjectType,
       });
-      // При изменении типа в режиме редактирования сохраняем специфические данные
+      // When changing the type in edit mode, save specific data
       if (!isEditMode) {
         setSpecificData({});
       }
@@ -223,7 +223,7 @@ const CreateObject = () => {
     }
   };
 
-  // Обработчик изменения специфических полей
+  // Handler for changing specific fields
   const handleSpecificChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
@@ -234,14 +234,14 @@ const CreateObject = () => {
     });
   };
 
-  // Обработчик выбора файлов изображений
+  // Image file selection handler
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const files = Array.from(e.target.files);
     processFiles(files);
   };
 
-  // Обработчики для drag-and-drop событий
+  // Handlers for drag-and-drop events
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -276,7 +276,7 @@ const CreateObject = () => {
     }
   };
 
-  // Общая функция для обработки файлов
+  // General function for file handling
   const processFiles = (files: File[]) => {
     const imageFiles = files.filter(
       file =>
@@ -291,7 +291,7 @@ const CreateObject = () => {
       return;
     }
 
-    if (error && error.includes('только файлы изображений')) {
+    if (error && error.includes('nur Bilddateien')) {
       setError('');
     }
 
@@ -300,7 +300,7 @@ const CreateObject = () => {
     setPreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
   };
 
-  // Удаление выбранного изображения
+  //Delete selected image
   const removeImage = (index: number) => {
     const confirmDelete = window.confirm(
       'Sind Sie sicher, dass Sie dieses Bild löschen möchten?',
@@ -315,7 +315,7 @@ const CreateObject = () => {
     setPreviews(previews.filter((_, i) => i !== index));
   };
 
-  // Удаление существующего изображения
+  // Deleting an existing image
   const removeExistingImage = (index: number) => {
     const confirmDelete = window.confirm(
       'Sind Sie sicher, dass Sie dieses Bild löschen möchten?',
@@ -325,37 +325,37 @@ const CreateObject = () => {
     setExistingImages(existingImages.filter((_, i) => i !== index));
   };
 
-  // Функция для установки главного изображения среди существующих
+  //Function for setting the main image among existing ones
   const setMainExistingImage = async (index: number) => {
     const newImages = [...existingImages];
     const mainImage = newImages.splice(index, 1)[0];
 
-    // Проверяем, что элемент был найден
+    // Check that the element was found
     if (mainImage) {
       newImages.unshift(mainImage);
       setExistingImages(newImages);
 
-      // ДОБАВЛЯЕМ: Синхронизация с БД в режиме редактирования
+      // ADD: DB synchronization in edit mode
       if (isEditMode && id) {
         try {
-          console.log('Сохраняем новый порядок изображений в БД:', newImages);
+          console.log('Speichern die neue Reihenfolge der Bilder in der Datenbank:', newImages);
           await updateImageOrder(id, newImages);
           console.log('Порядок изображений успешно сохранен в БД');
 
-          // Опционально: показать уведомление об успехе
-          // setSuccess('Главное изображение обновлено');
+          // Optional: show success notification
+          // setSuccess('Main image updated');
         } catch (error) {
-          console.error('Ошибка при сохранении порядка изображений:', error);
-          setError('Ошибка при обновлении порядка изображений');
+          console.error('Fehler beim Speichern der Bildreihenfolge:', error);
+          setError('Fehler beim Aktualisieren der Bildreihenfolge');
 
-          // Откатываем изменения в UI при ошибке
+          // Roll back changes to the UI when an error occurs
           setExistingImages(existingImages);
         }
       }
     }
   };
 
-  // Функция для установки главного изображения среди новых
+  // Function for setting the main image among new ones
   const setMainNewImage = (index: number) => {
     const newFiles = [...selectedFiles];
     const newPreviews = [...previews];
@@ -363,7 +363,7 @@ const CreateObject = () => {
     const mainFile = newFiles.splice(index, 1)[0];
     const mainPreview = newPreviews.splice(index, 1)[0];
 
-    // Проверяем, что элементы были найдены
+    //Check that the elements were found
     if (mainFile && mainPreview) {
       newFiles.unshift(mainFile);
       newPreviews.unshift(mainPreview);
@@ -373,13 +373,13 @@ const CreateObject = () => {
     }
   };
 
-  // Отправка формы
+  // Submitting a form
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Проверяем валидность формы
+    // Checking form validity
     if (!isFormValid) {
       setError('Bitte füllen Sie alle Pflichtfelder aus');
       setLoading(false);
@@ -387,7 +387,7 @@ const CreateObject = () => {
     }
 
     try {
-      // Подготавливаем данные основного объекта
+      // Preparing the main object data
       const realEstateObjectData = {
         ...objectData,
         price: parseFloat(objectData.price),
@@ -397,7 +397,7 @@ const CreateObject = () => {
         },
       };
 
-      // Преобразуем числовые поля из строк в числа для специфических данных
+      // Converting numeric fields from strings to numbers for specific data
       const processedSpecificData = { ...specificData };
       Object.keys(processedSpecificData).forEach(key => {
         if (
@@ -422,8 +422,8 @@ const CreateObject = () => {
 
       let objectId: string;
       if (isEditMode && id) {
-        // Обновление существующего объекта
-        console.log('Обновляем объект с ID:', id);
+        // Updating an existing object
+        console.log('Aktualisieren des Objekts mit ID:', id);
         await updateCompleteRealEstateObject(
           id,
           realEstateObjectData,
@@ -434,7 +434,7 @@ const CreateObject = () => {
         );
         objectId = id;
       } else {
-        // Создание нов.объекта
+        // Creating a new object
         console.log('Create a new object');
         objectId = await createCompleteRealEstateObject(
           realEstateObjectData,
@@ -448,7 +448,7 @@ const CreateObject = () => {
 
       setSuccess(true);
 
-      // Переход на страницу предпросмотра
+      // Going to the preview page
     setTimeout(() => {
       navigate(`/preview-object/${objectId}?action=${isEditMode ? 'updated' : 'created'}`);
     }, 1000);
@@ -466,7 +466,7 @@ const CreateObject = () => {
   }
 };
 
-  // Рендер полей формы в зависимости от типа объекта
+  // Rendering form fields depending on the object type
   const renderSpecificFields = () => {
     switch (objectData.type) {
       case ObjectType.APARTMENT:
@@ -1241,12 +1241,12 @@ const CreateObject = () => {
           />
         </div>
 
-        {/* Рендерим специфические поля для выбранного типа объекта */}
+        {/* Rendering specific fields for the selected object type */}
         {renderSpecificFields()}
 
         <h3 className={styles.sectionTitle}>Bilder</h3>
 
-        {/* Существующие изображения (только в режиме редактирования) */}
+        {/* Existing images (edit mode only) */}
         {isEditMode && existingImages.length > 0 && (
           <>
             <h4 className={styles.imageSection}>Aktuelle Bilder</h4>
@@ -1285,7 +1285,7 @@ const CreateObject = () => {
           </>
         )}
 
-        {/* Зона для перетаскивания файлов */}
+        {/* File drop area */}
         <div
           ref={dropZoneRef}
           className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
@@ -1318,7 +1318,7 @@ const CreateObject = () => {
           </div>
         </div>
 
-        {/* Предпросмотр новых выбранных изображений */}
+        {/* Preview of newly selected images */}
         {previews.length > 0 && (
           <>
             <h4 className={styles.imageSection}>
@@ -1355,7 +1355,7 @@ const CreateObject = () => {
             </div>
           </>
         )}
-        {/* Секция управления видео */}
+        {/* Video control section */}
         <VideoManager
           realEstateObjectId={id || 'new-object'}
           existingVideos={existingVideos}
@@ -1363,7 +1363,7 @@ const CreateObject = () => {
           isEditMode={isEditMode}
         />
 
-        {/* Прогресс загрузки */}
+        {/* Upload progress */}
         {loading && uploadProgress > 0 && (
           <div className={styles.uploadProgress}>
             <div

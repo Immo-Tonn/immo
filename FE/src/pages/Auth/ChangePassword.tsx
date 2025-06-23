@@ -86,7 +86,7 @@ const ChangePassword: React.FC = () => {
     try {
       setLoading(true);
 
-      // Получаем токен из localStorage
+      // Получаем токен из 
       const token = sessionStorage.getItem('adminToken');
 
       // Отправляем запрос на смену пароля

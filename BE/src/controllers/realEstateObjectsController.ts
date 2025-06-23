@@ -68,7 +68,7 @@ export const updateObject = async (req: Request, res: Response) => {
 
     res.json(updated);
   } catch (error) {
-    console.error('Ошибка при обновлении объекта:', error);
+    console.error('Fehler beim Aktualisieren des Objekts:', error);
     res
       .status(400)
       .json({ message: 'Fehler beim Aktualisieren des Objekts', error });

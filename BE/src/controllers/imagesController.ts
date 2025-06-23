@@ -1,3 +1,4 @@
+// immo/BE/src/controllers/imagesController.ts
 import { Request, Response } from "express";
 import ImagesModel from "../models/ImagesModel";
 import RealEstateObjectsModel from "../models/RealEstateObjectsModel";
