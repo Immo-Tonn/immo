@@ -9,7 +9,7 @@
   flex: 1;
 }
 
-.titleWrapper {
+.section {
   margin-bottom: 4rem;
 }
 
@@ -17,7 +17,6 @@
   font-size: 34px;
   font-weight: bold;
   margin: 35px 0;
-  font-family: var(--Roboto);
   text-align: left;
 }
 
@@ -47,20 +46,17 @@
 .label {
   font-size: 22px;
   font-weight: bold;
-  font-family: var(--Roboto);
 }
 
 .value {
   font-size: 22px;
-  font-family: var(--Roboto);
 }
 
 .narrowText {
-  font-family: var(--Roboto);
   width: 100%;
   max-width: 700px;
   line-height: 1.6;
-  font-size: var(--font-size-small);
+  font-size: 24px;
   margin: 10px 20px;
 }
 
@@ -91,9 +87,8 @@
 }
 
 .tagline {
-  font-family: var(--Roboto);
   text-align: center;
-  font-size: var(--font-size-main);
+  font-size: 48px;
   font-weight: 900;
 }
 
@@ -102,7 +97,7 @@
   color: #fff;
   border: none;
   padding: 0.75rem 1.5rem;
-  font-size: var(--font-size-secondary);
+  font-size: 32px;
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s;
@@ -118,7 +113,16 @@
   display: none;
 }
 
-@media (max-width: 765px) {
+.statusBanner {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #530614;
+  padding: 1rem;
+}
+
+
+@media (max-width: 768px) {
+
   .calcButton {
     font-size: 20px;
     padding: 0.5rem 1rem;
@@ -126,11 +130,11 @@
   }
 
   .sectionTitle {
-    font-size: var(--font-size-secondary);
+    font-size: 32px;
   }
 
   .tagline {
-    font-size: var(--font-size-secondary);
+    font-size: 32px;
   }
 
   .narrowText {
@@ -140,6 +144,7 @@
   .value {
     font-size: 20px;
   }
+
 }
 
 @media (max-width: 576px) {
