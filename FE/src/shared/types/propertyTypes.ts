@@ -71,6 +71,7 @@ export interface ResidentialHouse {
 
 export interface RealEstateObject {
   _id: string;
+  number: string;
   type: string;
   title: string;
   description: string;
@@ -81,7 +82,7 @@ export interface RealEstateObject {
   price: number;
   dateAdded: string;
   status: string;
-  images?: string[];
+  images?: Image[];
   videos?: Video[];
   apartments?: Apartment;
   commercial_NonResidentialBuildings?: CommercialBuilding;
