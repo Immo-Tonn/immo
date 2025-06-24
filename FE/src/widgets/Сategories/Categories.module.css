@@ -1,6 +1,6 @@
 .categoriesSection {
   display: flex;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   justify-content: center;
   background-color: var(--main-color);
 }

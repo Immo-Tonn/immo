@@ -81,7 +81,7 @@ export const fadeInOnScroll = (
   gsap.fromTo(
     el,
     {
-      opacity: 0,
+      opacity: el instanceof HTMLImageElement && el.complete ? 1 : 0,
       x,
       y,
     },

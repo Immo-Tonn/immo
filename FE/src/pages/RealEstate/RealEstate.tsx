@@ -19,17 +19,22 @@ const RealEstate = () => {
   }, []);
 
   useEffect(() => {
-    refs.current.forEach((ref, i) => {
-      if (ref)
-        fadeInOnScroll(
-          { current: ref },
-          {
-            x: i % 2 === 0 ? -100 : 100,
-            y: i % 2 === 0 ? 0 : -50,
-          },
-        );
+    if (loading) return;
+
+    requestAnimationFrame(() => {
+      refs.current.forEach((ref, i) => {
+        if (ref) {
+          fadeInOnScroll(
+            { current: ref },
+            {
+              x: i % 2 === 0 ? -50 : 100,
+              y: i % 2 === 0 ? 0 : -50,
+            },
+          );
+        }
+      });
     });
-  }, [objectData]);
+  }, [loading, objectData, images]);
 
   const handleCreateNew = () => {
     navigate('/create-object');

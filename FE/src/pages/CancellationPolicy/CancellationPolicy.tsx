@@ -14,7 +14,7 @@ const CancellationPolicy: React.FC = () => {
       <p>
         Um Ihr Widerrufsrecht auszuüben, müssen uns (Immo-Tonn, Inhaber Andreas
         Tonn, Sessendrupweg 54, 48161 Münster, Email:
-        <a href="mailto:tonn_andreas@web.de">tonn_andreas@web.de</a>) mittels
+        <a href="mailto:tonn_andreas@web.de"> tonn_andreas@web.de</a>) mittels
         einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief
         oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen,
         informieren. Sie können dafür das beigefügte Muster-Widerrufsformular
