@@ -127,32 +127,20 @@ const Header: React.FC = () => {
                   tonn_andreas@web.de
                 </a>
               </li>
-              <li>
+              <li className={styles.contactItem}>
                 <div className={styles.contactIcon}>
-                  <img
-                    src={location}
-                    alt="adress"
-                    style={{ width: '26px', height: '26px' }}
-                  />
+                  <img src={location} alt="address icon" />
                 </div>
                 <a
-                  href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster/@52.000885,7.5495001,17z/data=!3m1!4b1!4m6!3m5!1s0x47b9b0fb68b86337:0x6c01106fad5b0129!8m2!3d52.000885!4d7.552075!16s%2Fg%2F11bw3zj4mf?entry=ttu&g_ep=EgoyMDI1MDQzMC4xIKXMDSoASAFQAw%3D%3D"
-                  className={styles.contactText}
+                  href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster"
                   target="_blank"
                   rel="noopener noreferrer"
-                >
-                  Sessendrupweg 54
-                </a>
-              </li>
-              <li>
-                <span className={styles.contactIcon}></span>
-                <a
-                  href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster/@52.000885,7.5495001,17z/data=!3m1!4b1!4m6!3m5!1s0x47b9b0fb68b86337:0x6c01106fad5b0129!8m2!3d52.000885!4d7.552075!16s%2Fg%2F11bw3zj4mf?entry=ttu&g_ep=EgoyMDI1MDQzMC4xIKXMDSoASAFQAw%3D%3D"
                   className={styles.contactText}
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
-                  48161 Münster
+                  <div className={styles.contactTextWrapper}>
+                    <span>Sessendrupweg 54</span>
+                    <span>48161 Münster</span>
+                  </div>
                 </a>
               </li>
             </ul>

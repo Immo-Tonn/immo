@@ -68,9 +68,6 @@ const PropertyPage: React.FC = () => {
     }
   };
 
-  if (loading) return <p>Laden...</p>;
-  if (!objectData) return <p>Objekt nicht gefunden</p>;
-
   return (
     <div className={styles.propertyPageContainer}>
       <LoadingErrorHandler loading={loading} error={err} />
@@ -92,16 +89,16 @@ const PropertyPage: React.FC = () => {
           />
         </div>
       )}
-      <Button
-        className={styles.refreshButton}
-        onClick={handleRefresh}
-        disabled={isRefreshing}
-        initialText="🔄 Daten aktualisieren"
-        clickedText="Aktualisieren"
-      />
 
       {!loading && objectData && (
         <>
+          <Button
+            className={styles.refreshButton}
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            initialText="🔄 Daten aktualisieren"
+            clickedText="Aktualisieren"
+          />
           <PropertyHero
             object={objectData}
             images={images}

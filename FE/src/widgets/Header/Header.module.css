@@ -59,11 +59,15 @@
   height: 20px;
   object-fit: contain;
 }
-
+.contactTextWrapper > span {
+  margin-top: 5px;
+  display: block;
+}
 .contactText {
   text-decoration: none;
   color: white;
   font-size: 14px;
+  display: flex;
   transition:
     transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
     color 200ms;

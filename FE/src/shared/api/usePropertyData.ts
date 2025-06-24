@@ -9,11 +9,16 @@ export const usePropertyData = (id?: string) => {
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<Video[]>([]);
 
+  const MIN_LOADING_TIME = 2000;
+
   const fetchData = useCallback(async () => {
     if (!id) {
       console.warn('usePropertyData: ID is undefined, skipping request');
       return;
     }
+
+    const startTime = Date.now();
+    setLoading(true);
 
     try {
       console.log('Loading object data:', id);
@@ -24,7 +29,6 @@ export const usePropertyData = (id?: string) => {
       const data = objectRes.data;
       setObjectData(data);
 
-      // Important!
       if (data._id) {
         try {
           const imagesRes = await axios.get<Image[]>(
@@ -36,7 +40,6 @@ export const usePropertyData = (id?: string) => {
           console.warn('Error loading images:', imgError);
           setImages([]);
         }
-        // Загружаем видео
         try {
           const videosRes = await axios.get<Video[]>(
             `http://localhost:3000/api/videos/by-object?objectId=${data._id}`,
@@ -53,7 +56,13 @@ export const usePropertyData = (id?: string) => {
       console.error('Fehler beim Laden der Daten:', err);
       setErr(err?.message || 'Unbekannter Fehler');
     } finally {
-      setLoading(false);
+      const elapsed = Date.now() - startTime;
+      const delay = MIN_LOADING_TIME - elapsed;
+      if (delay > 0) {
+        setTimeout(() => setLoading(false), delay);
+      } else {
+        setLoading(false);
+      }
     }
   }, [id]);
 
@@ -64,7 +73,7 @@ export const usePropertyData = (id?: string) => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden && id) {
-        console.log('Вкладка активна, обновляем данные');
+        console.log('Tab is active, refreshing data');
         fetchData();
       }
     };
@@ -84,9 +93,12 @@ export const usePropertysData = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const MIN_LOADING_TIME = 1000;
     const fetchData = async () => {
+      const startTime = Date.now();
+
       try {
-        console.log('Загружаем список всех объектов');
+        console.log('Loading list of all objects');
 
         const objectRes = await axios.get<RealEstateObject[]>(
           `http://localhost:3000/api/objects/`,
@@ -101,16 +113,24 @@ export const usePropertysData = () => {
 
         setErr(null);
         console.log(
-          'Gegnstände wurden hochgeladen:',
+          'Objects loaded:',
           data.length,
           'Images:',
           imagesRes.data.length,
         );
       } catch (err: any) {
-        console.error('Fehler beim Laden der Daten:', err);
-        setErr(err?.message || 'Unbekannter Fehler');
+        console.error('Error loading data:', err);
+        setErr(err?.message || 'Unknown error');
       } finally {
-        setLoading(false);
+        const elapsed = Date.now() - startTime;
+        const delay = MIN_LOADING_TIME - elapsed;
+
+        if (delay > 0) {
+          // Ждем остаток времени, чтобы суммарно загрузка длилась минимум 10 секунд
+          setTimeout(() => setLoading(false), delay);
+        } else {
+          setLoading(false);
+        }
       }
     };
 
