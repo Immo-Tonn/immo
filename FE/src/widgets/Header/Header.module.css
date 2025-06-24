@@ -31,7 +31,7 @@
 }
 
 .headerContacts {
-  margin-top: 5px;
+  margin: 5px 10px 0 0;
   align-items: center;
   font-size: clamp(10px, 2vw, 14px);
   text-align: left;
@@ -87,6 +87,7 @@
   background-color: white;
   transition: width 300ms ease;
 }
+
 .nav a:hover::after {
   width: 100%;
 }
@@ -108,7 +109,12 @@
   color: white !important;
   font-weight: bold;
 }
-
+.nav a {
+  position: relative;
+}
+.nav a.activeLink::after {
+  width: 100%;
+}
 .drawerLogo {
   height: 114px;
 }

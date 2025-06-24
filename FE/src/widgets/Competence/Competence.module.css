@@ -48,7 +48,7 @@
 
 .competenceSection > img {
   margin-top: clamp(40px, 6vh, 91px);
-
+  /* height: 688px; */
   max-width: 1200px;
 }
 
