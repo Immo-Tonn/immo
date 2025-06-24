@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IApartments extends Document {
   id: Types.ObjectId;
@@ -21,7 +21,7 @@ export interface IApartments extends Document {
 const ApartmentsSchema: Schema = new Schema<IApartments>({
   realEstateObject: {
     type: Schema.Types.ObjectId,
-    ref: "RealEstateObjects",
+    ref: 'RealEstateObjects',
     required: true,
   },
   type: {
@@ -68,7 +68,7 @@ const ApartmentsSchema: Schema = new Schema<IApartments>({
 });
 
 const ApartmentsModel = mongoose.model<IApartments>(
-  "Apartments",
-  ApartmentsSchema
+  'Apartments',
+  ApartmentsSchema,
 );
 export default ApartmentsModel;

@@ -1,0 +1,25 @@
+.container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainContentWrapper {
+  width: 1294px;
+  margin: 20px auto;
+  padding: 20px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.mainContentWrapperTablet {
+  width: calc(100% - 40px);
+  padding: 10px 20px;
+}
+
+.mainContentWrapperMobile {
+  width: calc(100% - 20px);
+  padding: 10px;
+}

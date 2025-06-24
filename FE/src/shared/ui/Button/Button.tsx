@@ -1,36 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button as ButtonProps } from './model';
 
 const Button = ({
-  style,
   onClick,
   className,
   addLineBreak,
-  initialText,
-  clickedText,
+  initialText = '',
+  clickedText = '',
+  type = 'button',
+  disabled = false,
 }: ButtonProps) => {
+  const [internalDisabled, setInternalDisabled] = useState(false);
   const [text, setText] = useState(initialText);
 
-  const [isButtonDisabled, setButtonState] = useState(false);
-  const handleClick = () => {
-    setText(clickedText);
-    if (onClick) {
-      onClick();
+  useEffect(() => {
+    if (disabled) {
+      setText(clickedText);
+      setInternalDisabled(false);
+    } else if (!internalDisabled) {
+      setText(initialText);
     }
-    setButtonState(true);
+  }, [disabled, clickedText, initialText, internalDisabled]);
+
+  const handleClick = () => {
+    if (type === 'submit') {
+      return;
+    }
+
+    if (disabled || internalDisabled) return;
+
+    setText(clickedText);
+    setInternalDisabled(true);
+
+    if (onClick) onClick();
 
     setTimeout(() => {
       setText(initialText);
-      setButtonState(false);
+      setInternalDisabled(false);
     }, 1000);
   };
 
   return (
     <button
-      style={style}
       onClick={handleClick}
       className={className}
-      disabled={isButtonDisabled}
+      disabled={disabled || internalDisabled}
+      type={type}
     >
       {typeof text === 'string' && addLineBreak
         ? text.split('\n').map((line, i) => (

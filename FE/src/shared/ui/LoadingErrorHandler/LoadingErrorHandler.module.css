@@ -1,0 +1,13 @@
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.error {
+  color: red;
+  font-size: 1rem;
+  text-align: center;
+  margin: 20px;
+  font-family: var(--Inter);
+}

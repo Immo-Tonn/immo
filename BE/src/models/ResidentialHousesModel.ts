@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IResidentialHouses extends Document {
   id: Types.ObjectId;
@@ -22,7 +22,7 @@ export interface IResidentialHouses extends Document {
 const ResidentialHousesSchema: Schema = new Schema<IResidentialHouses>({
   realEstateObject: {
     type: Schema.Types.ObjectId,
-    ref: "RealEstateObjects",
+    ref: 'RealEstateObjects',
     required: true,
   },
   type: {
@@ -72,7 +72,7 @@ const ResidentialHousesSchema: Schema = new Schema<IResidentialHouses>({
 });
 
 const ResidentialHousesModel = mongoose.model<IResidentialHouses>(
-  "ResidentialHouses",
-  ResidentialHousesSchema
+  'ResidentialHouses',
+  ResidentialHousesSchema,
 );
 export default ResidentialHousesModel;

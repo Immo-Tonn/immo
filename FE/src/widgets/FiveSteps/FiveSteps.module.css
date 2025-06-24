@@ -1,5 +1,5 @@
 .fiveStepsSection {
-  background-image: url('@shared/assets/five-steps/image-bg.svg');
+  background-image: url('@shared/assets/five-steps/image-bg.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -11,17 +11,17 @@
   max-width: 750px;
 }
 .accordionItem {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 32px;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-secondary);
   color: #f5f5f5;
 }
 .secondTitle {
   position: relative;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
   padding: 60px;
-  font-size: 40px;
+  font-size: clamp(40px, 5vw, 40px);
   text-align: center;
   color: #fff;
 }
@@ -38,9 +38,9 @@
 
 .firstTitle {
   position: relative;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 20px;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-xs);
   letter-spacing: 0.1em;
   text-align: center;
   color: #fff;
@@ -57,9 +57,10 @@
   background-color: #1d2a3b;
 }
 .accordionItem {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 32px;
+  margin-left: 20px;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-secondary));
   color: #f5f5f5;
 }
 .buttonWrapper {
@@ -67,11 +68,27 @@
   justify-content: flex-end;
 }
 
+.verkaufButton {
+  width: clamp(275px, 10vw, 332px);
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
+  background: var(--secondary-color);
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-secondary);
+  text-align: center;
+  color: #f5f5f5;
+}
+
+.verkaufButton[disabled] {
+  color: white;
+  background-color: #091321;
+}
+.verkaufButton:hover {
+  background-color: #2b4878;
+}
+
 @media (max-width: 765px) {
   .buttonWrapper {
     justify-content: center;
-  }
-  Button {
-    height: 27px;
   }
 }

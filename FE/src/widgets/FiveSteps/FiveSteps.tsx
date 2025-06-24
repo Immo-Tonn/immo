@@ -4,11 +4,33 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import Button from '@shared/ui/Button/Button';
+import { useEffect, useRef } from 'react';
+import { fadeInOnScroll } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 
 const FiveSteps = () => {
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  useEffect(() => {
+    refs.current.forEach((ref, i) => {
+      if (ref) {
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0
+            ? { x: -100, y: 0, duration: 0.3 }
+            : { x: 100, y: -50, duration: 0.2 },
+        );
+      }
+    });
+  }, []);
+
   return (
     <section className={styles.fiveStepsSection}>
-      <div className={styles.firstTitleWrap}>
+      <div
+        className={styles.firstTitleWrap}
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <h3 className={styles.firstTitle}>
           Mehr als nur Immobilien – eine Partnerschaft, <br />
           die für Sie entfaltet
@@ -21,7 +43,12 @@ const FiveSteps = () => {
       </div>
 
       <div className={styles.contentWrapper}>
-        <ul className={styles.itemList}>
+        <div
+          className={styles.itemList}
+          ref={el => {
+            refs.current[2] = el;
+          }}
+        >
           <Accordion
             sx={{
               m: 0,
@@ -42,12 +69,13 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Kostenlose Immobilienbewertung & Erstberatung
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
+                fontFamily: 'Inter, sans-serif',
                 flexDirection: 'row-reverse',
                 backgroundColor: 'transparent',
                 color: 'white',
@@ -84,10 +112,11 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>Auftragserteilung</li>
+              <div className={styles.accordionItem}>Auftragserteilung</div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
+                fontFamily: 'Inter, sans-serif',
                 flexDirection: 'row-reverse',
                 backgroundColor: 'transparent',
                 color: 'white',
@@ -126,9 +155,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Fototermin, Expose-Erstellung & Veröffentlichung
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -168,9 +197,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Anfragen und Besichtigungen
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -211,9 +240,9 @@ const FiveSteps = () => {
                 padding: 0,
               }}
             >
-              <li className={styles.accordionItem}>
+              <div className={styles.accordionItem}>
                 Notartermin und Beurkundung
-              </li>
+              </div>
             </AccordionSummary>
             <AccordionDetails
               sx={{
@@ -242,24 +271,15 @@ const FiveSteps = () => {
           </Accordion>
 
           <div className={styles.buttonWrapper}>
-            <Button
-              style={{
-                margin: '109px 19px 60px 0',
-                width: 'clamp(275px, 10vw, 332px)',
-                height: 'clamp(27px, 10vw, 98px)',
-                border: 'none',
-                cursor: 'pointer',
-                background: '#163054',
-                fontWeight: 400,
-                fontSize: '32px',
-                textAlign: 'center',
-                color: '#f5f5f5',
-              }}
-              initialText="Verkauf"
-              clickedText="Weiterleitung"
-            />
+            <Link style={{ margin: '109px 19px 60px 0' }} to="/kontakt">
+              <Button
+                className={styles.verkaufButton}
+                initialText="Verkauf"
+                clickedText="Weiterleitung..."
+              />
+            </Link>
           </div>
-        </ul>
+        </div>
       </div>
     </section>
   );

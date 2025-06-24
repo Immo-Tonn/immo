@@ -1,0 +1,74 @@
+.heroValuationSection {
+  background-color: white;
+  color: black;
+}
+
+.heroValuationSection > p {
+  display: none;
+  font-family: var(--Inter);
+  text-align: center;
+  font-size: clamp(10px, 5vw, 36px);
+  color: #000;
+  padding: 20px;
+}
+.contentWrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 675px;
+}
+.contentWrapper::before {
+  position: absolute;
+  content: '';
+  left: 50%;
+  transform: translateX(-50%);
+  height: 675px;
+  background-image: url('@shared/assets/hero-valuation/hero-valuation-photo.webp');
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
+  width: 100%;
+}
+
+.firstTitle {
+  font-family: var(--Inter);
+  padding: 70px 0 70px 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(10px, 5vw, 36px);
+}
+
+.textWrapper {
+  padding: 20px 0 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #02020e;
+  z-index: 22;
+  opacity: 0.73;
+  width: 100%;
+  height: 89px;
+}
+
+.textWrapper > p {
+  color: white;
+  font-family: var(--Inter);
+  font-size: clamp(var(--font-size-small), 4.5vw, 40px);
+  font-weight: var(--font-weight-secondary);
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 765px) {
+  .heroValuationSection > p {
+    display: flex;
+  }
+  .textWrapper {
+    padding: clamp(10px, 2vw, 20px);
+  }
+}

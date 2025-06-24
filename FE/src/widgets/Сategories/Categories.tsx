@@ -1,22 +1,54 @@
 import { CategoriesData, CategoryItem } from './CategoriesData';
-import styles from '../Сategories/Categories.module.css';
+import styles from './Categories.module.css';
+import { NavLink } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { fadeInOnScroll } from '@shared/anim/animations';
 
 const Categories = () => {
+  const refs = useRef<any[]>([]);
+
+  useEffect(() => {
+    refs.current.forEach((ref, i) => {
+      if (ref)
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0 ? { x: -100, y: 0 } : { x: 100, y: -50 },
+        );
+    });
+  }, []);
+
   return (
     <section className={styles.categoriesSection}>
       <ul className={styles.categoriesList}>
-        {CategoriesData.map((item: CategoryItem) => (
-          <li key={item.id} className={styles.categoryItem}>
-            <a className={styles.categoryLink}>
-              <p className={styles.categoryTitle}>{item.title}</p>
+        {CategoriesData.map((item: CategoryItem, i: number) => (
+          <li
+            key={item.id}
+            className={styles.categoryItem}
+            ref={el => {
+              refs.current[i] = el;
+            }}
+          >
+            <NavLink
+              to={item.link}
+              className={styles.categoryLink}
+              style={item.id === 5 ? { display: 'block' } : {}}
+            >
+              <p
+                className={styles.categoryTitle}
+                style={
+                  item.id === 3 || item.id === 5 ? { color: '#160c20' } : {}
+                }
+              >
+                {item.title}
+              </p>
               <div className={styles.imageWrapper}>
                 <img
                   src={item.image}
-                  alt={item.title}
+                  alt={item.alt}
                   className={styles.categoryImage}
                 />
               </div>
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>

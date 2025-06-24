@@ -1,6 +1,59 @@
-@import '@shared/fonts/fonts.css';
+@import '@shared/styles/fonts.css';
+
+:root {
+  --Inter: 'Inter', sans-serif;
+  --Lato: 'Lato', sans-serif;
+  --Roboto: 'Roboto', sans-serif;
+  --Monserat: 'Montserrat-Regular', sans-serif;
+  --font-size-big: 64px;
+  --font-size-main: 48px;
+  --font-size-secondary: 32px;
+  --font-size-small: 24px;
+  --font-size-xs: 20px;
+  --font-weight-big: 800;
+  --font-weight-main: 600;
+  --font-weight-secondary: 400;
+  --main-color: #160c20;
+  --secondary-color: #1c1829;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 200ms;
+}
+
+a:hover {
+  color: white;
+  transform: scale(1.2);
+}
+p > a:hover {
+  color: #000000;
+  transform: scale(1.2);
+}
 
 * {
   padding: 0;
   margin: 0;
+}
+
+main {
+  min-height: 100dvh;
+}
+html,
+body {
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+  background-color: #1b4965;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 1.5rem;
+  font-size: 16px;
+  border-radius: 6px;
 }

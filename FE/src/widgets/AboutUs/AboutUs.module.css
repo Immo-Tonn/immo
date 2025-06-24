@@ -1,7 +1,7 @@
 .aboutUsSection {
-  background: rgba(82, 110, 137, 0.16);
-  padding: 60px 20px;
+  background: #f5f5f5;
   display: flex;
+  padding: 108px 0 185px 0;
   flex-direction: column;
   align-items: center;
 }
@@ -24,54 +24,53 @@
 
 .contentWrapper {
   display: flex;
+  align-items: center;
+  padding: 0 20px 0 20px;
 }
 .textBlock {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   margin-left: 68px;
 }
 
-.textBlock h1 {
-  max-width: 720px;
-  text-align: center;
-  font-size: 30px;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.6;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  color: #160c20;
-  margin-bottom: 16px;
-}
-
-.textBlock p {
-  text-align: center;
-  max-width: 625px;
-  font-family: 'Inter', sans-serif;
-  margin-bottom: 24px;
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: 0.1em;
-  color: #160c20;
-}
-
 .textBottom {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--Roboto);
   margin-top: 40px;
-  max-width: 636px;
-  font-weight: 400;
-  font-size: 24px;
+  max-width: 1059px;
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(18px, 5vw, 36px);
   letter-spacing: 0.1em;
   color: #120922;
 }
+.titleWrapper > h1 {
+  text-align: left;
+  font-size: clamp(35px, 5vw, var(--font-size-main));
+  font-family: var(--Roboto);
+  line-height: 1.6;
+  font-weight: var(--font-weight-big);
+  letter-spacing: 0.1em;
+  color: var(--main-color);
+  margin-bottom: 90px;
+}
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 
+.textWrapper > p {
+  max-width: 625px;
+  font-family: var(--Inter);
+  margin-bottom: 24px;
+  font-weight: var(--font-weight-secondary);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: var(--main-color);
+}
 @media (max-width: 765px) {
-  .logo {
-    max-width: 134px;
-  }
-  .logoWrapper {
-    height: 100%;
-    justify-content: flex-start;
+  .contentWrapper {
+    align-items: flex-start;
   }
   .textBlock {
     margin-left: 0;
@@ -79,14 +78,27 @@
   .textBlock p {
     max-width: 540px;
   }
-  .line {
-    max-width: 539px;
-    margin: 40px 0 40px 0;
+  .textBottom {
+    text-align: center;
+    max-width: 678px;
+  }
+  .textWrapper {
+    align-items: flex-start;
+  }
+  .textWrapper > p {
+    max-width: 795px;
   }
 }
 
 @media (max-width: 572px) {
-  .logo {
-    max-width: 185px;
+  .textBottom {
+    max-width: 438px;
+  }
+
+  .contentWrapper {
+    margin: 10px;
+  }
+  .textBottom {
+    margin-left: 30px;
   }
 }

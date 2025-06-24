@@ -1,8 +1,9 @@
 export type Button = {
-  style?: React.CSSProperties;
   onClick?: () => void;
   className?: string;
   addLineBreak?: boolean;
-  initialText: string;
+  initialText?: string;
   clickedText?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 };

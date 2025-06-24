@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface ICommercial_NonResidentialBuildings extends Document {
   id: Types.ObjectId;
@@ -14,7 +14,7 @@ const Commercial_NonResidentialBuildingsSchema: Schema =
   new Schema<ICommercial_NonResidentialBuildings>({
     realEstateObject: {
       type: Schema.Types.ObjectId,
-      ref: "RealEstateObjects",
+      ref: 'RealEstateObjects',
       required: true,
     },
     buildingType: {
@@ -37,7 +37,7 @@ const Commercial_NonResidentialBuildingsSchema: Schema =
 
 const Commercial_NonResidentialBuildingsModel =
   mongoose.model<ICommercial_NonResidentialBuildings>(
-    "Commercial_NonResidentialBuildingsModel",
-    Commercial_NonResidentialBuildingsSchema
+    'Commercial_NonResidentialBuildings',
+    Commercial_NonResidentialBuildingsSchema,
   );
 export default Commercial_NonResidentialBuildingsModel;

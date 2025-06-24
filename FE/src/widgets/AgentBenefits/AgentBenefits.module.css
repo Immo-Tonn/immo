@@ -1,0 +1,136 @@
+.whyAgentSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.wrapper {
+  margin: 0 auto;
+  padding: 44px 0 152px 0;
+}
+
+.whyAgentContentWithLine {
+  max-width: 600px;
+  padding-right: 90px;
+  border-right: 2px solid black;
+}
+
+.whyAgentH3 {
+  font-family: var(--Roboto);
+  font-weight: 700;
+  font-size: clamp(
+    var(--font-size-small),
+    3vw + 20px,
+    var(--font-size-secondary)
+  );
+  letter-spacing: 0.1em;
+  color: #000;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.whyAgentUl {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.whyAgentLi {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.whyAgentH4 {
+  font-family: var(--Roboto);
+  font-weight: --font-weight-big;
+  font-size: clamp(16px, 2vw + 14px, 20px);
+  letter-spacing: 0.1em;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.whyAgentP {
+  font-family: var(--Roboto);
+  font-weight: var(--font-weight-secondary);
+  font-size: 20px;
+  letter-spacing: 0.1em;
+}
+
+.immoTonnImageBackground {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.immoTonnImageBackground::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('@shared/assets/salessupport/immo-tonn-content.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.contentWrapper {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 70%;
+  padding-right: 45px;
+  z-index: 2;
+}
+
+.immoTonnOverlayText {
+  font-weight: --font-weight-big;
+  letter-spacing: 0.1em;
+  font-size: clamp(var(--font-size-small), 4vw, var(--font-size-main));
+  color: white;
+  font-family: var(--Roboto);
+  text-align: right;
+}
+
+@media (max-width: 765px) {
+  .immoTonnTextList {
+    border: none;
+  }
+  .immoTonnImageBackground {
+    height: 464px;
+  }
+  .immoTonnTextListItemWrapper {
+    text-align: left;
+  }
+  .whyAgentContentWithLine {
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .whyAgentH3 {
+    text-align: center;
+  }
+
+  .immoTonnImageBackground {
+    height: 349px;
+  }
+
+  .immoTonnOverlayText {
+    font-size: 20px;
+  }
+  .whyAgentUl {
+    padding: clamp(32px, 6vw, 65px);
+  }
+}
