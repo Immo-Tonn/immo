@@ -8,6 +8,7 @@ import {
   DragEvent,
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from '@features/utils/axiosConfig';
 import { ObjectType } from '@features/utils/types';
 import {
   createCompleteRealEstateObject,
@@ -17,6 +18,7 @@ import {
 } from '@features/utils/realEstateService';
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
+
 
 // Determine the type for objectData
 interface ObjectData {
@@ -43,7 +45,7 @@ const CreateObject = () => {
   const isEditMode = !!id; // create or edit
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string>('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]); // For existing images
@@ -324,36 +326,275 @@ const CreateObject = () => {
 
     setExistingImages(existingImages.filter((_, i) => i !== index));
   };
-
-  //Function for setting the main image among existing ones
-  const setMainExistingImage = async (index: number) => {
-    const newImages = [...existingImages];
-    const mainImage = newImages.splice(index, 1)[0];
-
-    // Check that the element was found
-    if (mainImage) {
-      newImages.unshift(mainImage);
-      setExistingImages(newImages);
-
-      // ADD: DB synchronization in edit mode
-      if (isEditMode && id) {
-        try {
-          console.log('Speichern die neue Reihenfolge der Bilder in der Datenbank:', newImages);
-          await updateImageOrder(id, newImages);
-          console.log('Порядок изображений успешно сохранен в БД');
-
-          // Optional: show success notification
-          // setSuccess('Main image updated');
-        } catch (error) {
-          console.error('Fehler beim Speichern der Bildreihenfolge:', error);
-          setError('Fehler beim Aktualisieren der Bildreihenfolge');
-
-          // Roll back changes to the UI when an error occurs
-          setExistingImages(existingImages);
-        }
-      }
+    const debugObjectState = async (objectId: string) => {
+    try {
+      console.log('🔍 Вызываем серверную отладку для объекта:', objectId);
+      const response = await axios.get(`/objects/debug/${objectId}`);
+      console.log('📊 Результат серверной отладки:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('❌ Ошибка при вызове серверной отладки:', error);
+      return null;
     }
   };
+
+    // Тестовая функция для проверки серверной отладки
+  const testDebugEndpoint = async () => {
+    if (!id) {
+      console.log('❌ ID объекта не найден');
+      return;
+    }
+    
+    console.log('🧪 Тестируем серверную отладку...');
+    try {
+      const response = await axios.get(`/objects/debug/${id}`);
+      console.log('✅ Серверная отладка работает:', response.data);
+    } catch (error) {
+      console.error('❌ Ошибка серверной отладки:', error);
+      console.error('❌ Response:', (error as any)?.response?.data);
+      console.error('❌ Status:', (error as any)?.response?.status);
+    }
+  };
+
+  // 4. useEffect ПОСЛЕ СУЩЕСТВУЮЩИХ useEffect:
+
+  // Автотест серверной отладки при загрузке страницы
+  useEffect(() => {
+    if (isEditMode && id) {
+      console.log('🧪 Автотест серверной отладки при загрузке страницы...');
+      testDebugEndpoint();
+    }
+  }, [isEditMode, id]);
+
+    //Function for setting the main image among existing ones
+// Окончательно исправленная функция setMainExistingImage:
+const setMainExistingImage = async (index: number): Promise<void> => {
+  console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
+  console.log('📋 Текущий порядок изображений:', existingImages);
+  
+  const newImages = [...existingImages];
+  const mainImage = newImages.splice(index, 1)[0];
+  
+  if (!mainImage) {
+    console.error('❌ Главное изображение не найдено по индексу:', index);
+    return;
+  }
+  
+  newImages.unshift(mainImage);
+  console.log('📋 Новый порядок изображений (локально):', newImages);
+  
+  if (isEditMode && id) {
+    try {
+      console.log('🔄 Режим редактирования, ID объекта:', id);
+      
+      // ОТЛАДКА ДО изменений
+      console.log('\n🔍 === СОСТОЯНИЕ ДО ИЗМЕНЕНИЙ ===');
+      await debugObjectState(id);
+      console.log('✅ Отладка ДО изменений завершена');
+      
+      console.log('🔄 Вызываем updateImageOrder...');
+      await updateImageOrder(id, newImages);
+      console.log('✅ updateImageOrder завершена');
+      
+      // КРИТИЧНО: Добавляем отладку здесь
+      console.log('🔍 ТОЧКА ПРОВЕРКИ 1: updateImageOrder выполнена, переходим к отладке ПОСЛЕ');
+      
+      // ОТЛАДКА ПОСЛЕ изменений
+      console.log('\n🔍 === СОСТОЯНИЕ ПОСЛЕ ИЗМЕНЕНИЙ ===');
+      console.log('🔍 ТОЧКА ПРОВЕРКИ 2: Начинаем отладку ПОСЛЕ изменений');
+      
+      const debugResult = await debugObjectState(id);
+      console.log('🔍 ТОЧКА ПРОВЕРКИ 3: debugObjectState завершен, результат:', debugResult);
+      
+      // Проверяем результат
+      if (debugResult?.orderMatch) {
+        console.log('✅ ТОЧКА ПРОВЕРКИ 4: orderMatch = true');
+        console.log('✅ Порядок изображений в БД обновлен корректно!');
+        setExistingImages(newImages);
+        setSuccess('Главное изображение обновлено');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        console.log('❌ ТОЧКА ПРОВЕРКИ 4: orderMatch = false или debugResult пустой');
+        console.log('❌ debugResult:', debugResult);
+        console.error('❌ Порядок изображений в БД НЕ соответствует ожидаемому!');
+        setError('Ошибка: порядок изображений не обновился в БД');
+        return;
+      }
+      
+      console.log('🔍 ТОЧКА ПРОВЕРКИ 5: Функция завершается успешно');
+      
+    } catch (error: unknown) {
+      console.error('❌ ОШИБКА в setMainExistingImage:', error);
+      console.error('❌ Стек ошибки:', error instanceof Error ? error.stack : 'No stack');
+      
+      // ОТЛАДКА ПРИ ОШИБКЕ
+      console.log('\n🔍 === СОСТОЯНИЕ ПРИ ОШИБКЕ ===');
+      try {
+        await debugObjectState(id);
+      } catch (debugError) {
+        console.error('❌ Ошибка даже в отладке при ошибке:', debugError);
+      }
+      
+      // Обработка ошибки
+      let errorMessage = 'Неизвестная ошибка';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
+      setError(`Ошибка при обновлении порядка изображений: ${errorMessage}`);
+      return;
+    }
+  } else {
+    console.log('📝 Режим создания - обновляем только локальное состояние');
+    setExistingImages(newImages);
+  }
+  
+  console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
+  // const setMainExistingImage = async (index: number): Promise<void> => {
+  //   console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
+  //   console.log('📋 Текущий порядок изображений:', existingImages);
+
+  //   const newImages = [...existingImages];
+  //   const mainImage = newImages.splice(index, 1)[0];
+    
+  //   if (!mainImage) {
+  //     console.error('❌ Главное изображение не найдено по индексу:', index);
+  //     return;
+  //   }
+    
+  //   newImages.unshift(mainImage);
+  //   console.log('📋 Новый порядок изображений (локально):', newImages);
+    
+  //   if (isEditMode && id) {
+  //     try {
+  //       // ОТЛАДКА ДО изменений
+  //       console.log('\n🔍 === СОСТОЯНИЕ ДО ИЗМЕНЕНИЙ ===');
+  //       await debugObjectState(id);
+        
+  //       console.log('🔄 Вызываем updateImageOrder...');
+  //       await updateImageOrder(id, newImages);
+  //       console.log('✅ updateImageOrder завершена');
+        
+  //       // ОТЛАДКА ПОСЛЕ изменений
+  //       console.log('\n🔍 === СОСТОЯНИЕ ПОСЛЕ ИЗМЕНЕНИЙ ===');
+  //       const debugResult = await debugObjectState(id);
+        
+  //       // Проверяем результат
+  //       if (debugResult?.orderMatch) {
+  //         console.log('✅ Порядок изображений в БД обновлен корректно!');
+  //         setExistingImages(newImages);
+  //         setSuccess('Главное изображение обновлено');
+  //         setTimeout(() => setSuccess(''), 3000);
+  //       } else {
+  //         console.error('❌ Порядок изображений в БД НЕ соответствует ожидаемому!');
+  //         setError('Ошибка: порядок изображений не обновился в БД');
+  //         return;
+  //       }
+        
+  //     } catch (error: unknown) {
+  //       console.error('❌ Ошибка при обновлении главного изображения:', error);
+        
+  //       // ОТЛАДКА ПРИ ОШИБКЕ
+  //       console.log('\n🔍 === СОСТОЯНИЕ ПРИ ОШИБКЕ ===');
+  //       await debugObjectState(id);
+        
+  //       // Обработка ошибки
+  //       let errorMessage = 'Неизвестная ошибка';
+  //       if (error instanceof Error) {
+  //         errorMessage = error.message;
+  //       }
+        
+  //       setError(`Ошибка при обновлении порядка изображений: ${errorMessage}`);
+  //       return;
+  //     }
+  //   } else {
+  //     console.log('📝 Режим создания - обновляем только локальное состояние');
+  //     setExistingImages(newImages);
+  //   }
+    
+  //   console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+//   //Function for setting the main image among existing ones
+// // Исправленная функция для установки главного изображения среди существующих
+// const setMainExistingImage = async (index: number) => {
+//   const newImages = [...existingImages];
+//   const mainImage = newImages.splice(index, 1)[0];
+  
+//   // Проверяем, что элемент был найден
+//   if (mainImage) {
+//     newImages.unshift(mainImage);
+    
+//     // ВАЖНО: Сначала обновляем БД, потом состояние
+//     if (isEditMode && id) {
+//       try {
+//         console.log('Speichern die neue Reihenfolge der Bilder in der Datenbank:', newImages);
+        
+//         // Обновляем порядок в БД
+//         await updateImageOrder(id, newImages);
+//         console.log('Порядок изображений успешно сохранен в БД');
+        
+//         // Только после успешного обновления БД обновляем состояние
+//         setExistingImages(newImages);
+        
+//         // Принудительно обновляем данные объекта
+//         const objectResponse = await axios.get(`/objects/${id}`);
+//         console.log('Обновленный объект:', objectResponse.data);
+        
+//         // Опционально: показать уведомление об успехе
+//         setSuccess('Главное изображение обновлено');
+        
+//         // Очищаем уведомление через 3 секунды
+//         setTimeout(() => setSuccess(''), 3000);
+        
+//       } catch (error) {
+//         console.error('Ошибка при сохранении порядка изображений:', error);
+//         setError('Ошибка при обновлении порядка изображений');
+        
+//         // НЕ обновляем состояние при ошибке - оставляем как было
+//         return;
+//       }
+//     } else {
+//       // В режиме создания просто обновляем локальное состояние
+//       setExistingImages(newImages);
+//     }
+//   }
+// };
+
+//////////////////////////////////////////////////////////////////////////////////
+
+  // const setMainExistingImage = async (index: number) => {
+  //   const newImages = [...existingImages];
+  //   const mainImage = newImages.splice(index, 1)[0];
+
+  //   // Check that the element was found
+  //   if (mainImage) {
+  //     newImages.unshift(mainImage);
+  //     setExistingImages(newImages);
+
+  //     // ADD: DB synchronization in edit mode
+  //     if (isEditMode && id) {
+  //       try {
+  //         console.log('Speichern die neue Reihenfolge der Bilder in der Datenbank:', newImages);
+  //         await updateImageOrder(id, newImages);
+  //         console.log('Порядок изображений успешно сохранен в БД');
+
+  //         // Optional: show success notification
+  //         // setSuccess('Main image updated');
+  //       } catch (error) {
+  //         console.error('Fehler beim Speichern der Bildreihenfolge:', error);
+  //         setError('Fehler beim Aktualisieren der Bildreihenfolge');
+
+  //         // Roll back changes to the UI when an error occurs
+  //         setExistingImages(existingImages);
+  //       }
+  //     }
+  //   }
+  // };
 
   // Function for setting the main image among new ones
   const setMainNewImage = (index: number) => {
@@ -445,9 +686,13 @@ const CreateObject = () => {
       }
 
       console.log('Operation completed successfully, objectId:', objectId);
-
-      setSuccess(true);
-
+      setSuccess(isEditMode ? 'Objekt erfolgreich aktualisiert!' : 'Objekt erfolgreich erstellt!');
+      // setSuccess(true);
+      {success && (
+        <div className={styles.successMessage}>
+          {success}
+        </div>
+)}
       // Going to the preview page
     setTimeout(() => {
       navigate(`/preview-object/${objectId}?action=${isEditMode ? 'updated' : 'created'}`);
@@ -465,6 +710,8 @@ const CreateObject = () => {
     setLoading(false);
   }
 };
+
+
 
   // Rendering form fields depending on the object type
   const renderSpecificFields = () => {

@@ -5,6 +5,7 @@ import {
   createObject,
   updateObject,
   deleteObject,
+  debugObjectState,
 } from "../controllers/realEstateObjectsController";
 import { protectObjectRoutes } from "../middleware/adminRouteMiddleware";
 
@@ -12,6 +13,8 @@ const router = Router();
 
 // Get all objects
 router.get("/", getAllObjects);
+
+router.get("/debug/:id", debugObjectState); // ДОБАВЬТЕ эту строку ПЕРЕД /:id
 
 // Get object by ID
 router.get("/:id", getObjectById);

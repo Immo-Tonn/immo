@@ -14,7 +14,7 @@ const RealEstate = () => {
   const listRef = useRef<HTMLUListElement | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  // Проверка авторизации администратора
+  // Checking admin authorization
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     setIsAdmin(!!token);
@@ -33,7 +33,7 @@ const RealEstate = () => {
     });
   }, [objectData]);
 
-  // Обработчик создания нового объекта (только для админа)
+  // New object creation handler (admin only)
   const handleCreateNew = () => {
     navigate('/create-object');
   };
@@ -43,10 +43,10 @@ const RealEstate = () => {
       <LoadingErrorHandler loading={loading} error={err} />
       {!loading && !err && (
         <section className={styles.container}>
-          {/* Заголовок страницы с кнопкой для админа */}
+          {/* Page header with button for Admin */}
           <div className={styles.pageHeader}>
-            {/* Статистика для админа */}
-            {/* {isAdmin && objectData && ( */}
+
+            {/* Counter of cards */}
               <div className={styles.statsSection}>
                 <div className={styles.statItem}>
                   <span className={styles.statNumber}>{objectData.length}</span>
@@ -55,9 +55,9 @@ const RealEstate = () => {
                   </span>
                 </div>
               </div>
-            {/* )} */}
+
             <h1 className={styles.title}>Immobilienangebote</h1>
-            {/* Кнопка создания объекта для админа */}
+
             {isAdmin && (
               <button className={styles.createButton} onClick={handleCreateNew}>
                 + Objekt erstellen
@@ -65,7 +65,7 @@ const RealEstate = () => {
             )}
           </div>
 
-          {/* Сетка объектов или сообщение об отсутствии */}
+          {/* Object grid or no-data message */}
           {objectData && objectData.length > 0 ? (
             <ul className={styles.cardList} ref={listRef}>
               {objectData.map((obj, i) => (

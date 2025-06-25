@@ -1,131 +1,301 @@
-/* ---------- базовая обёртка ---------- */
 .headerWrapper {
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   color: white;
   font-family: var(--Inter);
 }
 
-/* ---------- шапка ---------- */
 .headerTop {
   max-width: 1200px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
   margin: 0 auto;
-  padding-inline: 16px;
 }
 
-/* ---------- логотип ---------- */
 .logo {
   max-height: 136px;
-  height: auto;
-  width: auto;
 }
 
-/* ---------- навигация (desktop) ---------- */
+/* Контейнер для навигации и админ-меню */
+.navContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: end;
+}
+
 .nav {
   display: flex;
   gap: 30px;
   align-items: flex-end;
 }
 
+/* Админ-кнопка для десктопа (внутри nav) */
+.adminDesktop {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Админ-кнопка для планшета (под nav) */
+.adminTablet {
+  display: none;
+  margin-top: 10px;
+  align-self: flex-end;
+}
+
+.listItemText {
+  display: flex;
+  justify-content: center;
+  color: white !important;
+  margin: 0;
+  align-items: center;
+  font-size: clamp(16px, 3vw, 20px) !important;
+}
+
+.headerContacts {
+  margin: 5px 10px 0 0;
+  align-items: center;
+  font-size: clamp(10px, 2vw, 14px);
+  text-align: left;
+  list-style: none;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.headerContacts > li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.contactIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+}
+
+.contactIcon > img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.contactTextWrapper > span {
+  margin-top: 5px;
+  display: block;
+}
+
+.contactText {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  transition:
+    transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 200ms;
+}
+
 .nav a {
   font-weight: var(--font-weight-secondary);
-  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-small));
+  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
   text-align: center;
   color: #d9d9d9;
   margin-bottom: 16px;
   text-decoration: none;
 }
 
-.nav a.active {
-  color: #ffffff;
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background-color: white;
+  transition: width 300ms ease;
 }
 
-/* ---------- контакты (desktop) ---------- */
-.contact {
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: right;
+.nav a:hover::after {
+  width: 100%;
 }
 
-.headerContacts {
-  margin-top: 5px;
-  list-style: none;
-  margin-bottom: 20px;
+.contactText:hover::after {
+  width: 100%;
 }
 
-.headerContacts li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.contactIcon img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-}
-
-.contactText {
-  text-decoration: none;
-  color: white;
-  line-height: 1.4;
-  font-size: 14px;
-}
-
-/* ---------- бургер‑кнопка ---------- */
 .burger {
   display: none;
+  color: white;
 }
 
-/* ---------- drawer (mobile) ---------- */
 .drawerHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-inline: 8px 16px;
-  padding-block: 4px;
+}
+
+.activeLink {
+  color: white !important;
+  font-weight: bold;
+}
+
+.nav a {
+  position: relative;
+}
+
+.nav a.activeLink::after {
+  width: 100%;
 }
 
 .drawerLogo {
   height: 114px;
 }
 
-/* блок‑обёртка для выпадашки админа в mobile */
-.mobileAdminBlock {
-  padding: 8px 16px 24px;
+.locationIcon {
+  width: 26px;
+  height: 26px;
 }
 
-/* ---------- адаптив ---------- */
+.headerWrapper .headerTop .burgerButton {
+  display: none;
+  color: white;
+}
+
+.drawerHeader .drawerCloseButton {
+  color: white;
+}
+
+.drawerPaper {
+  background-color: #1c1829 !important;
+}
+
+.drawerPaper a:hover {
+  transform: scale(1);
+}
+
+.drawerList {
+  display: flex !important;
+  padding: 0 !important;
+}
+
+.drawerListItem {
+  padding: 0 !important;
+}
+
+/* Стили для админ-меню в drawer */
+.drawerAdminContainer {
+  padding: 16px;
+  border-top: 1px solid #333;
+  margin-top: 10px;
+}
+
+/* Планшетный размер (765px и менее) */
 @media (max-width: 765px) {
+  .logo {
+    max-height: 114px;
+    grid-row: 1 / span 2;
+    grid-column: 1;
+    margin-right: 15px;
+  }
+
+  .navContainer {
+    grid-row: 2;
+    grid-column: 2 / 4;
+    align-items: flex-start;
+    width: 100%;
+  }
+
   .nav {
-    gap: 10px;
+    gap: 20px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* Скрываем админ-кнопку в nav для планшета */
+  .adminDesktop {
+    display: none;
+  }
+
+  /* Показываем админ-кнопку под nav для планшета */
+  .adminTablet {
+    display: block;
+    margin-top: 5px;
+    align-self: flex-start;
+  }
+
+  .contact {
+    grid-row: 1;
+    grid-column: 3;
+    margin-right: 20px;
+  }
+
+  .contactText {
+    font-size: 10px;
+  }
+
+  .nav a {
+    font-size: clamp(12px, 8vw, 20px);
+    margin-bottom: 8px;
+  }
+
+  .headerTop {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+  }
+
+  .headerContacts {
+    margin-bottom: 0;
+  }
+
+  .headerContacts li {
+    margin-bottom: 0;
   }
 }
 
+/* Мобильный размер (576px и менее) */
 @media (max-width: 576px) {
+  .headerTop {
+    display: flex;
+    align-items: center;
+  }
+
+  .navContainer {
+    display: none;
+  }
+
   .contact {
     display: none;
   }
+
+  .burgerButton {
+    display: block !important;
+    margin-bottom: 16px;
+  }
+
   .nav {
     display: none;
   }
+
+  .adminDesktop {
+    display: none;
+  }
+
+  .adminTablet {
+    display: none;
+  }
+
   .burger {
     display: block;
-    color: white;
     margin-bottom: 16px;
   }
-  .headerTop {
-    align-items: center;
-  }
+
   .logo {
     max-height: 100px;
   }
-  /* admin dropdown подстраиваемся под mobile */
-  .adminDropdownContent {
-    position: static;
-    width: 100%;
-    margin-top: 10px;
+
+  .headerWrapper {
+    padding: 0;
   }
 }

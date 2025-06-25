@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import compression from 'vite-plugin-compression';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), compression()],
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, 'src/shared'),

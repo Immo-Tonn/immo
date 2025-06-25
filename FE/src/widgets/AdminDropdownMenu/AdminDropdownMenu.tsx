@@ -47,8 +47,8 @@ const AdminDropdownMenu: React.FC<AdminDropdownMenuProps> = ({ onLogout }) => {
       });
 
       // После успешного удаления
-      sessionStorage.removeItem('adminToken');
-      sessionStorage.removeItem('adminInfo');
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminInfo');
       alert('Adminregistrierung entfernt');
       navigate('/add-property');
     } catch (error: any) {

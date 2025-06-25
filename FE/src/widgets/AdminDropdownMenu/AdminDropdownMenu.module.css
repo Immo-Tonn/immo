@@ -10,7 +10,7 @@
   margin-bottom: 10px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 2vw;
   width: auto;
   margin-top: 0;
 }
@@ -50,11 +50,58 @@
   background-color: #14374e;
 }
 
-/* Адаптивные стили для мобильных устройств */
-@media (max-width: 572px) {
+/* Адаптивные стили для планшета */
+@media (max-width: 765px) {
+  .adminButton {
+    font-size: 14px;
+    padding: 4px 12px;
+    margin-bottom: 5px;
+  }
+
+  .adminDropdownContent {
+    right: -20px;
+    min-width: 180px;
+  }
+
+  .adminDropdownItem {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+}
+
+/* Стили для мобильного drawer */
+@media (max-width: 576px) {
+  .adminDropdown {
+    width: 100%;
+  }
+
+  .adminButton {
+    font-size: 16px;
+    padding: 8px 16px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
   .adminDropdownContent {
     position: static;
+    right: auto;
+    top: auto;
+    margin-top: 0;
     width: 100%;
-    margin-top: 10px;
+    min-width: auto;
+    box-shadow: none;
+    background-color: #14374e;
+    border-radius: 0;
+    opacity: 1;
+  }
+
+  .adminDropdownItem {
+    font-size: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1c1829;
+  }
+
+  .adminDropdownItem:last-child {
+    border-bottom: none;
   }
 }
