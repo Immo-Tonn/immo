@@ -9,13 +9,9 @@ interface PropertyMapProps {
 
 const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
   const { district, zip, city, country } = address;
-
-  const [polygonCoords, setPolygonCoords] = useState<LatLngTuple[][] | null>(
-    null,
-  );
+  const [polygonCoords, setPolygonCoords] = useState<LatLngTuple[][] | null>(null,);
   const [center, setCenter] = useState<LatLngTuple | null>(null);
   const [error, setError] = useState(false);
-
   const [query, setQuery] = useState(`${district}, ${zip} ${city}, ${country}`);
 
   useEffect(() => {

@@ -90,7 +90,7 @@ export const usePropertysData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Загружаем список всех объектов');
+        console.log('Loading list of all objects');
         
         const objectRes = await axios.get<RealEstateObject[]>(
           `http://localhost:3000/api/objects/`,

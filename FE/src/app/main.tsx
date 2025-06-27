@@ -5,6 +5,7 @@ import '@shared/styles/global.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+     <App />
   </React.StrictMode>,
+
 );

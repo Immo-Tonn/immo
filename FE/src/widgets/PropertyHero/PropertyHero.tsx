@@ -11,7 +11,6 @@ import {
   Video,
 } from '@shared/types/propertyTypes';
 import { fadeInOnScroll } from '@shared/anim/animations';
-
 interface PropertyHeroProps {
   object: RealEstateObject;
   images?: (Image | undefined)[];
@@ -141,6 +140,18 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         {title}
       </h1>
 
+     {/* {object.status && (     
+      <div className={styles.status}>
+        <span className={styles.label}>Objectstatus:</span>
+      <div className={styles.statusBanner}>       
+        {object.status === 'active' && 'AKTIV'}
+        {object.status === 'sold' && 'VERKAUFT'}
+        {object.status === 'reserved' && 'RESERVIERT'}
+        {object.status === 'archived' && 'ARCHIVIERT'}
+      </div>
+       </div>
+     )} */}
+
       {isMobile ? (
         currentMedia ? (
           <div className={styles.carouselContainer}>
@@ -217,7 +228,11 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             )}
           </div>
 
-          <div className={styles.sideImages} ref={el => {refs.current[4] = el}}>
+          <div className={styles.sideImages} 
+          ref={el => {
+            refs.current[4] = el
+            }}
+            >
             {previewMedia.slice(1, 3).map((item, idx) => {
               const actualIndex = idx + 1;
               const isLastPreview = idx === 1;

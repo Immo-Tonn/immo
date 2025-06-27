@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
+
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  // Обработчик сброса пароля
+
+  // Password Reset Handler
   const handleResetPassword = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
@@ -16,7 +18,7 @@ const ForgotPassword: React.FC = () => {
       return;
     }
 
-    // Проверка формата email
+    // Checking email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email');
@@ -36,7 +38,7 @@ const ForgotPassword: React.FC = () => {
       };
       let displayMessage = responseData.message;
 
-      // В режиме разработки показываем временный пароль, если он есть
+      // In development mode, show the temporary password, if there is one
       if (responseData.tempPassword) {
         displayMessage += ` (Temporary password: ${responseData.tempPassword})`;
       }

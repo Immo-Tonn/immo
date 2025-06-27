@@ -1,12 +1,11 @@
-// immo/FE/src/pages/CreateMainObject/CreateObject/ObjectPreview.tsx
-// Импорт и использование модального окна в ObjectPreview.tsx
+// immo/FE/src/pages/AdminObject/ObjectPrewiew/ObjectPrewiew.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
 import styles from './ObjectPrewiew.module.css';
 import { ObjectType } from '@features/utils/types';
 import { formatObjectNumber } from '@shared/objectNumberUtils';
-import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal'; // ИСПРАВЛЕНО: правильный импорт
+import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal';
 
 const ObjectPreview = () => {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ const ObjectPreview = () => {
   const [images, setImages] = useState<any[]>([]);
   const [videos, setVideos] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0); // ИСПРАВЛЕНО: добавлен индекс
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   const getSuccessMessage = () => {
     if (action === 'updated') {
@@ -31,19 +30,19 @@ const ObjectPreview = () => {
     return '';
   }
 
-  // Функция для открытия модального окна с изображением
+  // Function to open a modal window
   const openImageModal = (index: number) => { 
     setCurrentImageIndex(index);
     setIsModalOpen(true);
   };
 
-  // Функция для закрытия модального окна
+  // Function to close a modal window with an image
   const closeImageModal = () => {
     setIsModalOpen(false);
     setCurrentImageIndex(0);
   };
 
-  // Функции навигации в модальном окне
+  // Navigation functions in a modal window
   const handlePrev = () => {
     const allMedia = [...images, ...videos];
     setCurrentImageIndex(prev => 
@@ -62,7 +61,7 @@ const ObjectPreview = () => {
     setCurrentImageIndex(index);
   };
 
-  // Загрузка данных объекта
+  // Loading object data
   useEffect(() => {
     const fetchObjectData = async () => {
       if (!id) {
@@ -75,13 +74,13 @@ const ObjectPreview = () => {
         setLoading(true);
         console.log('Загружаем данные для объекта с ID:', id);       
         
-        // основные данные объекта
+        // Main object data
         const objectResponse = await axios.get(`/objects/${id}`);
         const mainObjectData = objectResponse.data;
         setObjectData(mainObjectData);
         console.log('Основные данные объекта загружены:', mainObjectData);
 
-        // изображения объекта
+        // images of the object
         try {
           console.log('Загружаем изображения для объекта:', id);
           const imagesResponse = await axios.get(`/images/by-object?objectId=${id}`);
@@ -97,12 +96,12 @@ const ObjectPreview = () => {
           setImages([]);
         }
 
-        // видео объекта
+        // Videos of the object
         try {
           console.log('Загружаем видео для объекта:', id);
           const videosResponse = await axios.get(`/videos/by-object?objectId=${id}`);
           if (videosResponse.data && Array.isArray(videosResponse.data)) {
-            // Преобразуем видео в формат, совместимый с галереей
+            // Converting Video to Gallery Compatible Format
             const processedVideos = videosResponse.data.map(video => ({
               ...video,
               url: `https://iframe.mediadelivery.net/embed/430278/${video.videoId}`, // iframe URL
@@ -119,7 +118,7 @@ const ObjectPreview = () => {
           setVideos([]);
         }
 
-        // специфические данные
+        // specific data
         try {
           console.log('Пытаемся загрузить специфические данные для типа:', mainObjectData.type);
           let specificEndpoint = '';
@@ -213,9 +212,9 @@ const ObjectPreview = () => {
     fetchObjectData();
   }, [id]);
 
-  // Обработчик подтверждения - создание карточки на странице Immobilien
+  // Confirmation handler - creating a card on the Immobilien page
   const handleConfirm = () => {
-    // Сохраняем флаг о том, что объект подтвержден (для отображения на странице Immobilien)
+    // save the flag that the object has been confirmed (for display on the Immobilien page)
     if (objectData && objectData._id) {
       const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
       if (!confirmedObjects.includes(objectData._id)) {
@@ -226,12 +225,12 @@ const ObjectPreview = () => {
     navigate('/immobilien');
   };
 
-  // Обработчик редактирования
+  // Edit handler
   const handleEdit = () => {
     navigate(`/edit-object/${id}`);
   };
 
-  // Отображение специфических данных в зависимости от типа объекта
+  // Display specific data depending on the object type
   const renderSpecificData = () => {
     if (!specificData) {
       return (
@@ -446,10 +445,10 @@ const ObjectPreview = () => {
     return <div className={styles.error}>Objekt nicht gefunden</div>;
   }
 
-  // Получаем номер объекта
+  // get the object number
   const objectNumber = formatObjectNumber(objectData._id);
 
-  // Объединяем изображения и видео для галереи
+  // Combine images and videos for a gallery
   const allMedia = [...images, ...videos];
 
   return (
@@ -462,7 +461,7 @@ const ObjectPreview = () => {
       </div>
    )}   
 
-      {/* Номер объекта */}
+      {/* object number */}
       <div className={styles.objectNumberSection}>
         <div className={styles.objectNumber}>
           <span className={styles.objectNumberLabel}>Objektnummer::</span>
@@ -535,6 +534,10 @@ const ObjectPreview = () => {
             <span className={styles.dataLabel}>Preis:</span>
             <span className={styles.dataValue}>{objectData.price.toLocaleString()} €</span>
           </div>
+          {/* <div className={styles.dataItem}>
+            <span className={styles.dataLabel}>Objektstatus:</span>
+            <span className={styles.dataValue}>{objectData.status}</span>
+          </div> */}
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Lage:</span>
             <span className={styles.dataValue}>{objectData.location}</span>
@@ -568,7 +571,7 @@ const ObjectPreview = () => {
         )}
       </div>
 
-      {/* Специфические данные объекта */}
+      {/* Object specific data */}
       {renderSpecificData()}
 
       <div className={styles.actionButtons}>

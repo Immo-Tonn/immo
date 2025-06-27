@@ -2,7 +2,7 @@
 
 import { Request, Response } from 'express';
 import RealEstateObjectsModel from '../models/RealEstateObjectsModel';
-import ImagesModel from '../models/ImagesModel'; // ДОБАВЛЕННЫЙ ИМПОРТ
+import ImagesModel from '../models/ImagesModel';
 
 export const getAllObjects = async (req: Request, res: Response) => {
   try {

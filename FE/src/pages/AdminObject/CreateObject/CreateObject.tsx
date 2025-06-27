@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
-import { ObjectType } from '@features/utils/types';
+import { ObjectType} from '@features/utils/types';
 import {
   createCompleteRealEstateObject,
   updateCompleteRealEstateObject,
@@ -18,11 +18,12 @@ import {
 } from '@features/utils/realEstateService';
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
-
+// import Button from '@shared/ui/Button/Button';
 
 // Determine the type for objectData
 interface ObjectData {
   type: ObjectType;
+  // status: ObjectStatus;
   title: string;
   description: string;
   location: string;
@@ -72,6 +73,7 @@ const CreateObject = () => {
       houseNumber: '',
     },
     price: '',
+    // status: ObjectStatus.ACTIVE, // Добавляем значение по умолчанию
   });
 
   // Status for specific data depending on the type
@@ -141,6 +143,7 @@ const CreateObject = () => {
           // Filling in the main data
           setObjectData({
             type: loadedObjectData.type,
+            // status: loadedObjectData.status || ObjectStatus.ACTIVE,
             title: loadedObjectData.title,
             description: loadedObjectData.description,
             location: loadedObjectData.location,
@@ -155,6 +158,7 @@ const CreateObject = () => {
               houseNumber: loadedObjectData.address.houseNumber || '',
             },
             price: loadedObjectData.price.toString(),
+            
           });
 
           // Filling in specific data
@@ -367,7 +371,6 @@ const CreateObject = () => {
   }, [isEditMode, id]);
 
     //Function for setting the main image among existing ones
-// Окончательно исправленная функция setMainExistingImage:
 const setMainExistingImage = async (index: number): Promise<void> => {
   console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
   console.log('📋 Текущий порядок изображений:', existingImages);
@@ -452,71 +455,6 @@ const setMainExistingImage = async (index: number): Promise<void> => {
   console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
 };
 
-//////////////////////////////////////////////////////////////////////////////////////////
-  // const setMainExistingImage = async (index: number): Promise<void> => {
-  //   console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
-  //   console.log('📋 Текущий порядок изображений:', existingImages);
-
-  //   const newImages = [...existingImages];
-  //   const mainImage = newImages.splice(index, 1)[0];
-    
-  //   if (!mainImage) {
-  //     console.error('❌ Главное изображение не найдено по индексу:', index);
-  //     return;
-  //   }
-    
-  //   newImages.unshift(mainImage);
-  //   console.log('📋 Новый порядок изображений (локально):', newImages);
-    
-  //   if (isEditMode && id) {
-  //     try {
-  //       // ОТЛАДКА ДО изменений
-  //       console.log('\n🔍 === СОСТОЯНИЕ ДО ИЗМЕНЕНИЙ ===');
-  //       await debugObjectState(id);
-        
-  //       console.log('🔄 Вызываем updateImageOrder...');
-  //       await updateImageOrder(id, newImages);
-  //       console.log('✅ updateImageOrder завершена');
-        
-  //       // ОТЛАДКА ПОСЛЕ изменений
-  //       console.log('\n🔍 === СОСТОЯНИЕ ПОСЛЕ ИЗМЕНЕНИЙ ===');
-  //       const debugResult = await debugObjectState(id);
-        
-  //       // Проверяем результат
-  //       if (debugResult?.orderMatch) {
-  //         console.log('✅ Порядок изображений в БД обновлен корректно!');
-  //         setExistingImages(newImages);
-  //         setSuccess('Главное изображение обновлено');
-  //         setTimeout(() => setSuccess(''), 3000);
-  //       } else {
-  //         console.error('❌ Порядок изображений в БД НЕ соответствует ожидаемому!');
-  //         setError('Ошибка: порядок изображений не обновился в БД');
-  //         return;
-  //       }
-        
-  //     } catch (error: unknown) {
-  //       console.error('❌ Ошибка при обновлении главного изображения:', error);
-        
-  //       // ОТЛАДКА ПРИ ОШИБКЕ
-  //       console.log('\n🔍 === СОСТОЯНИЕ ПРИ ОШИБКЕ ===');
-  //       await debugObjectState(id);
-        
-  //       // Обработка ошибки
-  //       let errorMessage = 'Неизвестная ошибка';
-  //       if (error instanceof Error) {
-  //         errorMessage = error.message;
-  //       }
-        
-  //       setError(`Ошибка при обновлении порядка изображений: ${errorMessage}`);
-  //       return;
-  //     }
-  //   } else {
-  //     console.log('📝 Режим создания - обновляем только локальное состояние');
-  //     setExistingImages(newImages);
-  //   }
-    
-  //   console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
-
 ////////////////////////////////////////////////////////////////////////////////////////
 
 //   //Function for setting the main image among existing ones
@@ -596,7 +534,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
   //   }
   // };
 
-  // Function for setting the main image among new ones
+    // Function for setting the main image among new ones
   const setMainNewImage = (index: number) => {
     const newFiles = [...selectedFiles];
     const newPreviews = [...previews];
@@ -711,8 +649,6 @@ const setMainExistingImage = async (index: number): Promise<void> => {
   }
 };
 
-
-
   // Rendering form fields depending on the object type
   const renderSpecificFields = () => {
     switch (objectData.type) {
@@ -817,6 +753,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
                 />
               </div>
             </div>
+
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="yearBuilt" className={styles.formLabel}>
@@ -918,7 +855,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
                 name="type"
                 value={specificData.type || ''}
                 onChange={handleSpecificChange}
-                placeholder="Например, коттедж, дуплекс, таунхаус"
+                placeholder="Zum Beispiel ein Ferienhaus, ein Doppelhaus, ein Stadthaus"
                 required
                 className={styles.formInput}
               />
@@ -1301,6 +1238,24 @@ const setMainExistingImage = async (index: number): Promise<void> => {
             </option>
           </select>
         </div>
+
+        {/* <div className={styles.formGroup}>
+          <label htmlFor="status" className={styles.formLabel}>
+            Objectstatus
+          </label>
+          <select
+            id="status"
+            name="status"
+            value={objectData.status}
+            onChange={handleObjectChange}
+            className={styles.formSelect}
+          >
+            <option value={ObjectStatus.ACTIVE}>aktiv</option>
+            <option value={ObjectStatus.SOLD}>verkauft</option>
+            <option value={ObjectStatus.ARCHIVED}>archiviert</option>
+            <option value={ObjectStatus.RESERVED}>reserviert</option>
+          </select>
+        </div> */}
 
         <div className={styles.formGroup}>
           <label htmlFor="title" className={styles.formLabel}>

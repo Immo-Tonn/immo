@@ -17,18 +17,18 @@ const PropertyPage: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   
-  // Проверка авторизации администратора
+  // Checking admin authorization
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     setIsAdmin(!!token);
   }, []);
 
-    // Обработчик редактирования (только для админа)
+    // Edit handler (admin only)
   const handleEdit = () => {
     navigate(`/edit-object/${id}`);
   };
 
-  // Функция принудительного обновления данных
+  // Forced data refresh function
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
@@ -41,7 +41,7 @@ const PropertyPage: React.FC = () => {
     }
   };
 
-    // Обработчик удаления (только для админа)
+    // Delete handler (admin only)
   const handleDelete = async () => {
     if (!window.confirm('Wirklich löschen? Diese Aktion ist unwiderruflich.')) {
       return;
@@ -50,7 +50,7 @@ const PropertyPage: React.FC = () => {
     try {
       await axios.delete(`/objects/${id}`);
       
-      // Удаляем объект из подтвержденных
+      // delete the object from confirmed
       const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
       const updatedConfirmed = confirmedObjects.filter((objId: string) => objId !== id);
       sessionStorage.setItem('confirmedObjects', JSON.stringify(updatedConfirmed));
@@ -80,14 +80,6 @@ const PropertyPage: React.FC = () => {
           <button className={styles.deleteButton} onClick={handleDelete}>
             Löschen
           </button>
-          {/* Data refresh button
-          <button 
-            className={styles.refreshButton} 
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-          >
-            {isRefreshing ? 'Aktualisieren...' : '🔄 Daten aktualisieren'}
-          </button> */}
         </div>
       )}
 

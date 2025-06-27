@@ -50,33 +50,33 @@ const ChangePassword: React.FC = () => {
     return null;
   };
 
-  // Обработчик смены пароля
+  // Password change handler
   const handleChangePassword = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
-    // Сбрасываем предыдущие сообщения
+    // Resett previous messages
     setError('');
     setSuccess('');
 
-    // Проверка заполнения всех полей
+    // Checking that all fields are filled in
     if (!currentPassword || !newPassword || !confirmPassword) {
       setError('Please fill in all fields');
       return;
     }
 
-    // Проверка совпадения паролей
+    // Checking password matches
     if (newPassword !== confirmPassword) {
       setError('New password and confirmation do not match');
       return;
     }
 
-    // Проверка, что новый пароль отличается от текущего
+    // Checking that the new password is different from the current one
     if (newPassword === currentPassword) {
       setError('The new password must be different from the current one.');
       return;
     }
 
-    // Проверка сложности пароля
+    // Checking password complexity
     const passwordError = validatePassword(newPassword);
     if (passwordError) {
       setError(passwordError);
@@ -86,25 +86,24 @@ const ChangePassword: React.FC = () => {
     try {
       setLoading(true);
 
-      // Получаем токен из 
+      // get a token from 
       const token = sessionStorage.getItem('adminToken');
 
-      // Отправляем запрос на смену пароля
+      // send a request to change the password
       await axios.put(
         '/auth/change-password',
         { currentPassword, newPassword, confirmPassword },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      // Успешная смена пароля
       setSuccess('Password successfully changed');
 
-      // Очищаем поля формы
+      // Clearing form fields
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
 
-      // Через 2 секунды перенаправляем на главную страницу
+      // After 2 seconds redirect in 2 seconds to the main page
       setTimeout(() => {
         navigate('/immobilien');
       }, 2000);
@@ -353,7 +352,7 @@ const ChangePassword: React.FC = () => {
               flex: '1',
             }}
           >
-            {loading ? 'Сохранение...' : 'Сменить пароль'}
+            {loading ? 'Saving...' : 'Change password'}
           </button>
 
           <Link
