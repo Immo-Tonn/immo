@@ -278,7 +278,7 @@ const PrivacyPolicy = () => {
         ausdrückliche Einwilligungen oder gesetzlich erforderliche
         Übermittlungen. Informationen zu Drittlandtransfers und geltenden
         Angemessenheitsbeschlüssen können Sie dem Informationsangebot der
-        EU-Kommission entnehmen:
+        EU-Kommission entnehmen:{' '}
         <a
           href="https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection_en?prefLang=de"
           target="_blank"
@@ -877,7 +877,7 @@ const PrivacyPolicy = () => {
           das Internet verbundener Server, schneller und sicherer ausgeliefert
           werden können; Dienstanbieter: BUNNYWAY d.o.o., Cesta komandanta
           Staneta 4A, 1215 Medvode, Slowenien; Rechtsgrundlagen: Berechtigte
-          Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
+          Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:{' '}
           <a href="https://bunny.net" target="_blank" rel="noopener noreferrer">
             https://bunny.net
           </a>
@@ -979,7 +979,7 @@ const PrivacyPolicy = () => {
           insbesondere für den Einsatz von Cookies und ähnlichen Technologien
           zur Speicherung, Auslesen und Verarbeitung von Informationen auf
           Endgeräten der Nutzer sowie deren Verarbeitung; Dienstanbieter:
-          Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:
+          Usercentrics A/S, Havnegade 39, 1058 Kopenhagen, Dänemark; Website:{' '}
           <a
             href="https://www.cookiebot.com/de"
             target="_blank"

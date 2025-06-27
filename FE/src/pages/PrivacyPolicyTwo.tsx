@@ -340,7 +340,7 @@ const PrivacyPolicyTwo = () => {
           durchgeführt, bevor der Verkehr zur Verarbeitung an Analytics-Server
           weitergeleitet wird; Dienstanbieter: Google Ireland Limited, Gordon
           House, Barrow Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung
-          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:
+          (Art. 6 Abs. 1 S. 1 lit. a) DSGVO); Website:{' '}
           <a
             href="https://marketingplatform.google.com/intl/de/about/analytics/"
             target="_blank"
@@ -373,7 +373,7 @@ const PrivacyPolicyTwo = () => {
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms
-          </a>
+          </a>{' '}
           ), Data Privacy Framework (DPF) Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms"
@@ -381,7 +381,7 @@ const PrivacyPolicyTwo = () => {
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms
-          </a>
+          </a>{' '}
           ); Widerspruchsmöglichkeit (Opt-Out): Opt-Out-Plugin:{' '}
           <a
             href="https://tools.google.com/dlpage/gaoptout?hl=de"
@@ -431,7 +431,7 @@ const PrivacyPolicyTwo = () => {
           Onlineangebot dynamisch und abhängig von der Nutzerauswahl angepasst
           werden; Dienstanbieter: Google Ireland Limited, Gordon House, Barrow
           Street, Dublin 4, Irland; Rechtsgrundlagen: Einwilligung (Art. 6 Abs.
-          1 S. 1 lit. a) DSGVO); Website:
+          1 S. 1 lit. a) DSGVO); Website:{' '}
           <a
             href="https://support.google.com/analytics/answer/9976101?hl=de"
             target="_blank"
@@ -501,22 +501,22 @@ const PrivacyPolicyTwo = () => {
             https://business.safety.google/adsprocessorterms/
           </a>
           ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln (
+          Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms/"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms/
-          </a>
-          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
+          </a>{' '}
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms/"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms/
-          </a>
+          </a>{' '}
           ). Weitere Informationen:{' '}
           <a
             href="https://business.safety.google/adsservices/"
@@ -573,22 +573,22 @@ const PrivacyPolicyTwo = () => {
             https://business.safety.google/adsprocessorterms
           </a>
           ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln (
+          Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms
-          </a>
-          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
+          </a>{' '}
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms
-          </a>
+          </a>{' '}
           ). Weitere Informationen:{' '}
           <a
             href="https://business.safety.google/adsservices/"
@@ -674,7 +674,7 @@ const PrivacyPolicyTwo = () => {
             rel="noopener noreferrer"
           >
             https://support.google.com/analytics/answer/12017362
-          </a>
+          </a>{' '}
           ).
         </li>
         <li>
@@ -724,22 +724,22 @@ const PrivacyPolicyTwo = () => {
             https://business.safety.google/adsprocessorterms
           </a>
           . Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln (
+          Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms
-          </a>
-          ), Data Privacy Framework (DPF) Standardvertragsklauseln (
+          </a>{' '}
+          ), Data Privacy Framework (DPF) Standardvertragsklauseln ({' '}
           <a
             href="https://business.safety.google/adsprocessorterms"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://business.safety.google/adsprocessorterms
-          </a>
+          </a>{' '}
           ).
         </li>
         <li>
@@ -830,7 +830,6 @@ const PrivacyPolicyTwo = () => {
         die Messung ihrer Effektivität fallen können.{' '}
       </p>
       <p>
-        {' '}
         Zu diesen Zwecken werden sogenannte Nutzerprofile angelegt und in einer
         Datei (der sogenannte „Cookie") gespeichert oder ähnliche Verfahren
         genutzt, mittels derer die für die Darstellung der vorgenannten Inhalte
@@ -870,10 +869,9 @@ const PrivacyPolicyTwo = () => {
         Netzwerk die Nutzerprofile mit den vorgenannten Angaben verbindet. Wir
         bitten darum, zu beachten, dass Nutzer mit den Anbietern zusätzliche
         Abreden treffen können, etwa durch Einwilligung im Rahmen der
-        Registrierung.{' '}
+        Registrierung.
       </p>
       <p>
-        {' '}
         Wir erhalten grundsätzlich nur Zugang zu zusammengefassten Informationen
         über den Erfolg unserer Werbeanzeigen. Jedoch können wir im Rahmen
         sogenannter Konversionsmessungen prüfen, welche unserer

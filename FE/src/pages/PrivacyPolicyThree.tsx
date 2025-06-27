@@ -304,14 +304,14 @@ const PrivacyPolicyThree = () => {
             https://www.linkedin.com/legal/privacy-policy
           </a>
           . Wir haben mit LinkedIn Irland eine spezielle Vereinbarung
-          geschlossen ( „Page Insights Joint Controller Addendum“ (
+          geschlossen ( „Page Insights Joint Controller Addendum“ ({' '}
           <a
             href="https://legal.linkedin.com/pages-joint-controller-addendum"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://legal.linkedin.com/pages-joint-controller-addendum
-          </a>
+          </a>{' '}
           ), in der insbesondere geregelt wird, welche Sicherheitsmaßnahmen
           LinkedIn beachten muss und in der LinkedIn sich bereit erklärt hat,
           die Rechte der Betroffenen zu erfüllen (d. h. Nutzer können z. B.
@@ -326,7 +326,7 @@ const PrivacyPolicyThree = () => {
           was die Übermittlung der Daten an die Muttergesellschaft LinkedIn
           Corporation in den USA betrifft; Dienstanbieter: LinkedIn Ireland
           Unlimited Company, Wilton Place, Dublin 2, Irland; Rechtsgrundlagen:
-          Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
+          Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:{' '}
           <a
             href="https://www.linkedin.com"
             target="_blank"
@@ -343,22 +343,22 @@ const PrivacyPolicyThree = () => {
             https://www.linkedin.com/legal/privacy-policy
           </a>
           ; Grundlage Drittlandtransfers: Data Privacy Framework (DPF),
-          Standardvertragsklauseln (
+          Standardvertragsklauseln ({' '}
           <a
             href="https://legal.linkedin.com/dpa"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://legal.linkedin.com/dpa
-          </a>
-          ), Data Privacy Framework (DPF)Standardvertragsklauseln (
+          </a>{' '}
+          ), Data Privacy Framework (DPF)Standardvertragsklauseln ({' '}
           <a
             href="https://legal.linkedin.com/dpa"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://legal.linkedin.com/dpa
-          </a>
+          </a>{' '}
           ). Widerspruchsmöglichkeit (Opt-Out):{' '}
           <a
             href="https://www.linkedin.com/psettings/guest-controls/retargeting-opt-out"
@@ -391,22 +391,22 @@ const PrivacyPolicyThree = () => {
           >
             https://www.tiktok.com/de/privacy-policy
           </a>
-          . Grundlage Drittlandtransfers: Standardvertragsklauseln (
+          . Grundlage Drittlandtransfers: Standardvertragsklauseln ({' '}
           <a
             href="https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms
-          </a>
-          ), Standardvertragsklauseln (
+          </a>{' '}
+          ), Standardvertragsklauseln ({' '}
           <a
             href="https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms"
             target="_blank"
             rel="noopener noreferrer"
           >
             https://ads.tiktok.com/i18n/official/policy/jurisdiction-specific-terms
-          </a>
+          </a>{' '}
           ).
         </li>
         <li>
@@ -584,7 +584,7 @@ const PrivacyPolicyThree = () => {
           um Profile von Endnutzern zu erstellen oder zielgerichtete Anzeigen zu
           schalten; Dienstanbieter: Google Ireland Limited, Gordon House, Barrow
           Street, Dublin 4, Irland; Rechtsgrundlagen: Berechtigte Interessen
-          (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:
+          (Art. 6 Abs. 1 S. 1 lit. f) DSGVO); Website:{' '}
           <a
             href="https://fonts.google.com/"
             target="_blank"
@@ -592,7 +592,7 @@ const PrivacyPolicyThree = () => {
           >
             https:https://fonts.google.com/
           </a>
-          ; Datenschutzerklärung:
+          ; Datenschutzerklärung:{' '}
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
