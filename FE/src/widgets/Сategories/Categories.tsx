@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
 
 const Categories = () => {
-  const refs = useRef<any[]>([]);
+  const refs = useRef<any[]>([]) || null;
 
   useEffect(() => {
     refs.current.forEach((ref, i) => {

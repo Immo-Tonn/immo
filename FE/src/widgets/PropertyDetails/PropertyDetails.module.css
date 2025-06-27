@@ -4,11 +4,9 @@
   position: relative;
   padding: 2rem 1rem;
   font-family: var(--Roboto);
-}
-/* html,
-body {
   overflow-x: visible;
-} */
+}
+
 .mainContent {
   flex: 1;
 }

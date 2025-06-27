@@ -81,7 +81,7 @@ const AboutUs = () => {
         <p className={styles.textBottom} ref={bottomTextRef}>
           <b>
             Ihr Maklerteam für Wohnimmobilien, <br />
-            Geschäftshäuser und hochwertige Investment
+            Geschäftshäuser und hochwertige Investments
           </b>
         </p>
       </div>

@@ -19,7 +19,7 @@ const ValuationCTA = () => {
           { current: ref },
           i % 2 === 0
             ? { x: -100, y: 0, duration: 0.3 }
-            : { x: 100, y: -50, duration: 0.2 },
+            : { x: 100, y: -50, duration: 0.6 },
         );
       }
     });

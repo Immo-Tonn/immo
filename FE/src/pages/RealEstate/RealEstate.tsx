@@ -65,17 +65,19 @@ const RealEstate = () => {
           </div>
           {objectData && objectData.length > 0 ? (
             <ul className={styles.cardList} ref={listRef}>
-              {objectData.map((obj, i) => (
-                <PropertyCard
-                  key={obj._id}
-                  object={obj}
-                  images={images}
-                  ref={el => {
-                    refs.current[i] = el;
-                  }}
-                  residentialHouse={obj.residentialHouses}
-                />
-              ))}
+              {objectData
+                .filter(property => property.status !== 'archived')
+                .map((obj, i) => (
+                  <PropertyCard
+                    key={obj._id}
+                    object={obj}
+                    images={images}
+                    ref={el => {
+                      refs.current[i] = el;
+                    }}
+                    residentialHouse={obj.residentialHouses}
+                  />
+                ))}
             </ul>
           ) : (
             !loading &&

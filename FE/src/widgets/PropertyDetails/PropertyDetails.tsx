@@ -24,7 +24,13 @@ const DetailRow = ({ label, value }: { label: string; value: any }) => (
   </div>
 );
 
-const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div className={styles.section}>
     <hr className={styles.hr} />
     <h2 className={styles.sectionTitle}>{title}</h2>
@@ -37,7 +43,7 @@ const getPropertyDetails = (
   apartment?: Apartment,
   commercial?: CommercialBuilding,
   land?: LandPlot,
-  house?: ResidentialHouse
+  house?: ResidentialHouse,
 ): Record<string, any> => {
   return {
     Land: object.address?.country,
@@ -54,7 +60,9 @@ const getPropertyDetails = (
     'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
     Garage: house?.garageParkingSpaces,
     Energieeffizienzklasse:
-      house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
+      house?.energyEfficiencyClass ??
+      apartment?.energyEfficiencyClass ??
+      commercial?.additionalFeatures,
     Energieträger: house?.energySource ?? apartment?.energySource,
     Heizung: house?.heatingType ?? apartment?.heatingType,
     'Frei ab': object.freeWith,
@@ -64,7 +72,6 @@ const getPropertyDetails = (
   };
 };
 
-
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   object,
   apartment,
@@ -72,34 +79,42 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   landPlot,
   residentialHouse,
 }) => {
-  const details = getPropertyDetails(object, apartment, commercialBuilding, landPlot, residentialHouse);
+  const details = getPropertyDetails(
+    object,
+    apartment,
+    commercialBuilding,
+    landPlot,
+    residentialHouse,
+  );
   const navigate = useNavigate();
 
   return (
     <div className={styles.propertyLayout}>
       <div className={styles.mainContent}>
         <div className={styles.floatingButtonWrapper}>
-          <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
+          <button
+            className={styles.calcButton}
+            onClick={() => navigate('/finanzierung')}
+          >
             Finanzierungsrechner
           </button>
         </div>
 
         <Section title="OBJEKTDATEN">
-  {['sold', 'reserved'].includes(object.status) && (
-    <div className={styles.statusBanner}>
-      {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
-    </div>
-  )}
+          {['sold', 'reserved'].includes(object.status) && (
+            <div className={styles.statusBanner}>
+              {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
+            </div>
+          )}
 
-  <div className={styles.detailsLeft}>
-    {Object.entries(details)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([label, value]) => (
-        <DetailRow key={label} label={label} value={value} />
-      ))}
-  </div>
-</Section>
-
+          <div className={styles.detailsLeft}>
+            {Object.entries(details)
+              .filter(([_, value]) => value !== undefined && value !== null)
+              .map(([label, value]) => (
+                <DetailRow key={label} label={label} value={value} />
+              ))}
+          </div>
+        </Section>
 
         {(apartment?.additionalFeatures ||
           residentialHouse?.additionalFeatures ||
@@ -141,7 +156,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-            <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
+            <button
+              className={styles.calcButton}
+              onClick={() => navigate('/finanzierung')}
+            >
               Finanzierungsrechner
             </button>
           </div>
@@ -152,4 +170,3 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
 };
 
 export default PropertyDetails;
-

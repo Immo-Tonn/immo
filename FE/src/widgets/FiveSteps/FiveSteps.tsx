@@ -33,7 +33,7 @@ const FiveSteps = () => {
       >
         <h3 className={styles.firstTitle}>
           Mehr als nur Immobilien – eine Partnerschaft, <br />
-          die für Sie entfaltet
+          die sich für Sie entfaltet
         </h3>
       </div>
       <div className={styles.secondTitleWrap}>

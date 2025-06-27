@@ -38,10 +38,10 @@ export const CategoriesData: CategoryItem[] = [
   },
   {
     id: 5,
-    title: 'wertemittling',
-    image: '/src/shared/assets/categories/wertemittling.webp',
+    title: 'wertermittlung',
+    image: '/src/shared/assets/categories/wertemittlung.webp',
     link: 'wertermittlung',
-    alt: 'wertemittling',
+    alt: 'wertemittlung',
   },
   {
     id: 6,

@@ -69,9 +69,7 @@
     font-size: var(--font-size-secondary);
     font-family: var(--Inter);
     background-color: var(--secondary-color);
-    max-width: 539px;
-    margin-right: 20px;
-    height: clamp(100px, 10vh, 74px);
+    margin-right: 37px;
   }
 }
 @media (max-width: 765px) {
