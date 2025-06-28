@@ -117,38 +117,49 @@ const MortgageCalculator = () => {
   };
 
   const handleEquityChange = (val: string) => {
-    const parts = val.split(/[,\.]/);
-    let formattedVal = val;
+    const cleanedVal = val.replace(/[^\d,\.]/g, '');
+    const parts = cleanedVal.split(/[,\.]/);
+    let formattedVal = cleanedVal;
+
+    let decimalError = false;
+
     if (parts.length === 2) {
       const [integerPart, decimalPart = ''] = parts;
       const limitedDecimal = decimalPart.slice(0, 3);
       formattedVal = integerPart + ',' + limitedDecimal;
-      setEquityDecimalError(limitedDecimal.length > 2);
-    } else {
-      setEquityDecimalError(false);
+      decimalError = limitedDecimal.length > 2;
     }
+
     setEquity(formattedVal);
+    setEquityDecimalError(decimalError);
+
     const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
-    setEquityTooHighError(valNum > totalCost);
+    setEquityTooHighError(valNum > totalCost && !decimalError);
   };
 
   const handleInterestChange = (val: string) => {
-    setInterest(val);
-    const parts = val.split(/[,\.]/);
-    if (parts.length === 2 && parts[1].length > 1) {
-      setInterestDecimalError(true);
-    } else {
-      setInterestDecimalError(false);
-    }
-    const normalized = val.replace(',', '.');
-    const parsed = parseFloat(normalized);
-    if (!isNaN(parsed)) {
-      setInterestRangeError(parsed <= 0 || parsed >= 14);
-    } else {
-      setInterestRangeError(false);
-    }
-  };
+    // Заменяем запятую на точку
+    let cleanedVal = val.replace(',', '.');
 
+    // Оставляем только цифры и точку (первую)
+    cleanedVal = cleanedVal
+      .replace(/[^0-9.]/g, '') // убираем всё, кроме цифр и точек
+      .replace(/(\..*)\./g, '$1'); // оставляем только первую точку
+
+    // Ограничиваем до одной цифры после точки
+    if (cleanedVal.includes('.')) {
+      const [intPart, decPart] = cleanedVal.split('.');
+      cleanedVal = intPart + '.' + decPart.slice(0, 1);
+    }
+
+    setInterest(cleanedVal);
+
+    // Проверки для ошибки
+    const valNum = parseFloat(cleanedVal) || 0;
+    const decimalPart = cleanedVal.split('.')[1] || '';
+    setInterestDecimalError(decimalPart.length > 1);
+    setInterestRangeError(valNum <= 0 || valNum >= 14);
+  };
   useEffect(() => {
     if (location.state && location.state.price) {
       setPrice(String(location.state.price));
@@ -594,7 +605,7 @@ function renderSelect(
               name={`${infoKey}-custom`}
               value={customValue}
               onChange={e => setCustomValue(e.target.value)}
-              label={`Custom ${label}`}
+              label={undefined}
             />
             <span>%</span>
           </div>

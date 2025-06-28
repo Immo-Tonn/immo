@@ -80,7 +80,7 @@ input[readonly] {
   pointer-events: none;
 }
 
-.inputWithPercent {
+/* .inputWithPercent {
   position: relative;
 }
 
@@ -95,8 +95,21 @@ input[readonly] {
   transform: translateY(-50%);
   color: #666;
   font-weight: bold;
+} */
+.inputWithPercent {
+  display: flex;
+  align-items: center;
 }
 
+.inputWithPercent input {
+  flex: 1; /* чтобы input занимал всю доступную ширину */
+  padding-right: 0.5em;
+}
+
+.inputWithPercent span {
+  margin-left: 0.25em;
+  font-weight: bold;
+}
 .icon {
   width: 18px;
   height: 18px;
