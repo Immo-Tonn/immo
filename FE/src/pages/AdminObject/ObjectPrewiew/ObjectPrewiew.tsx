@@ -534,10 +534,10 @@ const ObjectPreview = () => {
             <span className={styles.dataLabel}>Preis:</span>
             <span className={styles.dataValue}>{objectData.price.toLocaleString()} €</span>
           </div>
-          {/* <div className={styles.dataItem}>
+          <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Objektstatus:</span>
             <span className={styles.dataValue}>{objectData.status}</span>
-          </div> */}
+          </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Lage:</span>
             <span className={styles.dataValue}>{objectData.location}</span>

@@ -31,17 +31,17 @@ const ChangePassword: React.FC = () => {
       return 'Password must be at least 8 characters long';
     }
 
-    //     if (!/\d/.test(password)) {
-    //       return "Пароль должен содержать хотя бы одну цифру";
-    //     }
+        if (!/\d/.test(password)) {
+          return "Пароль должен содержать хотя бы одну цифру";
+        }
 
-    //     if (!/[A-Z]/.test(password)) {
-    //       return "Пароль должен содержать хотя бы одну заглавную букву";
-    //     }
+        if (!/[A-Z]/.test(password)) {
+          return "Пароль должен содержать хотя бы одну заглавную букву";
+        }
 
-    //     if (!/[a-z]/.test(password)) {
-    //       return "Пароль должен содержать хотя бы одну строчную букву";
-    //     }
+        if (!/[a-z]/.test(password)) {
+          return "Пароль должен содержать хотя бы одну строчную букву";
+        }
 
     if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
       return 'The password must contain at least one special character.';
@@ -114,46 +114,46 @@ const ChangePassword: React.FC = () => {
     }
   };
 
-  //   // Индикатор сложности пароля
-  // const getPasswordStrength = (
-  //   password: string
-  // ): {
-  //   text: string;
-  //   color: string;
-  //   width: string;
-  // } => {
-  //   if (!password) {
-  //     return { text: "", color: "#e0e0e0", width: "0%" };
-  //   }
+    // Индикатор сложности пароля
+  const getPasswordStrength = (
+    password: string
+  ): {
+    text: string;
+    color: string;
+    width: string;
+  } => {
+    if (!password) {
+      return { text: "", color: "#e0e0e0", width: "0%" };
+    }
 
-  //     const criteria = [
-  //       password.length >= 8,
-  //       /\d/.test(password),
-  //       /[A-Z]/.test(password),
-  //       /[a-z]/.test(password),
-  //       /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
-  //     ];
+      const criteria = [
+        password.length >= 8,
+        /\d/.test(password),
+        /[A-Z]/.test(password),
+        /[a-z]/.test(password),
+        /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+      ];
 
-  //     const metCriteria = criteria.filter((c) => c).length;
+      const metCriteria = criteria.filter((c) => c).length;
 
-  //     switch (metCriteria) {
-  //       case 0:
-  //       case 1:
-  //         return { text: "Очень слабый", color: "#f44336", width: "20%" };
-  //       case 2:
-  //         return { text: "Слабый", color: "#ff9800", width: "40%" };
-  //       case 3:
-  //         return { text: "Средний", color: "#ffeb3b", width: "60%" };
-  //       case 4:
-  //         return { text: "Хороший", color: "#8bc34a", width: "80%" };
-  //       case 5:
-  //         return { text: "Сильный", color: "#4caf50", width: "100%" };
-  //       default:
-  //         return { text: "", color: "#e0e0e0", width: "0%" };
-  //   }
-  // };
+      switch (metCriteria) {
+        case 0:
+        case 1:
+          return { text: "Очень слабый", color: "#f44336", width: "20%" };
+        case 2:
+          return { text: "Слабый", color: "#ff9800", width: "40%" };
+        case 3:
+          return { text: "Средний", color: "#ffeb3b", width: "60%" };
+        case 4:
+          return { text: "Хороший", color: "#8bc34a", width: "80%" };
+        case 5:
+          return { text: "Сильный", color: "#4caf50", width: "100%" };
+        default:
+          return { text: "", color: "#e0e0e0", width: "0%" };
+    }
+  };
 
-  // const passwordStrength = getPasswordStrength(newPassword);
+  const passwordStrength = getPasswordStrength(newPassword);
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
@@ -262,16 +262,16 @@ const ChangePassword: React.FC = () => {
                   overflow: 'hidden',
                 }}
               >
-                {/* <div
+                <div
                   style={{
                     height: "100%",
                     width: passwordStrength.width,
                     backgroundColor: passwordStrength.color,
                     transition: "width 0.3s ease",
                   }}
-                ></div> */}
+                ></div>
               </div>
-              {/* <div
+              <div
                 style={{
                   fontSize: "12px",
                   marginTop: "3px",
@@ -279,7 +279,7 @@ const ChangePassword: React.FC = () => {
                 }}
               >
                 {passwordStrength.text}
-              </div> */}
+              </div>
             </div>
           )}
         </div>

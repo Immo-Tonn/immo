@@ -1,5 +1,6 @@
 /* immo/FE/src/pages/AdminObject/CreateObject/CreateObject.module.css */
 .createObjectContainer {
+  font-family: 'Apple Braille', sans-serif;
   max-width: 1000px;
   margin: 30px auto;
   padding: 20px;

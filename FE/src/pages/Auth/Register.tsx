@@ -78,15 +78,15 @@ const Register: React.FC = () => {
       }
 
       //     if (!/\d/.test(password)) {
-      //       return "Пароль должен содержать хотя бы одну цифру";
+      //       return "The password must contain at least one number";
       //     }
 
       //     if (!/[A-Z]/.test(password)) {
-      //       return "Пароль должен содержать хотя бы одну заглавную букву";
+      //       return "The password must contain at least one uppercase letter.";
       //     }
 
       //     if (!/[a-z]/.test(password)) {
-      //       return "Пароль должен содержать хотя бы одну строчную букву";
+      //       return "The password must contain at least one lowercase letter.";
       //     }
 
       if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
