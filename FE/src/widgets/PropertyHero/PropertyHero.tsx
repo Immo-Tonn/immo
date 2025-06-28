@@ -140,7 +140,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         {title}
       </h1>
 
-     {/* {object.status && (     
+     {object.status && (     
       <div className={styles.status}>
         <span className={styles.label}>Objectstatus:</span>
       <div className={styles.statusBanner}>       
@@ -150,7 +150,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
         {object.status === 'archived' && 'ARCHIVIERT'}
       </div>
        </div>
-     )} */}
+     )}
 
       {isMobile ? (
         currentMedia ? (

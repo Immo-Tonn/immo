@@ -10,7 +10,8 @@
   margin-bottom: 10px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 2vw;
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
   width: auto;
   margin-top: 0;
 }

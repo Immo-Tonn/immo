@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
-import { ObjectType} from '@features/utils/types';
+import { ObjectType, ObjectStatus} from '@features/utils/types';
 import {
   createCompleteRealEstateObject,
   updateCompleteRealEstateObject,
@@ -38,6 +38,7 @@ interface ObjectData {
     houseNumber?: string;
   };
   price: string;
+  status: ObjectStatus; // Поле для выбора status
 }
 
 const CreateObject = () => {
@@ -55,6 +56,7 @@ const CreateObject = () => {
   const [initialLoading, setInitialLoading] = useState<boolean>(isEditMode); // Loading data for editing
   const [isDragging, setIsDragging] = useState<boolean>(false); // State for drag & drop
   const dropZoneRef = useRef<HTMLDivElement>(null); // ref for drag & drop
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Status for the main property
   const [objectData, setObjectData] = useState<ObjectData>({
@@ -73,7 +75,7 @@ const CreateObject = () => {
       houseNumber: '',
     },
     price: '',
-    // status: ObjectStatus.ACTIVE, // Добавляем значение по умолчанию
+    status: ObjectStatus.ACTIVE, // Добавляем значение по умолчанию
   });
 
   // Status for specific data depending on the type
@@ -81,7 +83,7 @@ const CreateObject = () => {
 
   // Validation function for mandatory fields
   const validateRequiredFields = (): boolean => {
-    // Проверяем основные обязательные поля
+    // Check basic mandatory fields
     if (
       !objectData.title ||
       !objectData.description ||
@@ -116,6 +118,12 @@ const CreateObject = () => {
 
   // State for tracking form validity
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+
+const handleDropZoneClick = () => {
+  if (fileInputRef.current) {
+    fileInputRef.current.click();
+  }
+};
 
   // Validate the form when changing data
   useEffect(() => {
@@ -158,7 +166,7 @@ const CreateObject = () => {
               houseNumber: loadedObjectData.address.houseNumber || '',
             },
             price: loadedObjectData.price.toString(),
-            
+            status: loadedObjectData.status || ObjectStatus.ACTIVE, // Add the status load
           });
 
           // Filling in specific data
@@ -221,6 +229,11 @@ const CreateObject = () => {
       if (!isEditMode) {
         setSpecificData({});
       }
+      } else if (name === 'status') {
+        setObjectData({
+          ...objectData,
+          status: value as ObjectStatus,
+      });
     } else {
       setObjectData({
         ...objectData,
@@ -362,7 +375,7 @@ const CreateObject = () => {
 
   // 4. useEffect ПОСЛЕ СУЩЕСТВУЮЩИХ useEffect:
 
-  // Автотест серверной отладки при загрузке страницы
+  // Autotest of server debugging when loading page
   useEffect(() => {
     if (isEditMode && id) {
       console.log('🧪 Автотест серверной отладки при загрузке страницы...');
@@ -1124,7 +1137,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
                 onChange={handleSpecificChange}
                 required
                 className={styles.formInput}
-                placeholder="Например, офисное здание, склад, магазин"
+                placeholder="Zum Beispiel Bürogebäude, Lager, Geschäft"
               />
             </div>
             <div className={styles.formRow}>
@@ -1239,7 +1252,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
           </select>
         </div>
 
-        {/* <div className={styles.formGroup}>
+        <div className={styles.formGroup}>
           <label htmlFor="status" className={styles.formLabel}>
             Objectstatus
           </label>
@@ -1255,7 +1268,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
             <option value={ObjectStatus.ARCHIVED}>archiviert</option>
             <option value={ObjectStatus.RESERVED}>reserviert</option>
           </select>
-        </div> */}
+        </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="title" className={styles.formLabel}>
@@ -1479,7 +1492,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
                     ⭐
                   </button>
                   {index === 0 && (
-                    <span className={styles.mainImageLabel}>Главное</span>
+                    <span className={styles.mainImageLabel}>Hauptbild</span>
                   )}
                 </div>
               ))}
@@ -1488,14 +1501,15 @@ const setMainExistingImage = async (index: number): Promise<void> => {
         )}
 
         {/* File drop area */}
-        <div
-          ref={dropZoneRef}
-          className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
-          onDragEnter={handleDragEnter}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
+<div
+  ref={dropZoneRef}
+  className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
+  onDragEnter={handleDragEnter}
+  onDragOver={handleDragOver}
+  onDragLeave={handleDragLeave}
+  onDrop={handleDrop}
+  onClick={handleDropZoneClick}
+>
           <div className={styles.dropZoneContent}>
             <p>
               <span className={styles.dropZoneIcon}>📁</span>
@@ -1503,15 +1517,14 @@ const setMainExistingImage = async (index: number): Promise<void> => {
                 ? 'Neue Bilder hierher ziehen oder vom Computer auswählen'
                 : 'Bilder hierher ziehen oder vom Computer auswählen'}
             </p>
-            <input
-              type="file"
-              id="image"
-              name="image"
-              onChange={handleFileChange}
-              accept="image/jpeg,image/png,image/jpg,image/webp"
-              multiple
-              className={styles.fileInput}
-            />
+<input
+  ref={fileInputRef}
+  type="file"
+  onChange={handleFileChange}
+  accept="image/jpeg,image/png,image/jpg,image/webp"
+  multiple
+  style={{ display: 'none' }}
+/>
             <p className={styles.dropZoneHint}>
               {isEditMode
                 ? 'Falls keine Bilder vorhanden sind, wird das erste neue Bild automatisch als Hauptbild verwendet.'

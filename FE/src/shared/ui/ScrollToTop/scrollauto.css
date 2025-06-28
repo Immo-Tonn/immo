@@ -13,12 +13,14 @@
 }
 
 .stt:hover {
-  opacity: 1;
+  opacity: 0.6;
+  z-index: 10;
 }
 
 .stt__active {
   visibility: visible;
-  opacity: 0.5;
+  opacity: 0.3;
+  z-index: 10;
 }
 
 .stt__block_black {

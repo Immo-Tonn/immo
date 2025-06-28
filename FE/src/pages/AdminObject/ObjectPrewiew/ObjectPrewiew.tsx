@@ -23,9 +23,9 @@ const ObjectPreview = () => {
 
   const getSuccessMessage = () => {
     if (action === 'updated') {
-      return 'Das Object wurde erfolgreich aktuakisiert! Überprüfen Sie die folgende Daten..';
+      return 'Das Objekt wurde erfolgreich aktuakisiert! Überprüfen Sie die folgende Daten..';
     } else if (action === 'created') {
-      return 'Das Object wurde erfolgreich erstellt! Überprüfen Sie die folgende Daten..';
+      return 'Das Objekt wurde erfolgreich erstellt! Überprüfen Sie die folgende Daten..';
     }
     return '';
   }
@@ -484,7 +484,7 @@ const ObjectPreview = () => {
                   alt={`image ${index + 1}`} 
                   className={styles.objectImage} 
                 />
-                {index === 0 && <span className={styles.mainImageLabel}>Главное</span>}
+                {index === 0 && <span className={styles.mainImageLabel}>Hauptblid</span>}
               </div>
             ))
           ) : (

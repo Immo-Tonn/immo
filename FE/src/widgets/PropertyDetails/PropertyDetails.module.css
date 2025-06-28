@@ -125,10 +125,8 @@ body {
 }
 
 .statusBanner {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
   color: #530614;
-  padding: 1rem;
 }
 
 @media (max-width: 768px) {

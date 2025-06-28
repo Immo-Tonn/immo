@@ -28,7 +28,6 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
   <div className={styles.section}>
     <hr className={styles.hr} />
     <h2 className={styles.sectionTitle}>{title}</h2>
-
     {children}
   </div>
 );
@@ -45,6 +44,7 @@ const getPropertyDetails = (
     Land: object.address?.country,
     'Nummer ID': object.number,
     Objektart: object.type,
+
     Wohnfläche: house?.livingArea ?? apartment?.livingArea,
     Grundstück: house?.plotArea ?? land?.plotArea,
     Nutzfläche: house?.usableArea,
@@ -74,7 +74,13 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   landPlot,
   residentialHouse,
 }) => {
-  const details = getPropertyDetails(object, apartment, commercialBuilding, landPlot, residentialHouse);
+  const details = getPropertyDetails(
+    object, 
+    apartment, 
+    commercialBuilding, 
+    landPlot, 
+    residentialHouse
+  );
   const navigate = useNavigate();
 
   return (
@@ -87,23 +93,23 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         </div>
 
           <Section title="OBJEKTDATEN">
-     {/* {object.status && (     
+     {object.status && (     
       <div className={styles.status}>
-        <span className={styles.label}>Objectstatus:</span>
+        <span className={styles.label}>Objektstatus:</span>
       <div className={styles.statusBanner}>       
-        {object.status === 'active' && 'AKTIV'}
-        {object.status === 'sold' && 'VERKAUFT'}
-        {object.status === 'reserved' && 'RESERVIERT'}
-        {object.status === 'archived' && 'ARCHIVIERT'}
+        {object.status === 'active' && 'aktiv'}
+        {object.status === 'sold' && 'verkauft'}
+        {object.status === 'reserved' && 'reserviert'}
+        {object.status === 'archived' && 'archiviert'}
       </div>
        </div>
-     )} */}
+     )}
  
-  {['sold', 'reserved'].includes(object.status) && (
+  {/* {['sold', 'reserved'].includes(object.status) && (
     <div className={styles.statusBanner}>
       {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
     </div>
-  )}
+  )} */}
 
   <div className={styles.detailsLeft}>
     {Object.entries(details)

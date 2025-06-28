@@ -3,7 +3,7 @@ import axios from 'axios';
 const axiosInstance = axios.create({
   // базовый URL
   baseURL: `${import.meta.env.VITE_HOST}/api`, // Адрес API-сервера
-  timeout: 1000,
+  timeout: 3000,
   headers: {
     'Content-Type': 'application/json',
   },
