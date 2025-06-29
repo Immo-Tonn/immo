@@ -3,6 +3,7 @@
 import axios from '@features/utils/axiosConfig';
 import { IRealEstateObject, ObjectType } from './types';
 import { uploadMultipleImages } from './imageService';
+import { log } from 'console';
 
 // Create a main object property
 export const createRealEstateObject = async (
@@ -33,6 +34,12 @@ export const updateImageOrder = async (
   console.log('🔄 НАЧАЛО updateImageOrder');
   console.log('📋 objectId:', objectId);
   console.log('📋 orderedImageUrls:', orderedImageUrls);
+
+    // Если нет изображений для упорядочивания, просто завершаем функцию
+  if (!orderedImageUrls || orderedImageUrls.length === 0) {
+    console.log('ℹ️ Нет изображений для упорядочивания, пропускаем updateImageOrder');
+    return;
+  }
   
   try {
     // Функция для безопасной очистки URL
@@ -60,8 +67,11 @@ export const updateImageOrder = async (
     
     console.log('📊 Ответ от сервера (изображения):', imagesResponse.data);
     
-    if (!imagesResponse.data || !Array.isArray(imagesResponse.data)) {
-      console.warn('⚠️ Изображения не найдены или неверный формат');
+    if (!imagesResponse.data || 
+      !Array.isArray(imagesResponse.data) || 
+      imagesResponse.data.length === 0) {
+    console.log('ℹ️ Изображения не найдены в БД, это нормально для объектов без фото');
+      // console.warn('⚠️ Изображения не найдены или неверный формат');
       return;
     }
     
@@ -133,8 +143,10 @@ export const updateImageOrder = async (
     console.log('📋 Финальный порядок ID изображений:', orderedImageIds);
     
     if (orderedImageIds.length === 0) {
-      console.warn('⚠️ Не удалось создать порядок изображений');
-      throw new Error('Не удалось сопоставить URL с изображениями в БД');
+      console.log('ℹ️ Нет изображений для упорядочивания после сопоставления');
+      return;
+      // console.warn('⚠️ Не удалось создать порядок изображений');
+      // throw new Error('Не удалось сопоставить URL с изображениями в БД');
     }
     
     // 3. Обновление типов изображений
@@ -767,18 +779,36 @@ export const updateCompleteRealEstateObject = async (
     // 3. Managing images
     console.log('Шаг 3: Управление изображениями');
 
+    // ИСПРАВЛЕНИЕ: Проверяем, есть ли изображения для обработки
+if (existingImages.length === 0 && newFiles.length === 0) {
+  console.log('ℹ️ Нет изображений для обработки (ни существующих, ни новых)');
+  console.log('✅ Обновление объекта завершено успешно');
+  return;
+}
+
     // 3.1 Getting current images of the property
     let currentImages: any[] = [];
-    try {
+    if (existingImages.length > 0) {
+try {
       const imagesResponse = await axios.get(
         `/images/by-object?objectId=${objectId}`,
       );
       if (imagesResponse.data && Array.isArray(imagesResponse.data)) {
         currentImages = imagesResponse.data;
       }
-    } catch (error) {
-      console.warn('Не удалось получить текущие изображения:', error);
+    } catch (error: any) {
+      // ИСПРАВЛЕНИЕ: Не прерываем выполнение, если изображений нет
+      if (error.response?.status === 400 || 
+          error.response?.data?.message?. includes('Keine Bilder')){
+          console.log('ℹ️ Изображения не найдены в БД (это нормально для объектов без фото)');
+          currentImages = [];
+          }else{
+            console.warn('⚠️ Не удалось получить текущие изображения:', error);
+            currentImages = [];
+          }     
     }
+ }
+    
 
     // 3.2 Finding images to delete (matching by cleaned URLs)
     const existingCleanUrls = existingImages.map(url => cleanUrl(url));

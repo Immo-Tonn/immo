@@ -24,6 +24,7 @@ export interface Video {
 }
 
 export interface Apartment {
+  type?: string;
   floor?: number;
   totalFloors?: number;
   livingArea: number;
@@ -54,6 +55,7 @@ export interface LandPlot {
 }
 
 export interface ResidentialHouse {
+  type?: string;
   numberOfFloors?: number;
   livingArea: number;
   usableArea?: number;

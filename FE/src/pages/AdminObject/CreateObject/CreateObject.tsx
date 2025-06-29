@@ -468,85 +468,6 @@ const setMainExistingImage = async (index: number): Promise<void> => {
   console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
 };
 
-////////////////////////////////////////////////////////////////////////////////////////
-
-//   //Function for setting the main image among existing ones
-// // Исправленная функция для установки главного изображения среди существующих
-// const setMainExistingImage = async (index: number) => {
-//   const newImages = [...existingImages];
-//   const mainImage = newImages.splice(index, 1)[0];
-  
-//   // Проверяем, что элемент был найден
-//   if (mainImage) {
-//     newImages.unshift(mainImage);
-    
-//     // ВАЖНО: Сначала обновляем БД, потом состояние
-//     if (isEditMode && id) {
-//       try {
-//         console.log('Speichern die neue Reihenfolge der Bilder in der Datenbank:', newImages);
-        
-//         // Обновляем порядок в БД
-//         await updateImageOrder(id, newImages);
-//         console.log('Порядок изображений успешно сохранен в БД');
-        
-//         // Только после успешного обновления БД обновляем состояние
-//         setExistingImages(newImages);
-        
-//         // Принудительно обновляем данные объекта
-//         const objectResponse = await axios.get(`/objects/${id}`);
-//         console.log('Обновленный объект:', objectResponse.data);
-        
-//         // Опционально: показать уведомление об успехе
-//         setSuccess('Главное изображение обновлено');
-        
-//         // Очищаем уведомление через 3 секунды
-//         setTimeout(() => setSuccess(''), 3000);
-        
-//       } catch (error) {
-//         console.error('Ошибка при сохранении порядка изображений:', error);
-//         setError('Ошибка при обновлении порядка изображений');
-        
-//         // НЕ обновляем состояние при ошибке - оставляем как было
-//         return;
-//       }
-//     } else {
-//       // В режиме создания просто обновляем локальное состояние
-//       setExistingImages(newImages);
-//     }
-//   }
-// };
-
-//////////////////////////////////////////////////////////////////////////////////
-
-  // const setMainExistingImage = async (index: number) => {
-  //   const newImages = [...existingImages];
-  //   const mainImage = newImages.splice(index, 1)[0];
-
-  //   // Check that the element was found
-  //   if (mainImage) {
-  //     newImages.unshift(mainImage);
-  //     setExistingImages(newImages);
-
-  //     // ADD: DB synchronization in edit mode
-  //     if (isEditMode && id) {
-  //       try {
-  //         console.log('Speichern die neue Reihenfolge der Bilder in der Datenbank:', newImages);
-  //         await updateImageOrder(id, newImages);
-  //         console.log('Порядок изображений успешно сохранен в БД');
-
-  //         // Optional: show success notification
-  //         // setSuccess('Main image updated');
-  //       } catch (error) {
-  //         console.error('Fehler beim Speichern der Bildreihenfolge:', error);
-  //         setError('Fehler beim Aktualisieren der Bildreihenfolge');
-
-  //         // Roll back changes to the UI when an error occurs
-  //         setExistingImages(existingImages);
-  //       }
-  //     }
-  //   }
-  // };
-
     // Function for setting the main image among new ones
   const setMainNewImage = (index: number) => {
     const newFiles = [...selectedFiles];
@@ -860,7 +781,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
             <h3 className={styles.sectionTitle}>Wohngebäudedetails</h3>
             <div className={styles.formGroup}>
               <label htmlFor="type" className={styles.formLabel}>
-                Haustyp *
+                Haustyp
               </label>
               <input
                 type="text"
@@ -869,7 +790,6 @@ const setMainExistingImage = async (index: number): Promise<void> => {
                 value={specificData.type || ''}
                 onChange={handleSpecificChange}
                 placeholder="Zum Beispiel ein Ferienhaus, ein Doppelhaus, ein Stadthaus"
-                required
                 className={styles.formInput}
               />
             </div>

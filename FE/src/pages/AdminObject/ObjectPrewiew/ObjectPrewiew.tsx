@@ -4,7 +4,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
 import styles from './ObjectPrewiew.module.css';
 import { ObjectType } from '@features/utils/types';
-import { formatObjectNumber } from '@shared/objectNumberUtils';
+// import { formatObjectNumber } from '@shared/objectNumberUtils';
 import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal';
 
 const ObjectPreview = () => {
@@ -23,7 +23,7 @@ const ObjectPreview = () => {
 
   const getSuccessMessage = () => {
     if (action === 'updated') {
-      return 'Das Objekt wurde erfolgreich aktuakisiert! Überprüfen Sie die folgende Daten..';
+      return 'Das Objekt wurde erfolgreich aktualisiert! Überprüfen Sie die folgende Daten..';
     } else if (action === 'created') {
       return 'Das Objekt wurde erfolgreich erstellt! Überprüfen Sie die folgende Daten..';
     }
@@ -446,7 +446,7 @@ const ObjectPreview = () => {
   }
 
   // get the object number
-  const objectNumber = formatObjectNumber(objectData._id);
+  // const objectNumber = formatObjectNumber(objectData._id);
 
   // Combine images and videos for a gallery
   const allMedia = [...images, ...videos];
@@ -462,12 +462,12 @@ const ObjectPreview = () => {
    )}   
 
       {/* object number */}
-      <div className={styles.objectNumberSection}>
+      {/* <div className={styles.objectNumberSection}>
         <div className={styles.objectNumber}>
           <span className={styles.objectNumberLabel}>Objektnummer::</span>
           <span className={styles.objectNumberValue}>{objectNumber}</span>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.imagesSection}>
         <h3>Bilder</h3>

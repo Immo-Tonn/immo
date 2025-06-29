@@ -1,5 +1,3 @@
-// Полная структура файла immo/BE/src/controllers/realEstateObjectsController.ts
-
 import { Request, Response } from 'express';
 import RealEstateObjectsModel from '../models/RealEstateObjectsModel';
 import ImagesModel from '../models/ImagesModel';

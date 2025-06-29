@@ -66,7 +66,7 @@ export const getImagesByObjectId = async (
       return;
     }
 
-    // Getting object to get the correct order of images
+    // Get object to correct order of images
     const realEstateObject = await RealEstateObjectsModel.findById(objectId);
     if (!realEstateObject) {
       res.status(404).json({ message: "Объект недвижимости не найден" });
@@ -79,9 +79,19 @@ export const getImagesByObjectId = async (
     });
 
     if (!allImages || allImages.length === 0) {
+      console.log(`ℹ️ Изображения не найдены для объекта ${objectId}, возвращаем пустой массив`);
+
+      // Добавляем заголовки для предотвращения кеширования
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      });
+
       res
-        .status(404)
-        .json({ message: "Keine Bilder für dieses Objekt gefunden" });
+      res.status(200).json([]); // Возвращаем пустой массив вместо 404
+        // .status(404)
+        // .json({ message: "Keine Bilder für dieses Objekt gefunden" });
       return;
     }
 
