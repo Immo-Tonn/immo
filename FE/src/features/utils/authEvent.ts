@@ -1,7 +1,7 @@
 // immo/FE/src/features/utils/authEvent.ts
 // Простой механизм глобальных событий авторизации для взаимодействия между компонентами
 
-// Создаем кастомное событие для авторизации
+// Кастомное событие для авторизации
 export const authEvents = {
   // Событие входа в систему
   login: new CustomEvent('admin-login'),
@@ -23,24 +23,23 @@ export const dispatchLogoutEvent = (): void => {
   window.dispatchEvent(authEvents.logout);
 };
 
-// ДОБАВЛЕНО: Функция для проверки авторизации
+// Функция для проверки авторизации
 export const isAuthenticated = (): boolean => {
   return !!sessionStorage.getItem('adminToken');
 };
 
-// ДОБАВЛЕНО: Функция для получения информации о пользователе
+// Функция для получения информации о пользователе
 export const getAdminInfo = (): any | null => {
   const adminInfo = sessionStorage.getItem('adminInfo');
   return adminInfo ? JSON.parse(adminInfo) : null;
 };
 
-// ДОБАВЛЕНО: Функция для получения токена
+// Функция для получения токена
 export const getAdminToken = (): string | null => {
   return sessionStorage.getItem('adminToken');
 };
 
-// ДОБАВЛЕНО: Автоматическая очистка при закрытии браузера
-// Это обеспечивает дополнительную защиту
+// Автоматическая очистка при закрытии браузера
 export const setupAutoLogout = (): void => {
   // Слушатель события закрытия браузера/вкладки
   window.addEventListener('beforeunload', () => {

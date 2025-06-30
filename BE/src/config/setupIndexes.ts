@@ -1,5 +1,4 @@
-// Создайте новый файл: immo/BE/src/config/setupIndexes.ts
-
+// immo/BE/src/config/setupIndexes.ts
 import mongoose from "mongoose";
 import ImagesModel from "../models/ImagesModel";
 import RealEstateObjectsModel from "../models/RealEstateObjectsModel";

@@ -40,7 +40,6 @@ const getPropertyDetails = (
   house?: ResidentialHouse
 ): Record<string, any> => {
   return {
-    // Objectstatus: object.status,
     Land: object.address?.country,
     'Nummer ID': object.number,
     Objektart: object.type,
@@ -109,11 +108,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
        </div>
      )}
  
-  {/* {['sold', 'reserved'].includes(object.status) && (
-    <div className={styles.statusBanner}>
-      {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
-    </div>
-  )} */}
+
 
   <div className={styles.detailsLeft}>
     {Object.entries(details)
@@ -123,23 +118,6 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       ))}
   </div>
 </Section>        
-
-        {/* <Section title="OBJEKTDATEN">
-  {['sold', 'reserved'].includes(object.status) && (
-    <div className={styles.statusBanner}>
-      {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
-    </div>
-  )}
-
-  <div className={styles.detailsLeft}>
-    {Object.entries(details)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([label, value]) => (
-        <DetailRow key={label} label={label} value={value} />
-      ))}
-  </div>
-</Section> */}
-
 
         {(apartment?.additionalFeatures ||
           residentialHouse?.additionalFeatures ||

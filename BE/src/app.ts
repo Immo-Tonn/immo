@@ -26,6 +26,11 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+ // Test route without use MongoDB
+ app.get("/api/test", (req, res) => {
+   console.log("Test route hit");
+   res.json({ message: "API работает" });
+ });
 app.use("/api/auth", authRoutes); // Добавлены маршруты аутентификации
 app.use("/api/objects", realEstateRoutes);
 app.use("/api/images", imagesRoutes);

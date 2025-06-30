@@ -334,15 +334,72 @@ const handleDropZoneClick = () => {
     setPreviews(previews.filter((_, i) => i !== index));
   };
 
-  // Deleting an existing image
-  const removeExistingImage = (index: number) => {
-    const confirmDelete = window.confirm(
-      'Sind Sie sicher, dass Sie dieses Bild löschen möchten?',
-    );
-    if (!confirmDelete) return;
+  const removeExistingImage = async (index: number) => {
+  const confirmDelete = window.confirm(
+    'Sind Sie sicher, dass Sie dieses Bild löschen möchten?',
+  );
+  if (!confirmDelete) return;
 
-    setExistingImages(existingImages.filter((_, i) => i !== index));
-  };
+  try {
+    const imageUrl = existingImages[index];
+    console.log('🔄 Начинаем удаление изображения:', imageUrl);
+
+    // Удаление изображения через API по URL
+    if (isEditMode && id && imageUrl) {
+      console.log('🔄 Удаляем изображение через API  по URL');
+
+    // Очистка URL от timestamp параметров
+      const cleanImageUrl = imageUrl.split('?')[0];
+      
+      await axios.post('/images/delete-by-url', {
+        imageUrl: cleanImageUrl
+      });
+      
+      console.log('✅ Изображение удалено из БД и CDN');
+    }
+    
+    // Обновление локального состояния
+    const newExistingImages = existingImages.filter((_, i) => i !== index);
+    console.log('📋 Новый список изображений:', newExistingImages);
+    setExistingImages(newExistingImages);
+    
+    // Обновление порядка изображений в объекте
+    if (isEditMode && id) {
+      console.log('🔄 Обновляем порядок изображений в объекте');
+
+      if (newExistingImages.length === 0) {
+        console.log('🔄 Удалено последнее изображение - очищаем массив в объекте');
+        await updateImageOrder(id, []);
+        console.log('✅ Массив изображений в объекте очищен');
+      } else {
+        console.log('🔄 Обновляем порядок изображений после удаления');
+        await updateImageOrder(id, newExistingImages);
+        console.log('✅ Порядок изображений обновлен');
+      }
+    }
+    
+    setSuccess('Изображение успешно удалено');
+    setTimeout(() => setSuccess(''), 3000);
+    
+  } catch (error: unknown) {
+    console.error('❌ Ошибка при удалении изображения:', error);
+
+  // Восстанавление предыдущего состояния при ошибке
+    console.log('🔄 Восстанавливаем предыдущее состояние после ошибки');
+
+    let errorMessage = 'Неизвестная ошибка';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as any;
+      errorMessage = axiosError.response?.data?.message || axiosError.message || 'Ошибка сервера';
+    }
+    
+    setError(`Ошибка при удалении изображения: ${errorMessage}`);
+    setTimeout(() => setError(''), 5000);
+   }
+ };
+  
     const debugObjectState = async (objectId: string) => {
     try {
       console.log('🔍 Вызываем серверную отладку для объекта:', objectId);
@@ -384,7 +441,7 @@ const handleDropZoneClick = () => {
   }, [isEditMode, id]);
 
     //Function for setting the main image among existing ones
-const setMainExistingImage = async (index: number): Promise<void> => {
+   const setMainExistingImage = async (index: number): Promise<void> => {
   console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
   console.log('📋 Текущий порядок изображений:', existingImages);
   
@@ -406,42 +463,29 @@ const setMainExistingImage = async (index: number): Promise<void> => {
       // ОТЛАДКА ДО изменений
       console.log('\n🔍 === СОСТОЯНИЕ ДО ИЗМЕНЕНИЙ ===');
       await debugObjectState(id);
-      console.log('✅ Отладка ДО изменений завершена');
       
       console.log('🔄 Вызываем updateImageOrder...');
       await updateImageOrder(id, newImages);
       console.log('✅ updateImageOrder завершена');
       
-      // КРИТИЧНО: Добавляем отладку здесь
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 1: updateImageOrder выполнена, переходим к отладке ПОСЛЕ');
-      
       // ОТЛАДКА ПОСЛЕ изменений
       console.log('\n🔍 === СОСТОЯНИЕ ПОСЛЕ ИЗМЕНЕНИЙ ===');
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 2: Начинаем отладку ПОСЛЕ изменений');
-      
       const debugResult = await debugObjectState(id);
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 3: debugObjectState завершен, результат:', debugResult);
       
       // Проверяем результат
       if (debugResult?.orderMatch) {
-        console.log('✅ ТОЧКА ПРОВЕРКИ 4: orderMatch = true');
         console.log('✅ Порядок изображений в БД обновлен корректно!');
         setExistingImages(newImages);
         setSuccess('Главное изображение обновлено');
         setTimeout(() => setSuccess(''), 3000);
       } else {
-        console.log('❌ ТОЧКА ПРОВЕРКИ 4: orderMatch = false или debugResult пустой');
-        console.log('❌ debugResult:', debugResult);
         console.error('❌ Порядок изображений в БД НЕ соответствует ожидаемому!');
         setError('Ошибка: порядок изображений не обновился в БД');
         return;
       }
       
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 5: Функция завершается успешно');
-      
     } catch (error: unknown) {
       console.error('❌ ОШИБКА в setMainExistingImage:', error);
-      console.error('❌ Стек ошибки:', error instanceof Error ? error.stack : 'No stack');
       
       // ОТЛАДКА ПРИ ОШИБКЕ
       console.log('\n🔍 === СОСТОЯНИЕ ПРИ ОШИБКЕ ===');
@@ -451,7 +495,6 @@ const setMainExistingImage = async (index: number): Promise<void> => {
         console.error('❌ Ошибка даже в отладке при ошибке:', debugError);
       }
       
-      // Обработка ошибки
       let errorMessage = 'Неизвестная ошибка';
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -1174,7 +1217,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
 
         <div className={styles.formGroup}>
           <label htmlFor="status" className={styles.formLabel}>
-            Objectstatus
+            Objektstatus
           </label>
           <select
             id="status"

@@ -53,6 +53,7 @@ export const getImageById = async (
   }
 };
 
+
 export const getImagesByObjectId = async (
   req: Request,
   res: Response
@@ -81,41 +82,58 @@ export const getImagesByObjectId = async (
     if (!allImages || allImages.length === 0) {
       console.log(`ℹ️ Изображения не найдены для объекта ${objectId}, возвращаем пустой массив`);
 
-      // Добавляем заголовки для предотвращения кеширования
+      //  Clearing the images array in an object
+      if (realEstateObject.images && realEstateObject.images.length > 0) {
+        console.log('🔄 Очищаем массив images в объекте недвижимости');
+        realEstateObject.images = [];
+        await realEstateObject.save();
+      }
+
+      // Anti-caching headers
       res.set({
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0'
       });
 
-      res
-      res.status(200).json([]); // Возвращаем пустой массив вместо 404
-        // .status(404)
-        // .json({ message: "Keine Bilder für dieses Objekt gefunden" });
+      res.status(200).json([]); // Возвращаем пустой массив
       return;
     }
 
-    // Сортировка изображений согласно порядку в объекте недвижимости
+    // Sort images according to order in the object
     let sortedImages = [...allImages];
 
     if (realEstateObject.images && realEstateObject.images.length > 0) {
       console.log('Сортируем изображения согласно порядку в БД:', realEstateObject.images);
-      // Создание массива в правильном порядке
+      
+      // Filter non-existent IDs from images array
+      const validImageIds: any[] = [];
       const orderedImages: any[] = [];
 
-      // Sort images according to order in object
-      realEstateObject.images.forEach((imageId) => {
+      // Checking each ID in the images array of an object
+      for (const imageId of realEstateObject.images) {
         const image = allImages.find(
           (img) =>
             (img._id && img._id.toString() === imageId.toString()) ||
             (img.id && img.id.toString() === imageId.toString())
         );
+        
         if (image) {
           orderedImages.push(image);
+          validImageIds.push(imageId);
+        } else {
+          console.log(`⚠️ Изображение с ID ${imageId} не найдено в коллекции, удаляем из массива`);
         }
-      });
+      }
 
-      // Then add images that are not in the order list
+      // If the array has changed, update the object
+      if (validImageIds.length !== realEstateObject.images.length) {
+        console.log('🔄 Обновляем массив images в объекте, удаляя несуществующие ID');
+        realEstateObject.images = validImageIds;
+        await realEstateObject.save();
+      }
+
+      // Adding images that are not in the order list
       allImages.forEach((image) => {
         const imageId = image._id || image.id;
         const isAlreadyAdded = orderedImages.some(
@@ -141,7 +159,7 @@ export const getImagesByObjectId = async (
       console.log('Сортировка по типу (main первым)');
     }
 
-        // Добавляем cache-busting timestamp для предотвращения кеширования
+    // Add cache-busting timestamp to prevent caching
     const timestamp = Date.now();
 
     // transform the URL for delivery to the client
@@ -150,7 +168,7 @@ export const getImagesByObjectId = async (
       url: `${transformBunnyUrl(img.url)}?t=${timestamp}`,
     }));
 
-        // Добавляем заголовки для предотвращения кеширования
+    // Anti-caching headers
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -169,46 +187,6 @@ export const getImagesByObjectId = async (
     });
   }
 };
-
-// Функция для преобразования URL (если она еще не существует)
-// const transformBunnyUrl = (url: string): string => {
-//   return url.replace(
-//     "https://storage.bunnycdn.com/immobilien-media",
-//     "https://immobilien-cdn.b-cdn.net"
-//   );
-// };
-
-// export const getImagesByObjectId = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   try {
-//     const objectId = req.query.objectId as string;
-
-//     if (!objectId) {
-//       res
-//         .status(400)
-//         .json({ message: "Parameter 'objectId' ist erforderlich" });
-//       return;
-//     }
-
-//     const images = await getImagesByObjectIdHelper(objectId);
-
-//     if (!images) {
-//       res
-//         .status(404)
-//         .json({ message: "Keine Bilder für dieses Objekt gefunden" });
-//       return;
-//     }
-
-//     res.status(200).json(images);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "Fehler beim Abrufen der Bilder nach Objekt-ID",
-//       error: error instanceof Error ? error.message : String(error),
-//     });
-//   }
-// };
 
 export const createImage = async (
   req: Request,
@@ -360,30 +338,72 @@ export const deleteImageByUrl = async (
       return;
     }
 
-    // Находим изображение по URL
-    const image = await ImagesModel.findOne({ url: imageUrl });
+    console.log('🔄 Удаляем изображение по URL:', imageUrl);
+
+    // Очищаем URL от timestamp параметров для поиска
+    const cleanUrl = imageUrl.split('?')[0];
+    console.log('🔍 Очищенный URL для поиска:', cleanUrl);
+
+    const storageUrl = cleanUrl.replace(
+      'https://immobilien-cdn.b-cdn.net',
+      'https://storage.bunnycdn.com/immobilien-media'
+    );
+    console.log('🔍 Storage URL для поиска в БД:', storageUrl);
+
+    // Find an image using a cleaned URL
+    const image = await ImagesModel.findOne({ 
+      $or: [
+        { url: imageUrl },
+        { url: cleanUrl },
+        { url: storageUrl },         // Storage URL (как хранится в БД)
+        { url: { $regex: cleanUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') } }
+      ]
+    });
 
     if (!image) {
+      console.log('❌ Изображение не найдено по URL:', imageUrl);
+      console.log('🔍 Попробованные варианты поиска:');
+      console.log('  - Полный URL:', imageUrl);
+      console.log('  - Очищенный CDN URL:', cleanUrl);
+      console.log('  - Storage URL:', storageUrl);
+
       res.status(404).json({ message: "Image not found" });
       return;
     }
 
+    console.log('✅ Найдено изображение:', image._id);
+    console.log('✅ URL в БД:', image.url);    
+
     // Удаляем изображение из BunnyCDN
     try {
       await deleteFromBunny(image.url);
+      console.log('✅ Изображение удалено из CDN');
     } catch (cdnErr) {
       console.warn("Failed to remove image from CDN:", cdnErr);
     }
 
-    // Удаляем изображение из базы данных
+    // Removing image from BunnyCDN
     await ImagesModel.findByIdAndDelete(image._id);
+    console.log('✅ Изображение удалено из БД');
 
-    // Удаляем ID изображения из объекта недвижимости
-    await RealEstateObjectsModel.findByIdAndUpdate(image.realEstateObject, {
-      $pull: { images: image._id },
+    // Removing Image ID from object with Verification
+    const updateResult = await RealEstateObjectsModel.findByIdAndUpdate(
+      image.realEstateObject, 
+      { $pull: { images: image._id } },
+      { new: true } // Return the updated document
+    );
+
+    if (updateResult) {
+      console.log('✅ ID изображения удален из объекта недвижимости');
+      console.log('📊 Оставшиеся изображения в объекте:', updateResult.images?.length || 0);
+    } else {
+      console.warn('⚠️ Объект недвижимости не найден при обновлении');
+    }
+
+    res.status(200).json({ 
+      message: "Image successfully deleted",
+      remainingImagesCount: updateResult?.images?.length || 0
     });
-
-    res.status(200).json({ message: "Image successfully deleted" });
   } catch (error) {
     console.error("Error deleting image by URL:", error);
     res.status(500).json({

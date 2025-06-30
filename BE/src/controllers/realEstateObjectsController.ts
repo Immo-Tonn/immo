@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { deleteFromBunny } from '../utils/deleteImages';
 import RealEstateObjectsModel from '../models/RealEstateObjectsModel';
 import ImagesModel from '../models/ImagesModel';
 
@@ -63,6 +64,30 @@ export const updateObject = async (req: Request, res: Response) => {
       title: currentObject?.title
     });
     
+             //Валидация массива images
+    if (req.body.images !== undefined) {
+      if (!Array.isArray(req.body.images)) {
+        console.error('❌ Поле images должно быть массивом');
+        res.status(400).json({ 
+          message: 'Поле images должно быть массивом',
+          received: typeof req.body.images
+        });
+        return;
+      }
+      
+      // Фильтр валидных ObjectId
+      const validImageIds = req.body.images.filter((id: any) => {
+        if (typeof id === 'string' && id.match(/^[0-9a-fA-F]{24}$/)) {
+          return true;
+        }
+        console.warn('⚠️ Невалидный ID изображения:', id);
+        return false;
+      });
+      
+      console.log('📋 Валидные ID изображений:', validImageIds);
+      req.body.images = validImageIds;
+    }
+    
     const updated = await RealEstateObjectsModel.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -85,27 +110,54 @@ export const updateObject = async (req: Request, res: Response) => {
     });
 
     // Специальная обработка обновления порядка изображений
-    if (req.body.images) {
+    if (req.body.images !== undefined) {
       console.log('🔄 Обнаружено обновление порядка изображений');
       console.log('📋 Новый порядок изображений из запроса:', req.body.images);
       console.log('📋 Порядок изображений в сохраненном объекте:', updated.images);
       
-      // Принудительно сохраняем изменения
+    //Проверка наличия изображений в БД
+      if (req.body.images.length > 0) {
+        const existingImages = await ImagesModel.find({
+          _id: { $in: req.body.images },
+          realEstateObject: req.params.id
+        });
+        
+        console.log('📊 Найдено изображений в БД:', existingImages.length);
+        console.log('📊 Ожидалось изображений:', req.body.images.length);
+        
+        if (existingImages.length !== req.body.images.length) {
+          console.warn('⚠️ Некоторые изображения не найдены в БД');
+          
+          // Фильтр только существующих изображений
+         const existingImageIds = existingImages.map((img: any) => img._id);
+        
+         await RealEstateObjectsModel.findByIdAndUpdate(
+           req.params.id,
+           { images: existingImageIds },
+           { new: true }
+         )
+         updated.images = existingImageIds;
+          
+          console.log('📋 Обновленный список после фильтрации:', existingImageIds);
+        }
+      }
+      
+      // Принудительное сохранение изменений
       const saveResult = await updated.save();
       console.log('📊 Результат принудительного сохранения:', {
         id: saveResult._id,
         images: saveResult.images
       });
       
-      // Дополнительная верификация через прямой запрос к БД
+      // Доп. верификация через прямой запрос к БД
       const verification = await RealEstateObjectsModel.findById(req.params.id).lean();
       console.log('🔍 Верификация через прямой запрос к БД:', {
         id: verification?._id,
         images: verification?.images
       });
       
-      // Проверяем, что изменения действительно сохранились
-      const expectedOrder = req.body.images;
+      // Проверка на сохранение изменений 
+      const expectedOrder = updated.images || [];
       const actualOrder = verification?.images || [];
       
       if (JSON.stringify(expectedOrder) === JSON.stringify(actualOrder)) {
@@ -124,7 +176,34 @@ export const updateObject = async (req: Request, res: Response) => {
       }
     }
     
-    // Добавляем заголовки для предотвращения кеширования
+    //Доп. очистка orphaned изображений
+    if (req.body.images !== undefined && req.body.images.length === 0) {
+      console.log('🔄 Очищаем orphaned изображения для объекта');
+      
+      // Поиск всех изображений, привязанных к объекту
+      const orphanedImages = await ImagesModel.find({
+        realEstateObject: req.params.id
+      });
+      
+      if (orphanedImages.length > 0) {
+        console.log(`🗑️ Найдено ${orphanedImages.length} orphaned изображений, удаляем их`);
+        
+        // Удаление каждого изображения
+        for (const img of orphanedImages) {
+          try {
+            // Удаляем из CDN
+            await deleteFromBunny(img.url);
+            // Удаляем из БД
+            await ImagesModel.findByIdAndDelete(img._id);
+            console.log(`✅ Удалено orphaned изображение: ${img._id}`);
+          } catch (deleteError) {
+            console.warn(`⚠️ Ошибка при удалении orphaned изображения ${img._id}:`, deleteError);
+          }
+        }
+      }
+    }
+    
+    // Заголовки для предотвращения кеширования
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',

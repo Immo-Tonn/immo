@@ -206,7 +206,7 @@ export const requestPasswordReset = async (
     res.status(500).json({ message: "Ошибка сброса пароля", error });
   }
 };
-//----------------------------------------------------------------------
+
 /**
  * @desc    Change Admin Password
  * @route   PUT /api/auth/change-password
