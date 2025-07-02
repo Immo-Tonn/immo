@@ -168,14 +168,26 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                   className={styles.videoFrameWrapper}
                   ref={el => {refs.current[2] = el}}
                 >
-                  <iframe
+                    <img
+                     src={currentMedia.thumbnailUrl}           // ← ИСПРАВЛЕНИЕ: показываем thumbnail
+                     alt={currentMedia.title || 'Video preview'}
+                     className={styles.videoThumbnail}
+                     loading="lazy"
+                     onError={(e) => {
+                       // Fallback при ошибке загрузки thumbnail
+                       const target = e.target as HTMLImageElement;
+                       target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
+                     }}                    
+                   />
+                   <div className={styles.playIcon}>▶</div>
+                  {/* <iframe
                     src={currentMedia.url}
                     title={currentMedia.title || 'Video Player'}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className={styles.videoFrame}
                     loading="lazy"
-                  />
+                  /> */}
                 </div>
               ) : (
                 <img
@@ -209,14 +221,26 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             )}
             {isVideo(firstMedia) ? (
               <div className={styles.videoFrameWrapper}>
-                <iframe
+
+                <img
+                   src={firstMedia.thumbnailUrl}           // ← ИСПРАВЛЕНИЕ: thumbnail вместо iframe
+                   alt={firstMedia.title || 'Video preview'}
+                   className={styles.videoThumbnail}
+                   loading="lazy"
+                   onError={(e) => {
+                   const target = e.target as HTMLImageElement;
+                   target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
+                   }}
+                 />
+                 <div className={styles.playIcon}>▶</div>
+                {/* <iframe
                   src={firstMedia.url}
                   title={firstMedia.title || 'Video Player'}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className={styles.videoFrame}
                   loading="lazy"
-                />
+                /> */}
               </div>
             ) : (
               <img
@@ -254,14 +278,26 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                       className={styles.videoFrameWrapper}
                       style={{ pointerEvents: 'none' }}
                     >
-                      <iframe
+
+                     <img
+                        src={item.thumbnailUrl}               // ← ИСПРАВЛЕНИЕ: thumbnail в превью
+                        alt={item.title || 'Video preview'}
+                        className={styles.videoThumbnail}
+                        loading="lazy"
+                        onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
+                        }}
+                     />
+                     <div className={styles.playIcon}>▶</div>
+                      {/* <iframe
                         src={item.url}
                         title={item.title || 'Video Player'}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className={styles.videoFrame}
                         loading="lazy"
-                      />
+                      /> */}
                     </div>
                   ) : (
                     <img

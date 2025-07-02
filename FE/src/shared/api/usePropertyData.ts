@@ -8,11 +8,19 @@ export const usePropertyData = (id?: string) => {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<Video[]>([]);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   // Function for updating data
   const fetchData = useCallback(async () => {
     if (!id) {
       console.warn('usePropertyData: ID is undefined, skipping request');
+      setLoading(false);
+      return;
+    }
+
+    if (isDeleted) {
+      console.log('usePropertyData: Объект помечен как удаленный, пропускаем запрос');
+      setLoading(false);
       return;
     }
 
@@ -51,13 +59,26 @@ export const usePropertyData = (id?: string) => {
       }
 
       setErr(null);
+      setIsDeleted(false);
     } catch (err: any) {
       console.error('Fehler beim Laden der Daten:', err);
       setErr(err?.message || 'Unbekannter Fehler');
+          if (err?.response?.status === 404) {
+        console.log('Объект не найден (возможно удален), помечаем как удаленный');
+        setIsDeleted(true);
+        setObjectData(null);
+        setImages([]);
+        setVideos([]);
+        setErr('Objekt nicht gefunden oder wurde gelöscht');
+      } else {
+        setErr(err?.message || 'Unbekannter Fehler');
+      }
+    
+
     } finally {
       setLoading(false);
-    }
-  }, [id]);
+    }    
+  }, [id, isDeleted]);
 
   // Initial data loading
   useEffect(() => {
@@ -67,17 +88,28 @@ export const usePropertyData = (id?: string) => {
   // Refresh when returning to tab
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (!document.hidden && id) {
+      if (!document.hidden && id && !isDeleted) {
         console.log('Вкладка активна, обновляем данные');
+        fetchData
         fetchData();
+      } else if (!document.hidden && isDeleted){
+        console.log('Вкладка активна, но объект удален - пропускаем обновление');        
       }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [id, fetchData]);
+  }, [id, fetchData, isDeleted]);
 
-  return { objectData, images, videos, loading, err, refreshData: fetchData };
+  const markAsDeleted = useCallback(()=>{
+    setIsDeleted(true);
+    setObjectData(null);
+    setImages([]);
+    setVideos([])
+    setErr('Object wurde gelöscht')
+  }, [])
+
+  return { objectData, images, videos, loading, err, refreshData: fetchData, isDeleted, markAsDeleted };
 };
 
 // Hook for list of objects (without ID)
@@ -99,16 +131,39 @@ export const usePropertysData = () => {
         setObjectData(data);
 
         // Loading all images
-        const imagesRes = await axios.get<Image[]>(
-          `http://localhost:3000/api/images/`,
-        );
-        setImages(imagesRes.data);
+        try {
+          const imagesRes = await axios.get<Image[]>(
+            `http://localhost:3000/api/images/`,
+          );
+          setImages(imagesRes.data || []); // Добавлена проверка на null/undefined
+          console.log('Geladene Bilder:', imagesRes.data?.length || 0);
+        } catch (imageError: any) {
+          // ДОБАВЛЕНО: Обработка случая когда изображений нет (404)
+          if (imageError?.response?.status === 404) {
+            console.log('Изображения не найдены (пустая база) - устанавливаем пустой массив');
+            setImages([]); // Устанавливаем пустой массив вместо ошибки
+          } else {
+            console.warn('Ошибка при загрузке изображений:', imageError);
+            setImages([]); // Устанавливаем пустой массив при любых других ошибках
+          }
+        }
 
         setErr(null);
-        console.log('Geladene Objekte:', data.length, 'Bilder:', imagesRes.data.length);
+        console.log('Geladene Objekte:', data.length, 'Bilder:', images.length);
       } catch (err: any) {
         console.error('Fehler beim Laden der Daten:', err);
-        setErr(err?.message || 'Unbekannter Fehler');
+
+
+        if (err?.response?.status === 404) {
+          // Если объекты не найдены
+          setObjectData([]);
+          setImages([]);
+          setErr(null); // Не показываем ошибку для пустой базы
+          console.log('Объекты не найдены - показываем пустое состояние');
+        } else {
+          // Другие ошибки (сеть, сервер и т.д.)
+          setErr(err?.message || 'Unbekannter Fehler');
+        }
       } finally {
         setLoading(false);
       }
@@ -116,6 +171,7 @@ export const usePropertysData = () => {
 
     fetchData();
   }, []);
+
 
   return { objectData, images, loading, err };
 };

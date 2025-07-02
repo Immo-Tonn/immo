@@ -24,6 +24,8 @@ const cleanUrl = (url: string): string => {
   return parts[0] || url;
 };
 
+// Исправленная функция updateImageOrder с подробной отладкой
+// Исправленная функция обновления порядка изображений
 export const updateImageOrder = async (
   objectId: string,
   orderedImageUrls: string[],
@@ -33,20 +35,21 @@ export const updateImageOrder = async (
   console.log('📋 orderedImageUrls:', orderedImageUrls);
 
   try {
-    //Если нет изображений для ранжира, чистим массив в объекте
+    // КРИТИЧНО: Если массив пустой, это означает что все изображения удалены
     if (!orderedImageUrls || orderedImageUrls.length === 0) {
-      console.log('ℹ️ Нет изображений - очищаем массив images в объекте');
+      console.log('📋 Массив изображений пустой - очищаем images в объекте');
       
-      // Обновление объекта с пустым массивом изображений
-      await axios.put(`/objects/${objectId}`, {
+      // Обновляем объект с пустым массивом изображений
+      const updateResponse = await axios.put(`/objects/${objectId}`, {
         images: [],
       });
       
-      console.log('✅ Объект обновлен с пустым массивом изображений');
+      console.log('📊 Ответ от сервера (очистка массива images):', updateResponse.data);
+      console.log('✅ Массив изображений в объекте успешно очищен');
       return;
     }
     
-    // Очистка URL
+    // Функция для безопасной очистки URL
     const cleanUrl = (url: string): string => {
       try {
         const parts = url.split('?');
@@ -57,7 +60,7 @@ export const updateImageOrder = async (
       }
     };
     
-    //  Получение всех изображений объекта
+    // 1. Получение всех изображений объекта
     console.log('🔍 Получаем все изображения объекта...');
     const imagesResponse = await axios.get(
       `/images/by-object?objectId=${objectId}&_t=${Date.now()}`,
@@ -71,15 +74,11 @@ export const updateImageOrder = async (
     
     console.log('📊 Ответ от сервера (изображения):', imagesResponse.data);
     
-    // проверка на отсутствие изображений
     if (!imagesResponse.data || 
         !Array.isArray(imagesResponse.data) || 
         imagesResponse.data.length === 0) {
-      console.log('ℹ️ Изображения не найдены в БД - очищаем массив в объекте');
-      
-      // Обновляние объекта с пустым массивом
-      await axios.put(`/objects/${objectId}`, { images: [] });
-      console.log('✅ Объект обновлен с пустым массивом изображений');
+      console.log('ℹ️ Изображения не найдены в БД, но orderedImageUrls не пустой');
+      console.log('ℹ️ Возможно, новые изображения еще не загружены, пропускаем updateImageOrder');
       return;
     }
     
@@ -99,7 +98,7 @@ export const updateImageOrder = async (
       type: img.type
     })));
     
-    // 2. Создание упорядоченного массива ID
+    // 2. Создание массива ID в правильном порядке
     console.log('🔄 Создаем массив ID в правильном порядке...');
     const orderedImageIds: string[] = [];
     
@@ -150,10 +149,11 @@ export const updateImageOrder = async (
     
     console.log('📋 Финальный порядок ID изображений:', orderedImageIds);
     
-    // Обрабатка случая когда нет совпадений
     if (orderedImageIds.length === 0) {
-      console.log('ℹ️ Нет изображений для упорядочивания после сопоставления - очищаем объект');
+      console.log('ℹ️ Нет изображений для упорядочивания после сопоставления');
+      // В этом случае тоже очищаем массив images в объекте
       await axios.put(`/objects/${objectId}`, { images: [] });
+      console.log('✅ Массив изображений в объекте очищен (не найдено сопоставлений)');
       return;
     }
     
@@ -161,7 +161,7 @@ export const updateImageOrder = async (
     console.log('🔄 Обновляем типы изображений...');
     const mainImageId = orderedImageIds[0];
     
-    // Сброс всех image-файлов на "additional"
+    // Сначала сбрасываем все на "additional"
     for (const img of allImages) {
       const imgId = img._id || img.id;
       if (imgId && img.type === 'main' && imgId !== mainImageId) {
@@ -201,7 +201,7 @@ export const updateImageOrder = async (
     const verificationResponse = await axios.get(`/objects/${objectId}?_t=${Date.now()}`);
     console.log('📊 Верификация - текущий порядок в БД:', verificationResponse.data.images);
     
-    // Проверка на  обновление порядка
+    // Проверяем, что порядок действительно обновился
     const actualOrder: string[] = verificationResponse.data.images || [];
     const isOrderCorrect = JSON.stringify(orderedImageIds) === JSON.stringify(actualOrder);
     
@@ -240,7 +240,6 @@ export const updateImageOrder = async (
   console.log('✅ ЗАВЕРШЕНИЕ updateImageOrder');
 };
 
-// Create specific data depending on the property type
 export const createSpecificObjectData = async (
   realEstateObjectId: string,
   objectType: ObjectType,
@@ -575,7 +574,8 @@ const updateSpecificObjectData = async (
   }
 };
 
-// Function to update a property
+// Function to update object
+// Исправленная функция обновления объекта недвижимости
 export const updateCompleteRealEstateObject = async (
   objectId: string,
   objectData: any,
@@ -588,56 +588,49 @@ export const updateCompleteRealEstateObject = async (
     console.log('Начинаем обновление объекта:', objectId);
     console.log('Порядок существующих изображений:', existingImages);
 
-    // 1. Updating the main property object
+    // 1. Обновление основного объекта
     console.log('Шаг 1: Обновление основного объекта');
     await axios.put(`/objects/${objectId}`, objectData);
     console.log('Шаг 1: Основной объект обновлен');
 
-    // 2.Updating specific data depending on the type
+    // 2. Обновление специфических данных
     console.log('Шаг 2: Обновление специфических данных');
     await updateSpecificObjectData(objectId, objectData.type, specificData);
     console.log('Шаг 2: Специфические данные обновлены');
 
-    // 3. Managing images
+    // 3. Управление изображениями
     console.log('Шаг 3: Управление изображениями');
 
-    // ИСПРАВЛЕНИЕ: Проверяем, есть ли изображения для обработки
-if (existingImages.length === 0 && newFiles.length === 0) {
-  console.log('ℹ️ Нет изображений для обработки (ни существующих, ни новых)');
-  console.log('✅ Обновление объекта завершено успешно');
-  return;
-}
-
-    // 3.1 Getting current images of the property
+    // 3.1 Получение текущих изображений объекта
     let currentImages: any[] = [];
-    if (existingImages.length > 0) {
-try {
+    try {
       const imagesResponse = await axios.get(
         `/images/by-object?objectId=${objectId}`,
       );
       if (imagesResponse.data && Array.isArray(imagesResponse.data)) {
         currentImages = imagesResponse.data;
+        console.log('Текущие изображения в БД:', currentImages.length);
       }
     } catch (error: any) {
-      // ИСПРАВЛЕНИЕ: Не прерываем выполнение, если изображений нет
-      if (error.response?.status === 400 || 
-          error.response?.data?.message?. includes('Keine Bilder')){
-          console.log('ℹ️ Изображения не найдены в БД (это нормально для объектов без фото)');
-          currentImages = [];
-          }else{
-            console.warn('⚠️ Не удалось получить текущие изображения:', error);
-            currentImages = [];
-          }     
+      if (error.response?.status === 404 || 
+          error.response?.data?.message?.includes('Keine Bilder')) {
+        console.log('ℹ️ Изображения не найдены в БД (это нормально)');
+        currentImages = [];
+      } else {
+        console.warn('⚠️ Не удалось получить текущие изображения:', error);
+        currentImages = [];
+      }     
     }
- }
-    
-    // 3.2 Finding images to delete (matching by cleaned URLs)
+
+    // 3.2 Поиск изображений для удаления
     const existingCleanUrls = existingImages.map(url => cleanUrl(url));
     const imagesToDelete = currentImages.filter(
       img => !existingCleanUrls.includes(cleanUrl(img.url)),
     );
 
-    // 3.3 Removing unnecessary images
+    console.log(`Найдено ${imagesToDelete.length} изображений для удаления`);
+
+    // 3.3 Удаление ненужных изображений
     for (const imageToDelete of imagesToDelete) {
       try {
         console.log('Удаляем изображение по ID:', imageToDelete._id);
@@ -652,28 +645,31 @@ try {
       }
     }
 
-    // 3.4 Uploading new images
+    // 3.4 Загрузка новых изображений
     if (newFiles.length > 0) {
       console.log('Загружаем новые изображения, количество:', newFiles.length);
       await uploadMultipleImages(newFiles, objectId, onUploadProgress);
       console.log('Новые изображения загружены');
     }
 
-    // 3.5 Updating the order of images (IMPORTANT!)
-    if (existingImages.length > 0) {
-      console.log('🔄 Обновляем порядок существующих изображений');
-      await updateImageOrder(objectId, existingImages);
-      console.log('Порядок изображений обновлен');
-    } else if (newFiles.length > 0) {
-      console.log('ℹ️ Только новые изображения загружены, порядок устанавливается автоматически');
-
+    // 3.5 КРИТИЧНО: Всегда обновляем порядок изображений в объекте
+    // Это нужно делать даже если existingImages пустой массив
+    console.log('Обновляем порядок изображений в объекте...');
+    
+    if (existingImages.length === 0) {
+      // Если изображений не осталось, очищаем массив images в объекте
+      console.log('📋 Очищаем массив изображений в объекте (все изображения удалены)');
+      await axios.put(`/objects/${objectId}`, { images: [] });
+      console.log('✅ Массив изображений в объекте очищен');
     } else {
-      console.log('ℹ️ Нет изображений для упорядочивания');
+      // Если есть изображения, обновляем их порядок
+      await updateImageOrder(objectId, existingImages);
+      console.log('✅ Порядок изображений обновлен');
     }
 
-    console.log('Обновление объекта завершено успешно');
+    console.log('✅ Обновление объекта завершено успешно');
   } catch (error: any) {
-    console.error('Ошибка при обновлении объекта недвижимости:', error);
+    console.error('❌ Ошибка при обновлении объекта недвижимости:', error);
     console.error(
       'Детали ошибки:',
       error.response?.data || error.message || 'Неизвестная ошибка',

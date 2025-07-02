@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
-import { deleteFromBunny } from '../utils/deleteImages';
 import RealEstateObjectsModel from '../models/RealEstateObjectsModel';
 import ImagesModel from '../models/ImagesModel';
+import VideoModel from '../models/VideoModel';
+import ApartmentsModel from '../models/ApartmentsModel';
+import ResidentialHousesModel from '../models/ResidentialHousesModel';
+import LandPlotsModel from '../models/LandPlotsModel';
+import CommercialNonResidentialBuildingsModel from '../models/Commercial_NonResidentialBuildingsModel';
+import { deleteFromBunny } from '../utils/deleteImages';
+import { deleteFromBunnyVideo } from '../utils/deleteBunnyVideo';
 
 export const getAllObjects = async (req: Request, res: Response) => {
   try {
@@ -64,30 +70,6 @@ export const updateObject = async (req: Request, res: Response) => {
       title: currentObject?.title
     });
     
-             //Валидация массива images
-    if (req.body.images !== undefined) {
-      if (!Array.isArray(req.body.images)) {
-        console.error('❌ Поле images должно быть массивом');
-        res.status(400).json({ 
-          message: 'Поле images должно быть массивом',
-          received: typeof req.body.images
-        });
-        return;
-      }
-      
-      // Фильтр валидных ObjectId
-      const validImageIds = req.body.images.filter((id: any) => {
-        if (typeof id === 'string' && id.match(/^[0-9a-fA-F]{24}$/)) {
-          return true;
-        }
-        console.warn('⚠️ Невалидный ID изображения:', id);
-        return false;
-      });
-      
-      console.log('📋 Валидные ID изображений:', validImageIds);
-      req.body.images = validImageIds;
-    }
-    
     const updated = await RealEstateObjectsModel.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -110,54 +92,27 @@ export const updateObject = async (req: Request, res: Response) => {
     });
 
     // Специальная обработка обновления порядка изображений
-    if (req.body.images !== undefined) {
+    if (req.body.images) {
       console.log('🔄 Обнаружено обновление порядка изображений');
       console.log('📋 Новый порядок изображений из запроса:', req.body.images);
       console.log('📋 Порядок изображений в сохраненном объекте:', updated.images);
       
-    //Проверка наличия изображений в БД
-      if (req.body.images.length > 0) {
-        const existingImages = await ImagesModel.find({
-          _id: { $in: req.body.images },
-          realEstateObject: req.params.id
-        });
-        
-        console.log('📊 Найдено изображений в БД:', existingImages.length);
-        console.log('📊 Ожидалось изображений:', req.body.images.length);
-        
-        if (existingImages.length !== req.body.images.length) {
-          console.warn('⚠️ Некоторые изображения не найдены в БД');
-          
-          // Фильтр только существующих изображений
-         const existingImageIds = existingImages.map((img: any) => img._id);
-        
-         await RealEstateObjectsModel.findByIdAndUpdate(
-           req.params.id,
-           { images: existingImageIds },
-           { new: true }
-         )
-         updated.images = existingImageIds;
-          
-          console.log('📋 Обновленный список после фильтрации:', existingImageIds);
-        }
-      }
-      
-      // Принудительное сохранение изменений
+      // Принудительно сохраняем изменения
       const saveResult = await updated.save();
       console.log('📊 Результат принудительного сохранения:', {
         id: saveResult._id,
         images: saveResult.images
       });
       
-      // Доп. верификация через прямой запрос к БД
+      // Дополнительная верификация через прямой запрос к БД
       const verification = await RealEstateObjectsModel.findById(req.params.id).lean();
       console.log('🔍 Верификация через прямой запрос к БД:', {
         id: verification?._id,
         images: verification?.images
       });
       
-      // Проверка на сохранение изменений 
-      const expectedOrder = updated.images || [];
+      // Проверяем, что изменения действительно сохранились
+      const expectedOrder = req.body.images;
       const actualOrder = verification?.images || [];
       
       if (JSON.stringify(expectedOrder) === JSON.stringify(actualOrder)) {
@@ -176,34 +131,7 @@ export const updateObject = async (req: Request, res: Response) => {
       }
     }
     
-    //Доп. очистка orphaned изображений
-    if (req.body.images !== undefined && req.body.images.length === 0) {
-      console.log('🔄 Очищаем orphaned изображения для объекта');
-      
-      // Поиск всех изображений, привязанных к объекту
-      const orphanedImages = await ImagesModel.find({
-        realEstateObject: req.params.id
-      });
-      
-      if (orphanedImages.length > 0) {
-        console.log(`🗑️ Найдено ${orphanedImages.length} orphaned изображений, удаляем их`);
-        
-        // Удаление каждого изображения
-        for (const img of orphanedImages) {
-          try {
-            // Удаляем из CDN
-            await deleteFromBunny(img.url);
-            // Удаляем из БД
-            await ImagesModel.findByIdAndDelete(img._id);
-            console.log(`✅ Удалено orphaned изображение: ${img._id}`);
-          } catch (deleteError) {
-            console.warn(`⚠️ Ошибка при удалении orphaned изображения ${img._id}:`, deleteError);
-          }
-        }
-      }
-    }
-    
-    // Заголовки для предотвращения кеширования
+    // Добавляем заголовки для предотвращения кеширования
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -232,18 +160,328 @@ export const deleteObject = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const deleted = await RealEstateObjectsModel.findByIdAndDelete(
-      req.params.id,
-    );
-    if (!deleted) {
+    const objectId = req.params.id;
+    console.log('🗑️ НАЧАЛО каскадного удаления объекта:', objectId);
+
+    // 1. Получаем основной объект со всеми связанными данными
+    const mainObject = await RealEstateObjectsModel.findById(objectId);
+    if (!mainObject) {
+      console.log('❌ Объект не найден:', objectId);
       res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
-    res.json({ message: 'Das Objekt wurde erfolgreich gelöscht.' });
+
+    console.log('📋 Найден объект для удаления:', {
+      id: mainObject._id,
+      type: mainObject.type,
+      title: mainObject.title,
+      imagesCount: mainObject.images?.length || 0,
+      videosCount: mainObject.videos?.length || 0
+    });
+
+    // 2. УДАЛЕНИЕ ИЗОБРАЖЕНИЙ
+    if (mainObject.images && mainObject.images.length > 0) {
+      console.log('🖼️ Удаляем изображения...');
+      
+      for (const imageId of mainObject.images) {
+        try {
+          // Получаем данные изображения
+          const image = await ImagesModel.findById(imageId);
+          if (image) {
+            console.log(`🗑️ Удаляем изображение: ${image._id} (${image.url})`);
+            
+            // Удаляем файл из BunnyCDN
+            try {
+              await deleteFromBunny(image.url);
+              console.log(`✅ Файл удален из BunnyCDN: ${image.url}`);
+            } catch (cdnError) {
+              console.warn(`⚠️ Не удалось удалить файл из BunnyCDN: ${image.url}`, cdnError);
+            }
+            
+            // Удаляем запись из базы данных
+            await ImagesModel.findByIdAndDelete(imageId);
+            console.log(`✅ Изображение удалено из БД: ${image._id}`);
+          }
+        } catch (imageError) {
+          console.error(`❌ Ошибка при удалении изображения ${imageId}:`, imageError);
+        }
+      }
+    }
+
+    // 3. УДАЛЕНИЕ ВИДЕО
+    if (mainObject.videos && mainObject.videos.length > 0) {
+      console.log('🎥 Удаляем видео...');
+      
+      for (const videoId of mainObject.videos) {
+        try {
+          // Получаем данные видео
+          const video = await VideoModel.findById(videoId);
+          if (video) {
+            console.log(`🗑️ Удаляем видео: ${video._id} (${video.title})`);
+            
+            // Удаляем файл из BunnyCDN
+            if (video.videoId) {
+              try {
+                await deleteFromBunnyVideo(video.videoId);
+                console.log(`✅ Видео удалено из BunnyCDN: ${video.videoId}`);
+              } catch (cdnError) {
+                console.warn(`⚠️ Не удалось удалить видео из BunnyCDN: ${video.videoId}`, cdnError);
+              }
+            }
+            
+            // Удаляем запись из базы данных
+            await VideoModel.findByIdAndDelete(videoId);
+            console.log(`✅ Видео удалено из БД: ${video._id}`);
+          }
+        } catch (videoError) {
+          console.error(`❌ Ошибка при удалении видео ${videoId}:`, videoError);
+        }
+      }
+    }
+
+    // 4. УДАЛЕНИЕ СПЕЦИФИЧЕСКИХ ДАННЫХ ОБЪЕКТА
+    console.log('🏠 Удаляем специфические данные объекта...');
+    
+    try {
+      switch (mainObject.type) {
+        case 'Apartments':
+          if (mainObject.apartments) {
+            await ApartmentsModel.findByIdAndDelete(mainObject.apartments);
+            console.log(`✅ Данные квартиры удалены: ${mainObject.apartments}`);
+          }
+          break;
+          
+        case 'Residential Houses':
+          if (mainObject.residentialHouses) {
+            await ResidentialHousesModel.findByIdAndDelete(mainObject.residentialHouses);
+            console.log(`✅ Данные дома удалены: ${mainObject.residentialHouses}`);
+          }
+          break;
+          
+        case 'Land Plots':
+          if (mainObject.landPlots) {
+            await LandPlotsModel.findByIdAndDelete(mainObject.landPlots);
+            console.log(`✅ Данные участка удалены: ${mainObject.landPlots}`);
+          }
+          break;
+          
+        case 'Commercial/Non-Residential Buildings':
+          if (mainObject.commercial_NonResidentialBuildings) {
+            await CommercialNonResidentialBuildingsModel.findByIdAndDelete(mainObject.commercial_NonResidentialBuildings);
+            console.log(`✅ Данные коммерческой недвижимости удалены: ${mainObject.commercial_NonResidentialBuildings}`);
+          }
+          break;
+          
+        default:
+          console.warn(`⚠️ Неизвестный тип объекта: ${mainObject.type}`);
+      }
+    } catch (specificError) {
+      console.error('❌ Ошибка при удалении специфических данных:', specificError);
+    }
+
+    // 5. УДАЛЕНИЕ ОСНОВНОГО ОБЪЕКТА
+    console.log('🗑️ Удаляем основной объект...');
+    await RealEstateObjectsModel.findByIdAndDelete(objectId);
+    console.log(`✅ Основной объект удален: ${objectId}`);
+
+    // 6. ФИНАЛЬНАЯ ПРОВЕРКА
+    console.log('🔍 Выполняем финальную проверку...');
+    
+    // Проверяем на наличие сиротских изображений
+    const orphanImages = await ImagesModel.find({ realEstateObject: objectId });
+    if (orphanImages.length > 0) {
+      console.warn(`⚠️ Найдены сиротские изображения: ${orphanImages.length}`);
+      for (const orphan of orphanImages) {
+        await ImagesModel.findByIdAndDelete(orphan._id);
+        console.log(`🧹 Удалено сиротское изображение: ${orphan._id}`);
+      }
+    }
+    
+    // Проверяем на наличие сиротских видео
+    const orphanVideos = await VideoModel.find({ realEstateObject: objectId });
+    if (orphanVideos.length > 0) {
+      console.warn(`⚠️ Найдены сиротские видео: ${orphanVideos.length}`);
+      for (const orphan of orphanVideos) {
+        await VideoModel.findByIdAndDelete(orphan._id);
+        console.log(`🧹 Удалено сиротское видео: ${orphan._id}`);
+      }
+    }
+
+    console.log('✅ Каскадное удаление завершено успешно!');
+    console.log('📊 Итоги удаления:', {
+      mainObject: '✅ удален',
+      specificData: '✅ удален',
+      images: mainObject.images?.length || 0,
+      videos: mainObject.videos?.length || 0,
+      cdnFilesCleanup: '✅ выполнена'
+    });
+
+    res.json({ 
+      message: 'Das Objekt und alle zugehörigen Daten wurden erfolgreich gelöscht.',
+      deletedItems: {
+        mainObject: 1,
+        images: mainObject.images?.length || 0,
+        videos: mainObject.videos?.length || 0,
+        specificData: 1
+      }
+    });
+    
   } catch (error) {
-    res.status(500).json({ message: 'Fehler beim Löschen des Objekts', error });
+    console.error('❌ КРИТИЧЕСКАЯ ОШИБКА при каскадном удалении:', error);
+    console.error('❌ Стек ошибки:', (error as Error).stack);
+    
+    res.status(500).json({ 
+      message: 'Fehler beim Löschen des Objekts', 
+      error: (error as Error).message,
+      details: 'Некоторые связанные данные могли остаться в базе. Обратитесь к администратору.'
+    });
   }
 };
+
+// export const deleteObject = async (
+//   req: Request,
+//   res: Response,
+// ): Promise<void> => {
+//   try {
+//     const deleted = await RealEstateObjectsModel.findByIdAndDelete(
+//       req.params.id,
+//     );
+//     if (!deleted) {
+//       res.status(404).json({ message: 'Objekt nicht gefunden' });
+//       return;
+//     }
+//     res.json({ message: 'Das Objekt wurde erfolgreich gelöscht.' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Fehler beim Löschen des Objekts', error });
+//   }
+// };
+
+// Функция для очистки всех сиротских записей в базе данных
+export const cleanupOrphanRecords = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    console.log('🧹 НАЧАЛО очистки сиротских записей...');
+
+    // Получаем все ID существующих объектов недвижимости
+    const existingObjects = await RealEstateObjectsModel.find({}, '_id');
+    const existingObjectIds = existingObjects.map((obj: any) => obj._id.toString());
+    
+    console.log(`📊 Найдено активных объектов: ${existingObjectIds.length}`);
+
+    let cleanupStats = {
+      orphanImages: 0,
+      orphanVideos: 0,
+      orphanApartments: 0,
+      orphanHouses: 0,
+      orphanLandPlots: 0,
+      orphanCommercial: 0,
+      deletedFiles: 0
+    };
+
+    // 1. ОЧИСТКА СИРОТСКИХ ИЗОБРАЖЕНИЙ
+    console.log('🖼️ Проверка сиротских изображений...');
+    const orphanImages = await ImagesModel.find({
+      realEstateObject: { $nin: existingObjectIds }
+    });
+
+    for (const image of orphanImages) {
+      try {
+        // Удаляем файл из BunnyCDN
+        await deleteFromBunny(image.url);
+        cleanupStats.deletedFiles++;
+        console.log(`🗑️ Удален файл: ${image.url}`);
+      } catch (cdnError) {
+        console.warn(`⚠️ Не удалось удалить файл: ${image.url}`);
+      }
+
+      // Удаляем запись из БД
+      await ImagesModel.findByIdAndDelete(image._id);
+      cleanupStats.orphanImages++;
+    }
+
+    // 2. ОЧИСТКА СИРОТСКИХ ВИДЕО
+    console.log('🎥 Проверка сиротских видео...');
+    const orphanVideos = await VideoModel.find({
+      realEstateObject: { $nin: existingObjectIds }
+    });
+
+    for (const video of orphanVideos) {
+      try {
+        // Удаляем файл из BunnyCDN
+        if (video.videoId) {
+          await deleteFromBunnyVideo(video.videoId);
+          cleanupStats.deletedFiles++;
+          console.log(`🗑️ Удалено видео: ${video.videoId}`);
+        }
+      } catch (cdnError) {
+        console.warn(`⚠️ Не удалось удалить видео: ${video.videoId}`);
+      }
+
+      // Удаляем запись из БД
+      await VideoModel.findByIdAndDelete(video._id);
+      cleanupStats.orphanVideos++;
+    }
+
+    // 3. ОЧИСТКА СИРОТСКИХ КВАРТИР
+    console.log('🏠 Проверка сиротских квартир...');
+    const orphanApartments = await ApartmentsModel.find({
+      realEstateObject: { $nin: existingObjectIds }
+    });
+    for (const apartment of orphanApartments) {
+      await ApartmentsModel.findByIdAndDelete(apartment._id);
+      cleanupStats.orphanApartments++;
+    }
+
+    // 4. ОЧИСТКА СИРОТСКИХ ДОМОВ
+    console.log('🏘️ Проверка сиротских домов...');
+    const orphanHouses = await ResidentialHousesModel.find({
+      realEstateObject: { $nin: existingObjectIds }
+    });
+    for (const house of orphanHouses) {
+      await ResidentialHousesModel.findByIdAndDelete(house._id);
+      cleanupStats.orphanHouses++;
+    }
+
+    // 5. ОЧИСТКА СИРОТСКИХ УЧАСТКОВ
+    console.log('🌿 Проверка сиротских участков...');
+    const orphanLandPlots = await LandPlotsModel.find({
+      realEstateObject: { $nin: existingObjectIds }
+    });
+    for (const plot of orphanLandPlots) {
+      await LandPlotsModel.findByIdAndDelete(plot._id);
+      cleanupStats.orphanLandPlots++;
+    }
+
+    // 6. ОЧИСТКА СИРОТСКОЙ КОММЕРЧЕСКОЙ НЕДВИЖИМОСТИ
+    console.log('🏢 Проверка сиротской коммерческой недвижимости...');
+    const orphanCommercial = await CommercialNonResidentialBuildingsModel.find({
+      realEstateObject: { $nin: existingObjectIds }
+    });
+    for (const commercial of orphanCommercial) {
+      await CommercialNonResidentialBuildingsModel.findByIdAndDelete(commercial._id);
+      cleanupStats.orphanCommercial++;
+    }
+
+    console.log('✅ Очистка сиротских записей завершена!');
+    console.log('📊 Статистика очистки:', cleanupStats);
+
+    res.json({
+      message: 'Очистка сиротских записей выполнена успешно',
+      statistics: cleanupStats,
+      totalCleaned: Object.values(cleanupStats).reduce((sum, count) => sum + count, 0)
+    });
+
+  } catch (error) {
+    console.error('❌ Ошибка при очистке сиротских записей:', error);
+    res.status(500).json({
+      message: 'Ошибка при очистке сиротских записей',
+      error: (error as Error).message
+    });
+  }
+};
+
 
 // ДОБАВЛЕННАЯ ФУНКЦИЯ DEBUG
 export const debugObjectState = async (req: Request, res: Response): Promise<void> => {
@@ -256,6 +494,37 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
     
     // Получаем изображения
     const images = await ImagesModel.find({ realEstateObject: objectId }).lean();
+
+        // Получаем видео
+    const videos = await VideoModel.find({ realEstateObject: objectId }).lean();
+
+        // ДОБАВЛЕНО: Получаем специфические данные
+    let specificData = null;
+    if (object) {
+      switch (object.type) {
+        case 'Apartments':
+          if (object.apartments) {
+            specificData = await ApartmentsModel.findById(object.apartments).lean();
+          }
+          break;
+        case 'Residential Houses':
+          if (object.residentialHouses) {
+            specificData = await ResidentialHousesModel.findById(object.residentialHouses).lean();
+          }
+          break;
+        case 'Land Plots':
+          if (object.landPlots) {
+            specificData = await LandPlotsModel.findById(object.landPlots).lean();
+          }
+          break;
+        case 'Commercial/Non-Residential Buildings':
+          if (object.commercial_NonResidentialBuildings) {
+            specificData = await CommercialNonResidentialBuildingsModel.findById(object.commercial_NonResidentialBuildings).lean();
+          }
+          break;
+      }
+    }
+    
     
     const result = {
       timestamp: new Date().toISOString(),
@@ -263,7 +532,10 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
         id: object?._id,
         title: object?.title,
         images: object?.images,
-        imagesCount: object?.images?.length || 0
+        videos: object?.videos,
+        imagesCount: object?.images?.length || 0,
+        videosCount: object?.videos?.length || 0,
+        specificDataId: object?.apartments || object?.residentialHouses || object?.landPlots || object?.commercial_NonResidentialBuildings
       },
       actualImages: images.map(img => ({
         id: img._id,
@@ -271,17 +543,45 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
         type: img.type,
         realEstateObject: img.realEstateObject
       })),
+        actualVideos: videos.map(video => ({
+        id: video._id,
+        videoId: video.videoId,
+        title: video.title,
+        url: video.url,
+        thumbnailUrl: video.thumbnailUrl,
+        realEstateObject: video.realEstateObject
+      })),
+        specificData: specificData ? {
+        id: specificData._id,
+        type: (specificData as any).type || 'N/A',
+        livingArea: (specificData as any).livingArea,
+        plotArea: (specificData as any).plotArea,
+        area: (specificData as any).area,
+        buildingType: (specificData as any).buildingType || null
+      } : null,
       actualImagesCount: images.length,
+      actualVideosCount:videos.length,
       orderMatch: object?.images?.length === images.length,
+      vodeoOrderMatch: object?.videos?.length === videos.length,
       // Дополнительная информация для отладки
       imageIdsInObject: object?.images || [],
       imageIdsInCollection: images.map(img => img._id?.toString()),
+      videoIdsInObject: object?.videos || [],
+      videoIdsInCollection: videos.map(video => video._id?.toString()),
       missingInObject: images
         .map(img => img._id?.toString())
         .filter(id => !object?.images?.map(objId => objId.toString()).includes(id)),
       missingInCollection: (object?.images || [])
         .map(objId => objId.toString())
-        .filter(id => !images.map(img => img._id?.toString()).includes(id))
+        .filter(id => !images.map(img => img._id?.toString()).includes(id)),
+      dataIntegrity: {
+        hasMainObject: !!object,
+        hasSpecificData: !!specificData,
+        imagesConsistent: object?.images?.length === images.length,
+        videosConsistent: object?.videos?.length === videos.length,
+        noOrphanImages: images.every(img => img.realEstateObject.toString() === objectId),
+        noOrphanVideos: videos.every(video => video.realEstateObject.toString() === objectId)
+      }
     };
     
     console.log('📊 DEBUG результат:', JSON.stringify(result, null, 2));

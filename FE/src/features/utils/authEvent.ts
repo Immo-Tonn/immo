@@ -1,7 +1,5 @@
 // immo/FE/src/features/utils/authEvent.ts
-// Простой механизм глобальных событий авторизации для взаимодействия между компонентами
-
-// Кастомное событие для авторизации
+// кастомное событие для авторизации
 export const authEvents = {
   // Событие входа в систему
   login: new CustomEvent('admin-login'),
@@ -40,6 +38,7 @@ export const getAdminToken = (): string | null => {
 };
 
 // Автоматическая очистка при закрытии браузера
+// Это обеспечивает дополнительную защиту
 export const setupAutoLogout = (): void => {
   // Слушатель события закрытия браузера/вкладки
   window.addEventListener('beforeunload', () => {

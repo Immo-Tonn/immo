@@ -24,9 +24,7 @@ export const uploadImage = async (
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / total,
         );
-        // const percentCompleted = Math.round(
-        //   (progressEvent.loaded * 100) / (progressEvent.total || 100),
-        // );
+
         if (onProgress) {
           onProgress(percentCompleted);
         }

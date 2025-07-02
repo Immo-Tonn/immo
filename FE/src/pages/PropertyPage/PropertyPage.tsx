@@ -13,7 +13,7 @@ const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  const { objectData, images, loading, err, videos, refreshData } = usePropertyData(id);
+  const { objectData, images, loading, err, videos, refreshData, isDeleted, markAsDeleted } = usePropertyData(id);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   
@@ -22,6 +22,17 @@ const PropertyPage: React.FC = () => {
     const token = sessionStorage.getItem('adminToken');
     setIsAdmin(!!token);
   }, []);
+
+    useEffect(() => {
+    if (isDeleted) {
+      console.log('Объект удален, показываем сообщение и редиректим через 3 секунды');
+      const timer = setTimeout(() => {
+        navigate('/immobilien');
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isDeleted, navigate]);
 
     // Edit handler (admin only)
   const handleEdit = () => {
@@ -48,23 +59,69 @@ const PropertyPage: React.FC = () => {
     }
 
     try {
+      markAsDeleted();
       await axios.delete(`/objects/${id}`);
       
       // delete the object from confirmed
       const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
       const updatedConfirmed = confirmedObjects.filter((objId: string) => objId !== id);
       sessionStorage.setItem('confirmedObjects', JSON.stringify(updatedConfirmed));
+
+      console.log('Объект успешно удален, -->> на /immobilien');
       
-      alert('Das Objekt ist erfolgreich gelöscht');
-      navigate('/immobilien');
+      // alert('Das Objekt ist erfolgreich gelöscht');
+      navigate('/immobilien', {
+        state: {
+          message: 'Das Objekt wurde erfolgreich gelöscht',
+          type:'success'
+        }
+      });
     } catch (err: any) {
       console.error('Error deleting object:', err);
+      markAsDeleted();
       alert('Error deleting object: ' + (err.response?.data?.message || err.message));
     }
   };
 
+    if (isDeleted) {
+    return (
+      <div className={styles.propertyPageContainer}>
+        <div className={styles.deletedObjectMessage}>
+          <h2>Objekt wurde gelöscht</h2>
+          <p>Das angeforderte Objekt wurde erfolgreich gelöscht.</p>
+          <p>Sie werden in wenigen Sekunden zur Objektübersicht weitergeleitet...</p>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate('/immobilien')}
+          >
+            Sofort zur Übersicht
+          </button>
+        </div>
+      </div>
+    );
+  }
+
     if (loading) return <p>Laden...</p>;
-    if (!objectData) return <p>Objekt nicht gefunden</p>;
+
+      if (err && err.includes('nicht gefunden')) {
+    return (
+      <div className={styles.propertyPageContainer}>
+        <div className={styles.notFoundMessage}>
+          <h2>Objekt nicht gefunden</h2>
+          <p>Das angeforderte Objekt konnte nicht gefunden werden.</p>
+          <p>Möglicherweise wurde es gelöscht oder die URL ist ungültig.</p>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate('/immobilien')}
+          >
+            Zur Objektübersicht
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!objectData) return <p>Objekt nicht gefunden</p>;
 
   return (
     <div className={styles.propertyPageContainer}>

@@ -14,28 +14,15 @@ import { protectImageRoutes } from "../middleware/adminRouteMiddleware";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
-
-// ИСПРАВЛЕНИЕ: Специальные маршруты должны идти ПЕРВЫМИ (до параметризованных)
-router.post("/delete-by-url", protectImageRoutes, deleteImageByUrl); // POST метод!
+router.put('/:id', protectImageRoutes, updateImageMetadata);
+router.delete('/delete-by-url', protectImageRoutes, deleteImageByUrl);
 router.get("/", getAllImages);
 router.get("/by-object", getImagesByObjectId);
-
-// Параметризованные маршруты должны идти ПОСЛЕДНИМИ
 router.get("/:id", getImageById);
 router.post("/", protectImageRoutes, upload.single("file"), createImage);
 router.put("/:id", protectImageRoutes, upload.single("file"), updateImage);
-router.put("/metadata/:id", protectImageRoutes, updateImageMetadata); // ИСПРАВЛЕН путь
 router.delete("/:id", protectImageRoutes, deleteImage);
-
-// router.put('/:id', protectImageRoutes, updateImageMetadata);
-// router.delete('/delete-by-url', protectImageRoutes, deleteImageByUrl);
-// router.get("/", getAllImages);
-// router.get("/by-object", getImagesByObjectId);
-// router.get("/:id", getImageById);
-// router.post("/", protectImageRoutes, upload.single("file"), createImage);
-// router.put("/:id", protectImageRoutes, upload.single("file"), updateImage);
-// router.delete("/:id", protectImageRoutes, deleteImage);
-// router.delete('/delete-by-url', protectImageRoutes, deleteImageByUrl);
+router.delete('/delete-by-url', protectImageRoutes, deleteImageByUrl);
 
 export default router;
 

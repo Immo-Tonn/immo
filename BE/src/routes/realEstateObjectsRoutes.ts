@@ -6,6 +6,7 @@ import {
   updateObject,
   deleteObject,
   debugObjectState,
+  cleanupOrphanRecords
 } from "../controllers/realEstateObjectsController";
 import { protectObjectRoutes } from "../middleware/adminRouteMiddleware";
 
@@ -27,5 +28,9 @@ router.put("/:id", protectObjectRoutes, updateObject);
 
 // Delete object by ID
 router.delete("/:id", protectObjectRoutes, deleteObject);
+
+// Маршрут для очистки сиротских записей (только для админов)
+router.post("/cleanup-orphans", protectObjectRoutes, cleanupOrphanRecords);
+
 
 export default router;

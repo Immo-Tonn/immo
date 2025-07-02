@@ -445,7 +445,8 @@ const ObjectPreview = () => {
     return <div className={styles.error}>Objekt nicht gefunden</div>;
   }
 
-
+  // get the object number
+  // const objectNumber = formatObjectNumber(objectData._id);
 
   // Combine images and videos for a gallery
   const allMedia = [...images, ...videos];
@@ -459,6 +460,14 @@ const ObjectPreview = () => {
        {getSuccessMessage()}
       </div>
    )}   
+
+      {/* object number */}
+      {/* <div className={styles.objectNumberSection}>
+        <div className={styles.objectNumber}>
+          <span className={styles.objectNumberLabel}>Objektnummer::</span>
+          <span className={styles.objectNumberValue}>{objectNumber}</span>
+        </div>
+      </div> */}
 
       <div className={styles.imagesSection}>
         <h3>Bilder</h3>

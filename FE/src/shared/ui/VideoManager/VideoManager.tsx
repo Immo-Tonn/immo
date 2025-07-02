@@ -413,6 +413,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                         console.warn('Ошибка загрузки thumbnail:', getCorrectThumbnailUrl(video));
                         // Если thumbnail не загрузился, скрываем изображение и показываем плейсхолдер
                         const target = e.target as HTMLImageElement;
+                        
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent) {

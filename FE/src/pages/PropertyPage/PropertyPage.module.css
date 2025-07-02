@@ -2,6 +2,60 @@
   margin: 0 auto;
   max-width: 1200px;
 }
+
+.deletedObjectMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 400px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.deletedObjectMessage h2 {
+  color: #28a745;
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.deletedObjectMessage p {
+  color: #6c757d;
+  margin-bottom: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.notFoundMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 400px;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.notFoundMessage h2 {
+  color: #856404;
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.notFoundMessage p {
+  color: #856404;
+  margin-bottom: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 .refreshButton {
   background-color: #17a2b8;
   color: white;
@@ -11,6 +65,7 @@
   cursor: pointer;
   font-size: 14px;
   margin-left: 10px;
+  transition: all 0.2s ease;
 }
 
 .refreshButton:hover {
