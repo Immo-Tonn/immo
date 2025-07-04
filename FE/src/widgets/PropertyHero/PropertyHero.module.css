@@ -5,11 +5,28 @@
 
 .title {
   font-family: var(--Roboto);
-  font-weight: var(--font-weight-secondary);
+  font-weight: 400;
   font-size: var(--font-size-main);
   margin-bottom: 45px;
 }
-
+.status {
+  font-family: var(--Roboto);
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  max-width: 100%;
+  margin: 10px 20px;
+}
+.label {
+  font-size: 22px;
+  font-weight: bold;
+}
+.statusBanner {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #530614;
+  padding: 1rem;
+}
 .imageContainer {
   display: flex;
   gap: 1rem;
@@ -142,9 +159,9 @@
 }
 
 .statusBadge {
+  font-family: var(--Roboto);
   position: absolute;
   top: 1rem;
-  font-family: var(--Roboto);
   left: 1rem;
   background-color: rgb(228 236 239 / 85%);
   color: #000000;
@@ -278,6 +295,7 @@ iframe {
   font-size: 1rem;
   font-weight: 500;
 }
+
 @media (max-width: 765px) {
   .imageContainer {
     display: none;

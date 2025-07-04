@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
+
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  // Обработчик сброса пароля
+
+  // Password Reset Handler
   const handleResetPassword = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
@@ -16,7 +18,7 @@ const ForgotPassword: React.FC = () => {
       return;
     }
 
-    // Проверка формата email
+    // Checking email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email');
@@ -36,7 +38,7 @@ const ForgotPassword: React.FC = () => {
       };
       let displayMessage = responseData.message;
 
-      // В режиме разработки показываем временный пароль, если он есть
+      // In development mode, show the temporary password, if there is one
       if (responseData.tempPassword) {
         displayMessage += ` (Temporary password: ${responseData.tempPassword})`;
       }
@@ -50,17 +52,8 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: '400px',
-        margin: '0 auto',
-        padding: '20px',
-        minHeight: '100dvh',
-      }}
-    >
-      <h1 style={{ fontFamily: 'var(--Roboto)' }}>
-        Passwort-Wiederherstellung
-      </h1>
+    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+      <h1>Passwort-Wiederherstellung</h1>
 
       {error && (
         <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>
@@ -73,11 +66,7 @@ const ForgotPassword: React.FC = () => {
         <div style={{ marginBottom: '15px' }}>
           <label
             htmlFor="email"
-            style={{
-              display: 'block',
-              marginBottom: '5px',
-              fontFamily: 'var(--Roboto)',
-            }}
+            style={{ display: 'block', marginBottom: '5px' }}
           >
             Email:
           </label>
@@ -109,10 +98,7 @@ const ForgotPassword: React.FC = () => {
         </button>
 
         <div style={{ marginTop: '20px' }}>
-          <Link
-            to="/add-property"
-            style={{ color: '#2196F3', fontFamily: 'var(--Roboto)' }}
-          >
+          <Link to="/add-property" style={{ color: '#2196F3' }}>
             Zurück zum Login
           </Link>
         </div>

@@ -54,12 +54,15 @@ export const createCommercial_NonResidentialBuildings = async (
   try {
     const { realEstateObject, ...commercial_NonResidentialBuildingsData } =
       req.body;
+
+    // 1. Проверка: существует ли объект недвижимости
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
 
+    // Проверка на соответствие типа в обьекте недвижимости
     if (realEstate.type !== ObjectType.COMMERCIAL) {
       res.status(400).json({
         message: 'Der Eigenschaftstyp stimmt nicht überein.',
@@ -74,6 +77,7 @@ export const createCommercial_NonResidentialBuildings = async (
       return;
     }
 
+    // 2. Создаём новое нежилое помещение и связываем с объектом
     const newCommercial_NonResidentialBuilding =
       new Commercial_NonResidentialBuildingsModel({
         ...commercial_NonResidentialBuildingsData,
@@ -83,10 +87,12 @@ export const createCommercial_NonResidentialBuildings = async (
     const savedCommercial_NonResidentialBuilding =
       await newCommercial_NonResidentialBuilding.save();
 
+    // 3. Добавляем ID нежилого помещения в объект недвижимости
     realEstate.commercial_NonResidentialBuildings =
       savedCommercial_NonResidentialBuilding._id as Types.ObjectId;
     await realEstate.save();
 
+    // 4. Ответ клиенту
     res.status(201).json(savedCommercial_NonResidentialBuilding);
   } catch (error) {
     res.status(500).json({
@@ -128,6 +134,7 @@ export const deleteCommercial_NonResidentialBuilding = async (
   res: Response,
 ): Promise<void> => {
   try {
+    // 1. Удаляем по ID
     const deletedCommercial_NonResidentialBuilding =
       await Commercial_NonResidentialBuildingsModel.findByIdAndDelete(
         req.params.id,
@@ -138,10 +145,14 @@ export const deleteCommercial_NonResidentialBuilding = async (
       });
       return;
     }
+
+    // 2. Удаляем ID помещения из соответствующего объекта недвижимости
     await RealEstateObjectsModel.findByIdAndUpdate(
       deletedCommercial_NonResidentialBuilding.realEstateObject,
       { $unset: { commercial_NonResidentialBuildings: '' } },
     );
+
+    // 3. Ответ клиенту
     res.status(200).json({
       message:
         'Zusätzliche Informationen zum Objekt Gewerbe-/Nichtwohngebäude entfernt',

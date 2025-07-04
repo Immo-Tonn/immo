@@ -1,5 +1,5 @@
 // immo/BE/src/routes/authRoutes.ts
-import { Router } from 'express';
+import { Router } from "express";
 import {
   checkAdminExists,
   registerAdmin,
@@ -8,29 +8,31 @@ import {
   requestPasswordReset,
   changePassword,
   testEmailConfig,
-} from '../controllers/authController';
-import { protect } from '../middlewares/authMiddleware';
+} from "../controllers/authController";
+import { protect } from "../middleware/authMiddleware";
 
 const router = Router();
 
 // Checking for admin existence
-router.get('/admin-exists', checkAdminExists);
+router.get("/admin-exists", checkAdminExists);
 
 // Admin registration
-router.post('/register', registerAdmin);
+router.post("/register", registerAdmin);
 
-router.post('/add-property', loginAdmin);
+// Admin Authorization
+router.post("/add-property", loginAdmin);
 
 // Remove admin registration (protected route)
-router.delete('/delete-admin', protect, deleteAdmin);
+router.delete("/delete-admin", protect, deleteAdmin);
 
 // Change password
-router.put('/change-password', protect, changePassword);
+router.put("/change-password", protect, changePassword);
 
 // Password reset request
-router.post('/reset-password', requestPasswordReset);
+router.post("/reset-password", requestPasswordReset);
 
 // Testing email configuration
-router.get('/test-email', testEmailConfig);
+router.get("/test-email", testEmailConfig);
 
 export default router;
+

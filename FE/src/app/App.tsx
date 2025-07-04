@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from '@widgets/Layout/Layout';
+import 'leaflet/dist/leaflet.css';
 import ScrollToTop from '@shared/ui/ScrollToTop/ScrollToTop';
 import Home from '@pages/Home/Home';
 import NotFound from '@pages/NotFound/NotFound';
@@ -15,15 +16,16 @@ import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
 import SalesSupport from '@pages/SalesSupport/SalesSupport';
-import LawAndAdvice from '@pages/LawAndAdvice/LawAndAdvice';
+import RechtUndRat from '@pages/RechtUndRat/RechtUndRat';
+import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
+import ObjectPreview from '@pages/AdminObject/ObjectPrewiew/ObjectPrewiew';
 import Login from '@pages/Auth/Login';
 import Register from '@pages/Auth/Register';
-import ObjectPreview from '@pages/AdminObject/ObjectPrewiew/ObjectPrewiew';
 import ForgotPassword from '@pages/Auth/ForgotPassword';
 import ProtectedRoute from '@features/utils/ProtectedRoute';
 import ChangePassword from '@pages/Auth/ChangePassword';
 import CreateObject from '@pages/AdminObject/CreateObject/CreateObject';
-import 'leaflet/dist/leaflet.css';
+
 const App = () => {
   return (
     <Router>
@@ -39,11 +41,14 @@ const App = () => {
           <Route path="/kontakt" element={<ContactForm />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-          <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
           <Route path="/kontakt/danke" element={<DankePage />} />
+          <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
           <Route path="/verkaufssupport" element={<SalesSupport />} />
-          <Route path="/recht-und-rat" element={<LawAndAdvice />} />
+          <Route path="/recht-und-rat" element={<RechtUndRat />} />
+          <Route path="/rechner" element={<MortgageCalculator />} />
           <Route path="*" element={<NotFound />} />
+
+                    {/* Страницы аутентификации */}
           <Route path="/add-property" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -52,6 +57,7 @@ const App = () => {
             element={<ProtectedRoute>{<ChangePassword />}</ProtectedRoute>}
           />
 
+                    {/* Защищенные маршруты для администратора */}
           <Route
             path="/create-object"
             element={
@@ -70,12 +76,12 @@ const App = () => {
           />
           <Route
             path="/edit-object/:id"
-            element={
+            element= {
               <ProtectedRoute>
                 <CreateObject />
               </ProtectedRoute>
             }
-          />
+            />
         </Routes>
       </Layout>
     </Router>

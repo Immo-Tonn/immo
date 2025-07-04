@@ -19,13 +19,14 @@ export enum ImageType {
   ADDITIONAL = 'additional',
 }
 
+// Интерфейс для базового объекта недвижимости
 export interface IRealEstateObject {
   id?: string;
   type: ObjectType;
-  title: string;
+  title: string; //new
   description: string;
-  features?: string;
-  miscellaneous?: string;
+  features?: string; //new
+  miscellaneous?: string; //new
   location: string;
   address: {
     country: string;
@@ -41,6 +42,7 @@ export interface IRealEstateObject {
   images?: string[];
 }
 
+// Интерфейс для квартиры
 export interface IApartment {
   id?: string;
   realEstateObject: string;
@@ -59,6 +61,7 @@ export interface IApartment {
   additionalFeatures?: string;
 }
 
+// Интерфейс для жилого дома
 export interface IResidentialHouse {
   id?: string;
   realEstateObject: string;
@@ -78,6 +81,7 @@ export interface IResidentialHouse {
   additionalFeatures?: string;
 }
 
+// Интерфейс для земельного участка
 export interface ILandPlot {
   id?: string;
   realEstateObject: string;
@@ -87,6 +91,7 @@ export interface ILandPlot {
   recommendedUsage?: string;
 }
 
+// Интерфейс для коммерческой/нежилой недвижимости
 export interface ICommercialNonResidentialBuilding {
   id?: string;
   realEstateObject: string;
@@ -97,6 +102,7 @@ export interface ICommercialNonResidentialBuilding {
   additionalFeatures?: string;
 }
 
+// Интерфейс для изображения
 export interface IImage {
   id?: string;
   realEstateObject: string;

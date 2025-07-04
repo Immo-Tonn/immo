@@ -6,13 +6,14 @@ import {
   updateLandPlots,
   deleteLandPlot,
 } from '../controllers/landPlotsController';
+import { protectObjectRoutes } from "../middleware/adminRouteMiddleware";
 
 const router = express.Router();
 
-router.get('/', getAllLandPlots);
-router.get('/:id', getLandPlotById);
-router.post('/', createLandPlot);
-router.put('/:id', updateLandPlots);
-router.delete('/:id', deleteLandPlot);
+router.get("/", getAllLandPlots);
+router.get("/:id", getLandPlotById);
+router.post("/", protectObjectRoutes, createLandPlot);
+router.put("/:id", protectObjectRoutes, updateLandPlots);
+router.delete("/:id", protectObjectRoutes, deleteLandPlot);
 
 export default router;

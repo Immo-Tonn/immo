@@ -1,3 +1,4 @@
+// ./src/pages/RealEstate/RealEstate.tsx
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropertyCard from '@widgets/PropertyCard/PropertyCard';
@@ -65,19 +66,17 @@ const RealEstate = () => {
           </div>
           {objectData && objectData.length > 0 ? (
             <ul className={styles.cardList} ref={listRef}>
-              {objectData
-                .filter(property => property.status !== 'archived')
-                .map((obj, i) => (
-                  <PropertyCard
-                    key={obj._id}
-                    object={obj}
-                    images={images}
-                    ref={el => {
-                      refs.current[i] = el;
-                    }}
-                    residentialHouse={obj.residentialHouses}
-                  />
-                ))}
+              {objectData.map((obj, i) => (
+                <PropertyCard
+                  key={obj._id}
+                  object={obj}
+                  images={images}
+                  ref={el => {
+                    refs.current[i] = el;
+                  }}
+                  residentialHouse={obj.residentialHouses}
+                />
+              ))}
             </ul>
           ) : (
             !loading &&
@@ -90,18 +89,43 @@ const RealEstate = () => {
                     ? 'Es wurden noch keine Immobilien erstellt. Erstellen Sie Ihre erste Immobilie!'
                     : 'Derzeit sind keine Immobilien verfügbar.'}
                 </p>
-                {isAdmin && (
+                {/* {isAdmin && (
                   <button
                     className={styles.createFirstButton}
                     onClick={handleCreateNew}
                   >
                     Создать первый объект
                   </button>
-                )}
+                )} */}
               </div>
             )
           )}
-          {isAdmin && objectData && objectData.length > 0 && (
+
+          {isAdmin && (
+            <div className={styles.adminInfo}>
+              <h4>Informationen für Administratoren</h4>
+              {objectData && objectData.length > 0 ? (
+          <>
+            <p>Alle Nutzer sehen alle erstellten Objekte auf der Website.</p>
+            <p>
+            Um Objekte zu verwalten, verwenden Sie die Schaltflächen
+           „Bearbeiten" und „Löschen" in der Detailansicht oder erstellen
+           Sie ein neues Objekt über die Schaltfläche „+ Objekt erstellen".
+           </p>
+         </>
+    ) : (
+      <>
+        <p>Derzeit sind keine Objekte in der Datenbank vorhanden.</p>
+        <p>
+          Erstellen Sie Ihr erstes Objekt über die Schaltfläche 
+          „+ Objekt erstellen" oben auf der Seite.
+        </p>
+      </>
+    )}
+  </div>
+)}
+
+          {/* {isAdmin && objectData && objectData.length > 0 && (
             <div className={styles.adminInfo}>
               <h4>Informationen für Administratoren</h4>
               <p>Alle Nutzer sehen alle erstellten Objekte auf der Website.</p>
@@ -111,7 +135,7 @@ const RealEstate = () => {
                 Sie ein neues Objekt über die Schaltfläche „+ Objekt erstellen".
               </p>
             </div>
-          )}
+          )} */}
         </section>
       )}
     </>
@@ -119,3 +143,4 @@ const RealEstate = () => {
 };
 
 export default RealEstate;
+

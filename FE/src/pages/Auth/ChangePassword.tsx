@@ -1,3 +1,4 @@
+// src/pages/Auth/ChangePassword.tsx
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
@@ -16,6 +17,7 @@ const ChangePassword: React.FC = () => {
     useState<boolean>(false);
   const navigate = useNavigate();
 
+  // Checking authorization when component loading
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
@@ -23,10 +25,23 @@ const ChangePassword: React.FC = () => {
     }
   }, [navigate]);
 
+  // Password validation
   const validatePassword = (password: string): string | null => {
     if (password.length < 8) {
       return 'Password must be at least 8 characters long';
     }
+
+        if (!/\d/.test(password)) {
+          return "Пароль должен содержать хотя бы одну цифру";
+        }
+
+        if (!/[A-Z]/.test(password)) {
+          return "Пароль должен содержать хотя бы одну заглавную букву";
+        }
+
+        if (!/[a-z]/.test(password)) {
+          return "Пароль должен содержать хотя бы одну строчную букву";
+        }
 
     if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
       return 'The password must contain at least one special character.';
@@ -35,27 +50,33 @@ const ChangePassword: React.FC = () => {
     return null;
   };
 
+  // Password change handler
   const handleChangePassword = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
+    // Resett previous messages
     setError('');
     setSuccess('');
 
+    // Checking that all fields are filled in
     if (!currentPassword || !newPassword || !confirmPassword) {
       setError('Please fill in all fields');
       return;
     }
 
+    // Checking password matches
     if (newPassword !== confirmPassword) {
       setError('New password and confirmation do not match');
       return;
     }
 
+    // Checking that the new password is different from the current one
     if (newPassword === currentPassword) {
       setError('The new password must be different from the current one.');
       return;
     }
 
+    // Checking password complexity
     const passwordError = validatePassword(newPassword);
     if (passwordError) {
       setError(passwordError);
@@ -65,8 +86,10 @@ const ChangePassword: React.FC = () => {
     try {
       setLoading(true);
 
+      // get a token from 
       const token = sessionStorage.getItem('adminToken');
 
+      // send a request to change the password
       await axios.put(
         '/auth/change-password',
         { currentPassword, newPassword, confirmPassword },
@@ -75,10 +98,12 @@ const ChangePassword: React.FC = () => {
 
       setSuccess('Password successfully changed');
 
+      // Clearing form fields
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
 
+      // After 2 seconds redirect in 2 seconds to the main page
       setTimeout(() => {
         navigate('/immobilien');
       }, 2000);
@@ -89,16 +114,49 @@ const ChangePassword: React.FC = () => {
     }
   };
 
+    // Индикатор сложности пароля
+  const getPasswordStrength = (
+    password: string
+  ): {
+    text: string;
+    color: string;
+    width: string;
+  } => {
+    if (!password) {
+      return { text: "", color: "#e0e0e0", width: "0%" };
+    }
+
+      const criteria = [
+        password.length >= 8,
+        /\d/.test(password),
+        /[A-Z]/.test(password),
+        /[a-z]/.test(password),
+        /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+      ];
+
+      const metCriteria = criteria.filter((c) => c).length;
+
+      switch (metCriteria) {
+        case 0:
+        case 1:
+          return { text: "Очень слабый", color: "#f44336", width: "20%" };
+        case 2:
+          return { text: "Слабый", color: "#ff9800", width: "40%" };
+        case 3:
+          return { text: "Средний", color: "#ffeb3b", width: "60%" };
+        case 4:
+          return { text: "Хороший", color: "#8bc34a", width: "80%" };
+        case 5:
+          return { text: "Сильный", color: "#4caf50", width: "100%" };
+        default:
+          return { text: "", color: "#e0e0e0", width: "0%" };
+    }
+  };
+
+  const passwordStrength = getPasswordStrength(newPassword);
+
   return (
-    <div
-      style={{
-        maxWidth: '400px',
-        margin: '0 auto',
-        minHeight: '100dvh',
-        padding: '20px',
-        fontFamily: 'var(--Roboto)',
-      }}
-    >
+    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
       <h1>Passwortänderung</h1>
 
       {error && (
@@ -120,6 +178,7 @@ const ChangePassword: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showCurrentPassword ? 'text' : 'password'}
+              // type="password"
               id="currentPassword"
               value={currentPassword}
               onChange={e => setCurrentPassword(e.target.value)}
@@ -137,6 +196,7 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
+                // padding: '0 10px',
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -156,11 +216,12 @@ const ChangePassword: React.FC = () => {
             htmlFor="newPassword"
             style={{ display: 'block', marginBottom: '5px' }}
           >
-            Neues Passwort:
+            Новый пароль:
           </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showNewPassword ? 'text' : 'password'}
+              // type="password"
               id="newPassword"
               value={newPassword}
               onChange={e => setNewPassword(e.target.value)}
@@ -178,6 +239,7 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
+                // padding: '0 10px',
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -199,7 +261,25 @@ const ChangePassword: React.FC = () => {
                   borderRadius: '3px',
                   overflow: 'hidden',
                 }}
-              ></div>
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: passwordStrength.width,
+                    backgroundColor: passwordStrength.color,
+                    transition: "width 0.3s ease",
+                  }}
+                ></div>
+              </div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  marginTop: "3px",
+                  color: passwordStrength.color,
+                }}
+              >
+                {passwordStrength.text}
+              </div>
             </div>
           )}
         </div>
@@ -210,6 +290,7 @@ const ChangePassword: React.FC = () => {
             style={{
               display: 'block',
               marginBottom: '5px',
+              // position: "relative",
             }}
           >
             Passwortbestätigung:
@@ -217,6 +298,7 @@ const ChangePassword: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showConfirmPassword ? 'text' : 'password'}
+              // type="password"
               id="confirmPassword"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
@@ -234,6 +316,7 @@ const ChangePassword: React.FC = () => {
                 flex: '1',
                 height: '46px',
                 fontSize: '20px',
+                // padding: '0 10px',
                 marginTop: '-12px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -269,7 +352,7 @@ const ChangePassword: React.FC = () => {
               flex: '1',
             }}
           >
-            {loading ? 'Speichern...' : 'Kennword ändern'}
+            {loading ? 'Saving...' : 'Change password'}
           </button>
 
           <Link
@@ -289,6 +372,17 @@ const ChangePassword: React.FC = () => {
           </Link>
         </div>
       </form>
+
+      {/* <div style={{ marginTop: "20px", fontSize: "14px" }}>
+        <h3>Требования к паролю:</h3>
+        <ul style={{ paddingLeft: "20px" }}>
+          <li>Минимум 8 символов</li>
+          <li>Минимум 1 цифра</li>
+          <li>Минимум 1 заглавная буква</li>
+          <li>Минимум 1 строчная буква</li>
+          <li>Минимум 1 специальный символ (!@#$%^&*()_+...)</li>
+        </ul>
+      </div> */}
     </div>
   );
 };

@@ -109,6 +109,7 @@ export const getAllVideos = async (
   }
 };
 
+// Получить видео по ID
 export const getVideoById = async (
   req: Request,
   res: Response,
@@ -153,39 +154,47 @@ export const updateVideo = async (
       return;
     }
 
+    // 1. Обновляем привязку к объекту недвижимости, если изменилась
     if (
       realEstateObjectId &&
       video.realEstateObject?.toString() !== realEstateObjectId
     ) {
+      // Удалить из старого объекта
       await RealEstateObjectsModel.findByIdAndUpdate(video.realEstateObject, {
         $pull: { videos: video._id },
       });
-
+      // Добавить в новый объект
       await RealEstateObjectsModel.findByIdAndUpdate(realEstateObjectId, {
         $push: { videos: video._id },
       });
       video.realEstateObject = realEstateObjectId;
     }
 
+    // 2. Обновляем название
     if (title) {
       video.title = title;
     }
 
+    // 3. Обработка замены видеофайла
     if (newVideoFile) {
+      // Удаляем старое видео из Bunny
       if (video.videoId) {
         await deleteFromBunnyVideo(video.videoId);
       }
 
+      // Загружаем новое видео в Bunny
       const { videoId, videoUrl, thumbnailUrl } = await uploadToBunnyVideo(
         newVideoFile.path,
         title || video.title || 'Untitled',
       );
 
+      // Обновляем данные в БД
       video.videoId = videoId;
       video.url = videoUrl;
       video.thumbnailUrl = thumbnailUrl;
     }
 
+    // 4. Сохраняем изменения
     await video.save();
 
     res.status(200).json(video);
