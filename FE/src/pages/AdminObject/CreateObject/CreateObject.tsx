@@ -582,7 +582,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
     setLoading(false);
   }
 };
-// ЗАМЕНИТЬ СУЩЕСТВУЮЩИЙ useEffect НА ЭТОТ:
+
 useEffect(() => {
   if (isEditMode && id) {
     // Функция для ручной отладки через консоль браузера
