@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -14,17 +14,53 @@ import logo from '@shared/assets/header/logo.svg';
 import telephone from '@shared/assets/header/telephone.svg';
 import eMail from '@shared/assets/header/e-mail.svg';
 import location from '@shared/assets/header/google.svg';
+import AdminDropdownMenu from '@widgets/AdminDropdownMenu/AdminDropdownMenu';
+import { dispatchLogoutEvent } from '@features/utils/authEvent';
 
 interface NavLink {
   label: string;
   path: string;
 }
 
-const Header: React.FC = () => {
+const Header = () => {
+  /* ---------- navigation state ---------- */
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
   const toggleDrawer = (open: boolean) => () => {
     setIsMenuOpen(open);
+  };
+
+  /* ---------- Admin state ---------- */
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  /* Verify token and set up listeners for login/logout events */
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = sessionStorage.getItem('adminToken');
+      setIsAdmin(!!token);
+    };
+
+    checkAuth();
+
+    const handleAdminLogin = () => setIsAdmin(true);
+    const handleAdminLogout = () => setIsAdmin(false);
+
+    window.addEventListener('admin-login', handleAdminLogin);
+    window.addEventListener('admin-logout', handleAdminLogout);
+
+    return () => {
+      window.removeEventListener('admin-login', handleAdminLogin);
+      window.removeEventListener('admin-logout', handleAdminLogout);
+    };
+  }, []);
+
+  /* logout */
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminInfo');
+    setIsAdmin(false);
+    dispatchLogoutEvent();
+    navigate('/');
   };
 
   const navLinks: NavLink[] = [
@@ -44,20 +80,35 @@ const Header: React.FC = () => {
       <div className={styles.headerWrapper}>
         <div className={styles.headerTop}>
           <img className={styles.logo} src={logo} alt="logo" />
-
-          <nav className={styles.nav}>
-            {navLinks.map(link => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  isActive ? styles.activeLink : ''
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </nav>
+          
+          <div className={styles.navContainer}>
+            <nav className={styles.nav}>
+              {navLinks.map(link => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    isActive ? styles.activeLink : ''
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              {/* --- ADMIN DROPDOWN (десктоп >765px) --- */}
+              {isAdmin && (
+                <div className={styles.adminDesktop}>
+                  <AdminDropdownMenu onLogout={handleLogout} />
+                </div>
+              )}
+            </nav>
+            
+            {/* --- ADMIN DROPDOWN (планшет ≤765px) --- */}
+            {isAdmin && (
+              <div className={styles.adminTablet}>
+                <AdminDropdownMenu onLogout={handleLogout} />
+              </div>
+            )}
+          </div>
 
           <IconButton
             className={styles.burgerButton}
@@ -104,6 +155,13 @@ const Header: React.FC = () => {
                 </ListItem>
               ))}
             </List>
+
+            {/* --- ADMIN DROPDOWN (мобильное меню) --- */}
+            {isAdmin && (
+              <div className={styles.drawerAdminContainer}>
+                <AdminDropdownMenu onLogout={handleLogout} />
+              </div>
+            )}
           </Drawer>
 
           <div className={styles.contact}>
@@ -127,32 +185,20 @@ const Header: React.FC = () => {
                   tonn_andreas@web.de
                 </a>
               </li>
-              <li>
+              <li className={styles.contactItem}>
                 <div className={styles.contactIcon}>
-                  <img
-                    src={location}
-                    alt="adress"
-                    style={{ width: '26px', height: '26px' }}
-                  />
+                  <img src={location} alt="address icon" />
                 </div>
                 <a
-                  href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster/@52.000885,7.5495001,17z/data=!3m1!4b1!4m6!3m5!1s0x47b9b0fb68b86337:0x6c01106fad5b0129!8m2!3d52.000885!4d7.552075!16s%2Fg%2F11bw3zj4mf?entry=ttu&g_ep=EgoyMDI1MDQzMC4xIKXMDSoASAFQAw%3D%3D"
-                  className={styles.contactText}
+                  href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster"
                   target="_blank"
                   rel="noopener noreferrer"
-                >
-                  Sessendrupweg 54
-                </a>
-              </li>
-              <li>
-                <span className={styles.contactIcon}></span>
-                <a
-                  href="https://www.google.com/maps/place/Sessendrupweg+54,+48161+M%C3%BCnster/@52.000885,7.5495001,17z/data=!3m1!4b1!4m6!3m5!1s0x47b9b0fb68b86337:0x6c01106fad5b0129!8m2!3d52.000885!4d7.552075!16s%2Fg%2F11bw3zj4mf?entry=ttu&g_ep=EgoyMDI1MDQzMC4xIKXMDSoASAFQAw%3D%3D"
                   className={styles.contactText}
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
-                  48161 Münster
+                  <div className={styles.contactTextWrapper}>
+                    <span>Sessendrupweg 54</span>
+                    <span>48161 Münster</span>
+                  </div>
                 </a>
               </li>
             </ul>

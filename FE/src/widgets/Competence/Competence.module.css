@@ -39,7 +39,7 @@
 .titleWrapper {
   display: flex;
   width: 1214px;
-  height: 297px;
+  height: 216px;
   align-items: center;
   background-color: var(--secondary-color);
   width: 100%;
@@ -48,8 +48,8 @@
 
 .competenceSection > img {
   margin-top: clamp(40px, 6vh, 91px);
-
-  max-width: 1200px;
+  /* max-height: 688px; */
+  width: 100%;
 }
 
 @media (max-width: 765px) {

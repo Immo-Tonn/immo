@@ -1,4 +1,6 @@
+/* immo/FE/src/pages/AdminObject/CreateObject/CreateObject.module.css */
 .createObjectContainer {
+  font-family: 'Apple Braille', sans-serif;
   max-width: 1000px;
   margin: 30px auto;
   padding: 20px;
@@ -10,13 +12,11 @@
 .title {
   text-align: center;
   margin-bottom: 25px;
-  font-family: var(--Roboto);
   color: #1c1829;
   font-size: 28px;
 }
 
 .sectionTitle {
-  font-family: var(--Roboto);
   margin-top: 30px;
   margin-bottom: 15px;
   padding-bottom: 8px;
@@ -42,7 +42,6 @@
 
 .formLabel {
   display: block;
-  font-family: var(--Roboto);
   margin-bottom: 6px;
   font-weight: 500;
 }
@@ -55,7 +54,6 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-  font-family: var(--Roboto);
 }
 
 .formTextarea {
@@ -74,23 +72,19 @@
   padding: 10px 15px;
   border-radius: 4px;
   margin-bottom: 20px;
-  font-family: var(--Roboto);
 }
 
 .successMessage {
-  font-family: var(--Roboto);
   background-color: #e8f5e9;
   color: #2e7d32;
   padding: 10px 15px;
   border-radius: 4px;
-  font-family: var(--Roboto);
   margin-bottom: 20px;
 }
 
 .imagePreviews {
   display: flex;
   flex-wrap: wrap;
-  font-family: var(--Roboto);
   gap: 15px;
   margin-top: 15px;
   margin-bottom: 20px;
@@ -115,6 +109,7 @@
   object-fit: cover;
 }
 
+/* Delete image button */
 .removeImageBtn {
   position: absolute;
   top: 5px;
@@ -139,6 +134,7 @@
   background-color: rgba(255, 0, 0, 0.6);
 }
 
+/* Set Main Image Button */
 .setMainImageBtn {
   position: absolute;
   top: 5px;

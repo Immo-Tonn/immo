@@ -1,6 +1,7 @@
 .valuationCTASection {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 10px 0 10px;
 }
 .textWrapper {
   display: flex;
@@ -68,8 +69,7 @@
     font-size: var(--font-size-secondary);
     font-family: var(--Inter);
     background-color: var(--secondary-color);
-    max-width: 539px;
-    height: clamp(100px, 10vh, 74px);
+    margin-right: 37px;
   }
 }
 @media (max-width: 765px) {

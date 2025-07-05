@@ -12,42 +12,45 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
   const { district, zip, city, country } = address;
 
   const [fuseCountry, setFuseCountry] = useState<Fuse<string> | null>(null);
-  const [polygonCoords, setPolygonCoords] = useState<LatLngTuple[][] | null>(null);
+  const [polygonCoords, setPolygonCoords] = useState<LatLngTuple[][] | null>(
+    null,
+  );
   const [center, setCenter] = useState<LatLngTuple | null>(null);
   const [error, setError] = useState(false);
 
- useEffect(() => {
-  const fetchCountries = async () => {
-    try {
-      const res = await fetch('https://restcountries.com/v3.1/all?fields=name,translations');
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const res = await fetch(
+          'https://restcountries.com/v3.1/all?fields=name,translations',
+        );
 
-      if (!res.ok) {
-        throw new Error(`HTTP error ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`HTTP error ${res.status}`);
+        }
+
+        const countriesRaw = await res.json();
+
+        if (!Array.isArray(countriesRaw)) {
+          throw new Error('API returned unexpected structure');
+        }
+
+        const countryNames: string[] = countriesRaw.flatMap((c: any) => {
+          const names = [c.name?.common].filter(Boolean);
+          const german = c.translations?.deu?.common;
+          if (german && !names.includes(german)) names.push(german);
+          return names;
+        });
+
+        const fuse = new Fuse(countryNames, { threshold: 0.4 });
+        setFuseCountry(fuse);
+      } catch (e) {
+        console.error('Fehler beim Laden der Länderliste:', e);
       }
+    };
 
-      const countriesRaw = await res.json();
-
-      if (!Array.isArray(countriesRaw)) {
-        throw new Error('API returned unexpected structure');
-      }
-
-      const countryNames: string[] = countriesRaw.flatMap((c: any) => {
-        const names = [c.name?.common].filter(Boolean); 
-        const german = c.translations?.deu?.common;     
-        if (german && !names.includes(german)) names.push(german);
-        return names;
-      });
-
-      const fuse = new Fuse(countryNames, { threshold: 0.4 });
-      setFuseCountry(fuse);
-    } catch (e) {
-      console.error('Fehler beim Laden der Länderliste:', e);
-    }
-  };
-
-  fetchCountries();
-}, []);
-
+    fetchCountries();
+  }, []);
 
   useEffect(() => {
     if (!fuseCountry) return;
@@ -63,7 +66,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
       for (const query of queries) {
         try {
           const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&q=${encodeURIComponent(query)}`
+            `https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&q=${encodeURIComponent(query)}`,
           );
           const data = await res.json();
           if (!data.length || !data[0].geojson) continue;
@@ -71,9 +74,16 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
           const geo = data[0].geojson;
           const coords: LatLngTuple[][] =
             geo.type === 'Polygon'
-              ? [geo.coordinates[0].map(([lng, lat]: [number, number]) => [lat, lng])]
+              ? [
+                  geo.coordinates[0].map(([lng, lat]: [number, number]) => [
+                    lat,
+                    lng,
+                  ]),
+                ]
               : geo.coordinates.flatMap((poly: any[][]) =>
-                  poly.map((ring: any[]) => ring.map(([lng, lat]: [number, number]) => [lat, lng]))
+                  poly.map((ring: any[]) =>
+                    ring.map(([lng, lat]: [number, number]) => [lat, lng]),
+                  ),
                 );
 
           setPolygonCoords(coords);
@@ -98,7 +108,9 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
         return;
       }
 
-      console.warn(`Land nicht erkannt: "${country}", versuche stattdessen "${corrected}"`);
+      console.warn(
+        `Land nicht erkannt: "${country}", versuche stattdessen "${corrected}"`,
+      );
       const fallbackFound = await tryQueries(corrected);
       if (!fallbackFound) setError(true);
     };
@@ -112,7 +124,10 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ address }) => {
       <h2 className={styles.title}>KARTE</h2>
 
       <div className={styles.infoLine}>
-        <span>{district},</span> <span>{zip} {city}</span>
+        <span>{district},</span>{' '}
+        <span>
+          {zip} {city}
+        </span>
       </div>
 
       <p className={styles.disclaimer}>

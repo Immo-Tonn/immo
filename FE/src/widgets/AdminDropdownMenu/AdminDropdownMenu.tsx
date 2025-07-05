@@ -52,10 +52,7 @@ const AdminDropdownMenu: React.FC<AdminDropdownMenuProps> = ({ onLogout }) => {
       alert('Adminregistrierung entfernt');
       navigate('/add-property');
     } catch (error: any) {
-      alert(
-        error.response?.data?.message ||
-          'Fehler beim Löschen der Registrierung',
-      );
+      alert(error.response?.data?.message || 'Fehler beim Löschen der Registrierung');
     } finally {
       setIsMenuOpen(false);
     }
@@ -98,12 +95,12 @@ const AdminDropdownMenu: React.FC<AdminDropdownMenuProps> = ({ onLogout }) => {
             Passwort ändern
           </button>
           {/* Кнопка создания объекта */}
-          <button
-            className={styles.adminDropdownItem}
-            onClick={handleCreateObject}
-          >
-            Objekt erstellen
-          </button>
+            <button
+              className={styles.adminDropdownItem}
+              onClick={handleCreateObject}
+            >
+              Objekt erstellen
+            </button>
 
           <button
             className={styles.adminDropdownItem}

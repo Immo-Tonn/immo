@@ -43,8 +43,13 @@ const getPropertyDetails = (
     Land: object.address?.country,
     'Nummer ID': object.number,
     Objektart: object.type,
+    ...(apartment?.type && { Wohnungstyp: apartment.type }),
+    ...(house?.type && {Haustyp: house.type}),
+    ...(commercial?.buildingType && { Gebäudetyp: commercial.buildingType }),
+
+
     Wohnfläche: house?.livingArea ?? apartment?.livingArea,
-    Grundstück: house?.plotArea ?? land?.plotArea,
+    Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` : undefined,
     Nutzfläche: house?.usableArea,
     Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
     Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
@@ -72,7 +77,13 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   landPlot,
   residentialHouse,
 }) => {
-  const details = getPropertyDetails(object, apartment, commercialBuilding, landPlot, residentialHouse);
+  const details = getPropertyDetails(
+    object, 
+    apartment, 
+    commercialBuilding, 
+    landPlot, 
+    residentialHouse
+  );
   const navigate = useNavigate();
 
   return (
@@ -84,12 +95,20 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           </button>
         </div>
 
-        <Section title="OBJEKTDATEN">
-  {['sold', 'reserved'].includes(object.status) && (
-    <div className={styles.statusBanner}>
-      {object.status === 'sold' ? 'VERKAUFT' : 'RESERVIERT'}
-    </div>
-  )}
+          <Section title="OBJEKTDATEN">
+     {object.status && (     
+      <div className={styles.status}>
+        <span className={styles.label}>Objektstatus:</span>
+      <div className={styles.statusBanner}>       
+        {object.status === 'active' && 'aktiv'}
+        {object.status === 'sold' && 'verkauft'}
+        {object.status === 'reserved' && 'reserviert'}
+        {object.status === 'archived' && 'archiviert'}
+      </div>
+       </div>
+     )}
+ 
+
 
   <div className={styles.detailsLeft}>
     {Object.entries(details)
@@ -98,8 +117,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         <DetailRow key={label} label={label} value={value} />
       ))}
   </div>
-</Section>
-
+</Section>        
 
         {(apartment?.additionalFeatures ||
           residentialHouse?.additionalFeatures ||
@@ -152,4 +170,3 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
 };
 
 export default PropertyDetails;
-

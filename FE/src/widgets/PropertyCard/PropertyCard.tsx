@@ -19,11 +19,24 @@ const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
         <NavLink to={`/immobilien/${object._id}`}>
           <div className={styles.cardWrapper}>
             {backgroundUrl ? (
-              <img src={backgroundUrl} alt={title} className={styles.image} />
+              <img
+                src={backgroundUrl}
+                alt={title}
+                className={styles.image}
+                width="600"
+                height="300"
+                loading="lazy"
+              />
             ) : (
               <p className={styles.errorTitle}>Kein Foto verfügbar</p>
             )}
-            <span className={styles.status}>{status}</span>
+            {(status === 'sold' || status === 'reserved') && (
+              <span className={styles.status}>
+                {status === 'sold' && 'Verkauft'}
+                {status === 'reserved' && 'Reserviert'}
+              </span>
+            )}
+
             <div className={styles.cardOverlay}>
               <p className={styles.cardTitle}>{title}</p>
               <p className={styles.address}>{address?.city}</p>
