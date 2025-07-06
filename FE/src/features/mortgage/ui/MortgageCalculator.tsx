@@ -94,9 +94,9 @@ const MortgageCalculator = () => {
   const totalCost = parsedPrice + totalAdditionalCosts;
   const darlehen = totalCost - parsedEquity;
 
-  const fixedRepaymentOptions = Array.from({ length: 19 }, (_, i) =>
-    (1 + i * 0.5).toFixed(1),
-  );
+ const fixedRepaymentOptions = Array.from({ length: 61 }, (_, i) =>
+  (1.0 + i * 0.1).toFixed(1),
+);
   const fixedLaufzeitOptions = Array.from({ length: 40 }, (_, i) =>
     (i + 1).toString(),
   );
@@ -155,13 +155,14 @@ const MortgageCalculator = () => {
     }
   }, [location.state]);
 
+   //Aвтоматический пересчёт
   useEffect(() => {
     if (!darlehen || parsedInterest === 0) return;
     const r = parsedInterest / 100;
+
     if (mode === 'calculateYears' && parsedRepayment > 0) {
       const annuitaet = darlehen * (r + parsedRepayment / 100);
-      const n =
-        Math.log(annuitaet / (annuitaet - darlehen * r)) / Math.log(1 + r);
+      const n = Math.log(annuitaet / (annuitaet - darlehen * r)) / Math.log(1 + r);
       if (isFinite(n)) {
         const nRounded = Math.round(n).toString();
         if (!laufzeitOptions.includes(nRounded)) {
@@ -170,10 +171,10 @@ const MortgageCalculator = () => {
         setYears(nRounded);
       }
     }
+
     if (mode === 'calculateRepayment' && parsedYears > 0) {
       const n = parsedYears;
-      const annuitaet =
-        darlehen * ((r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+      const annuitaet = darlehen * ((r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
       const zinsenJahr1 = darlehen * r;
       const tilgungJahr1 = annuitaet - zinsenJahr1;
       const tilgungProzent = (tilgungJahr1 / darlehen) * 100;
@@ -423,16 +424,22 @@ const MortgageCalculator = () => {
               werden.
             </p>
           )}
-          {renderSelect(
-            'Tilgung',
-            repayment,
-            setRepayment,
-            '',
-            () => {},
-            'tax',
-            repaymentOptions,
-            () => setMode('calculateYears'),
-          )}
+          <label htmlFor="repayment">Tilgung</label>
+<select
+  id="repayment"
+  name="repayment"
+  value={repayment}
+  onChange={e => {
+    setMode('calculateYears');
+    setRepayment(e.target.value);
+  }}
+>
+  {repaymentOptions.map(opt => (
+    <option key={opt} value={opt}>
+      {opt}%
+    </option>
+  ))}
+</select>
           <label htmlFor="interest">Sollzins p. a.</label>
           <div className={styles.inputWithIcon}>
             <input
