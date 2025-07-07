@@ -541,18 +541,20 @@ const handleInterestChange = (value: string) => {
             value={formatCurrencyDE(loanAmount)}
             readOnly
           />
-          <div className={styles.rateLabel}>Monatliche Rate</div>
-          {monthly !== null && (
-            <div className={styles.monthly}>
-              <CountUp
-                end={monthly}
-                decimals={2}
-                prefix="€ "
-                duration={1.5}
-                formattingFn={formatGermanCurrency}
-              />
-            </div>
-          )}
+        <div className={styles.rateLabel}>
+  Monatliche Rate:{' '}
+  {monthly !== null && (
+    <span className={styles.monthly}>
+      <CountUp
+        end={monthly}
+        decimals={2}
+        prefix="€ "
+        duration={1.5}
+        formattingFn={formatGermanCurrency}
+      />
+    </span>
+  )}
+</div>
           <Button
             initialText="Berechnen"
             clickedText="im Prozess"
