@@ -8,6 +8,7 @@ import {
   CommercialBuilding,
 } from '@shared/types/propertyTypes';
 import { useNavigate } from 'react-router-dom';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 
 interface PropertyDetailsProps {
   object: RealEstateObject;
@@ -159,9 +160,12 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-            <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
-              Finanzierungsrechner
-            </button>
+             <button
+  className={styles.calcButton}
+  onClick={() => navigate('/finanzierung', { state: { price: formatGermanCurrency(object.price) } })}
+>
+  Finanzierungsrechner
+</button>
           </div>
         </div>
       </aside>
