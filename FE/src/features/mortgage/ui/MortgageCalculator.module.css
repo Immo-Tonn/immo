@@ -125,8 +125,9 @@ input[readonly] {
 .sumLine {
   font-weight: bold;
   margin-top: 12px;
-  border-top: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
   padding-top: 12px;
+   border-bottom: 1px solid #ccc;
 }
 
 .rateLabel {

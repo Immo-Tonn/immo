@@ -62,8 +62,9 @@ const MortgageCalculator = () => {
   const [equityTooHighError, setEquityTooHighError] = useState(false);
   const [equityDecimalError, setEquityDecimalError] = useState(false);
   const [interestDecimalError, setInterestDecimalError] = useState(false);
-  const [interestRangeError, setInterestRangeError] = useState(false);
-
+  
+const [interestRangeError, setInterestRangeError] = useState(false);
+  const [rawInterest, setRawInterest] = useState('');
   const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
 
   const customTaxError =
@@ -94,7 +95,7 @@ const MortgageCalculator = () => {
   const totalCost = parsedPrice + totalAdditionalCosts;
   const darlehen = totalCost - parsedEquity;
 
- const fixedRepaymentOptions = Array.from({ length: 61 }, (_, i) =>
+ const fixedRepaymentOptions = Array.from({ length: 91 }, (_, i) =>
   (1.0 + i * 0.1).toFixed(1),
 );
   const fixedLaufzeitOptions = Array.from({ length: 40 }, (_, i) =>
@@ -117,8 +118,10 @@ const MortgageCalculator = () => {
   };
 
   const handleEquityChange = (val: string) => {
+     // Удаляем все символы кроме цифр и запятой
+  const cleaned = val.replace(/[^\d,]/g, '');
     const parts = val.split(/[,\.]/);
-    let formattedVal = val;
+    let formattedVal = cleaned;
     if (parts.length === 2) {
       const [integerPart, decimalPart = ''] = parts;
       const limitedDecimal = decimalPart.slice(0, 3);
@@ -132,22 +135,31 @@ const MortgageCalculator = () => {
     setEquityTooHighError(valNum > totalCost);
   };
 
-  const handleInterestChange = (val: string) => {
-    setInterest(val);
-    const parts = val.split(/[,\.]/);
-    if (parts.length === 2 && parts[1].length > 1) {
-      setInterestDecimalError(true);
-    } else {
-      setInterestDecimalError(false);
+const handleInterestChange = (value: string) => {
+    // Заменить точки на запятые
+    let val = value.replace(/\./g, ',');
+
+    // Удалить все символы кроме цифр и запятой
+    val = val.replace(/[^\d,]/g, '');
+
+    const parts = val.split(',');
+
+    // Только одна запятая и одна цифра после неё
+    if (parts.length > 2) {
+      val = parts[0] + ',' + parts[1].slice(0, 1);
+    } else if (parts.length === 2) {
+      val = parts[0] + ',' + parts[1].slice(0, 1);
     }
-    const normalized = val.replace(',', '.');
-    const parsed = parseFloat(normalized);
-    if (!isNaN(parsed)) {
-      setInterestRangeError(parsed <= 0 || parsed >= 14);
-    } else {
-      setInterestRangeError(false);
+
+    // Проверка: значение ≤ 14
+    const numericValue = parseFloat(val.replace(',', '.'));
+    if (!isNaN(numericValue) && numericValue > 14) {
+      return; // Не обновляем состояние
     }
-  };
+
+    setRawInterest(val);
+    setInterest(val); // Пока пользователь вводит — без %
+  };
 
   useEffect(() => {
     if (location.state && location.state.price) {
@@ -442,12 +454,56 @@ const MortgageCalculator = () => {
 </select>
           <label htmlFor="interest">Sollzins p. a.</label>
           <div className={styles.inputWithIcon}>
-            <input
-              id="interest"
-              name="interest"
+           <input
+              type="text"
               value={interest}
               onChange={e => handleInterestChange(e.target.value)}
-            />
+              onBeforeInput={e => {
+                if (!e.data) return;
+
+                const input = e.currentTarget;
+                const { selectionStart, selectionEnd } = input;
+
+                // Предварительная замена точки на запятую
+                const inserted = e.data === '.' ? ',' : e.data;
+
+                // Смоделируем предполагаемое значение после вставки
+                const proposed =
+                  selectionStart !== null && selectionEnd !== null
+                    ? input.value.slice(0, selectionStart) +
+                      inserted +
+                      input.value.slice(selectionEnd)
+                    : input.value + inserted;
+                    const cleaned = proposed.replace('%', '');
+
+                // Только цифры и запятая разрешены
+                if (!/^[\d,]*$/.test(inserted)) {
+                  e.preventDefault();
+                  return;
+                }
+
+                // Блокируем более одной запятой
+                if ((proposed.match(/,/g) || []).length > 1) {
+                  e.preventDefault();
+                  return;
+                }
+
+                // Проверка: после запятой не более одной цифры
+                const parts = proposed.split(',');
+                if (parts.length === 2 && parts[1].length > 1) {
+                  e.preventDefault();
+                  return;
+                }
+
+                // Проверка: значение не превышает 14
+                const numericValue = parseFloat(proposed.replace(',', '.'));
+                if (!isNaN(numericValue) && numericValue > 14) {
+                  e.preventDefault();
+                  return;
+                }
+              }}
+              inputMode="decimal"
+            />
             <img src={MarkerIcon} className={styles.markerIcon} />
           </div>
           {interestDecimalError && (
