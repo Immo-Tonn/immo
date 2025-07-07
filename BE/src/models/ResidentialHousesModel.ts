@@ -27,7 +27,7 @@ const ResidentialHousesSchema: Schema = new Schema<IResidentialHouses>({
   },
   type: {
     type: String,
-    required: true,
+    // required: true,
   },
   numberOfFloors: {
     type: Number,

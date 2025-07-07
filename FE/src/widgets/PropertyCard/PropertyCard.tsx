@@ -5,8 +5,13 @@ import { NavLink } from 'react-router-dom';
 
 const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
   ({ object, images, residentialHouse }, ref) => {
+    console.log('object.images:', object?.images);
+    console.log('images prop:', images);
+
     const imageId = object?.images?.[0];
+    console.log('imageId:', imageId);
     const imageObj = images?.find(img => img._id === imageId);
+    console.log('found imageObj:', imageObj);
     const backgroundUrl = imageObj?.url || null;
 
     const { title, address, price, status } = object;

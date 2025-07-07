@@ -82,7 +82,7 @@ export const getImagesByObjectId = async (
     if (!allImages || allImages.length === 0) {
       console.log(`ℹ️ Изображения не найдены для объекта ${objectId}, возвращаем пустой массив`);
 
-      // Добавляем заголовки для предотвращения кеширования
+      // Add Headers to Prevent Caching
       res.set({
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
@@ -90,18 +90,16 @@ export const getImagesByObjectId = async (
       });
 
       res
-      res.status(200).json([]); // Возвращаем пустой массив вместо 404
-        // .status(404)
-        // .json({ message: "Keine Bilder für dieses Objekt gefunden" });
+      res.status(200).json([]);
       return;
     }
 
-    // Сортировка изображений согласно порядку в объекте недвижимости
+  
     let sortedImages = [...allImages];
 
     if (realEstateObject.images && realEstateObject.images.length > 0) {
       console.log('Сортируем изображения согласно порядку в БД:', realEstateObject.images);
-      // Создание массива в правильном порядке
+
       const orderedImages: any[] = [];
 
       // Sort images according to order in object
@@ -142,7 +140,7 @@ export const getImagesByObjectId = async (
       console.log('Сортировка по типу (main первым)');
     }
 
-        // Добавляем cache-busting timestamp для предотвращения кеширования
+
     const timestamp = Date.now();
 
     // transform the URL for delivery to the client
@@ -151,7 +149,7 @@ export const getImagesByObjectId = async (
       url: `${transformBunnyUrl(img.url)}?t=${timestamp}`,
     }));
 
-        // Добавляем заголовки для предотвращения кеширования
+
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -170,46 +168,6 @@ export const getImagesByObjectId = async (
     });
   }
 };
-
-// Функция для преобразования URL (если она еще не существует)
-// const transformBunnyUrl = (url: string): string => {
-//   return url.replace(
-//     "https://storage.bunnycdn.com/immobilien-media",
-//     "https://immobilien-cdn.b-cdn.net"
-//   );
-// };
-
-// export const getImagesByObjectId = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   try {
-//     const objectId = req.query.objectId as string;
-
-//     if (!objectId) {
-//       res
-//         .status(400)
-//         .json({ message: "Parameter 'objectId' ist erforderlich" });
-//       return;
-//     }
-
-//     const images = await getImagesByObjectIdHelper(objectId);
-
-//     if (!images) {
-//       res
-//         .status(404)
-//         .json({ message: "Keine Bilder für dieses Objekt gefunden" });
-//       return;
-//     }
-
-//     res.status(200).json(images);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "Fehler beim Abrufen der Bilder nach Objekt-ID",
-//       error: error instanceof Error ? error.message : String(error),
-//     });
-//   }
-// };
 
 export const createImage = async (
   req: Request,
@@ -369,17 +327,17 @@ export const deleteImageByUrl = async (
       return;
     }
 
-    // Удаляем изображение из BunnyCDN
+    // Remove  image from BunnyCDN
     try {
       await deleteFromBunny(image.url);
     } catch (cdnErr) {
       console.warn("Failed to remove image from CDN:", cdnErr);
     }
 
-    // Удаляем изображение из базы данных
+    // Remove image from db
     await ImagesModel.findByIdAndDelete(image._id);
 
-    // Удаляем ID изображения из объекта недвижимости
+    // Remove ID image from real estate object
     await RealEstateObjectsModel.findByIdAndUpdate(image.realEstateObject, {
       $pull: { images: image._id },
     });

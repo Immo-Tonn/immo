@@ -239,12 +239,12 @@ export const updateImageOrder = async (
   
   console.log('✅ ЗАВЕРШЕНИЕ updateImageOrder');
 };
-
 export const createSpecificObjectData = async (
   realEstateObjectId: string,
   objectType: ObjectType,
   specificData: Record<string, any>,
 ): Promise<void> => {
+
   try {
     const data = {
       ...specificData,
@@ -269,10 +269,9 @@ export const createSpecificObjectData = async (
       default:
         throw new Error('Неизвестный тип объекта');
     }
-
     await axios.post(endpoint, data);
   } catch (error) {
-    console.error('Ошибка при создании специфических данных объекта:', error);
+    console.error('❌ Ошибка при создании специфических данных объекта:', error);
     throw error;
   }
 };

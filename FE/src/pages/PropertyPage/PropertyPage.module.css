@@ -56,7 +56,7 @@
   line-height: 1.5;
 }
 
-.refreshButton {
+/* .refreshButton {
   background-color: #17a2b8;
   color: white;
   border: none;
@@ -75,11 +75,11 @@
 .refreshButton:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
-}
+} */
 /* Styles for Adminbuttons */
 .adminActions {
   position: absolute;
-  /* top: 1rem; */
+  top: 7.4rem;
   right: 1rem;
   display: flex;
   gap: 10px;

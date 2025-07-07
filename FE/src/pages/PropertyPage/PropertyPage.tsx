@@ -15,7 +15,7 @@ const PropertyPage: React.FC = () => {
   
   const { objectData, images, loading, err, videos, refreshData, isDeleted, markAsDeleted } = usePropertyData(id);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  // const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   
   // Checking admin authorization
   useEffect(() => {
@@ -40,17 +40,17 @@ const PropertyPage: React.FC = () => {
   };
 
   // Forced data refresh function
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      await refreshData();
-      console.log('Данные обновлены вручную');
-    } catch (error) {
-      console.error('Ошибка при обновлении данных:', error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
+  // const handleRefresh = async () => {
+  //   setIsRefreshing(true);
+  //   try {
+  //     await refreshData();
+  //     console.log('Данные обновлены вручную');
+  //   } catch (error) {
+  //     console.error('Ошибка при обновлении данных:', error);
+  //   } finally {
+  //     setIsRefreshing(false);
+  //   }
+  // };
 
     // Delete handler (admin only)
   const handleDelete = async () => {
@@ -141,13 +141,13 @@ const PropertyPage: React.FC = () => {
       )}
 
           {/* Data refresh button */}
-          <button 
+          {/* <button 
             className={styles.refreshButton} 
             onClick={handleRefresh}
             disabled={isRefreshing}
           >
             {isRefreshing ? 'Aktualisieren...' : '🔄 Daten aktualisieren'}
-          </button>
+          </button> */}
       
 
       {!loading && objectData && (

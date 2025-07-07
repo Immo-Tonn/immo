@@ -26,7 +26,7 @@ const ApartmentsSchema: Schema = new Schema<IApartments>({
   },
   type: {
     type: String,
-    required: true,
+    // required: true,
   },
   floor: {
     type: Number,
