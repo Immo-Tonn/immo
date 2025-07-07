@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './PropertyHero.module.css';
 import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 import {
   RealEstateObject,
   Apartment,
@@ -21,6 +22,8 @@ interface PropertyHeroProps {
   residentialHouse?: ResidentialHouse;
    isAdmin?: boolean;
 }
+
+
 
 const PropertyHero: React.FC<PropertyHeroProps> = ({
   object,
@@ -330,7 +333,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
       <div className={styles.features} ref={el => {refs.current[6] = el}}>
         <div className={styles.feature}>
-          <h3>{price.toLocaleString()} €</h3>
+          <h3>{formatGermanCurrency(price)} €</h3>
           <h6>Kaufpreis</h6>
         </div>
 
