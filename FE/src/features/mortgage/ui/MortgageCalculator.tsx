@@ -65,6 +65,8 @@ const MortgageCalculator = () => {
   
 const [interestRangeError, setInterestRangeError] = useState(false);
   const [rawInterest, setRawInterest] = useState('');
+
+const [rawEquity, setRawEquity] = useState('');
   const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
 
   const customTaxError =
@@ -117,23 +119,63 @@ const [interestRangeError, setInterestRangeError] = useState(false);
     });
   };
 
-  const handleEquityChange = (val: string) => {
-     // Удаляем все символы кроме цифр и запятой
-  const cleaned = val.replace(/[^\d,]/g, '');
-    const parts = val.split(/[,\.]/);
-    let formattedVal = cleaned;
-    if (parts.length === 2) {
-      const [integerPart, decimalPart = ''] = parts;
-      const limitedDecimal = decimalPart.slice(0, 3);
-      formattedVal = integerPart + ',' + limitedDecimal;
-      setEquityDecimalError(limitedDecimal.length > 2);
-    } else {
-      setEquityDecimalError(false);
-    }
-    setEquity(formattedVal);
-    const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
-    setEquityTooHighError(valNum > totalCost);
-  };
+ const handleEquityChange = (val: string) => {
+  // Заменяем все точки на запятые
+  let normalized = val.replace(/\./g, ',');
+
+  // Разрешаем пустую строку (удаление)
+  if (normalized === '') {
+    setEquity('');
+    setEquityDecimalError(false);
+    setEquityTooHighError(false);
+    return;
+  }
+
+  // Удаляем все символы кроме цифр и запятой
+  let cleaned = normalized.replace(/[^\d,]/g, '');
+
+  // Оставляем только первую запятую
+  const firstCommaIndex = cleaned.indexOf(',');
+  if (firstCommaIndex !== -1) {
+    // Разбиваем строку на часть до и после первой запятой
+    const beforeComma = cleaned.slice(0, firstCommaIndex);
+    const afterCommaRaw = cleaned.slice(firstCommaIndex + 1);
+    // Удаляем все последующие запятые из дробной части
+    const afterComma = afterCommaRaw.replace(/,/g, '');
+    cleaned = beforeComma + ',' + afterComma;
+  }
+
+  // Ограничение на 3 знака после запятой
+  const parts = cleaned.split(',');
+  let formattedVal = cleaned;
+  let limitedDecimal = '';
+  if (parts.length === 2) {
+    const [integerPart, decimalPart = ''] = parts;
+    limitedDecimal = decimalPart.slice(0, 3);
+    formattedVal = integerPart + ',' + limitedDecimal;
+    setEquityDecimalError(limitedDecimal.length > 2);
+  } else {
+    setEquityDecimalError(false);
+  }
+
+  const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
+const prevValNum = parseFloat(equity.replace(',', '.')) || 0;
+  // Если ввод делает значение больше, но оно было меньше — показываем значение и блокируем только следующее
+  if (valNum > totalCost && prevValNum <= totalCost) {
+    setEquity(formattedVal); // показываем ту самую «лишнюю» цифру
+    setEquityTooHighError(true);
+    return;
+  }
+ // Если значение всё ещё превышает лимит, и пользователь пытается ещё что-то добавить — блокируем
+  if (valNum > totalCost && val.length > equity.length) {
+    setEquityTooHighError(true);
+    return;
+  }
+
+  // Если всё нормально — сохраняем
+  setEquity(formattedVal);
+  setEquityTooHighError(false);
+};
 
 const handleInterestChange = (value: string) => {
     // Заменить точки на запятые
@@ -237,6 +279,10 @@ const handleInterestChange = (value: string) => {
   const handleCalc = () => {
     setValidationError('');
     setMonthly(null);
+    if (equityTooHighError) {
+    setValidationError('Eigenkapital darf den Gesamtpreis nicht überschreiten.');
+    return;
+  }
     if (!equity || equity.trim() === '') {
       setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
       return;
@@ -452,7 +498,7 @@ const handleInterestChange = (value: string) => {
     </option>
   ))}
 </select>
-          <label htmlFor="interest">Sollzins p. a.</label>
+          <label htmlFor="interest">Sollzins p. a.(%)</label>
           <div className={styles.inputWithIcon}>
            <input
               type="text"
@@ -659,7 +705,9 @@ function renderSelect(
               name={`${infoKey}-custom`}
               value={customValue}
               onChange={e => setCustomValue(e.target.value)}
-              label={`Custom ${label}`}
+              label={infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
+          ? ''
+          : `Custom ${label}`}
             />
             <span>%</span>
           </div>
