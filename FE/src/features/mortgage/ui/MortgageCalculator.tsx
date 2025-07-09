@@ -277,6 +277,8 @@ const handleInterestChange = (value: string) => {
   ]);
 
   const handleCalc = () => {
+    setInterestDecimalError(false);
+setInterestRangeError(false);
     setValidationError('');
     setMonthly(null);
     if (equityTooHighError) {
@@ -498,70 +500,64 @@ const handleInterestChange = (value: string) => {
     </option>
   ))}
 </select>
-          <label htmlFor="interest">Sollzins p. a.(%)</label>
-          <div className={styles.inputWithIcon}>
-           <input
-              type="text"
-              value={interest}
-              onChange={e => handleInterestChange(e.target.value)}
-              onBeforeInput={e => {
-                if (!e.data) return;
+         <label htmlFor="interest">Sollzins p. a.(%)</label>
+<div className={styles.inputWithIcon}>
+  <input
+    type="text"
+    value={interest}
+    onChange={e => handleInterestChange(e.target.value)}
+    onBeforeInput={e => {
+      if (!e.data) return;
 
-                const input = e.currentTarget;
-                const { selectionStart, selectionEnd } = input;
+      const input = e.currentTarget;
+      const { selectionStart, selectionEnd } = input;
 
-                // Предварительная замена точки на запятую
-                const inserted = e.data === '.' ? ',' : e.data;
+      const inserted = e.data === '.' ? ',' : e.data;
 
-                // Смоделируем предполагаемое значение после вставки
-                const proposed =
-                  selectionStart !== null && selectionEnd !== null
-                    ? input.value.slice(0, selectionStart) +
-                      inserted +
-                      input.value.slice(selectionEnd)
-                    : input.value + inserted;
-                    const cleaned = proposed.replace('%', '');
+      const proposed =
+        selectionStart !== null && selectionEnd !== null
+          ? input.value.slice(0, selectionStart) + inserted + input.value.slice(selectionEnd)
+          : input.value + inserted;
 
-                // Только цифры и запятая разрешены
-                if (!/^[\d,]*$/.test(inserted)) {
-                  e.preventDefault();
-                  return;
-                }
+      const cleaned = proposed.replace('%', '');
+      const parts = cleaned.split(',');
 
-                // Блокируем более одной запятой
-                if ((proposed.match(/,/g) || []).length > 1) {
-                  e.preventDefault();
-                  return;
-                }
+      const numericValue = parseFloat(cleaned.replace(',', '.'));
 
-                // Проверка: после запятой не более одной цифры
-                const parts = proposed.split(',');
-                if (parts.length === 2 && parts[1].length > 1) {
-                  e.preventDefault();
-                  return;
-                }
+      const tooManyDecimals = parts.length === 2 && parts[1].length > 1;
+      const tooHighOrLow = !isNaN(numericValue) && (numericValue <= 0 || numericValue > 14);
 
-                // Проверка: значение не превышает 14
-                const numericValue = parseFloat(proposed.replace(',', '.'));
-                if (!isNaN(numericValue) && numericValue > 14) {
-                  e.preventDefault();
-                  return;
-                }
-              }}
-              inputMode="decimal"
-            />
-            <img src={MarkerIcon} className={styles.markerIcon} />
-          </div>
-          {interestDecimalError && (
-            <p className={styles.error}>
-              Nach dem Komma darf nur eine Ziffer eingegeben werden.
-            </p>
-          )}
-          {interestRangeError && (
-            <p className={styles.error}>
-              Der Sollzins muss größer als 0 und kleiner als 14 sein.
-            </p>
-          )}
+      setInterestDecimalError(tooManyDecimals);
+      setInterestRangeError(tooHighOrLow);
+
+      if (!/^[\d,]*$/.test(inserted)) {
+        e.preventDefault();
+        return;
+      }
+
+      if ((proposed.match(/,/g) || []).length > 1 || tooManyDecimals || tooHighOrLow) {
+        e.preventDefault();
+        return;
+      }
+    }}
+    inputMode="decimal"
+  />
+  <img src={MarkerIcon} className={styles.markerIcon} />
+</div>
+
+{interestDecimalError && (
+  <p className={styles.error}>
+    Nach dem Komma darf nur eine Ziffer eingegeben werden.
+  </p>
+)}
+{interestRangeError && (
+  <p className={styles.error}>
+    Der Sollzins muss größer als 0 und kleiner als 14 sein.
+  </p>
+)}
+
+
+
           <label htmlFor="years">Laufzeit (Jahre)</label>
           <select
             id="years"
