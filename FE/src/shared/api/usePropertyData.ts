@@ -131,37 +131,56 @@ export const usePropertysData = () => {
         setObjectData(data);
 
         // Loading all images
+        let loadedImages: Image[] = [];
         try {
           const imagesRes = await axios.get<Image[]>(
             `http://localhost:3000/api/images/`,
           );
-          setImages(imagesRes.data || []); // Добавлена проверка на null/undefined
-          console.log('Geladene Bilder:', imagesRes.data?.length || 0);
+          loadedImages = imagesRes.data || [];
+          setImages(loadedImages);
+          console.log('Geladene Bilder:', loadedImages.length);
         } catch (imageError: any) {
-          // ДОБАВЛЕНО: Обработка случая когда изображений нет (404)
+          // Processing of the case when there are no images (404)
           if (imageError?.response?.status === 404) {
             console.log('Изображения не найдены (пустая база) - устанавливаем пустой массив');
-            setImages([]); // Устанавливаем пустой массив вместо ошибки
+            setImages([]);
+            loadedImages = [];
           } else {
             console.warn('Ошибка при загрузке изображений:', imageError);
-            setImages([]); // Устанавливаем пустой массив при любых других ошибках
+            setImages([]);
+            loadedImages = [];
           }
         }
 
         setErr(null);
-        console.log('Geladene Objekte:', data.length, 'Bilder:', images.length);
+        
+        // Counting objects with images
+        let objectsWithImages = 0;
+        if (data && data.length > 0) {
+          objectsWithImages = data.filter(obj => {
+            // check if the object has images
+            if (!obj.images || obj.images.length === 0) {
+              return false;
+            }
+            // check real images in a loaded array
+            return obj.images.some((imageId: string) => 
+              loadedImages.some(img => img._id === imageId)
+            );
+          }).length;
+        }
+        
+        console.log('Geladene Objekte:', data.length, 'Bilder:', objectsWithImages);
       } catch (err: any) {
         console.error('Fehler beim Laden der Daten:', err);
 
-
         if (err?.response?.status === 404) {
-          // Если объекты не найдены
+          // If objects not found
           setObjectData([]);
           setImages([]);
-          setErr(null); // Не показываем ошибку для пустой базы
+          setErr(null);
           console.log('Объекты не найдены - показываем пустое состояние');
         } else {
-          // Другие ошибки (сеть, сервер и т.д.)
+          // Other errors (network, server, etc.)
           setErr(err?.message || 'Unbekannter Fehler');
         }
       } finally {
@@ -171,7 +190,6 @@ export const usePropertysData = () => {
 
     fetchData();
   }, []);
-
 
   return { objectData, images, loading, err };
 };

@@ -149,7 +149,7 @@ export const getImagesByObjectId = async (
       url: `${transformBunnyUrl(img.url)}?t=${timestamp}`,
     }));
 
-
+        // headlines to prevent caching
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -319,7 +319,7 @@ export const deleteImageByUrl = async (
       return;
     }
 
-    // Находим изображение по URL
+    // Find the image by URL
     const image = await ImagesModel.findOne({ url: imageUrl });
 
     if (!image) {

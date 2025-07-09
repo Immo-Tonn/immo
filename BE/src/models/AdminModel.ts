@@ -2,7 +2,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 
-
 export interface IAdmin extends Document {
   email: string;
   fullName: string;
@@ -10,7 +9,6 @@ export interface IAdmin extends Document {
   password: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
-
 
 const AdminSchema: Schema = new Schema({
   email: {

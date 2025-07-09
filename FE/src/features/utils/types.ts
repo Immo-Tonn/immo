@@ -1,4 +1,3 @@
-// Типы для объектов недвижимости
 export enum ObjectType {
   LAND = 'Land Plots',
   HOUSE = 'Residential Houses',

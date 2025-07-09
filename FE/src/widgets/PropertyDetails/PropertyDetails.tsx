@@ -8,6 +8,7 @@ import {
   CommercialBuilding,
 } from '@shared/types/propertyTypes';
 import { useNavigate } from 'react-router-dom';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 
 interface PropertyDetailsProps {
   object: RealEstateObject;
@@ -41,7 +42,7 @@ const getPropertyDetails = (
 ): Record<string, any> => {
   return {
     Land: object.address?.country,
-    'Nummer ID': object.number,
+    'ID Nummer': object.number,
     Objektart: object.type,
     ...(apartment?.type && { Wohnungstyp: apartment.type }),
     ...(house?.type && {Haustyp: house.type}),
@@ -52,12 +53,12 @@ const getPropertyDetails = (
     Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` : undefined,
     Nutzfläche: house?.usableArea,
     Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
-    Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
+    Zimmer: house?.numberOfRooms ?? apartment?.numberOfRooms,
     Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
     Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
     Etage: apartment?.floor,
     'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
-    Garage: house?.garageParkingSpaces,
+    Stellplätze: house?.garageParkingSpaces,
     Energieeffizienzklasse:
       house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
     Energieträger: house?.energySource ?? apartment?.energySource,
@@ -159,9 +160,12 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-            <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
-              Finanzierungsrechner
-            </button>
+             <button
+  className={styles.calcButton}
+  onClick={() => navigate('/finanzierung', { state: { price: formatGermanCurrency(object.price) } })}
+>
+  Finanzierungsrechner
+</button>
           </div>
         </div>
       </aside>

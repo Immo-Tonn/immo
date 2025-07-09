@@ -426,7 +426,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                     />
                   ) : null}
                   
-                  {/* Плейсхолдер для случаев когда нет thumbnail или он не загрузился */}
+                  {/* PlaySholder for cases when no Thumbnail or not boot */}
                   <div 
                     className={`${styles.videoPlaceholder} video-placeholder`}
                     style={{ display: video.thumbnailUrl ? 'none' : 'flex' }}
@@ -450,7 +450,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </>
       )}
 
-      {/* Зона загрузки */}
+      {/* Loading Zone */}
       <div
         ref={dropZoneRef}
         className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
@@ -482,7 +482,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </div>
       </div>
 
-      {/* Предпросмотр новых видео */}
+      {/* Preview new videos */}
       {selectedFiles.length > 0 && (
         <>
           <h4 className={styles.imageSection}>
@@ -490,7 +490,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
           </h4>
           <div className={styles.videoPreviews}>
             {selectedFiles.map((file, index) => {
-              // Проверяем, что файл существует
+              // check that the file exists
               if (!file) return null;
               
               return (
@@ -528,7 +528,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </>
       )}
 
-      {/* Прогресс загрузки */}
+      {/* Loading progress */}
       {uploading && uploadProgress > 0 && (
         <div className={styles.uploadProgress}>
           <div
@@ -541,7 +541,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </div>
       )}
 
-      {/* Кнопка загрузки */}
+      {/* Download button */}
       {selectedFiles.length > 0 && !uploading && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <button
