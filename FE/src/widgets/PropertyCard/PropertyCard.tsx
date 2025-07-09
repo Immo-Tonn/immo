@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import styles from './PropertyCard.module.css';
 import { PropertyHeroProps } from '@shared/types/propertyTypes';
 import { NavLink } from 'react-router-dom';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 
 const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
   ({ object, images, residentialHouse }, ref) => {
@@ -46,7 +47,9 @@ const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
               <p className={styles.cardTitle}>{title}</p>
               <p className={styles.address}>{address?.city}</p>
               <div className={styles.details}>
-                {price !== undefined && <p>Kaufpreis: {price} € </p>}
+               {price !== undefined && (
+  <p>Kaufpreis: {formatGermanCurrency(price)} €</p>
+)}
                 {livingArea !== undefined && (
                   <p>| Wohnfläche: {livingArea} m² | </p>
                 )}
