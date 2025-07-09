@@ -39,8 +39,8 @@
 .map {
   position: relative;
   justify-content: center;
-
-  height: clamp(250px, 10vw, 400px);
+  height: 400px;
+  /* height: clamp(250px, 10vw, 400px); */
   border-radius: 8px;
 }
 
@@ -70,6 +70,7 @@
     font-size: 22px;
     margin: 15px;
   }
+
   .hr {
     width: 52%;
   }

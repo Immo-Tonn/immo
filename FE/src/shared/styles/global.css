@@ -29,7 +29,8 @@ a:hover {
   color: white;
   transform: scale(1.1);
 }
-p > a:hover {
+
+p>a:hover {
   color: #000000;
   transform: scale(1.2);
 }
@@ -42,6 +43,7 @@ p > a:hover {
 main {
   min-height: 100dvh;
 }
+
 html,
 body {
   overflow-x: hidden;
