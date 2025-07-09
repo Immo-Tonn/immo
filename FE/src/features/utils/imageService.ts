@@ -53,6 +53,19 @@ export const uploadMultipleImages = async (
       return [];
     }
 
+    console.log(`🔄 Начинаем загрузку ${files.length} изображений для объекта ${realEstateObjectId}`);
+
+    // Сначала проверяем, есть ли уже изображения у объекта
+    let hasExistingImages = false;
+    try {
+      const existingImagesResponse = await axios.get(`/images/by-object?objectId=${realEstateObjectId}`);
+      hasExistingImages = existingImagesResponse.data && existingImagesResponse.data.length > 0;
+      console.log(`📊 У объекта уже есть ${hasExistingImages ? existingImagesResponse.data.length : 0} изображений`);
+    } catch (error) {
+      console.log('ℹ️ У объекта пока нет изображений');
+      hasExistingImages = false;
+    }
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
@@ -60,8 +73,14 @@ export const uploadMultipleImages = async (
       if (!file) {
         continue;
       }
-      const isMain = i === 0; // Первое изображение будет главным
+
+      // Определяем тип изображения:
+      // - Если у объекта нет изображений И это первый файл в загрузке - делаем его главным
+      // - Иначе делаем дополнительным
+      const isMain = !hasExistingImages && i === 0;
       const type = isMain ? ImageType.MAIN : ImageType.ADDITIONAL;
+
+      console.log(`📤 Загружаем изображение ${i + 1}/${files.length}, тип: ${type}`);
 
       const url = await uploadImage(
         file,
@@ -80,6 +99,7 @@ export const uploadMultipleImages = async (
       );
 
       imageUrls.push(url);
+      console.log(`✅ Изображение ${i + 1} загружено: ${url}`);
 
       // Обновляем общий прогресс после полной загрузки текущего файла
       totalProgress = ((i + 1) / files.length) * 100;
@@ -88,9 +108,10 @@ export const uploadMultipleImages = async (
       }
     }
 
+    console.log(`✅ Все ${files.length} изображений успешно загружены`);
     return imageUrls;
   } catch (error) {
-    console.error('Ошибка при загрузке нескольких изображений:', error);
+    console.error('❌ Ошибка при загрузке нескольких изображений:', error);
     throw error;
   }
-};
+};    

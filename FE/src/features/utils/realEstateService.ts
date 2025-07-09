@@ -24,8 +24,7 @@ const cleanUrl = (url: string): string => {
   return parts[0] || url;
 };
 
-// Исправленная функция updateImageOrder с подробной отладкой
-// Исправленная функция обновления порядка изображений
+// Исправленная функция updateImageOrder с поддержкой массива ID
 export const updateImageOrder = async (
   objectId: string,
   orderedImageUrls: string[],
@@ -101,40 +100,61 @@ export const updateImageOrder = async (
     // 2. Создание массива ID в правильном порядке
     console.log('🔄 Создаем массив ID в правильном порядке...');
     const orderedImageIds: string[] = [];
-    
-    orderedImageUrls.forEach((url, index) => {
-      if (!url) {
-        console.warn(`⚠️ Пустой URL на позиции ${index}`);
+
+        orderedImageUrls.forEach((urlOrId, index) => {
+      if (!urlOrId) {
+        console.warn(`⚠️ Пустое значение на позиции ${index}`);
         return;
       }
+    
+    // orderedImageUrls.forEach((url, index) => {
+    //   if (!url) {
+    //     console.warn(`⚠️ Пустой URL на позиции ${index}`);
+    //     return;
+    //   }
       
-      const cleanedUrl = cleanUrl(url);
-      console.log(`🔍 Ищем изображение для URL ${index + 1}:`, cleanedUrl);
-      
-      const imageObj = allImages.find(img => {
-        if (!img?.url) {
-          return false;
-        }
-        
-        const imgCleanUrl = cleanUrl(img.url);
-        const match = imgCleanUrl === cleanedUrl || 
-                     imgCleanUrl.includes(cleanedUrl) || 
-                     cleanedUrl.includes(imgCleanUrl);
-        
-        console.log(`   Сравниваем с ${imgCleanUrl}: ${match}`);
-        return match;
-      });
-      
-      if (imageObj) {
-        const imageId = imageObj._id || imageObj.id;
-        if (imageId) {
-          orderedImageIds.push(imageId);
-          console.log(`✅ Найдено изображение: ${imageId} для URL: ${cleanedUrl}`);
+          // Проверяем, является ли это уже ID (24 символа hex) или URL
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(urlOrId);
+
+      if (isObjectId) {
+        // Это уже ID изображения
+        const imageObj = allImages.find(img => (img._id || img.id) === urlOrId);
+        if (imageObj) {
+          orderedImageIds.push(urlOrId);
+          console.log(`✅ Добавлен ID изображения: ${urlOrId}`);
         } else {
-          console.warn(`⚠️ Найдено изображение без ID для URL: ${cleanedUrl}`);
+          console.warn(`⚠️ Не найдено изображение с ID: ${urlOrId}`);
         }
       } else {
-        console.warn(`⚠️ Не найдено изображение для URL: ${cleanedUrl}`);
+        // Это URL, ищем соответствующее изображение
+        const cleanedUrl = cleanUrl(urlOrId);
+        console.log(`🔍 Ищем изображение для URL ${index + 1}:`, cleanedUrl);
+        
+        const imageObj = allImages.find(img => {
+          if (!img?.url) {
+            return false;
+          }
+          
+          const imgCleanUrl = cleanUrl(img.url);
+          const match = imgCleanUrl === cleanedUrl || 
+                       imgCleanUrl.includes(cleanedUrl) || 
+                       cleanedUrl.includes(imgCleanUrl);
+          
+          console.log(`   Сравниваем с ${imgCleanUrl}: ${match}`);
+          return match;
+        });
+        
+        if (imageObj) {
+          const imageId = imageObj._id || imageObj.id;
+          if (imageId) {
+            orderedImageIds.push(imageId);
+            console.log(`✅ Найдено изображение: ${imageId} для URL: ${cleanedUrl}`);
+          } else {
+            console.warn(`⚠️ Найдено изображение без ID для URL: ${cleanedUrl}`);
+          }
+        } else {
+          console.warn(`⚠️ Не найдено изображение для URL: ${cleanedUrl}`);
+        }
       }
     });
     
@@ -239,12 +259,12 @@ export const updateImageOrder = async (
   
   console.log('✅ ЗАВЕРШЕНИЕ updateImageOrder');
 };
+
 export const createSpecificObjectData = async (
   realEstateObjectId: string,
   objectType: ObjectType,
   specificData: Record<string, any>,
 ): Promise<void> => {
-
   try {
     const data = {
       ...specificData,
@@ -269,9 +289,10 @@ export const createSpecificObjectData = async (
       default:
         throw new Error('Неизвестный тип объекта');
     }
+
     await axios.post(endpoint, data);
   } catch (error) {
-    console.error('❌ Ошибка при создании специфических данных объекта:', error);
+    console.error('Ошибка при создании специфических данных объекта:', error);
     throw error;
   }
 };
@@ -586,6 +607,7 @@ export const updateCompleteRealEstateObject = async (
   try {
     console.log('Начинаем обновление объекта:', objectId);
     console.log('Порядок существующих изображений:', existingImages);
+    console.log('Количество новых файлов:', newFiles.length);
 
     // 1. Обновление основного объекта
     console.log('Шаг 1: Обновление основного объекта');
@@ -651,19 +673,84 @@ export const updateCompleteRealEstateObject = async (
       console.log('Новые изображения загружены');
     }
 
-    // 3.5 КРИТИЧНО: Всегда обновляем порядок изображений в объекте
-    // Это нужно делать даже если existingImages пустой массив
+    // 3.5 КРИТИЧНО: Правильное обновление порядка изображений в объекте
     console.log('Обновляем порядок изображений в объекте...');
-    
-    if (existingImages.length === 0) {
+
+        // Если есть новые файлы, нужно получить обновленный список изображений
+    if (newFiles.length > 0) {
+      console.log('📋 Получаем обновленный список изображений после загрузки новых файлов');
+      
+      // Небольшая задержка для обеспечения завершения загрузки
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      try {
+        const updatedImagesResponse = await axios.get(
+          `/images/by-object?objectId=${objectId}&_t=${Date.now()}`,
+          {
+            headers: {
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache'
+            }
+          }
+        );
+        
+        if (updatedImagesResponse.data && Array.isArray(updatedImagesResponse.data)) {
+          const allImages = updatedImagesResponse.data;
+          console.log('📊 Найдено изображений после загрузки:', allImages.length);
+          
+          if (allImages.length > 0) {
+            // Создаем правильный порядок: существующие + новые
+            const orderedImageIds: string[] = [];
+            
+            // Сначала добавляем существующие изображения в правильном порядке
+            existingImages.forEach(url => {
+              const cleanedUrl = cleanUrl(url);
+              const imageObj = allImages.find(img => {
+                const imgCleanUrl = cleanUrl(img.url);
+                return imgCleanUrl === cleanedUrl || 
+                       imgCleanUrl.includes(cleanedUrl) || 
+                       cleanedUrl.includes(imgCleanUrl);
+              });
+              
+              if (imageObj && imageObj._id) {
+                orderedImageIds.push(imageObj._id);
+              }
+            });
+            
+            // Затем добавляем новые изображения (которых нет в existingImages)
+            allImages.forEach(img => {
+              if (img._id && !orderedImageIds.includes(img._id)) {
+                orderedImageIds.push(img._id);
+                console.log(`➕ Добавлено новое изображение: ${img._id}`);
+              }
+            });
+            
+            console.log('📋 Финальный порядок изображений:', orderedImageIds);
+            
+            // Обновляем порядок в объекте
+            await updateImageOrder(objectId, orderedImageIds.map(id => {
+              const img = allImages.find(i => i._id === id);
+              return img ? img.url : '';
+            }).filter(url => url));
+            
+            console.log('✅ Порядок изображений обновлен');
+          } else {
+            console.log('📋 Нет изображений для установки порядка');
+            await axios.put(`/objects/${objectId}`, { images: [] });
+          }
+        }
+      } catch (error) {
+        console.warn('⚠️ Ошибка при получении обновленного списка изображений:', error);
+      }
+    } else if (existingImages.length === 0) {
       // Если изображений не осталось, очищаем массив images в объекте
       console.log('📋 Очищаем массив изображений в объекте (все изображения удалены)');
       await axios.put(`/objects/${objectId}`, { images: [] });
       console.log('✅ Массив изображений в объекте очищен');
     } else {
-      // Если есть изображения, обновляем их порядок
+      // Если есть существующие изображения, но нет новых, обновляем их порядок
       await updateImageOrder(objectId, existingImages);
-      console.log('✅ Порядок изображений обновлен');
+      console.log('✅ Порядок существующих изображений обновлен');
     }
 
     console.log('✅ Обновление объекта завершено успешно');
