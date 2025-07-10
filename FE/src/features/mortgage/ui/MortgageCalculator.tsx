@@ -67,6 +67,7 @@ const [interestRangeError, setInterestRangeError] = useState(false);
   const [rawInterest, setRawInterest] = useState('');
 
 const [rawEquity, setRawEquity] = useState('');
+const [showTaxError, setShowTaxError] = useState(false);
   const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
 
   const customTaxError =
@@ -263,15 +264,8 @@ const handleInterestChange = (value: string) => {
   ]);
 
   const handleCalc = () => {
-const equityNum = parseFloat(equity.replace(',', '.')) || 0;
-if (equityNum >= totalCost) {
-  setEquityTooHighError(true);
-  return; // прерываем расчёт
-}
-
-
     setInterestDecimalError(false);
-setInterestRangeError(false);
+    setInterestRangeError(false);
     setValidationError('');
     setMonthly(null);
     if (equityTooHighError) {
@@ -395,6 +389,28 @@ setInterestRangeError(false);
     (1.0 + i * 0.5).toFixed(1),
   );
 
+
+  function validateCustomPercentInput(input: string): string {
+  // Заменяем все точки на запятые
+  let cleaned = input.replace(/\./g, ',');
+  
+  // Разрешаем только цифры и максимум одну запятую
+  cleaned = cleaned.replace(/[^0-9,]/g, '');
+
+  const parts = cleaned.split(',');
+  
+  // Больше одной запятой — удаляем лишние
+  if (parts.length > 2) {
+    cleaned = parts[0] + ',' + parts[1];
+  }
+
+  // Ограничим дробную часть до одной цифры
+  if (parts.length === 2) {
+    cleaned = parts[0] + ',' + parts[1].slice(0, 1);
+  }
+
+  return cleaned;
+}
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Immobilien Finanzierung Rechner</h2>
@@ -648,9 +664,10 @@ function renderSelect(
   options: any,
   modeToggle: any,
   showError: any,
-  onInfoClick: any,
+    onInfoClick: any,
 ) {
   const showCustom = value === 'custom';
+
   return (
     <>
       <label>
@@ -662,6 +679,7 @@ function renderSelect(
           alt={`${label} info`}
         />
       </label>
+
       <div className={styles.selectWrapper}>
         <select
           value={value}
@@ -677,6 +695,11 @@ function renderSelect(
               modeToggle?.();
               onChange(selected);
             }
+
+            // если пользователь выбрал НЕ custom, сбрасываем ошибку
+            if (selected !== 'custom' && typeof setShowError === 'function') {
+              setShowError(false);
+            }
           }}
           className={styles.select}
         >
@@ -687,21 +710,55 @@ function renderSelect(
           ))}
           <option value="custom">eigener Wert</option>
         </select>
+
         {showCustom && (
           <div className={styles.inputWithPercent}>
-            <Input
-              id={`${infoKey}-custom`}
-              name={`${infoKey}-custom`}
-              value={customValue}
-              onChange={e => setCustomValue(e.target.value)}
-              label={infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
-          ? ''
-          : `Custom ${label}`}
-            />
+     <Input
+  id={`${infoKey}-custom`}
+  name={`${infoKey}-custom`}
+  value={customValue}
+  onChange={e => {
+  let val = e.target.value;
+
+  // Заменяем запятую на точку
+  val = val.replace(',', '.');
+
+  // Проверка: разрешаем максимум 2 цифры перед точкой и одну после
+  const regex = /^\d{0,2}(\.\d?)?$/;
+
+  if (regex.test(val)) {
+    const number = parseFloat(val);
+
+    // Разрешаем пустую строку — чтобы можно было стереть значение
+    if (val === '' || (number <= 10 && !isNaN(number))) {
+      setCustomValue(val);
+    }
+  }
+}}
+  onBlur={e => {
+    const val = e.target.value.trim();
+    const number = parseFloat(val);
+
+    // Проверка: число от 0 до 10, максимум одна цифра после точки
+    const isValid =
+      /^([0-9]|10)(\.\d)?$/.test(val) && !isNaN(number) && number <= 10;
+
+    if (typeof setShowError === 'function') {
+      setShowError(!isValid);
+    }
+  }}
+  inputMode="decimal"
+  label={
+    infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
+      ? ''
+      : `Custom ${label}`
+  }
+/>
             <span>%</span>
           </div>
         )}
       </div>
+
       {showError && (
         <p className={styles.error}>
           Bitte geben Sie einen gültigen Wert zwischen 0 und 10 ein (max. eine
