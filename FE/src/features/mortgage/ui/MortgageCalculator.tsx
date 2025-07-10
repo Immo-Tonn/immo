@@ -120,10 +120,8 @@ const [rawEquity, setRawEquity] = useState('');
   };
 
  const handleEquityChange = (val: string) => {
-  // Заменяем все точки на запятые
   let normalized = val.replace(/\./g, ',');
 
-  // Разрешаем пустую строку (удаление)
   if (normalized === '') {
     setEquity('');
     setEquityDecimalError(false);
@@ -131,21 +129,16 @@ const [rawEquity, setRawEquity] = useState('');
     return;
   }
 
-  // Удаляем все символы кроме цифр и запятой
   let cleaned = normalized.replace(/[^\d,]/g, '');
 
-  // Оставляем только первую запятую
   const firstCommaIndex = cleaned.indexOf(',');
   if (firstCommaIndex !== -1) {
-    // Разбиваем строку на часть до и после первой запятой
     const beforeComma = cleaned.slice(0, firstCommaIndex);
     const afterCommaRaw = cleaned.slice(firstCommaIndex + 1);
-    // Удаляем все последующие запятые из дробной части
     const afterComma = afterCommaRaw.replace(/,/g, '');
     cleaned = beforeComma + ',' + afterComma;
   }
 
-  // Ограничение на 3 знака после запятой
   const parts = cleaned.split(',');
   let formattedVal = cleaned;
   let limitedDecimal = '';
@@ -159,22 +152,15 @@ const [rawEquity, setRawEquity] = useState('');
   }
 
   const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
-const prevValNum = parseFloat(equity.replace(',', '.')) || 0;
-  // Если ввод делает значение больше, но оно было меньше — показываем значение и блокируем только следующее
-  if (valNum > totalCost && prevValNum <= totalCost) {
-    setEquity(formattedVal); // показываем ту самую «лишнюю» цифру
-    setEquityTooHighError(true);
-    return;
-  }
- // Если значение всё ещё превышает лимит, и пользователь пытается ещё что-то добавить — блокируем
-  if (valNum > totalCost && val.length > equity.length) {
-    setEquityTooHighError(true);
-    return;
-  }
 
-  // Если всё нормально — сохраняем
   setEquity(formattedVal);
-  setEquityTooHighError(false);
+
+  // Здесь ключевая проверка
+  if (valNum >= totalCost) {
+    setEquityTooHighError(true);
+  } else {
+    setEquityTooHighError(false);
+  }
 };
 
 const handleInterestChange = (value: string) => {
@@ -277,6 +263,13 @@ const handleInterestChange = (value: string) => {
   ]);
 
   const handleCalc = () => {
+const equityNum = parseFloat(equity.replace(',', '.')) || 0;
+if (equityNum >= totalCost) {
+  setEquityTooHighError(true);
+  return; // прерываем расчёт
+}
+
+
     setInterestDecimalError(false);
 setInterestRangeError(false);
     setValidationError('');
