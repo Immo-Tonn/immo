@@ -509,7 +509,7 @@ const handleInterestChange = (value: string) => {
     </option>
   ))}
 </select>
-         <label htmlFor="interest">Sollzins p. a.(%)</label>
+        <label htmlFor="interest">Sollzins p. a.(%)</label>
 <div className={styles.inputWithIcon}>
   <input
     type="text"
@@ -564,7 +564,6 @@ const handleInterestChange = (value: string) => {
     Der Sollzins muss größer als 0 und kleiner als 14 sein.
   </p>
 )}
-
 
 
           <label htmlFor="years">Laufzeit (Jahre)</label>
@@ -735,18 +734,33 @@ function renderSelect(
     }
   }
 }}
-  onBlur={e => {
-    const val = e.target.value.trim();
-    const number = parseFloat(val);
+ onBlur={e => {
+  let val = e.target.value.trim();
 
-    // Проверка: число от 0 до 10, максимум одна цифра после точки
-    const isValid =
-      /^([0-9]|10)(\.\d)?$/.test(val) && !isNaN(number) && number <= 10;
+  // Заменяем запятую на точку
+  val = val.replace(',', '.');
 
-    if (typeof setShowError === 'function') {
-      setShowError(!isValid);
-    }
-  }}
+  // Удаляем ведущие нули, кроме случаев с "0."
+  if (/^0\d/.test(val)) {
+    val = parseFloat(val).toString(); // '05' → '5'
+  }
+
+  const number = parseFloat(val);
+
+  // Проверка: от 0 до 10 включительно, максимум одна цифра после точки
+  const isValid =
+    /^([0-9]|10)(\.\d)?$/.test(val) && !isNaN(number) && number <= 10;
+
+  if (typeof setShowError === 'function') {
+    setShowError(!isValid);
+  }
+
+  // Обновляем значение без ведущих нулей
+  if (isValid) {
+    setCustomValue(val);
+  }
+}}
+
   inputMode="decimal"
   label={
     infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
