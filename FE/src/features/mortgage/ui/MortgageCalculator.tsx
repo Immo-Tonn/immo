@@ -561,7 +561,7 @@ const handleInterestChange = (value: string) => {
 )}
 {interestRangeError && (
   <p className={styles.error}>
-    Der Sollzins muss größer als 0 und kleiner als 14 sein.
+    Der Sollzins muss größer als 1 und kleiner als 14 sein.
   </p>
 )}
 
