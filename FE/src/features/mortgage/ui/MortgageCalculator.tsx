@@ -426,7 +426,7 @@ const handleInterestChange = (value: string) => {
     doc.save('Finanzierung.pdf');
   };
 
-  const taxOptions = ['3.5', '5.0', '5.5', '6.0', '6.5'];
+  const taxOptions = ['3,5', '5,0', '5,5', '6,0', '6,5'];
   const notaryOptions = Array.from({ length: 11 }, (_, i) =>
     (1.0 + i * 0.1).toFixed(1),
   );
