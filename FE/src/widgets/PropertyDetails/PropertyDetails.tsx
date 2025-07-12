@@ -61,11 +61,11 @@ const getPropertyDetails = (
     'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
     Stellplätze: house?.garageParkingSpaces,
     Energieeffizienzklasse:
-      house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
+      house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass,
     Energieträger: house?.energySource ?? apartment?.energySource,
     Heizung: house?.heatingType ?? apartment?.heatingType,
     'Frei ab': object.freeWith,
-    Nutzung: commercial?.purpose ?? land?.recommendedUsage,
+    Nutzung: commercial?.purpose ?? land?.recommendedUsage ?? land?.recommendedUsage,
     Infrastruktur: land?.infrastructureConnection,
     Bebauungsplan: land?.buildingRegulations,
   };
