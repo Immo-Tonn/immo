@@ -14,6 +14,13 @@ const formatGermanCurrency = (num: number) => {
     .replace('.', ',')
     .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
+// Преобразует строку "375.000,00" в число 375000.00
+const parseGermanCurrency = (str: string): number => {
+  if (!str) return 0;
+  const normalized = str.replace(/\./g, '').replace(',', '.');
+  const result = parseFloat(normalized);
+  return isNaN(result) ? 0 : result;
+};
 
 const infoTexts = {
   tax: {
@@ -79,7 +86,7 @@ const MortgageCalculator = () => {
   const parseValue = (val: string, fallback: any) =>
     parseFloat((val === 'custom' ? fallback : val).replace(',', '.')) || 0;
 
-  const parsedPrice = parseFloat(price) || 0;
+const parsedPrice = parseGermanCurrency(price);
   const parsedEquity = parseFloat(equity.replace(',', '.')) || 0;
   const parsedInterest = parseFloat(interest) || 0;
   const parsedRepayment = parseFloat(repayment) || 0;
@@ -220,11 +227,14 @@ const handleInterestChange = (value: string) => {
     setInterest(val); // Пока пользователь вводит — без %
   };
 
-  useEffect(() => {
-    if (location.state && location.state.price) {
-      setPrice(String(location.state.price));
-    }
-  }, [location.state]);
+ useEffect(() => {
+  if (location.state && location.state.price) {
+    const rawPrice = typeof location.state.price === 'number'
+      ? location.state.price
+      : parseGermanCurrency(location.state.price);
+    setPrice(formatGermanCurrency(rawPrice));
+  }
+}, [location.state]);
 
   useEffect(() => {
     if (!darlehen || parsedInterest === 0) return;
@@ -833,7 +843,7 @@ function renderSelect(
           </div>
         )}
       </div>
-      
+
       {showError && (
         <p className={styles.error}>
           Bitte geben Sie einen gültigen Wert zwischen 0 und 10 ein (max. eine
