@@ -63,7 +63,10 @@ const MortgageCalculator = () => {
   const [equityDecimalError, setEquityDecimalError] = useState(false);
   const [interestDecimalError, setInterestDecimalError] = useState(false);
   const [interestRangeError, setInterestRangeError] = useState(false);
-
+  
+  const [rawInterest, setRawInterest] = useState('');
+  const [rawEquity, setRawEquity] = useState('');
+  const [showTaxError, setShowTaxError] = useState(false);
   const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
 
   const customTaxError =
@@ -94,9 +97,9 @@ const MortgageCalculator = () => {
   const totalCost = parsedPrice + totalAdditionalCosts;
   const darlehen = totalCost - parsedEquity;
 
-  const fixedRepaymentOptions = Array.from({ length: 19 }, (_, i) =>
-    (1 + i * 0.5).toFixed(1),
-  );
+  const fixedRepaymentOptions = Array.from({ length: 91 }, (_, i) =>
+  (1.0 + i * 0.1).toFixed(1),
+);
   const fixedLaufzeitOptions = Array.from({ length: 40 }, (_, i) =>
     (i + 1).toString(),
   );
@@ -116,38 +119,106 @@ const MortgageCalculator = () => {
     });
   };
 
-  const handleEquityChange = (val: string) => {
-    const parts = val.split(/[,\.]/);
-    let formattedVal = val;
-    if (parts.length === 2) {
-      const [integerPart, decimalPart = ''] = parts;
-      const limitedDecimal = decimalPart.slice(0, 3);
-      formattedVal = integerPart + ',' + limitedDecimal;
-      setEquityDecimalError(limitedDecimal.length > 2);
-    } else {
-      setEquityDecimalError(false);
-    }
-    setEquity(formattedVal);
-    const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
-    setEquityTooHighError(valNum > totalCost);
-  };
+  // const handleEquityChange = (val: string) => {
+  //   const parts = val.split(/[,\.]/);
+  //   let formattedVal = val;
+  //   if (parts.length === 2) {
+  //     const [integerPart, decimalPart = ''] = parts;
+  //     const limitedDecimal = decimalPart.slice(0, 3);
+  //     formattedVal = integerPart + ',' + limitedDecimal;
+  //     setEquityDecimalError(limitedDecimal.length > 2);
+  //   } else {
+  //     setEquityDecimalError(false);
+  //   }
+  //   setEquity(formattedVal);
+  //   const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
+  //   setEquityTooHighError(valNum > totalCost);
+  // };
+const handleEquityChange = (val: string) => {
+  let normalized = val.replace(/\./g, ',');
 
-  const handleInterestChange = (val: string) => {
-    setInterest(val);
-    const parts = val.split(/[,\.]/);
-    if (parts.length === 2 && parts[1].length > 1) {
-      setInterestDecimalError(true);
-    } else {
-      setInterestDecimalError(false);
+  if (normalized === '') {
+    setEquity('');
+    setEquityDecimalError(false);
+    setEquityTooHighError(false);
+    return;
+  }
+
+  let cleaned = normalized.replace(/[^\d,]/g, '');
+
+  const firstCommaIndex = cleaned.indexOf(',');
+  if (firstCommaIndex !== -1) {
+    const beforeComma = cleaned.slice(0, firstCommaIndex);
+    const afterCommaRaw = cleaned.slice(firstCommaIndex + 1);
+    const afterComma = afterCommaRaw.replace(/,/g, '');
+    cleaned = beforeComma + ',' + afterComma;
+  }
+
+  const parts = cleaned.split(',');
+  let formattedVal = cleaned;
+  let limitedDecimal = '';
+  if (parts.length === 2) {
+    const [integerPart, decimalPart = ''] = parts;
+    limitedDecimal = decimalPart.slice(0, 3);
+    formattedVal = integerPart + ',' + limitedDecimal;
+    setEquityDecimalError(limitedDecimal.length > 2);
+  } else {
+    setEquityDecimalError(false);
+  }
+
+  const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
+
+  setEquity(formattedVal);
+
+  // Здесь ключевая проверка
+  if (valNum >= totalCost) {
+    setEquityTooHighError(true);
+  } else {
+    setEquityTooHighError(false);
+  }
+};
+
+  // const handleInterestChange = (val: string) => {
+  //   setInterest(val);
+  //   const parts = val.split(/[,\.]/);
+  //   if (parts.length === 2 && parts[1].length > 1) {
+  //     setInterestDecimalError(true);
+  //   } else {
+  //     setInterestDecimalError(false);
+  //   }
+  //   const normalized = val.replace(',', '.');
+  //   const parsed = parseFloat(normalized);
+  //   if (!isNaN(parsed)) {
+  //     setInterestRangeError(parsed <= 0 || parsed >= 14);
+  //   } else {
+  //     setInterestRangeError(false);
+  //   }
+  // };
+const handleInterestChange = (value: string) => {
+    // Заменить точки на запятые
+    let val = value.replace(/\./g, ',');
+
+    // Удалить все символы кроме цифр и запятой
+    val = val.replace(/[^\d,]/g, '');
+
+    const parts = val.split(',');
+
+    // Только одна запятая и одна цифра после неё
+    if (parts.length > 2) {
+      val = parts[0] + ',' + parts[1].slice(0, 1);
+    } else if (parts.length === 2) {
+      val = parts[0] + ',' + parts[1].slice(0, 1);
     }
-    const normalized = val.replace(',', '.');
-    const parsed = parseFloat(normalized);
-    if (!isNaN(parsed)) {
-      setInterestRangeError(parsed <= 0 || parsed >= 14);
-    } else {
-      setInterestRangeError(false);
+
+    // Проверка: значение ≤ 14
+    const numericValue = parseFloat(val.replace(',', '.'));
+    if (!isNaN(numericValue) && numericValue > 14) {
+      return; // Не обновляем состояние
     }
-  };
+
+    setRawInterest(val);
+    setInterest(val); // Пока пользователь вводит — без %
+  };
 
   useEffect(() => {
     if (location.state && location.state.price) {
@@ -222,8 +293,20 @@ const MortgageCalculator = () => {
   ]);
 
   const handleCalc = () => {
+    // setValidationError('');
+    // setMonthly(null);
+    // if (!equity || equity.trim() === '') {
+    //   setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
+    //   return;
+    // }
+     setInterestDecimalError(false);
+    setInterestRangeError(false);
     setValidationError('');
     setMonthly(null);
+    if (equityTooHighError) {
+    setValidationError('Eigenkapital darf den Gesamtpreis nicht überschreiten.');
+    return;
+  }
     if (!equity || equity.trim() === '') {
       setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
       return;
@@ -341,6 +424,28 @@ const MortgageCalculator = () => {
     (1.0 + i * 0.5).toFixed(1),
   );
 
+   function validateCustomPercentInput(input: string): string {
+  // Заменяем все точки на запятые
+  let cleaned = input.replace(/\./g, ',');
+  
+  // Разрешаем только цифры и максимум одну запятую
+  cleaned = cleaned.replace(/[^0-9,]/g, '');
+
+  const parts = cleaned.split(',');
+  
+  // Больше одной запятой — удаляем лишние
+  if (parts.length > 2) {
+    cleaned = parts[0] + ',' + parts[1];
+  }
+
+  // Ограничим дробную часть до одной цифры
+  if (parts.length === 2) {
+    cleaned = parts[0] + ',' + parts[1].slice(0, 1);
+  }
+
+  return cleaned;
+}
+
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Immobilien Finanzierung Rechner</h2>
@@ -423,7 +528,7 @@ const MortgageCalculator = () => {
               werden.
             </p>
           )}
-          {renderSelect(
+       {/* {renderSelect(
             'Tilgung',
             repayment,
             setRepayment,
@@ -432,9 +537,26 @@ const MortgageCalculator = () => {
             'tax',
             repaymentOptions,
             () => setMode('calculateYears'),
-          )}
+          )}*/}
+
+          <label htmlFor="repayment">Tilgung</label>
+<select
+  id="repayment"
+  name="repayment"
+  value={repayment}
+  onChange={e => {
+    setMode('calculateYears');
+    setRepayment(e.target.value);
+  }}
+>
+  {repaymentOptions.map(opt => (
+    <option key={opt} value={opt}>
+      {opt}%
+    </option>
+  ))}
+</select>
           <label htmlFor="interest">Sollzins p. a.</label>
-          <div className={styles.inputWithIcon}>
+          {/* <div className={styles.inputWithIcon}>
             <input
               id="interest"
               name="interest"
@@ -452,7 +574,61 @@ const MortgageCalculator = () => {
             <p className={styles.error}>
               Der Sollzins muss größer als 0 und kleiner als 14 sein.
             </p>
-          )}
+          )} */}
+          <div className={styles.inputWithIcon}>
+  <input
+    type="text"
+    value={interest}
+    onChange={e => handleInterestChange(e.target.value)}
+    onBeforeInput={e => {
+      if (!e.data) return;
+
+      const input = e.currentTarget;
+      const { selectionStart, selectionEnd } = input;
+
+      const inserted = e.data === '.' ? ',' : e.data;
+
+      const proposed =
+        selectionStart !== null && selectionEnd !== null
+          ? input.value.slice(0, selectionStart) + inserted + input.value.slice(selectionEnd)
+          : input.value + inserted;
+
+      const cleaned = proposed.replace('%', '');
+      const parts = cleaned.split(',');
+
+      const numericValue = parseFloat(cleaned.replace(',', '.'));
+
+      const tooManyDecimals = parts.length === 2 && parts[1].length > 1;
+      const tooHighOrLow = !isNaN(numericValue) && (numericValue <= 0 || numericValue > 14);
+
+      setInterestDecimalError(tooManyDecimals);
+      setInterestRangeError(tooHighOrLow);
+
+      if (!/^[\d,]*$/.test(inserted)) {
+        e.preventDefault();
+        return;
+      }
+
+      if ((proposed.match(/,/g) || []).length > 1 || tooManyDecimals || tooHighOrLow) {
+        e.preventDefault();
+        return;
+      }
+    }}
+    inputMode="decimal"
+  />
+  <img src={MarkerIcon} className={styles.markerIcon} />
+</div>
+
+{interestDecimalError && (
+  <p className={styles.error}>
+    Nach dem Komma darf nur eine Ziffer eingegeben werden.
+  </p>
+)}
+{interestRangeError && (
+  <p className={styles.error}>
+    Der Sollzins muss größer als 1 und kleiner als 14 sein.
+  </p>
+)}
           <label htmlFor="years">Laufzeit (Jahre)</label>
           <select
             id="years"
@@ -478,9 +654,9 @@ const MortgageCalculator = () => {
             value={formatCurrencyDE(loanAmount)}
             readOnly
           />
-          <div className={styles.rateLabel}>Monatliche Rate</div>
+          <div className={styles.rateLabel}>Monatliche Rate:{' '}
           {monthly !== null && (
-            <div className={styles.monthly}>
+            <span className={styles.monthly}>
               <CountUp
                 end={monthly}
                 decimals={2}
@@ -488,8 +664,9 @@ const MortgageCalculator = () => {
                 duration={1.5}
                 formattingFn={formatGermanCurrency}
               />
-            </div>
+             </span>
           )}
+          </div>
           <Button
             initialText="Berechnen"
             clickedText="im Prozess"
@@ -577,6 +754,10 @@ function renderSelect(
               modeToggle?.();
               onChange(selected);
             }
+             // если пользователь выбрал НЕ custom, сбрасываем ошибку
+            if (selected !== 'custom' && typeof setShowError === 'function') {
+              setShowError(false);
+            }
           }}
           className={styles.select}
         >
@@ -587,19 +768,72 @@ function renderSelect(
           ))}
           <option value="custom">eigener Wert</option>
         </select>
+
         {showCustom && (
           <div className={styles.inputWithPercent}>
             <Input
               id={`${infoKey}-custom`}
               name={`${infoKey}-custom`}
               value={customValue}
-              onChange={e => setCustomValue(e.target.value)}
-              label={`Custom ${label}`}
-            />
+              // onChange={e => setCustomValue(e.target.value)}
+              // label={`Custom ${label}`}
+              onChange={e => {
+  let val = e.target.value;
+
+  // Заменяем запятую на точку
+  val = val.replace(',', '.');
+
+  // Проверка: разрешаем максимум 2 цифры перед точкой и одну после
+  const regex = /^\d{0,2}(\.\d?)?$/;
+
+  if (regex.test(val)) {
+    const number = parseFloat(val);
+
+    // Разрешаем пустую строку — чтобы можно было стереть значение
+    if (val === '' || (number <= 10 && !isNaN(number))) {
+      setCustomValue(val);
+    }
+  }
+}}
+ onBlur={e => {
+  let val = e.target.value.trim();
+
+  // Заменяем запятую на точку
+  val = val.replace(',', '.');
+
+  // Удаляем ведущие нули, кроме случаев с "0."
+  if (/^0\d/.test(val)) {
+    val = parseFloat(val).toString(); // '05' → '5'
+  }
+
+  const number = parseFloat(val);
+
+  // Проверка: от 0 до 10 включительно, максимум одна цифра после точки
+  const isValid =
+    /^([0-9]|10)(\.\d)?$/.test(val) && !isNaN(number) && number <= 10;
+
+  if (typeof setShowError === 'function') {
+    setShowError(!isValid);
+  }
+
+  // Обновляем значение без ведущих нулей
+  if (isValid) {
+    setCustomValue(val);
+  }
+}}
+
+  inputMode="decimal"
+  label={
+    infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
+      ? ''
+      : `Custom ${label}`
+  }
+       />
             <span>%</span>
           </div>
         )}
       </div>
+      
       {showError && (
         <p className={styles.error}>
           Bitte geben Sie einen gültigen Wert zwischen 0 und 10 ein (max. eine
