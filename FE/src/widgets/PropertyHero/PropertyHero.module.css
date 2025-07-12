@@ -3,12 +3,14 @@
   padding: 2rem;
   text-align: center;
 }
+
 .title {
   font-family: var(--Roboto);
   font-weight: 400;
   font-size: var(--font-size-main);
   margin-bottom: 45px;
 }
+
 .status {
   font-family: var(--Roboto);
   display: flex;
@@ -17,16 +19,19 @@
   max-width: 100%;
   margin: 10px 20px;
 }
+
 .label {
   font-size: 22px;
   font-weight: bold;
 }
+
 .statusBanner {
   font-size: 2rem;
   font-weight: bold;
   color: #530614;
   padding: 1rem;
 }
+
 .imageContainer {
   display: flex;
   gap: 1rem;
@@ -35,6 +40,7 @@
   align-items: stretch;
   max-height: 450px;
 }
+
 .mainImage {
   width: 100%;
   height: 100%;
@@ -42,6 +48,7 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
 .mainImageWrapper {
   width: 60%;
   position: relative;
@@ -49,6 +56,7 @@
   border-radius: 8px;
   overflow: hidden;
 }
+
 .sideImages {
   display: flex;
   flex-direction: column;
@@ -56,6 +64,7 @@
   justify-content: space-between;
   flex: 1;
 }
+
 .smallImageWrapper {
   position: relative;
   cursor: pointer;
@@ -64,6 +73,7 @@
   overflow: hidden;
   border-radius: 8px;
 }
+
 .smallImage {
   width: 100%;
   height: 100%;
@@ -71,9 +81,11 @@
   border-radius: 8px;
   transition: filter 0.3s;
 }
+
 .overlayWrapper:hover .smallImage {
   filter: brightness(60%);
 }
+
 .overlay {
   font-family: var(--Roboto);
   position: absolute;
@@ -93,9 +105,11 @@
   pointer-events: none;
   transition: opacity 0.3s ease-in-out;
 }
+
 .overlayWrapper:hover .overlay {
   opacity: 1;
 }
+
 .features {
   display: flex;
   justify-content: center;
@@ -103,6 +117,7 @@
   margin: 1.5rem 0;
   flex-wrap: wrap;
 }
+
 .feature {
   font-family: var(--Roboto);
   font-weight: 700;
@@ -111,18 +126,22 @@
   flex-direction: column;
   align-items: center;
 }
+
 .feature h3 {
   font-size: 40px;
 }
+
 .feature h6 {
   font-size: var(--font-size-small);
   font-weight: normal;
 }
+
 .divider {
   width: 1px;
   background-color: #ccc;
   height: 50px;
 }
+
 .address {
   font-family: var(--Roboto);
   margin-top: 45px;
@@ -130,6 +149,7 @@
   text-align: left;
   padding-left: 2rem;
 }
+
 .placeholderImage {
   width: 100%;
   font-family: var(--Roboto);
@@ -142,6 +162,7 @@
   font-size: 1.2rem;
   border-radius: 8px;
 }
+
 .statusBadge {
   font-family: var(--Roboto);
   position: absolute;
@@ -151,13 +172,14 @@
   color: #000000;
   font-size: 1.1rem;
   padding: 0.4rem 1rem;
-  border-radius: 0.5rem;
   z-index: 2;
   text-transform: uppercase;
 }
+
 .carouselContainer {
   display: none;
 }
+
 .playIconOverlay {
   position: absolute;
   top: 50%;
@@ -169,7 +191,9 @@
   padding: 10px;
   border-radius: 50%;
   pointer-events: none;
+
 }
+
 .playIconOverlaySmall {
   position: absolute;
   bottom: 10px;
@@ -180,7 +204,9 @@
   padding: 6px;
   border-radius: 50%;
   pointer-events: none;
+
 }
+
 .videoModal {
   position: fixed;
   top: 0;
@@ -193,17 +219,20 @@
   align-items: center;
   z-index: 10000;
 }
+
 .videoWrapper {
   max-width: 90%;
   max-height: 80%;
   background: black;
 }
+
 .modalBackdrop {
   position: absolute;
   width: 100%;
   height: 100%;
   background: transparent;
 }
+
 .mainVideo {
   width: 100%;
   height: 100%;
@@ -211,6 +240,7 @@
   object-fit: cover;
   border: none;
 }
+
 .smallVideo {
   width: 100%;
   height: 100%;
@@ -219,6 +249,7 @@
   border: none;
   transition: filter 0.3s;
 }
+
 .carouselVideo {
   width: 100%;
   max-height: 400px;
@@ -226,9 +257,11 @@
   object-fit: cover;
   border: none;
 }
+
 .overlayWrapper:hover .smallVideo {
   filter: brightness(60%);
 }
+
 iframe {
   border: none;
 }
@@ -251,7 +284,8 @@ iframe {
   height: 100%;
   border: none;
   border-radius: 8px;
-  object-fit: cover; /* Изменено с 200% высоты на cover */
+  object-fit: cover;
+  /* Изменено с 200% высоты на cover */
 }
 
 /* НОВЫЕ СТИЛИ ДЛЯ THUMBNAIL И PLAY ИКОНКИ */
@@ -285,13 +319,14 @@ iframe {
   pointer-events: none;
   z-index: 3;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  padding-left: 10px;
+  padding-bottom: 8px;
 }
 
 /* Маленькая play иконка для превью */
 .playIconSmall {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
   font-size: 20px;
   color: white;
   background: rgba(0, 0, 0, 0.7);
@@ -303,6 +338,9 @@ iframe {
   justify-content: center;
   pointer-events: none;
   z-index: 3;
+  padding: 3px;
+  padding-left: 8px;
+  padding-bottom: 6px;
 }
 
 .placeholderWrapper {
@@ -318,6 +356,7 @@ iframe {
   padding: 1rem;
   text-align: center;
 }
+
 .placeholderText {
   font-size: 1rem;
   font-weight: 500;
@@ -345,56 +384,68 @@ iframe {
   filter: brightness(60%);
 }
 
-@media (max-width: 765px) {
+@media (max-width: 768px) {
   .imageContainer {
     display: none;
   }
+
   .carouselContainer {
     display: block;
     width: 100%;
     margin-bottom: 1.5rem;
   }
+
   .carouselWrapper {
     position: relative;
     width: 100%;
     cursor: pointer;
   }
+
   .carouselImage {
     width: 100%;
     max-height: 400px;
     object-fit: cover;
     border-radius: 8px;
   }
+
   .statusBadge {
     top: 0.75rem;
     left: 0.75rem;
     font-size: 1rem;
     padding: 0.3rem 0.8rem;
   }
+
   .title {
     font-size: 36px;
   }
+
   .feature h3 {
     font-size: var(--font-size-secondary);
   }
+
   .feature h6 {
     font-size: 18px;
   }
+
   .address {
     font-size: 22px;
     padding-left: 1rem;
   }
+
   .videoWrapper {
     max-width: 100%;
     max-height: 100vh;
     width: 100%;
     height: 60vh;
   }
+
   .videoFrame {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Изменено для мобильных */
+    object-fit: contain;
+    /* Изменено для мобильных */
   }
+
   .videoFrameWrapper {
     height: 60vh;
   }
@@ -404,6 +455,9 @@ iframe {
     font-size: 36px;
     width: 60px;
     height: 60px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-bottom: 8px;
   }
 }
 
@@ -411,21 +465,27 @@ iframe {
   .title {
     font-size: 28px;
   }
+
   .feature h3 {
     font-size: 26px;
   }
+
   .feature h6 {
     font-size: 16px;
   }
+
   .address {
     font-size: 18px;
   }
+
   .videoWrapper {
     height: 70vh;
   }
+
   .videoFrameWrapper {
     height: 70vh;
   }
+
   .videoFrame {
     height: 100%;
   }
