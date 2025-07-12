@@ -50,6 +50,7 @@ const getPropertyDetails = (
 
 
     Wohnfläche: house?.livingArea ?? apartment?.livingArea,
+    Fläche: commercial?.area,
     Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` : undefined,
     Nutzfläche: house?.usableArea,
     Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
