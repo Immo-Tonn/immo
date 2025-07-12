@@ -105,7 +105,7 @@ const parsedPrice = parseGermanCurrency(price);
   const darlehen = totalCost - parsedEquity;
 
   const fixedRepaymentOptions = Array.from({ length: 91 }, (_, i) =>
-  (1.0 + i * 0.1).toFixed(1),
+  (1.0 + i * 0.1).toFixed(1).replace('.', ',')
 );
   const fixedLaufzeitOptions = Array.from({ length: 40 }, (_, i) =>
     (i + 1).toString(),
@@ -787,7 +787,7 @@ function renderSelect(
               value={customValue}
               // onChange={e => setCustomValue(e.target.value)}
               // label={`Custom ${label}`}
-              onChange={e => {
+             onChange={e => {
   let val = e.target.value;
 
   // Заменяем запятую на точку
@@ -802,6 +802,11 @@ function renderSelect(
     // Разрешаем пустую строку — чтобы можно было стереть значение
     if (val === '' || (number <= 10 && !isNaN(number))) {
       setCustomValue(val);
+      if (typeof setShowError === 'function') {
+        // Проверяем валидность значения и показываем/скрываем ошибку сразу
+        const isValid = /^([0-9]|10)(\.\d)?$/.test(val) && number >= 0 && number <= 10;
+        setShowError(!isValid);
+      }
     }
   }
 }}
