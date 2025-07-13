@@ -346,85 +346,108 @@ const handleInterestChange = (value: string) => {
   };
 
   const exportPDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(32);
-    doc.setFont('times', 'bolditalic');
-    doc.setFontSize(13);
-    doc.setFont('helvetica', 'normal');
-    doc.text('IMMO  TONN', 22, 36);
-    doc.setFontSize(10);
-    doc.text('EST. 1985', 22, 41);
-    doc.setLineWidth(0.5);
-    doc.line(20, 45, 190, 45);
-    doc.setFontSize(22);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Finanzierungsrechner', 105, 55, { align: 'center' });
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Erstellt am: ${new Date().toLocaleDateString()}`, 170, 60, {
-      align: 'right',
+  const doc = new jsPDF();
+  doc.setFontSize(32);
+  doc.setFont('times', 'bolditalic');
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'normal');
+  doc.text('IMMO  TONN', 22, 36);
+  doc.setFontSize(10);
+  doc.text('EST. 1985', 22, 41);
+  doc.setLineWidth(0.5);
+  doc.line(20, 45, 190, 45);
+  doc.setFontSize(22);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Finanzierungsrechner', 105, 55, { align: 'center' });
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Erstellt am: ${new Date().toLocaleDateString('de-DE')}`, 170, 60, {
+    align: 'right',
+  });
+
+  const formatCurrency = (value: number | string) =>
+    Number(value).toLocaleString('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
     });
-    doc.setFontSize(13);
-    let y = 70;
-    const rowGap = 10;
-    doc.text('Immobilienpreis:', 25, y);
-    doc.text(`€ ${price}`, 110, y);
-    y += rowGap;
-    doc.text('Eigenkapital:', 25, y);
-    doc.text(`€ ${equity}`, 110, y);
-    y += rowGap;
-    doc.text('Grunderwerbsteuer:', 25, y);
-    doc.text(`${tax === 'custom' ? customTax : tax}%`, 110, y);
-    y += rowGap;
-    doc.text('Notar/Grundbuch:', 25, y);
-    doc.text(`${notary === 'custom' ? customNotary : notary}%`, 110, y);
-    y += rowGap;
-    doc.text('Maklerprovision:', 25, y);
-    doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
-    y += rowGap;
-    doc.text('Darlehenssumme:', 25, y);
-    doc.text(`€ ${loanAmount}`, 110, y);
-    y += rowGap;
-    doc.text('Zinssatz:', 25, y);
-    doc.text(`${interest}%`, 110, y);
-    y += rowGap;
-    doc.text('Tilgung:', 25, y);
-    doc.text(`${repayment}%`, 110, y);
-    y += rowGap;
-    doc.text('Laufzeit:', 25, y);
-    doc.text(`${years} Jahre`, 110, y);
-    y += rowGap + 6;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
-    doc.setTextColor(15, 68, 106);
-    doc.text('Monatliche Rate:', 25, y);
-    doc.text(`€ ${monthly?.toFixed(2) || '0.00'}`, 110, y);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(0, 0, 0);
-    doc.setLineWidth(0.5);
-    doc.line(20, 240, 190, 240);
-    let contactY = 250;
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Kontakt', 105, contactY, { align: 'center' });
-    contactY += 7;
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    doc.text('0174 345 44 19', 105, contactY, { align: 'center' });
-    contactY += 7;
-    doc.text('tonn_andreas@web.de', 105, contactY, { align: 'center' });
-    contactY += 7;
-    doc.text('Sessendrupweg 54', 105, contactY, { align: 'center' });
-    contactY += 6;
-    doc.text('48161 Münster', 105, contactY, { align: 'center' });
-    contactY += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(15, 68, 106);
-    doc.text('www.immotonn.de', 105, contactY, { align: 'center' });
-    doc.setTextColor(0, 0, 0);
-    doc.save('Finanzierung.pdf');
-  };
+
+  doc.setFontSize(13);
+  let y = 70;
+  const rowGap = 10;
+
+  doc.text('Immobilienpreis:', 25, y);
+  doc.text(formatCurrency(price), 110, y);
+  y += rowGap;
+
+  doc.text('Eigenkapital:', 25, y);
+  doc.text(formatCurrency(equity), 110, y);
+  y += rowGap;
+
+  doc.text('Grunderwerbsteuer:', 25, y);
+  doc.text(`${tax === 'custom' ? customTax : tax}%`, 110, y);
+  y += rowGap;
+
+  doc.text('Notar/Grundbuch:', 25, y);
+  doc.text(`${notary === 'custom' ? customNotary : notary}%`, 110, y);
+  y += rowGap;
+
+  doc.text('Maklerprovision:', 25, y);
+  doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
+  y += rowGap;
+
+  doc.text('Darlehenssumme:', 25, y);
+  doc.text(formatCurrency(loanAmount), 110, y);
+  y += rowGap;
+
+  doc.text('Zinssatz:', 25, y);
+  doc.text(`${interest}%`, 110, y);
+  y += rowGap;
+
+  doc.text('Tilgung:', 25, y);
+  doc.text(`${repayment}%`, 110, y);
+  y += rowGap;
+
+  doc.text('Laufzeit:', 25, y);
+  doc.text(`${years} Jahre`, 110, y);
+  y += rowGap + 6;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(15, 68, 106);
+  doc.text('Monatliche Rate:', 25, y);
+  doc.text(formatCurrency(monthly ?? 0), 110, y);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(0, 0, 0);
+  doc.setLineWidth(0.5);
+  doc.line(20, 240, 190, 240);
+
+  let contactY = 250;
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Kontakt', 105, contactY, { align: 'center' });
+  contactY += 7;
+
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.text('0174 345 44 19', 105, contactY, { align: 'center' });
+  contactY += 7;
+  doc.text('tonn_andreas@web.de', 105, contactY, { align: 'center' });
+  contactY += 7;
+  doc.text('Sessendrupweg 54', 105, contactY, { align: 'center' });
+  contactY += 6;
+  doc.text('48161 Münster', 105, contactY, { align: 'center' });
+  contactY += 8;
+
+  doc.setFontSize(10);
+  doc.setTextColor(15, 68, 106);
+  doc.text('www.immotonn.de', 105, contactY, { align: 'center' });
+  doc.setTextColor(0, 0, 0);
+
+  doc.save('Finanzierung.pdf');
+};
 
   const taxOptions = ['3,5', '5,0', '5,5', '6,0', '6,5'];
   const notaryOptions = Array.from({ length: 11 }, (_, i) =>
