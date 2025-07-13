@@ -44,11 +44,11 @@ const MortgageCalculator = () => {
   const [price, setPrice] = useState('');
   const [equity, setEquity] = useState('');
   const [loanAmount, setLoanAmount] = useState<number | null>(null);
-  const [tax, setTax] = useState('6.5');
-  const [notary, setNotary] = useState('1.5');
-  const [broker, setBroker] = useState('2.0');
-  const [repayment, setRepayment] = useState('2.0');
-  const [interest, setInterest] = useState('3.5');
+  const [tax, setTax] = useState('6,5');
+  const [notary, setNotary] = useState('1,5');
+  const [broker, setBroker] = useState('2,0');
+  const [repayment, setRepayment] = useState('2,0');
+  const [interest, setInterest] = useState('3,5');
   const [years, setYears] = useState('30');
   const [monthly, setMonthly] = useState<number | null>(null);
   const [modalContent, setModalContent] = useState<{
@@ -428,10 +428,10 @@ const handleInterestChange = (value: string) => {
 
   const taxOptions = ['3,5', '5,0', '5,5', '6,0', '6,5'];
   const notaryOptions = Array.from({ length: 11 }, (_, i) =>
-    (1.0 + i * 0.1).toFixed(1),
+    (1.0 + i * 0.1).toFixed(1).replace('.',',')
   );
   const brokerOptions = Array.from({ length: 7 }, (_, i) =>
-    (1.0 + i * 0.5).toFixed(1),
+    (1.0 + i * 0.5).toFixed(1).replace('.',',')
   );
 
    function validateCustomPercentInput(input: string): string {
