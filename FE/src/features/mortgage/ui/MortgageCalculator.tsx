@@ -609,7 +609,12 @@ const handleInterestChange = (value: string) => {
       const numericValue = parseFloat(cleaned.replace(',', '.'));
 
       const tooManyDecimals = parts.length === 2 && parts[1].length > 1;
-      const tooHighOrLow = !isNaN(numericValue) && (numericValue <= 0 || numericValue > 14);
+     const isValidPartialInput = cleaned === '0,' || cleaned === '0';
+
+const tooHighOrLow =
+  !isNaN(numericValue) &&
+  !isValidPartialInput &&
+  (numericValue <= 0 || numericValue > 14);
 
       setInterestDecimalError(tooManyDecimals);
       setInterestRangeError(tooHighOrLow);
@@ -636,7 +641,7 @@ const handleInterestChange = (value: string) => {
 )}
 {interestRangeError && (
   <p className={styles.error}>
-    Der Sollzins muss größer als 1 und kleiner als 14 sein.
+    Der Sollzins muss größer als 0 und kleiner als 14 sein.
   </p>
 )}
           <label htmlFor="years">Laufzeit (Jahre)</label>
