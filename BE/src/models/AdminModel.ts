@@ -1,3 +1,4 @@
+// immo/BE/src/models/AdminModel.ts
 import mongoose, { Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -35,12 +36,14 @@ const AdminSchema: Schema = new Schema({
   },
 });
 
+// Hashing the password before saving
 AdminSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
   }
   try {
     const salt = await bcrypt.genSalt(10);
+    // Explicit type casting to solve the typing problem
     const passwordToHash = this.password as string;
     const hashedPassword = await bcrypt.hash(passwordToHash, salt);
     this.password = hashedPassword;
@@ -50,14 +53,14 @@ AdminSchema.pre('save', async function (next) {
   }
 });
 
+// Method for comparing passwords
 AdminSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ): Promise<boolean> {
-  const hashedPassword = this.password as string;
+  const hashedPassword = this.password as string; // Явное приведение типа
   return bcrypt.compare(candidatePassword, hashedPassword);
 };
 
-// Создаем и экспортируем модель
 export const AdminModel = mongoose.model<IAdmin>(
   'Admin',
   AdminSchema,

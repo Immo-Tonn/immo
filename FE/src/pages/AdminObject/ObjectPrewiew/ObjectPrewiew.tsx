@@ -1,9 +1,10 @@
+// immo/FE/src/pages/AdminObject/ObjectPrewiew/ObjectPrewiew.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
 import styles from './ObjectPrewiew.module.css';
 import { ObjectType } from '@features/utils/types';
-import { formatObjectNumber } from '@shared/objectNumberUtils';
+// import { formatObjectNumber } from '@shared/objectNumberUtils';
 import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal';
 
 const ObjectPreview = () => {
@@ -22,23 +23,26 @@ const ObjectPreview = () => {
 
   const getSuccessMessage = () => {
     if (action === 'updated') {
-      return 'Das Object wurde erfolgreich aktuakisiert! Überprüfen Sie die folgende Daten..';
+      return 'Das Objekt wurde erfolgreich aktualisiert! Überprüfen Sie die folgende Daten..';
     } else if (action === 'created') {
-      return 'Das Object wurde erfolgreich erstellt! Überprüfen Sie die folgende Daten..';
+      return 'Das Objekt wurde erfolgreich erstellt! Überprüfen Sie die folgende Daten..';
     }
     return '';
   };
 
+  // Function to open a modal window
   const openImageModal = (index: number) => {
     setCurrentImageIndex(index);
     setIsModalOpen(true);
   };
 
+  // Function to close a modal window with an image
   const closeImageModal = () => {
     setIsModalOpen(false);
     setCurrentImageIndex(0);
   };
 
+  // Navigation functions in a modal window
   const handlePrev = () => {
     const allMedia = [...images, ...videos];
     setCurrentImageIndex(prev => (prev === 0 ? allMedia.length - 1 : prev - 1));
@@ -53,6 +57,7 @@ const ObjectPreview = () => {
     setCurrentImageIndex(index);
   };
 
+  // Loading object data
   useEffect(() => {
     const fetchObjectData = async () => {
       if (!id) {
@@ -65,10 +70,13 @@ const ObjectPreview = () => {
         setLoading(true);
         console.log('Загружаем данные для объекта с ID:', id);
 
+        // Main object data
         const objectResponse = await axios.get(`/objects/${id}`);
         const mainObjectData = objectResponse.data;
         setObjectData(mainObjectData);
         console.log('Основные данные объекта загружены:', mainObjectData);
+
+        // images of the object
         try {
           console.log('Загружаем изображения для объекта:', id);
           const imagesResponse = await axios.get(
@@ -86,15 +94,17 @@ const ObjectPreview = () => {
           setImages([]);
         }
 
+        // Videos of the object
         try {
           console.log('Загружаем видео для объекта:', id);
           const videosResponse = await axios.get(
             `/videos/by-object?objectId=${id}`,
           );
           if (videosResponse.data && Array.isArray(videosResponse.data)) {
+            // Converting Video to Gallery Compatible Format
             const processedVideos = videosResponse.data.map(video => ({
               ...video,
-              url: `https://iframe.mediadelivery.net/embed/430278/${video.videoId}`,
+              url: `https://iframe.mediadelivery.net/embed/430278/${video.videoId}`, // iframe URL
               thumbnailUrl:
                 video.thumbnailUrl ||
                 `https://vz-973fa28c-a7d.b-cdn.net/${video.videoId}/preview.webp`,
@@ -113,6 +123,7 @@ const ObjectPreview = () => {
           setVideos([]);
         }
 
+        // specific data
         try {
           console.log(
             'Пытаемся загрузить специфические данные для типа:',
@@ -258,14 +269,16 @@ const ObjectPreview = () => {
     fetchObjectData();
   }, [id]);
 
+  // Confirmation handler - creating a card on the Immobilien page
   const handleConfirm = () => {
+    // save the flag that the object has been confirmed (for display on the Immobilien page)
     if (objectData && objectData._id) {
       const confirmedObjects = JSON.parse(
-        localStorage.getItem('confirmedObjects') || '[]',
+        sessionStorage.getItem('confirmedObjects') || '[]',
       );
       if (!confirmedObjects.includes(objectData._id)) {
         confirmedObjects.push(objectData._id);
-        localStorage.setItem(
+        sessionStorage.setItem(
           'confirmedObjects',
           JSON.stringify(confirmedObjects),
         );
@@ -274,10 +287,12 @@ const ObjectPreview = () => {
     navigate('/immobilien');
   };
 
+  // Edit handler
   const handleEdit = () => {
     navigate(`/edit-object/${id}`);
   };
 
+  // Display specific data depending on the object type
   const renderSpecificData = () => {
     if (!specificData) {
       return (
@@ -490,6 +505,12 @@ const ObjectPreview = () => {
             <h3>Grundstücksdetails</h3>
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
+                <span className={styles.dataLabel}>Art des Grundstücks:</span>
+                <span className={styles.dataValue}>
+                  {specificData.landPlottype || '-'}
+                </span>
+              </div>
+              <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
                 <span className={styles.dataValue}>
                   {specificData.plotArea} м²
@@ -576,7 +597,8 @@ const ObjectPreview = () => {
   if (!objectData) {
     return <div className={styles.error}>Objekt nicht gefunden</div>;
   }
-  const objectNumber = formatObjectNumber(objectData._id);
+
+  // Combine images and videos for a gallery
   const allMedia = [...images, ...videos];
 
   return (
@@ -586,12 +608,6 @@ const ObjectPreview = () => {
       {action && (
         <div className={styles.successMessage}>{getSuccessMessage()}</div>
       )}
-      <div className={styles.objectNumberSection}>
-        <div className={styles.objectNumber}>
-          <span className={styles.objectNumberLabel}>Objektnummer:</span>
-          <span className={styles.objectNumberValue}>{objectNumber}</span>
-        </div>
-      </div>
 
       <div className={styles.imagesSection}>
         <h3>Bilder</h3>
@@ -609,7 +625,7 @@ const ObjectPreview = () => {
                   className={styles.objectImage}
                 />
                 {index === 0 && (
-                  <span className={styles.mainImageLabel}>Главное</span>
+                  <span className={styles.mainImageLabel}>Hauptblid</span>
                 )}
               </div>
             ))
@@ -631,7 +647,7 @@ const ObjectPreview = () => {
                 <h4>{video.title || `Video ${index + 1}`}</h4>
                 <div
                   className={styles.videoThumbnailContainer}
-                  onClick={() => openImageModal(images.length + index)}
+                  onClick={() => openImageModal(images.length + index)} // ИСПРАВЛЕНО: правильный индекс
                 >
                   <img
                     src={video.thumbnailUrl}
@@ -666,16 +682,25 @@ const ObjectPreview = () => {
             </span>
           </div>
           <div className={styles.dataItem}>
-            <span className={styles.dataLabel}>Lage:</span>
-            <span className={styles.dataValue}>{objectData.location}</span>
+            <span className={styles.dataLabel}>Objektstatus:</span>
+            <span className={styles.dataValue}>{objectData.status}</span>
           </div>
         </div>
 
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Adresse:</span>
           <span className={styles.dataValue}>
-            {`${objectData.address.street} ${objectData.address.houseNumber || ''}, ${objectData.address.zip} ${objectData.address.city}, ${objectData.address.country}`}
+            {`${objectData.address.street} ${objectData.address.houseNumber || ''}`}
+            <br />
+            {`${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}`}
+            <br />
+            {`${objectData.address.country}`}
           </span>
+        </div>
+
+        <div className={styles.dataItem}>
+          <span className={styles.dataLabel}>Lage:</span>
+          <p className={styles.dataValue}>{objectData.location}</p>
         </div>
 
         <div className={styles.dataItem}>
@@ -700,6 +725,7 @@ const ObjectPreview = () => {
         )}
       </div>
 
+      {/* Object specific data */}
       {renderSpecificData()}
 
       <div className={styles.actionButtons}>

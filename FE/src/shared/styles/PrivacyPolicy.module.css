@@ -33,3 +33,6 @@ h3 {
   color: #0056b3;
   text-decoration: underline;
 }
+.container a:hover {
+  color: #003b80 !important;
+}

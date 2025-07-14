@@ -6,13 +6,21 @@ import {
   updateCommercial_NonResidentialBuildings,
   deleteCommercial_NonResidentialBuilding,
 } from '../controllers/commercial_NonResidentialBuildingsController';
-
+import { protectObjectRoutes } from '../middleware/adminRouteMiddleware';
 const router = express.Router();
 
 router.get('/', getAllCommercial_NonResidentialBuildings);
 router.get('/:id', getCommercial_NonResidentialBuildingById);
-router.post('/', createCommercial_NonResidentialBuildings);
-router.put('/:id', updateCommercial_NonResidentialBuildings);
-router.delete('/:id', deleteCommercial_NonResidentialBuilding);
+router.post('/', protectObjectRoutes, createCommercial_NonResidentialBuildings);
+router.put(
+  '/:id',
+  protectObjectRoutes,
+  updateCommercial_NonResidentialBuildings,
+);
+router.delete(
+  '/:id',
+  protectObjectRoutes,
+  deleteCommercial_NonResidentialBuilding,
+);
 
 export default router;

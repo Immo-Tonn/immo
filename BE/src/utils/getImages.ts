@@ -8,13 +8,23 @@ export const transformBunnyUrl = (url: string): string => {
 };
 
 export const getAllImagesHelper = async () => {
-  const images = await ImagesModel.find();
-  if (!images || images.length === 0) return null;
+  try {
+    const images = await ImagesModel.find();
 
-  return images.map(img => ({
-    ...img.toObject(),
-    url: transformBunnyUrl(img.url),
-  }));
+    // ИСПРАВЛЕНО: Возвращаем пустой массив вместо null
+    if (!images || images.length === 0) {
+      console.log('ℹ️ В базе данных нет изображений');
+      return []; // Возвращаем пустой массив вместо null
+    }
+
+    return images.map(img => ({
+      ...img.toObject(),
+      url: transformBunnyUrl(img.url),
+    }));
+  } catch (error) {
+    console.error('❌ Ошибка в getAllImagesHelper:', error);
+    return []; // При ошибке тоже возвращаем пустой массив
+  }
 };
 
 export const getImageByIdHelper = async (id: string) => {
@@ -25,16 +35,4 @@ export const getImageByIdHelper = async (id: string) => {
     ...image.toObject(),
     url: transformBunnyUrl(image.url),
   };
-};
-
-export const getImagesByObjectIdHelper = async (objectId: string) => {
-  const images = await ImagesModel.find({
-    realEstateObject: objectId,
-  });
-  if (!images || images.length === 0) return null;
-
-  return images.map(img => ({
-    ...img.toObject(),
-    url: transformBunnyUrl(img.url),
-  }));
 };

@@ -1,3 +1,4 @@
+// immo/BE/src/controllers/apartmentsController.ts
 import { Request, Response } from 'express';
 import mongoose, { Types } from 'mongoose';
 import ApartmentsModel from '../models/ApartmentsModel';

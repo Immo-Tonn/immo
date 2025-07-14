@@ -1,3 +1,4 @@
+// immo/BE/src/middleware/adminRouteMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
 import { protect } from './authMiddleware';
 
@@ -10,7 +11,10 @@ export const protectObjectRoutes = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  // Using existing middleware protect to check authorization
   await protect(req, res, () => {
+    // If protect did not abort execution (i.e. the user is authorized),
+    // check the presence of the user in the request (must be added to protect)
     if (!req.user) {
       res.status(403).json({
         message: 'Access Denied. Administrator rights required.',
@@ -18,6 +22,7 @@ export const protectObjectRoutes = async (
       return;
     }
 
+    // If all checks are passed, we continue executing the request.
     next();
   });
 };
@@ -31,7 +36,10 @@ export const protectImageRoutes = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  // Using existing middleware protect to check authorization
   await protect(req, res, () => {
+    // If protect did not abort execution (i.e. the user is authorized),
+    // check the presence of the user in the request (must be added to protect)
     if (!req.user) {
       res.status(403).json({
         message:
@@ -39,6 +47,8 @@ export const protectImageRoutes = async (
       });
       return;
     }
+
+    // If all checks are passed, we continue executing the request.
     next();
   });
 };
@@ -52,7 +62,10 @@ export const protectVideoRoutes = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  // Using existing middleware protect to check authorization
   await protect(req, res, () => {
+    // If protect did not abort execution (i.e. the user is authorized),
+    // check the presence of the user in the request (must be added to protect)
     if (!req.user) {
       res.status(403).json({
         message:
@@ -60,6 +73,8 @@ export const protectVideoRoutes = async (
       });
       return;
     }
+
+    // If all checks are passed, we continue executing the request.
     next();
   });
 };

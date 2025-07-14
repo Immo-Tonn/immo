@@ -1,3 +1,4 @@
+// immo/BE/src/controllers/commercial_NonResidentialBuildingsController.ts
 import { Request, Response } from 'express';
 import mongoose, { Types } from 'mongoose';
 import RealEstateObjectsModel, {
@@ -54,6 +55,7 @@ export const createCommercial_NonResidentialBuildings = async (
   try {
     const { realEstateObject, ...commercial_NonResidentialBuildingsData } =
       req.body;
+
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: 'Objekt nicht gefunden' });
@@ -138,10 +140,12 @@ export const deleteCommercial_NonResidentialBuilding = async (
       });
       return;
     }
+
     await RealEstateObjectsModel.findByIdAndUpdate(
       deletedCommercial_NonResidentialBuilding.realEstateObject,
       { $unset: { commercial_NonResidentialBuildings: '' } },
     );
+
     res.status(200).json({
       message:
         'Zusätzliche Informationen zum Objekt Gewerbe-/Nichtwohngebäude entfernt',

@@ -9,7 +9,7 @@ import {
   changePassword,
   testEmailConfig,
 } from '../controllers/authController';
-import { protect } from '../middlewares/authMiddleware';
+import { protect } from '../middleware/authMiddleware';
 
 const router = Router();
 
@@ -19,6 +19,7 @@ router.get('/admin-exists', checkAdminExists);
 // Admin registration
 router.post('/register', registerAdmin);
 
+// Admin Authorization
 router.post('/add-property', loginAdmin);
 
 // Remove admin registration (protected route)

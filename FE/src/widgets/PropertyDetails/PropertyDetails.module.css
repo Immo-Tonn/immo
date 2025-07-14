@@ -4,7 +4,6 @@
   position: relative;
   padding: 2rem 1rem;
   font-family: var(--Roboto);
-  overflow-x: visible;
 }
 
 .mainContent {
@@ -36,6 +35,13 @@
   flex-direction: column;
   gap: 0.5rem;
   max-width: 100%;
+}
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  margin: 10px 20px;
 }
 
 .detailRow {
@@ -116,10 +122,8 @@
 }
 
 .statusBanner {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
   color: #530614;
-  padding: 1rem;
 }
 
 @media (max-width: 768px) {

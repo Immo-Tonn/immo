@@ -4,6 +4,7 @@ export interface ILandPlots extends Document {
   id: Types.ObjectId;
   realEstateObject: Types.ObjectId;
   plotArea: number;
+  landPlottype?: string;
   infrastructureConnection?: string;
   buildingRegulations?: string;
   recommendedUsage?: string;
@@ -14,6 +15,9 @@ const LandPlotsSchema: Schema = new Schema<ILandPlots>({
     type: Schema.Types.ObjectId,
     ref: 'RealEstateObjects',
     required: true,
+  },
+  landPlottype: {
+    type: String,
   },
   plotArea: {
     type: Number,

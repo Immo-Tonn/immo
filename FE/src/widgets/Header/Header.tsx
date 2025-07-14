@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -14,17 +14,53 @@ import logo from '@shared/assets/header/logo.svg';
 import telephone from '@shared/assets/header/telephone.svg';
 import eMail from '@shared/assets/header/e-mail.svg';
 import location from '@shared/assets/header/google.svg';
+import AdminDropdownMenu from '@widgets/AdminDropdownMenu/AdminDropdownMenu';
+import { dispatchLogoutEvent } from '@features/utils/authEvent';
 
 interface NavLink {
   label: string;
   path: string;
 }
 
-const Header: React.FC = () => {
+const Header = () => {
+  /* ---------- navigation state ---------- */
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
   const toggleDrawer = (open: boolean) => () => {
     setIsMenuOpen(open);
+  };
+
+  /* ---------- Admin state ---------- */
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  /* Verify token and set up listeners for login/logout events */
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = sessionStorage.getItem('adminToken');
+      setIsAdmin(!!token);
+    };
+
+    checkAuth();
+
+    const handleAdminLogin = () => setIsAdmin(true);
+    const handleAdminLogout = () => setIsAdmin(false);
+
+    window.addEventListener('admin-login', handleAdminLogin);
+    window.addEventListener('admin-logout', handleAdminLogout);
+
+    return () => {
+      window.removeEventListener('admin-login', handleAdminLogin);
+      window.removeEventListener('admin-logout', handleAdminLogout);
+    };
+  }, []);
+
+  /* logout */
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminInfo');
+    setIsAdmin(false);
+    dispatchLogoutEvent();
+    navigate('/');
   };
 
   const navLinks: NavLink[] = [
@@ -45,19 +81,33 @@ const Header: React.FC = () => {
         <div className={styles.headerTop}>
           <img className={styles.logo} src={logo} alt="logo" />
 
-          <nav className={styles.nav}>
-            {navLinks.map(link => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  isActive ? styles.activeLink : ''
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </nav>
+          <div className={styles.navContainer}>
+            <nav className={styles.nav}>
+              {navLinks.map(link => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    isActive ? styles.activeLink : ''
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              {isAdmin && (
+                <div className={styles.adminDesktop}>
+                  <AdminDropdownMenu onLogout={handleLogout} />
+                </div>
+              )}
+            </nav>
+
+            {/* --- ADMIN DROPDOWN (планшет ≤765px) --- */}
+            {isAdmin && (
+              <div className={styles.adminTablet}>
+                <AdminDropdownMenu onLogout={handleLogout} />
+              </div>
+            )}
+          </div>
 
           <IconButton
             className={styles.burgerButton}
@@ -104,6 +154,13 @@ const Header: React.FC = () => {
                 </ListItem>
               ))}
             </List>
+
+            {/* --- ADMIN DROPDOWN (мобильное меню) --- */}
+            {isAdmin && (
+              <div className={styles.drawerAdminContainer}>
+                <AdminDropdownMenu onLogout={handleLogout} />
+              </div>
+            )}
           </Drawer>
 
           <div className={styles.contact}>

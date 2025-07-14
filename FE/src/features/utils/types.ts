@@ -1,4 +1,3 @@
-// Типы для объектов недвижимости
 export enum ObjectType {
   LAND = 'Land Plots',
   HOUSE = 'Residential Houses',
@@ -19,6 +18,7 @@ export enum ImageType {
   ADDITIONAL = 'additional',
 }
 
+// Interface for a basic real estate object
 export interface IRealEstateObject {
   id?: string;
   type: ObjectType;
@@ -41,6 +41,7 @@ export interface IRealEstateObject {
   images?: string[];
 }
 
+// Interface for apartment
 export interface IApartment {
   id?: string;
   realEstateObject: string;
@@ -59,6 +60,7 @@ export interface IApartment {
   additionalFeatures?: string;
 }
 
+// Interface for resident house
 export interface IResidentialHouse {
   id?: string;
   realEstateObject: string;
@@ -78,15 +80,18 @@ export interface IResidentialHouse {
   additionalFeatures?: string;
 }
 
+// Interface for landplot
 export interface ILandPlot {
   id?: string;
   realEstateObject: string;
   plotArea: number;
+  landPlottype?: string;
   infrastructureConnection?: string;
   buildingRegulations?: string;
   recommendedUsage?: string;
 }
 
+// Интерфейс для коммерческой/нежилой недвижимости
 export interface ICommercialNonResidentialBuilding {
   id?: string;
   realEstateObject: string;
@@ -97,6 +102,7 @@ export interface ICommercialNonResidentialBuilding {
   additionalFeatures?: string;
 }
 
+// Интерфейс для изображения
 export interface IImage {
   id?: string;
   realEstateObject: string;

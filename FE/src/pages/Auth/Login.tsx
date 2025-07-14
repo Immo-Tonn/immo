@@ -1,3 +1,4 @@
+// immo/FE/src/pages/Auth/Login.tsx
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
@@ -6,19 +7,21 @@ import {
   dispatchLogoutEvent,
   isAuthenticated,
   setupAutoLogout,
-} from '@features/utils/authEvent';
+} from '@features/utils/authEvent'; // Импортируем функцию отправки события
 
 const Login: React.FC = () => {
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [adminExists, setAdminExists] = useState<boolean>(false);
-  const [loadingCheck, setLoadingCheck] = useState<boolean>(true);
+  const [adminExists, setAdminExists] = useState<boolean>(false); // false по умолчанию
+  const [loadingCheck, setLoadingCheck] = useState<boolean>(true); // Добавлено для отслеживание загрузки проверки
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  // Администратор в системе ?
   useEffect(() => {
+    // Настройка автоматического выхода
     setupAutoLogout();
 
     const checkAdminExists = async (): Promise<void> => {
@@ -38,6 +41,7 @@ const Login: React.FC = () => {
     checkAdminExists();
   }, []);
 
+  // Обработчик входа
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
@@ -63,11 +67,14 @@ const Login: React.FC = () => {
         token: string;
       };
 
+      // Сохраняем токен и данные пользователя
       sessionStorage.setItem('adminToken', responseData.token);
       sessionStorage.setItem('adminInfo', JSON.stringify(responseData));
 
+      // Отправляем событие об успешной авторизации
       dispatchLoginEvent();
 
+      // Перенаправляем на страницу объектов
       navigate('/immobilien');
     } catch (error: any) {
       setError(error.response?.data?.message || 'Ошибка авторизации');
@@ -76,23 +83,32 @@ const Login: React.FC = () => {
     }
   };
 
+  // Обработчик удаления регистрации админа
   const handleDeleteAdmin = async (): Promise<void> => {
+    // Запрашиваем подтверждение пароля
     const confirmPassword = window.prompt(
       'Um das Löschen zu bestätigen, geben Sie Ihr Passwort ein:',
     );
 
     if (!confirmPassword) {
-      return;
+      return; // Отмена ввода или оставил поле пустым
     }
 
     try {
       setLoading(true);
       const token = sessionStorage.getItem('adminToken');
+
+      // Здесь вы можете добавить дополнительную проверку пароля на сервере,
+      // но для этого нужно создать дополнительный эндпоинт
+
       await axios.delete('/auth/delete-admin', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      // Очищаем данные авторизации
       dispatchLogoutEvent();
+      //  sessionStorage.removeItem('adminToken');
+      //  sessionStorage.removeItem('adminInfo');
 
       setAdminExists(false);
       alert('Adminregistrierung entfernt');
@@ -106,18 +122,13 @@ const Login: React.FC = () => {
     }
   };
 
+  // Проверка авторизации админа
   const isAdminAuthenticated = isAuthenticated();
+  // const isAuthenticated = !!sessionStorage.getItem('adminToken');
 
   return (
-    <div
-      style={{
-        maxWidth: '400px',
-        margin: '0 auto',
-        padding: '20px',
-        minHeight: '100dvh',
-      }}
-    >
-      <h1 style={{ fontFamily: 'var(--Roboto)' }}>Administrator-Panel</h1>
+    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+      <h1>Панель администратора</h1>
 
       {error && (
         <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>
@@ -127,11 +138,7 @@ const Login: React.FC = () => {
         <div style={{ marginBottom: '15px' }}>
           <label
             htmlFor="login"
-            style={{
-              display: 'block',
-              marginBottom: '5px',
-              fontFamily: 'var(--Roboto)',
-            }}
+            style={{ display: 'block', marginBottom: '5px' }}
           >
             Login (E-Mail oder Benutzername):
           </label>
@@ -149,17 +156,14 @@ const Login: React.FC = () => {
         <div style={{ width: '95%', marginBottom: '15px' }}>
           <label
             htmlFor="password"
-            style={{
-              display: 'block',
-              marginBottom: '5px',
-              fontFamily: 'var(--Roboto)',
-            }}
+            style={{ display: 'block', marginBottom: '5px' }}
           >
             Password:
           </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type={showPassword ? 'text' : 'password'}
+              // type="password"
               id="password"
               value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -181,6 +185,7 @@ const Login: React.FC = () => {
                 flex: '1',
                 height: '47px',
                 fontSize: '20px',
+                // padding: '0 10px',
                 marginTop: '-13px',
                 border: '1px solid #ccc',
                 borderLeft: 'none',
@@ -220,10 +225,7 @@ const Login: React.FC = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Link
-          to="/forgot-password"
-          style={{ color: '#2196F3', fontFamily: 'var(--Roboto)' }}
-        >
+        <Link to="/forgot-password" style={{ color: '#2196F3' }}>
           Passwort vergessen
         </Link>
 

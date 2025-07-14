@@ -1,5 +1,7 @@
+// immo/BE/src/utils/emailService.ts
 import nodemailer from 'nodemailer';
 
+// Create a transport for sending email
 const createTransport = () => {
   console.log('Creating a transport with settings:', {
     host: process.env.EMAIL_HOST,
@@ -9,15 +11,16 @@ const createTransport = () => {
   return nodemailer.createTransport({
     host: process.env.EMAIL_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.EMAIL_PORT || '587'),
-    secure: process.env.EMAIL_PORT === '465',
+    secure: process.env.EMAIL_PORT === '465', // true for 465, false for other ports
     auth: {
-      user: process.env.EMAIL_ADMIN,
-      pass: process.env.EMAIL_ADMIN_PASS,
+      user: process.env.EMAIL_ADMIN, // your email address
+      pass: process.env.EMAIL_ADMIN_PASS, // password or app-specific password
     },
+    // Additional settings for GMX
     tls: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: false, // In some cases this may be necessary
     },
-    debug: true,
+    debug: true, // To debug SMTP connection
   });
 };
 
@@ -29,6 +32,7 @@ export const sendPasswordResetEmail = async (
     console.log('Start sending email to address:', email);
     const transporter = createTransport();
 
+    // Проверка соединения
     try {
       const verify = await transporter.verify();
       console.log('Checking SMTP connection:', verify);

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+// Middleware for error logging
 export const errorLogger = (
   err: Error,
   req: Request,
@@ -14,6 +15,7 @@ export const errorLogger = (
   next(err);
 };
 
+// Middleware for handling errors and sending a response to the client
 export const errorHandler = (
   err: Error,
   req: Request,
@@ -32,6 +34,7 @@ export const errorHandler = (
   });
 };
 
+// Middleware for catching and logging uncaught errors
 export const setupUncaughtErrorHandlers = () => {
   process.on('uncaughtException', err => {
     console.error('Uncaught exception:', err);
