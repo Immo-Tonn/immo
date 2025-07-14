@@ -191,7 +191,6 @@
   padding: 10px;
   border-radius: 50%;
   pointer-events: none;
-
 }
 
 .playIconOverlaySmall {
@@ -204,7 +203,6 @@
   padding: 6px;
   border-radius: 50%;
   pointer-events: none;
-
 }
 
 .videoModal {
@@ -388,7 +386,6 @@ iframe {
   filter: brightness(60%);
 }
 
-@media (max-width: 768px) {
 @media (max-width: 768px) {
   .imageContainer {
     display: none;
