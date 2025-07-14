@@ -77,7 +77,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
     if (!isMobile || mediaItems.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
-    }, 3000);
+    }, 8000);
     return () => clearInterval(interval);
   }, [mediaItems.length, isMobile]);
 
