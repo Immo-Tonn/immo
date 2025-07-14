@@ -29,7 +29,7 @@ router.put("/:id", protectObjectRoutes, updateObject);
 // Delete object by ID
 router.delete("/:id", protectObjectRoutes, deleteObject);
 
-// Маршрут для очистки сиротских записей (только для админов)
+// Route to clear orphan records (admins only)
 router.post("/cleanup-orphans", protectObjectRoutes, cleanupOrphanRecords);
 
 

@@ -62,7 +62,7 @@ export const updateObject = async (req: Request, res: Response) => {
     console.log('📋 ID объекта:', req.params.id);
     console.log('📋 Тело запроса:', JSON.stringify(req.body, null, 2));
     
-    // Проверяем текущее состояние объекта до обновления
+    // check current object's state before update
     const currentObject = await RealEstateObjectsModel.findById(req.params.id);
     console.log('📊 Текущий объект до обновления:', {
       id: currentObject?._id,
@@ -91,27 +91,27 @@ export const updateObject = async (req: Request, res: Response) => {
       title: updated.title
     });
 
-    // Специальная обработка обновления порядка изображений
+    // Special handling for updating image order
     if (req.body.images) {
       console.log('🔄 Обнаружено обновление порядка изображений');
       console.log('📋 Новый порядок изображений из запроса:', req.body.images);
       console.log('📋 Порядок изображений в сохраненном объекте:', updated.images);
       
-      // Принудительно сохраняем изменения
+      // Force saving changes
       const saveResult = await updated.save();
       console.log('📊 Результат принудительного сохранения:', {
         id: saveResult._id,
         images: saveResult.images
       });
       
-      // Дополнительная верификация через прямой запрос к БД
+      // Additional verification via direct query to the database
       const verification = await RealEstateObjectsModel.findById(req.params.id).lean();
       console.log('🔍 Верификация через прямой запрос к БД:', {
         id: verification?._id,
         images: verification?.images
       });
       
-      // Проверяем, что изменения действительно сохранились
+      // Let's check that the changes were actually saved
       const expectedOrder = req.body.images;
       const actualOrder = verification?.images || [];
       
@@ -163,6 +163,7 @@ export const deleteObject = async (
     const objectId = req.params.id;
     console.log('🗑️ НАЧАЛО каскадного удаления объекта:', objectId);
 
+    // 1. Get the main object with all associated data
     const mainObject = await RealEstateObjectsModel.findById(objectId);
     if (!mainObject) {
       console.log('❌ Объект не найден:', objectId);
@@ -178,7 +179,7 @@ export const deleteObject = async (
       videosCount: mainObject.videos?.length || 0
     });
 
-    // 2. УДАЛЕНИЕ ИЗОБРАЖЕНИЙ
+    // 2. DELETING IMAGES
     if (mainObject.images && mainObject.images.length > 0) {
       console.log('🖼️ Удаляем изображения...');
       
@@ -211,12 +212,10 @@ export const deleteObject = async (
       
       for (const videoId of mainObject.videos) {
         try {
-
           const video = await VideoModel.findById(videoId);
           if (video) {
             console.log(`🗑️ Удаляем видео: ${video._id} (${video.title})`);
             
-
             if (video.videoId) {
               try {
                 await deleteFromBunnyVideo(video.videoId);
@@ -226,7 +225,6 @@ export const deleteObject = async (
               }
             }
             
-
             await VideoModel.findByIdAndDelete(videoId);
             console.log(`✅ Видео удалено из БД: ${video._id}`);
           }
@@ -335,6 +333,7 @@ export const deleteObject = async (
   }
 };
 
+// Clear all orphan records in the database
 export const cleanupOrphanRecords = async (
   req: Request,
   res: Response,
@@ -418,7 +417,7 @@ export const cleanupOrphanRecords = async (
       cleanupStats.orphanHouses++;
     }
 
-    // 5. CLEANING ORPHAN LAND PLOTS
+    // 5. CLEANING ORPHAN PLOTS
     console.log('🌿 Проверка сиротских участков...');
     const orphanLandPlots = await LandPlotsModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -457,18 +456,19 @@ export const cleanupOrphanRecords = async (
 };
 
 
-// ДDEBUG FUNCTION
+// DEBUG FUNCTION
 export const debugObjectState = async (req: Request, res: Response): Promise<void> => {
   try {
     const objectId = req.params.id;
     console.log('🔍 DEBUG: Проверка состояния объекта:', objectId);
-    
+    // Get pbject
     const object = await RealEstateObjectsModel.findById(objectId).lean();
-    
+    // Get images
     const images = await ImagesModel.find({ realEstateObject: objectId }).lean();
-
+    // Get videos
     const videos = await VideoModel.find({ realEstateObject: objectId }).lean();
-
+    
+    //Get specific data
     let specificData = null;
     if (object) {
       switch (object.type) {
@@ -494,7 +494,6 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
           break;
       }
     }
-    
     
     const result = {
       timestamp: new Date().toISOString(),
@@ -527,6 +526,7 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
         livingArea: (specificData as any).livingArea,
         plotArea: (specificData as any).plotArea,
         area: (specificData as any).area,
+        landPlottype: (specificData as any).landPlottype || null,        
         buildingType: (specificData as any).buildingType || null
       } : null,
       actualImagesCount: images.length,

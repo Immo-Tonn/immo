@@ -19,7 +19,6 @@ const Commercial_NonResidentialBuildingsSchema: Schema =
     },
     buildingType: {
       type: String,
-      // required: true,
     },
     area: {
       type: Number,

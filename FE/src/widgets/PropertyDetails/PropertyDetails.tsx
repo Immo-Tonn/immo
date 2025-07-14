@@ -42,18 +42,20 @@ const getPropertyDetails = (
 ): Record<string, any> => {
   return {
     Land: object.address?.country,
-    'ID Nummer': object.number,
+    'Nummer ID': object.number,
     Objektart: object.type,
     ...(apartment?.type && { Wohnungstyp: apartment.type }),
     ...(house?.type && {Haustyp: house.type}),
     ...(commercial?.buildingType && { Gebäudetyp: commercial.buildingType }),
+    ...(land?.landPlottype && { 'Art des Grundstücks': land.landPlottype}),
 
 
-    Wohnfläche: house?.livingArea ?? apartment?.livingArea,
+    Wohnfläche: house?.livingArea ? `${house.livingArea} м²` : apartment?.livingArea ? `${apartment.livingArea} м²` : undefined,
+    Fläche: commercial?.area ? `${commercial.area} m²` : undefined,
     Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` : undefined,
-    Nutzfläche: house?.usableArea,
+    Nutzfläche: house?.usableArea ? `${house.usableArea} м²` : undefined,
     Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
-    Zimmer: house?.numberOfRooms ?? apartment?.numberOfRooms,
+    Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
     Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
     Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
     Etage: apartment?.floor,
@@ -160,12 +162,12 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-             <button
-  className={styles.calcButton}
-  onClick={() => navigate('/finanzierung', { state: { price: formatGermanCurrency(object.price) } })}
->
-  Finanzierungsrechner
-</button>
+            <button 
+    className={styles.calcButton} 
+    onClick={() => navigate('/finanzierung', { state: { price: formatGermanCurrency(object.price) } })}
+  >
+              Finanzierungsrechner
+            </button>
           </div>
         </div>
       </aside>

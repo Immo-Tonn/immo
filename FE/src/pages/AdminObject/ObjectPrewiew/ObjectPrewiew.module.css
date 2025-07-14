@@ -2,7 +2,7 @@
 
 .previewContainer {
   font-family: 'Apple Braille', sans-serif;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 30px auto;
   padding: 20px;
   background-color: #fff;
@@ -99,6 +99,11 @@
   border-bottom: 1px solid #eee;
   font-size: 14px;
 }
+
+.videoThumbnail {
+  width: 100%;
+}
+
 .imagesSection,
 .basicDataSection,
 .specificDataSection {

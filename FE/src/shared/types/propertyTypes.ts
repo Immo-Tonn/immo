@@ -49,6 +49,7 @@ export interface CommercialBuilding {
 
 export interface LandPlot {
   plotArea: number;
+  landPlottype?: string;
   infrastructureConnection?: string;
   buildingRegulations?: string;
   recommendedUsage?: string;

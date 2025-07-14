@@ -378,6 +378,10 @@ const ObjectPreview = () => {
             <h3>Grundstücksdetails</h3>
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
+                <span className={styles.dataLabel}>Art des Grundstücks:</span>
+                <span className={styles.dataValue}>{specificData.landPlottype || '-'}</span>
+              </div>              
+              <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
                 <span className={styles.dataValue}>{specificData.plotArea} м²</span>
               </div>
@@ -445,9 +449,6 @@ const ObjectPreview = () => {
     return <div className={styles.error}>Objekt nicht gefunden</div>;
   }
 
-  // get the object number
-  // const objectNumber = formatObjectNumber(objectData._id);
-
   // Combine images and videos for a gallery
   const allMedia = [...images, ...videos];
 
@@ -460,14 +461,6 @@ const ObjectPreview = () => {
        {getSuccessMessage()}
       </div>
    )}   
-
-      {/* object number */}
-      {/* <div className={styles.objectNumberSection}>
-        <div className={styles.objectNumber}>
-          <span className={styles.objectNumberLabel}>Objektnummer::</span>
-          <span className={styles.objectNumberValue}>{objectNumber}</span>
-        </div>
-      </div> */}
 
       <div className={styles.imagesSection}>
         <h3>Bilder</h3>
@@ -538,18 +531,22 @@ const ObjectPreview = () => {
             <span className={styles.dataLabel}>Objektstatus:</span>
             <span className={styles.dataValue}>{objectData.status}</span>
           </div>
-          <div className={styles.dataItem}>
-            <span className={styles.dataLabel}>Lage:</span>
-            <span className={styles.dataValue}>{objectData.location}</span>
-          </div>
+
         </div>
         
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Adresse:</span>
           <span className={styles.dataValue}>
-            {`${objectData.address.street} ${objectData.address.houseNumber || ''}, ${objectData.address.zip} ${objectData.address.city}, ${objectData.address.country}`}
+            {`${objectData.address.street} ${objectData.address.houseNumber || ''}`}<br />
+            {`${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}`}<br />
+            {`${objectData.address.country}`}
           </span>
-        </div>        
+        </div>
+
+        <div className={styles.dataItem}>
+          <span className={styles.dataLabel}>Lage:</span>
+          <p className={styles.dataValue}>{objectData.location}</p>
+        </div>
         
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Beschreibung:</span>

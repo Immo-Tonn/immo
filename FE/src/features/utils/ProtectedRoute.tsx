@@ -6,15 +6,15 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  // Проверка наличия токена в sessionStorage
+  // Checking token in sessionStorage
   const isAuthenticated = !!sessionStorage.getItem('adminToken');
 
-  // Если токен отсутствует, перенаправляем на страницу входа
+  // If token is missing, redirect to the login page
   if (!isAuthenticated) {
     return <Navigate to="/add-property" replace />;
   }
 
-  // Если токен есть, рендерим защищенный компонент
+  // If token exists, render the protected component
   return <>{children}</>;
 };
 

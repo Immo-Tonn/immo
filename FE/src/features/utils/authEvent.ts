@@ -1,56 +1,55 @@
 // immo/FE/src/features/utils/authEvent.ts
 // кастомное событие для авторизации
 export const authEvents = {
-  // Событие входа в систему
+  // Login event
   login: new CustomEvent('admin-login'),
 
-  // Событие выхода из системы
+  // Logout event
   logout: new CustomEvent('admin-logout'),
 };
 
-// Функция для отправки события входа в систему
+// Sending a login event
 export const dispatchLoginEvent = (): void => {
   window.dispatchEvent(authEvents.login);
 };
 
-// Функция для отправки события выхода из системы
+// Sending a logout event
 export const dispatchLogoutEvent = (): void => {
-  //очистка sessionStorage
+  //clear sessionStorage
   sessionStorage.removeItem('adminToken');
   sessionStorage.removeItem('adminInfo');
   window.dispatchEvent(authEvents.logout);
 };
 
-// Функция для проверки авторизации
+// checking authorization
 export const isAuthenticated = (): boolean => {
   return !!sessionStorage.getItem('adminToken');
 };
 
-// Функция для получения информации о пользователе
+// getting user information
 export const getAdminInfo = (): any | null => {
   const adminInfo = sessionStorage.getItem('adminInfo');
   return adminInfo ? JSON.parse(adminInfo) : null;
 };
 
-// Функция для получения токена
+// getting  token
 export const getAdminToken = (): string | null => {
   return sessionStorage.getItem('adminToken');
 };
 
-// Автоматическая очистка при закрытии браузера
-// Это обеспечивает дополнительную защиту
+// Clear when closing the browser for additional protection
 export const setupAutoLogout = (): void => {
-  // Слушатель события закрытия браузера/вкладки
+  // Browser/Tab Close Event Listener
   window.addEventListener('beforeunload', () => {
-    // sessionStorage автоматически очищается, но мы можем добавить логику
+    // sessionStorage is automatically cleared, but we can add logic
     console.log('Браузер закрывается, сессия будет очищена');
   });
 
-  // Проверка каждые 30 секунд, что токен все еще существует
+  // Check every 30 seconds that the token still exists
   setInterval(() => {
     if (!isAuthenticated()) {
-      // Если токен исчез, отправляем событие выхода
+      // If the token has disappeared, send an exit event
       dispatchLogoutEvent();
     }
-  }, 30000); // 30 секунд
+  }, 30000);
 };

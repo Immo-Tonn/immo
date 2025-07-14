@@ -1,7 +1,7 @@
 import axios from '@features/utils/axiosConfig';
 import { ImageType } from './types';
 
-// Функция для загрузки одного изображения
+// load a single image
 export const uploadImage = async (
   file: File,
   realEstateObjectId: string,
@@ -19,7 +19,7 @@ export const uploadImage = async (
         'Content-Type': 'multipart/form-data',
       },
       onUploadProgress: progressEvent => {
-        // Проверяем, что progressEvent.total не undefined
+        // Check progressEvent.total is not undefined
         const total = progressEvent.total || 100;
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / total,
@@ -38,7 +38,7 @@ export const uploadImage = async (
   }
 };
 
-// Функция для загрузки нескольких изображений
+// loading multiple images
 export const uploadMultipleImages = async (
   files: File[],
   realEstateObjectId: string,
@@ -48,14 +48,14 @@ export const uploadMultipleImages = async (
     const imageUrls: string[] = [];
     let totalProgress = 0;
 
-    // Проверяем наличие файлов перед обработкой
+    // Checking for files before processing
     if (files.length === 0) {
       return [];
     }
 
     console.log(`🔄 Начинаем загрузку ${files.length} изображений для объекта ${realEstateObjectId}`);
 
-    // Сначала проверяем, есть ли уже изображения у объекта
+    // check if object has images
     let hasExistingImages = false;
     try {
       const existingImagesResponse = await axios.get(`/images/by-object?objectId=${realEstateObjectId}`);
@@ -69,14 +69,14 @@ export const uploadMultipleImages = async (
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
-      // Проверка, что файл существует
+      // Checking if a file exists
       if (!file) {
         continue;
       }
 
-      // Определяем тип изображения:
-      // - Если у объекта нет изображений И это первый файл в загрузке - делаем его главным
-      // - Иначе делаем дополнительным
+      // Determine the image type:
+      // - If the object has no images AND this is the first file in the load - make it the main one
+      // - Otherwise, make it additional
       const isMain = !hasExistingImages && i === 0;
       const type = isMain ? ImageType.MAIN : ImageType.ADDITIONAL;
 
@@ -87,7 +87,7 @@ export const uploadMultipleImages = async (
         realEstateObjectId,
         type,
         progress => {
-          // Рассчитываем прогресс для текущего файла как часть от общего прогресса
+          // Calculate the progress for the current file as a fraction of the total progress
           const fileWeight = 1 / files.length;
           const currentFileProgress = progress * fileWeight;
           const baseProgress = (i / files.length) * 100;
@@ -101,7 +101,7 @@ export const uploadMultipleImages = async (
       imageUrls.push(url);
       console.log(`✅ Изображение ${i + 1} загружено: ${url}`);
 
-      // Обновляем общий прогресс после полной загрузки текущего файла
+      // Update the overall progress after the current file is fully loaded
       totalProgress = ((i + 1) / files.length) * 100;
       if (onProgress) {
         onProgress(totalProgress);

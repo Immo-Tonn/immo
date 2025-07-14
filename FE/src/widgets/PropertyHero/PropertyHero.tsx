@@ -23,8 +23,6 @@ interface PropertyHeroProps {
    isAdmin?: boolean;
 }
 
-
-
 const PropertyHero: React.FC<PropertyHeroProps> = ({
   object,
   images = [],

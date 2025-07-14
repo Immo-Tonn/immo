@@ -14,7 +14,7 @@ import {
   createCompleteRealEstateObject,
   updateCompleteRealEstateObject,
   fetchObjectForEdit,
-   updateImageOrder
+  updateImageOrder
 } from '@features/utils/realEstateService';
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
@@ -57,8 +57,9 @@ const CreateObject = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false); // State for drag & drop
   const dropZoneRef = useRef<HTMLDivElement>(null); // ref for drag & drop
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showTypeWarning, setShowTypeWarning] = useState<boolean>(false);
 
-  // Status for the main property
+  // Status for the main object
   const [objectData, setObjectData] = useState<ObjectData>({
     type: ObjectType.APARTMENT,
     title: '',
@@ -87,7 +88,7 @@ const CreateObject = () => {
     if (
       !objectData.title ||
       !objectData.description ||
-      !objectData.location ||
+      // !objectData.location ||
       !objectData.address.city ||
       !objectData.address.zip ||
       !objectData.address.district ||
@@ -103,18 +104,29 @@ const CreateObject = () => {
         return !!specificData.livingArea;
       case ObjectType.HOUSE:
         return !!(
-          specificData.type &&
+          // specificData.type &&
           specificData.livingArea &&
           specificData.numberOfRooms
         );
       case ObjectType.LAND:
         return !!specificData.plotArea;
+
       case ObjectType.COMMERCIAL:
-        return !!specificData.buildingType;
+         return true;
+        // return !!specificData.buildingType;
       default:
         return false;
     }
   };
+
+const handleDisabledTypeClick = () => {
+  if (isEditMode) {
+    setShowTypeWarning(true);
+    setTimeout(() => {
+      setShowTypeWarning(false);
+    }, 3000);
+  }
+};
 
   // State for tracking form validity
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
@@ -151,7 +163,6 @@ const handleDropZoneClick = () => {
           // Filling in the main data
           setObjectData({
             type: loadedObjectData.type,
-            // status: loadedObjectData.status || ObjectStatus.ACTIVE,
             title: loadedObjectData.title,
             description: loadedObjectData.description,
             location: loadedObjectData.location,
@@ -247,7 +258,20 @@ const handleDropZoneClick = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
+
+  console.log('🔍 DEBUG: handleSpecificChange called');
+  console.log('🔍 DEBUG: field name:', name);
+  console.log('🔍 DEBUG: field value:', value);
+  console.log('🔍 DEBUG: current specificData before update:', specificData);
+
+  const fieldName = name;  
+
     setSpecificData({
+      ...specificData,
+      [fieldName]: value,
+    });
+
+        console.log('🔍 DEBUG: specificData after update should be:', {
       ...specificData,
       [name]: value,
     });
@@ -510,6 +534,9 @@ const setMainExistingImage = async (index: number): Promise<void> => {
         },
       };
 
+    console.log('🔍 DEBUG: Original specificData:', specificData);
+    console.log('🔍 DEBUG: landPlottype value:', specificData.landPlottype);
+
       // Converting numeric fields from strings to numbers for specific data
       const processedSpecificData = { ...specificData };
       Object.keys(processedSpecificData).forEach(key => {
@@ -526,6 +553,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
           key !== 'buildingRegulations' &&
           key !== 'recommendedUsage' &&
           key !== 'buildingType' &&
+          key !== 'landPlottype' &&
           processedSpecificData[key] !== '' &&
           !isNaN(Number(processedSpecificData[key]))
         ) {
@@ -582,7 +610,7 @@ const setMainExistingImage = async (index: number): Promise<void> => {
     setLoading(false);
   }
 };
-
+// ЗАМЕНИТЬ СУЩЕСТВУЮЩИЙ useEffect НА ЭТОТ:
 useEffect(() => {
   if (isEditMode && id) {
     // Функция для ручной отладки через консоль браузера
@@ -663,15 +691,22 @@ useEffect(() => {
               <label htmlFor="type" className={styles.formLabel}>
                 Wohnungstyp
               </label>
-              <input
-                type="text"
-                id="type"
-                name="type"
-                value={specificData.type || ''}
-                onChange={handleSpecificChange}
-                placeholder="Zum Beispiel Studio, 2-Zimmer"
-                className={styles.formInput}
-              />
+            <select
+              id="type"
+              name="type"
+              value={specificData.type || ''}
+              onChange={handleSpecificChange}
+              className={styles.formSelect}
+            >
+              <option value="">Bitte wählen</option>
+              <option value="Einliegerwohnung">Einliegerwohnung</option>
+              <option value="Dachgeschosswohnung">Dachgeschosswohnung</option>
+              <option value="Etagenwohnung">Etagenwohnung</option>
+              <option value="Loft / Studio / Atelier">Loft / Studio / Atelier</option>
+              <option value="Maisonette">Maisonette</option>
+              <option value="Penthouse">Penthouse</option>
+              <option value="Souterrainwohnung">Souterrainwohnung</option>
+            </select>
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
@@ -682,9 +717,19 @@ useEffect(() => {
                   type="number"
                   id="floor"
                   name="floor"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={specificData.floor || ''}
                   onChange={handleSpecificChange}
-                  className={styles.formInput}
+                    onKeyDown={(e) => {
+                      if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}
                 />
               </div>
               <div className={styles.formGroup}>
@@ -696,9 +741,17 @@ useEffect(() => {
                   id="totalFloors"
                   name="totalFloors"
                   value={specificData.totalFloors || ''}
-                  onChange={handleSpecificChange}
-                  className={styles.formInput}
-                />
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
+                  onChange={handleSpecificChange}                  
+                className={styles.formInput}
+             />
               </div>
             </div>
             <div className={styles.formGroup}>
@@ -709,9 +762,20 @@ useEffect(() => {
                 type="number"
                 id="livingArea"
                 name="livingArea"
+                min="0"
+                inputMode="numeric"
+                pattern="[0-9]*" 
                 value={specificData.livingArea || ''}
                 onChange={handleSpecificChange}
                 required
+                onKeyDown={(e) => {
+                  if (['e', 'E', '+', '-', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}
                 className={styles.formInput}
               />
             </div>
@@ -724,8 +788,19 @@ useEffect(() => {
                   type="number"
                   id="numberOfRooms"
                   name="numberOfRooms"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.numberOfRooms || ''}
                   onChange={handleSpecificChange}
+                    onKeyDown={(e) => {
+                      if (['e', 'E', '+', '-', ',', '.', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                 }}                  
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -737,8 +812,19 @@ useEffect(() => {
                   type="number"
                   id="numberOfBedrooms"
                   name="numberOfBedrooms"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.numberOfBedrooms || ''}
-                  onChange={handleSpecificChange}
+                  onChange={handleSpecificChange}                  
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -750,8 +836,19 @@ useEffect(() => {
                   type="number"
                   id="numberOfBathrooms"
                   name="numberOfBathrooms"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.numberOfBathrooms || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                
                   className={styles.formInput}
                 />
               </div>
@@ -766,8 +863,19 @@ useEffect(() => {
                   type="number"
                   id="yearBuilt"
                   name="yearBuilt"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                        
                   value={specificData.yearBuilt || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                  if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
                   className={styles.formInput}
                 />
               </div>
@@ -779,8 +887,19 @@ useEffect(() => {
                   type="number"
                   id="yearRenovated"
                   name="yearRenovated"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                            
                   value={specificData.yearRenovated || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -852,27 +971,47 @@ useEffect(() => {
               <label htmlFor="type" className={styles.formLabel}>
                 Haustyp
               </label>
-              <input
-                type="text"
-                id="type"
-                name="type"
-                value={specificData.type || ''}
-                onChange={handleSpecificChange}
-                placeholder="Zum Beispiel ein Ferienhaus, ein Doppelhaus, ein Stadthaus"
-                className={styles.formInput}
-              />
+            <select
+              id="type"
+              name="type"
+              value={specificData.type || ''}
+              onChange={handleSpecificChange}
+              className={styles.formSelect}
+            >
+              <option value="">Bitte wählen</option>
+              <option value="Bauernhaus">Bauernhaus</option>
+              <option value="Bungalow">Bungalow</option>
+              <option value="Doppelhaushälfte">Doppelhaushälfte</option>
+              <option value="Einfamilienhaus">Einfamilienhaus</option>
+              <option value="Ferienhaus">Ferienhaus</option>
+              <option value="Mehrfamilienhaus">Mehrfamilienhaus</option>
+              <option value="Reihenhaus">Reihenhaus</option>
+              <option value="Villa">Villa</option>
+              <option value="Zweifamilienhaus">Zweifamilienhaus</option>
+            </select>
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="numberOfFloors" className={styles.formLabel}>
                 Anzahl der Stockwerke
               </label>
-              <input
-                type="number"
-                id="numberOfFloors"
-                name="numberOfFloors"
-                value={specificData.numberOfFloors || ''}
-                onChange={handleSpecificChange}
-                className={styles.formInput}
+                <input
+                  type="number"
+                  id="numberOfFloors"
+                  name="numberOfFloors"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                
+                  value={specificData.numberOfFloors || ''}
+                  onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
+                  className={styles.formInput}                  
               />
             </div>
             <div className={styles.formRow}>
@@ -884,9 +1023,20 @@ useEffect(() => {
                   type="number"
                   id="livingArea"
                   name="livingArea"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                        
                   value={specificData.livingArea || ''}
                   onChange={handleSpecificChange}
                   required
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
                   className={styles.formInput}
                 />
               </div>
@@ -898,8 +1048,19 @@ useEffect(() => {
                   type="number"
                   id="usableArea"
                   name="usableArea"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                            
                   value={specificData.usableArea || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -911,8 +1072,19 @@ useEffect(() => {
                   type="number"
                   id="plotArea"
                   name="plotArea"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.plotArea || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
                   className={styles.formInput}
                 />
               </div>
@@ -926,9 +1098,20 @@ useEffect(() => {
                   type="number"
                   id="numberOfRooms"
                   name="numberOfRooms"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.numberOfRooms || ''}
                   onChange={handleSpecificChange}
                   required
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -940,8 +1123,19 @@ useEffect(() => {
                   type="number"
                   id="numberOfBedrooms"
                   name="numberOfBedrooms"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.numberOfBedrooms || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -953,8 +1147,19 @@ useEffect(() => {
                   type="number"
                   id="numberOfBathrooms"
                   name="numberOfBathrooms"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.numberOfBathrooms || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
                   className={styles.formInput}
                 />
               </div>
@@ -981,8 +1186,19 @@ useEffect(() => {
                   type="number"
                   id="yearBuilt"
                   name="yearBuilt"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.yearBuilt || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                  
                   className={styles.formInput}
                 />
               </div>
@@ -1051,18 +1267,47 @@ useEffect(() => {
           <>
             <h3 className={styles.sectionTitle}>Grundstücksdaten</h3>
             <div className={styles.formGroup}>
+            <label htmlFor="landPlottype" className={styles.formLabel}>
+              Art des Grundstücks
+            </label>
+            <select
+              id="landPlottype"
+              name="landPlottype"
+              value={specificData.landPlottype || ''}
+              onChange={handleSpecificChange}
+              className={styles.formSelect}
+            >
+              <option value="">Bitte wählen</option>
+              <option value="Baugrundstück">Baugrundstück</option>
+              <option value="Gewerbegrundstück">Gewerbegrundstück</option>
+              <option value="Freizeitgrundstück">Freizeitgrundstück</option>
+              <option value="Land- und Forstwirtschaft">Land- und Forstwirtschaft</option>
+            </select>
+            </div>            
+            <div className={styles.formGroup}>
               <label htmlFor="plotArea" className={styles.formLabel}>
                 Grundstücksfläche (m²) *
               </label>
-              <input
-                type="number"
-                id="plotArea"
-                name="plotArea"
-                value={specificData.plotArea || ''}
-                onChange={handleSpecificChange}
-                required
-                className={styles.formInput}
-              />
+                <input
+                  type="number"
+                  id="plotArea"
+                  name="plotArea"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                
+                  value={specificData.plotArea || ''}
+                  onChange={handleSpecificChange}
+                  required
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}
+                  className={styles.formInput}
+                />
             </div>
             <div className={styles.formGroup}>
               <label
@@ -1116,18 +1361,24 @@ useEffect(() => {
             </h3>
             <div className={styles.formGroup}>
               <label htmlFor="buildingType" className={styles.formLabel}>
-                Gebäudetyp *
+                Gebäudetyp
               </label>
-              <input
-                type="text"
-                id="buildingType"
-                name="buildingType"
-                value={specificData.buildingType || ''}
-                onChange={handleSpecificChange}
-                required
-                className={styles.formInput}
-                placeholder="Zum Beispiel Bürogebäude, Lager, Geschäft"
-              />
+            <select
+              id="buildingType"
+              name="buildingType"
+              value={specificData.buildingType || ''}
+              onChange={handleSpecificChange}
+              className={styles.formSelect}
+            >
+              <option value="">Bitte wählen</option>
+              <option value="Büro / Praxis">Büro / Praxis</option>
+              <option value="Laden / Einzelhandel">Laden / Einzelhandel</option>
+              <option value="Lager / Halle">Lager / Halle</option>
+              <option value="Industrieimmobilie">Industrieimmobilie</option>
+              <option value="Pflegeimmobilie">Pflegeimmobilie</option>
+              <option value="Freizeitimmobilie">Freizeitimmobilie</option>
+              <option value="Gastronomie / Hotel">Gastronomie / Hotel</option>
+            </select>
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
@@ -1138,8 +1389,19 @@ useEffect(() => {
                   type="number"
                   id="area"
                   name="area"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.area || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
                   className={styles.formInput}
                 />
               </div>
@@ -1151,8 +1413,19 @@ useEffect(() => {
                   type="number"
                   id="yearBuilt"
                   name="yearBuilt"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
                   value={specificData.yearBuilt || ''}
                   onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
                   className={styles.formInput}
                 />
               </div>
@@ -1220,30 +1493,41 @@ useEffect(() => {
       <form onSubmit={handleSubmit}>
         <h3 className={styles.sectionTitle}>Grundlegende Informationen</h3>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="type" className={styles.formLabel}>
-            Objekttyp *
-          </label>
-          <select
-            id="type"
-            name="type"
-            value={objectData.type}
-            onChange={handleObjectChange}
-            required
-            className={styles.formSelect}
-          >
-            <option value={ObjectType.APARTMENT}>Wohnung</option>
-            <option value={ObjectType.HOUSE}>Wohnhaus</option>
-            <option value={ObjectType.LAND}>Grundstück</option>
-            <option value={ObjectType.COMMERCIAL}>
-              Gewerbe-/Nichtwohnimmobilien
-            </option>
-          </select>
-        </div>
+<div className={styles.formGroup}>
+  <label htmlFor="type" className={styles.formLabel}>
+    Objekttyp *
+  </label>
+  <div 
+    className={isEditMode ? styles.disabledSelectWrapper : ''}
+    onClick={handleDisabledTypeClick}
+  >
+    <select
+      id="type"
+      name="type"
+      value={objectData.type}
+      onChange={handleObjectChange}
+      required
+      className={`${styles.formSelect} ${isEditMode ? styles.disabledSelect : ''}`}
+      disabled={isEditMode}
+    >
+      <option value={ObjectType.APARTMENT}>Wohnung</option>
+      <option value={ObjectType.HOUSE}>Wohnhaus</option>
+      <option value={ObjectType.LAND}>Grundstück</option>
+      <option value={ObjectType.COMMERCIAL}>
+        Gewerbe-/Nichtwohnimmobilien
+      </option>
+    </select>
+  </div>
+  {showTypeWarning && isEditMode && (
+    <div className={styles.warningMessage}>
+      Die Auswahl des Objekttyps ist nur beim Erstellen des Objekts möglich.
+    </div>
+  )}
+</div>
 
         <div className={styles.formGroup}>
           <label htmlFor="status" className={styles.formLabel}>
-            Objectstatus
+            Objektstatus
           </label>
           <select
             id="status"
@@ -1292,15 +1576,16 @@ useEffect(() => {
 
         <div className={styles.formGroup}>
           <label htmlFor="location" className={styles.formLabel}>
-            Lage *
+            Lage
           </label>
-          <input
-            type="text"
+          <textarea
+            // type="text"
             id="location"
             name="location"
             value={objectData.location}
             onChange={handleObjectChange}
-            required
+            rows={4}            
+            // required
             className={styles.formInput}
           />
         </div>
@@ -1408,9 +1693,20 @@ useEffect(() => {
             type="number"
             id="price"
             name="price"
+            min="0"
+            inputMode="numeric"
+            pattern="[0-9]*"             
             value={objectData.price}
             onChange={handleObjectChange}
             required
+            onKeyDown={(e) => {
+              if (['e', 'E', '+', '-'].includes(e.key)) {
+                  e.preventDefault();
+              }
+            }}
+            onWheel={(e) =>{
+            (e.target as HTMLInputElement).blur()
+            }}                              
             className={styles.formInput}
           />
         </div>

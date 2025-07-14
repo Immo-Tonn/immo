@@ -1,14 +1,14 @@
 import axios from 'axios';
-// экземпляр axios с базовым URL и настройками
+// axios instance with base url and settings
 const axiosInstance = axios.create({
-  // базовый URL
+
   baseURL: `${import.meta.env.VITE_HOST}/api`, // Адрес API-сервера
   timeout: 3000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
-// Интерцептор для добавления токена в заголовки запросов
+// Interceptor for adding token to request headers
 axiosInstance.interceptors.request.use(
   config => {
     const token = sessionStorage.getItem('adminToken');
@@ -21,18 +21,18 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-// Интерцептор для обработки ошибок ответа
+// Interceptor for handling response errors
 axiosInstance.interceptors.response.use(
   response => {
     return response;
   },
   error => {
-    // Логирование ошибок для отладки
+    // Error logging for debugging
     console.error('Ошибка запроса:', error.response?.data || error.message);
 
-    // Если токен недействителен (401) или истек срок действия
+    // If token is invalid (401) or expired
     if (error.response && error.response.status === 401) {
-      // Проверяем, что это не запрос входа/регистрации
+      // Check this is not a login/registration request
       const url = error.config?.url || '';
       if (
         !url.includes('/auth/add-property') &&

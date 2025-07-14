@@ -46,12 +46,13 @@ export const createResidentialHous = async (
   try {
     const { realEstateObject, ...ResidentialHousesData } = req.body;
 
+    // 1. Check:  real estate object exist?
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
-
+    // Check for type compliance in real estate object
     if (realEstate.type !== ObjectType.HOUSE) {
       res.status(400).json({
         message: 'Der Eigenschaftstyp stimmt nicht überein.',
@@ -66,6 +67,7 @@ export const createResidentialHous = async (
       return;
     }
 
+    // 2. Create a new HOUSE and link it to real estate object
     const newResidentialHous = new ResidentialHousesModel({
       ...ResidentialHousesData,
       realEstateObject,
@@ -73,9 +75,11 @@ export const createResidentialHous = async (
 
     const savedResidentialHous = await newResidentialHous.save();
 
+    // 3. Add the HOUSE ID to  real estate object
     realEstate.residentialHouses = savedResidentialHous._id as Types.ObjectId;
     await realEstate.save();
 
+    // 4. Reply to the client
     res.status(201).json(savedResidentialHous);
   } catch (error) {
     res.status(500).json({
@@ -112,6 +116,7 @@ export const deleteResidentialHous = async (
   res: Response,
 ): Promise<void> => {
   try {
+    // 1. Delete by ID
     const deleted = await ResidentialHousesModel.findByIdAndDelete(
       req.params.id,
     );
@@ -122,10 +127,12 @@ export const deleteResidentialHous = async (
       return;
     }
 
+    // 2. Remove HOUSE ID from real eatate object
     await RealEstateObjectsModel.findByIdAndUpdate(deleted.realEstateObject, {
       $unset: { residentialHouses: '' },
     });
 
+    // 3. Reply to the client
     res.status(200).json({
       message: 'Zusätzliche Informationen zum Objekt Wohngebäude entfernt',
     });

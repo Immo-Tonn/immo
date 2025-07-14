@@ -8,7 +8,6 @@ import {
   getVideoThumbnailUrl,
 } from '../utils/videoHelpers';
 import fs from 'fs';
-import path from 'path';
 
 export const uploadVideo = async (
   req: Request,
@@ -40,7 +39,7 @@ export const uploadVideo = async (
       return;
     }
 
-    // Проверяем, существует ли файл
+    // Checking if the file exists
     if (!fs.existsSync(videoFile.path)) {
       console.error('❌ Файл не существует по пути:', videoFile.path);
       res.status(400).json({ error: 'Uploaded file not found on server' });
@@ -73,7 +72,7 @@ export const uploadVideo = async (
 
     console.log('✅ Видео добавлено к объекту недвижимости');
 
-    // Удаляем временный файл
+    // Delete temporary file
     try {
       fs.unlinkSync(videoFile.path);
       console.log('✅ Временный файл удален:', videoFile.path);
@@ -85,7 +84,7 @@ export const uploadVideo = async (
   } catch (error: any) {
     console.error('❌ Upload error:', error);
 
-    // Пытаемся удалить временный файл в случае ошибки
+    // Trying to delete a temporary file in case of an error
     if (req.file?.path && fs.existsSync(req.file.path)) {
       try {
         fs.unlinkSync(req.file.path);
@@ -156,7 +155,7 @@ export const getAllVideos = async (
   }
 };
 
-// Получить видео по ID
+// Get video by ID
 export const getVideoById = async (
   req: Request,
   res: Response,
@@ -201,51 +200,51 @@ export const updateVideo = async (
       return;
     }
 
-    // 1. Обновляем привязку к объекту недвижимости, если изменилась
+    // 1. Update the link to real estate object if it has changed
     if (
       realEstateObjectId &&
       video.realEstateObject?.toString() !== realEstateObjectId
     ) {
-      // Удалить из старого объекта
+      // Remove from old object
       await RealEstateObjectsModel.findByIdAndUpdate(video.realEstateObject, {
         $pull: { videos: video._id },
       });
-      // Добавить в новый объект
+      // Add to new object
       await RealEstateObjectsModel.findByIdAndUpdate(realEstateObjectId, {
         $push: { videos: video._id },
       });
       video.realEstateObject = realEstateObjectId;
     }
 
-    // 2. Обновляем название
+    // 2. Update the name
     if (title) {
       video.title = title;
     }
 
-    // 3. Обработка замены видеофайла
+    // 3. Processing video file replacement
     if (newVideoFile) {
       // Проверяем, существует ли новый файл
       if (!fs.existsSync(newVideoFile.path)) {
         res.status(400).json({ error: 'New video file not found on server' });
         return;
       }
-      // Удаляем старое видео из Bunny
+      // Remove  old video from Bunny
       if (video.videoId) {
         await deleteFromBunnyVideo(video.videoId);
       }
 
-      // Загружаем новое видео в Bunny
+      // Uploading new video to Bunny
       const { videoId, videoUrl, thumbnailUrl } = await uploadToBunnyVideo(
         newVideoFile.path,
         title || video.title || 'Untitled',
       );
 
-      // Обновляем данные в БД
+      //Update data in db
       video.videoId = videoId;
       video.url = videoUrl;
       video.thumbnailUrl = thumbnailUrl;
 
-      // Удаляем временный файл
+      // Delete temporary file
       try {
         fs.unlinkSync(newVideoFile.path);
       } catch (unlinkError) {
@@ -253,14 +252,14 @@ export const updateVideo = async (
       }      
     }
 
-    // 4. Сохраняем изменения
+    // 4. Save changes
     await video.save();
 
     res.status(200).json(video);
   } catch (error: any) {
     console.error('Update video error:', error);
 
-    // Пытаемся удалить временный файл в случае ошибки
+    // Trying to delete temporary file in case of error
     if (req.file?.path && fs.existsSync(req.file.path)) {
       try {
         fs.unlinkSync(req.file.path);

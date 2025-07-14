@@ -56,26 +56,6 @@
   line-height: 1.5;
 }
 
-/* .refreshButton {
-  background-color: #17a2b8;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 10px;
-  transition: all 0.2s ease;
-}
-
-.refreshButton:hover {
-  background-color: #138496;
-}
-
-.refreshButton:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-} */
 /* Styles for Adminbuttons */
 .adminActions {
   position: absolute;
