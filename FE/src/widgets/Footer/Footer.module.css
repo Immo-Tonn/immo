@@ -42,7 +42,8 @@ footer {
 }
 .footerIcons {
   display: flex;
-  gap: 52px;
+  gap: clamp(24px, 5vw, 52px);
+
   list-style: none;
 }
 
@@ -130,6 +131,9 @@ footer {
 @media (max-width: 576px) {
   .bottomBar {
     display: block;
+  }
+  .footerLogo {
+    max-width: clamp(109px, 20vw, 133px);
   }
 }
 

@@ -41,13 +41,13 @@ export const CategoriesData: CategoryItem[] = [
     title: 'wertermittlung',
     image: '/src/shared/assets/categories/wertemittlung.webp',
     link: 'wertermittlung',
-    alt: 'wertemittlung',
+    alt: 'wertermittlung',
   },
   {
     id: 6,
-    title: 'finanzirung',
+    title: 'finanzierung',
     image: '/src/shared/assets/categories/finanzirung.webp',
     link: 'finanzierung',
-    alt: 'finanzirung',
+    alt: 'finanzierung',
   },
 ];

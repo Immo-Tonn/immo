@@ -57,7 +57,7 @@
   margin-left: clamp(40px, 8vw, 94px);
 }
 .valuationPhoto {
-  max-width: 664px;
+  max-width: clamp(320px, 60vw, 664px);
 }
 .buttonWrapper {
   display: flex;
@@ -93,6 +93,9 @@
   .valuationCTASection > .buttonWrapper {
     margin-top: 120px;
     justify-content: center;
+  }
+  .valuationPhoto {
+    max-width: clamp(320px, 86vw, 605px);
   }
 }
 @media (max-width: 576px) {

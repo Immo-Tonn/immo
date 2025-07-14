@@ -33,7 +33,6 @@
 .headerContacts {
   margin: 5px 10px 0 0;
   align-items: center;
-  font-size: clamp(10px, 2vw, 14px);
   text-align: left;
   list-style: none;
   margin-bottom: 20px;
@@ -153,7 +152,17 @@
 .drawerListItem {
   padding: 0 !important;
 }
-
+@media (max-width: 933px) {
+  .nav {
+    gap: clamp(16px, 3vw, 5px);
+  }
+  .nav > a {
+    font-size: clamp(9px, 4vw, 17px);
+  }
+  .contactText {
+    font-size: clamp(6px, 2vw, 12px);
+  }
+}
 @media (max-width: 765px) {
   .logo {
     max-height: 114px;
@@ -191,7 +200,14 @@
     margin-bottom: 0;
   }
 }
-
+@media (max-width: 709px) {
+  .nav {
+    gap: clamp(6px, 2vw, 11px);
+  }
+  .nav > a {
+    font-size: clamp(9px, 2.8vw, 17px);
+  }
+}
 @media (max-width: 576px) {
   .headerTop {
     display: flex;
@@ -224,5 +240,11 @@
 
   .headerWrapper {
     padding: 0;
+  }
+}
+
+@media (max-width: 483px) {
+  .drawerList {
+    flex-direction: column;
   }
 }

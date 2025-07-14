@@ -71,4 +71,11 @@
   .textWrapper {
     padding: clamp(10px, 2vw, 20px);
   }
+  .contentWrapper {
+    height: 305px;
+  }
+  .contentWrapper::before {
+    height: 305px;
+    object-fit: contain;
+  }
 }
