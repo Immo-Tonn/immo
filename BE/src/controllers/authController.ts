@@ -111,7 +111,7 @@ export const deleteAdmin = async (
     await AdminModel.findByIdAndDelete(adminId);
     res.json({ message: "Admin registration removed" });
   } catch (error) {
-    res.status(500).json({ message: "Ошибка удаления администратора", error });
+    res.status(500).json({ message: "Error removing administrator", error });
   }
 };
 // Testing email configuration
@@ -203,7 +203,7 @@ export const requestPasswordReset = async (
       ...(process.env.NODE_ENV === "development" && { tempPassword }),
     });
   } catch (error) {
-    res.status(500).json({ message: "Ошибка сброса пароля", error });
+    res.status(500).json({ message: "Password reset error", error });
   }
 };
 
