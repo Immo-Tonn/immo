@@ -30,7 +30,7 @@ a:hover {
   transform: scale(1.1);
 }
 
-p > a:hover {
+p>a:hover {
   color: #000000;
   transform: scale(1.2);
 }
@@ -47,7 +47,10 @@ main {
 html,
 body {
   overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
 }
+
 
 button {
   cursor: pointer;
