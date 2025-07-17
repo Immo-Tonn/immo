@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react'; // добавлен useEffect
 import styles from './PropertyDetails.module.css';
 import {
   RealEstateObject,
@@ -101,6 +101,14 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     residentialHouse,
   );
   const navigate = useNavigate();
+
+  // 👇 Добавим управление overflow при монтировании/размонтировании
+  useEffect(() => {
+    document.body.style.overflowX = 'visible';
+    return () => {
+      document.body.style.overflowX = 'hidden';
+    };
+  }, []);
 
   return (
     <div className={styles.propertyLayout}>

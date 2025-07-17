@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
 
 const ImmoTonnContent: React.FC = () => {
-  const refs = useRef<(HTMLLIElement | null)[]>([]);
+  const refs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
     refs.current.forEach((ref, i) => {
@@ -54,7 +54,9 @@ const ImmoTonnContent: React.FC = () => {
         </div>
         <ul
           className={styles.immoTonnTextList}
-          ref={el => (refs.current[0] = el)}
+          ref={el => {
+            refs.current[0] = el;
+          }}
         >
           {listItemData.map((item, index) => (
             <li key={index} className={styles.immoTonnTextListItemWrapper}>

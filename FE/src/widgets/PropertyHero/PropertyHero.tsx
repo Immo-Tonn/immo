@@ -12,6 +12,7 @@ import {
   Video,
 } from '@shared/types/propertyTypes';
 import { fadeInOnScroll } from '@shared/anim/animations';
+
 interface PropertyHeroProps {
   object: RealEstateObject;
   images?: (Image | undefined)[];

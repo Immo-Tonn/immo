@@ -159,6 +159,7 @@ const PropertyPage: React.FC = () => {
             residentialHouse={objectData.residentialHouses}
           />
           <PropertyMap address={objectData.address} />
+
           <ContactForm />
         </>
       )}

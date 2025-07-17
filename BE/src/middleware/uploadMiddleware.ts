@@ -129,12 +129,10 @@ export const handleUploadErrors = (
 ) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res
-        .status(400)
-        .json({
-          message:
-            'Die Datei ist zu groß. Max. 5MB für Bilder, 100MB für Videos.',
-        });
+      return res.status(400).json({
+        message:
+          'Die Datei ist zu groß. Max. 5MB für Bilder, 100MB für Videos.',
+      });
     }
     return res
       .status(400)

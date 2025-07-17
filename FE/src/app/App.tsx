@@ -16,7 +16,6 @@ import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
 import SalesSupport from '@pages/SalesSupport/SalesSupport';
-import RechtUndRat from '@pages/LawAndAdvice/LawAndAdvice';
 import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 import ObjectPreview from '@pages/AdminObject/ObjectPrewiew/ObjectPrewiew';
 import Login from '@pages/Auth/Login';

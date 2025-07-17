@@ -15,7 +15,7 @@ const ContactForm = () => {
       if (ref)
         fadeInOnScroll(
           { current: ref },
-          i % 2 === 0 ? { x: -100, y: 50 } : { x: 100, y: -50 },
+          i % 2 === 0 ? { x: -100 } : { x: -100 },
         );
     });
   }, []);

@@ -43,12 +43,10 @@ p > a:hover {
 main {
   min-height: 100dvh;
 }
-
 html,
 body {
   overflow-x: hidden;
 }
-
 button {
   cursor: pointer;
   background-color: #1b4965;

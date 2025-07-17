@@ -228,20 +228,16 @@ export const changePassword = async (
     }
     // Check for minimum password length (e.g. 8 characters)
     if (newPassword.length < 8) {
-      res
-        .status(400)
-        .json({
-          message: 'The new password must contain at least 8 characters.',
-        });
+      res.status(400).json({
+        message: 'The new password must contain at least 8 characters.',
+      });
       return;
     }
     // Check if the user is trying to set the same password
     if (newPassword === currentPassword) {
-      res
-        .status(400)
-        .json({
-          message: 'The new password must be different from the current one.',
-        });
+      res.status(400).json({
+        message: 'The new password must be different from the current one.',
+      });
       return;
     }
     // Getting user ID from authentication middleware
