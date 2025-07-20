@@ -1,8 +1,9 @@
 import Button from '@shared/ui/Button/Button';
 import styles from './ValuationCTA.module.css';
-import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.svg';
+import valuationPhoto from '@shared/assets/valuation-cta/valuation-photo.webp';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll, runningBoxShadow } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 
 const ValuationCTA = () => {
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -16,7 +17,9 @@ const ValuationCTA = () => {
       if (ref) {
         fadeInOnScroll(
           { current: ref },
-          i % 2 === 0 ? { x: -100, y: 0 } : { x: 100, y: -50 },
+          i % 2 === 0
+            ? { x: -100, y: 0, duration: 0.3 }
+            : { x: 100, y: -50, duration: 0.6 },
         );
       }
     });
@@ -24,7 +27,12 @@ const ValuationCTA = () => {
 
   return (
     <section className={styles.valuationCTASection}>
-      <div className={styles.textWrapper} ref={el => (refs.current[0] = el)}>
+      <div
+        className={styles.textWrapper}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         <h2 className={styles.firstTitle}>
           <b>
             Viele Eigentümer fragen sich: Was ist meine Immobilie heute wert?
@@ -41,18 +49,29 @@ const ValuationCTA = () => {
           persönliche Beratung.
         </p>
       </div>
-      <div className={styles.imageWrapper} ref={el => (refs.current[1] = el)}>
+      <div
+        className={styles.imageWrapper}
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <h1 className={styles.secondTitle}>
           Lassen Sie Ihre Immobilie jetzt bewerten!
         </h1>
         <img
           ref={imgRef}
           src={valuationPhoto}
+          className={styles.valuationPhoto}
           alt="valuation-photo"
           style={{ boxShadow: '0 4px 41px 11px rgba(0, 0, 0, 0.25)' }}
         />
       </div>
-      <div className={styles.bottomWrapper} ref={el => (refs.current[2] = el)}>
+      <div
+        className={styles.bottomWrapper}
+        ref={el => {
+          refs.current[2] = el;
+        }}
+      >
         <h2 className={styles.thirdTitle}>
           warum ist eine professionelle wertermittlung so wichtig?
         </h2>
@@ -65,11 +84,18 @@ const ValuationCTA = () => {
         </p>
       </div>
 
-      <div className={styles.buttonWrapper} ref={el => (refs.current[3] = el)}>
-        <Button
-          initialText={'Wie viel ist mein Haus wert?'}
-          clickedText="Weiterleitung..."
-        />
+      <div
+        className={styles.buttonWrapper}
+        ref={el => {
+          refs.current[3] = el;
+        }}
+      >
+        <Link to="/finanzierung">
+          <Button
+            initialText="Wie viel ist mein Haus wert?"
+            clickedText="Weiterleitung..."
+          />
+        </Link>
       </div>
     </section>
   );

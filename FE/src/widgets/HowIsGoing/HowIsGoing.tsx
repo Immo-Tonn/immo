@@ -2,6 +2,7 @@ import Button from '@shared/ui/Button/Button';
 import styles from './HowIsGoing.module.css';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 const HowIsGoing = () => {
   const refs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -17,9 +18,19 @@ const HowIsGoing = () => {
   }, []);
   return (
     <section className={styles.howIsGoingSection}>
-      <div className={styles.textBlock} ref={el => (refs.current[0] = el)}>
+      <div
+        className={styles.textBlock}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         <h3>Was wir bei der Bewertung berücksichtigen:</h3>
-        <div className={styles.listWrapper} ref={el => (refs.current[1] = el)}>
+        <div
+          className={styles.listWrapper}
+          ref={el => {
+            refs.current[1] = el;
+          }}
+        >
           <ul>
             <li>Aktuelle Markt- und Nachfragesituation</li>
             <li>Lage und Mikrolage der Immobilien</li>
@@ -29,7 +40,12 @@ const HowIsGoing = () => {
           </ul>
         </div>
         <h3>Wie läuft die Bewertung ab?</h3>
-        <div className={styles.listWrapper} ref={el => (refs.current[2] = el)}>
+        <div
+          className={styles.listWrapper}
+          ref={el => {
+            refs.current[2] = el;
+          }}
+        >
           <ol>
             <li>Unverbindliches Erstgespräch – telefonisch oder vor Ort</li>
             <li>Analyse der Objektunterlagen und Besichtigung</li>
@@ -41,12 +57,16 @@ const HowIsGoing = () => {
         </div>
         <div
           className={styles.buttonWrapper}
-          ref={el => (refs.current[3] = el)}
+          ref={el => {
+            refs.current[3] = el;
+          }}
         >
-          <Button
-            initialText="Kostenlose Wertermittlung starten"
-            clickedText="Weiterleitung......"
-          />
+          <Link to="/kontakt" style={{ marginTop: '113px' }}>
+            <Button
+              initialText="Kontakt knüpfen"
+              clickedText="Weiterleitung..."
+            />
+          </Link>
         </div>
       </div>
     </section>

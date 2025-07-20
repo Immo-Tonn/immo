@@ -4,6 +4,7 @@ export interface ICommercial_NonResidentialBuildings extends Document {
   id: Types.ObjectId;
   realEstateObject: Types.ObjectId;
   buildingType: string;
+  plotArea?: number;
   area?: number;
   yearBuilt?: number;
   purpose?: string;
@@ -19,8 +20,10 @@ const Commercial_NonResidentialBuildingsSchema: Schema =
     },
     buildingType: {
       type: String,
-      required: true,
     },
+    plotArea: {
+    type: Number,
+  },
     area: {
       type: Number,
     },

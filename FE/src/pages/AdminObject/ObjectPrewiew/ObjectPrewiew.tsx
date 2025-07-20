@@ -4,8 +4,9 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
 import styles from './ObjectPrewiew.module.css';
 import { ObjectType } from '@features/utils/types';
-// import { formatObjectNumber } from '@shared/objectNumberUtils';
 import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal';
+import { getObjectTypeLabel } from '@features/utils/objectTypeMapping';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 
 const ObjectPreview = () => {
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ const ObjectPreview = () => {
   const [videos, setVideos] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
   const getSuccessMessage = () => {
     if (action === 'updated') {
       return 'Das Objekt wurde erfolgreich aktualisiert! Überprüfen Sie die folgende Daten..';
@@ -328,7 +328,7 @@ const ObjectPreview = () => {
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
-                <span className={styles.dataValue}>{specificData.plotArea ? `${specificData.plotArea} м²` : '-'}</span>
+                <span className={styles.dataValue}>{specificData.plotArea ? `${specificData.plotArea} m²` : '-'}</span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Anzahl der Zimmer:</span>
@@ -378,8 +378,12 @@ const ObjectPreview = () => {
             <h3>Grundstücksdetails</h3>
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
+                <span className={styles.dataLabel}>Art des Grundstücks:</span>
+                <span className={styles.dataValue}>{specificData.landPlottype || '-'}</span>
+              </div>              
+              <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
-                <span className={styles.dataValue}>{specificData.plotArea} м²</span>
+                <span className={styles.dataValue}>{specificData.plotArea} m²</span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Technische Kommunikation:</span>
@@ -409,6 +413,10 @@ const ObjectPreview = () => {
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Fläche:</span>
                 <span className={styles.dataValue}>{specificData.area ? `${specificData.area} м²` : '-'}</span>
+              </div>
+              <div className={styles.dataItem}>
+                <span className={styles.dataLabel}>Grundstücksfläche:</span>
+                <span className={styles.dataValue}>{specificData.plotArea ? `${specificData.plotArea} m²` : '-'}</span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Baujahr:</span>
@@ -445,9 +453,6 @@ const ObjectPreview = () => {
     return <div className={styles.error}>Objekt nicht gefunden</div>;
   }
 
-  // get the object number
-  // const objectNumber = formatObjectNumber(objectData._id);
-
   // Combine images and videos for a gallery
   const allMedia = [...images, ...videos];
 
@@ -460,14 +465,6 @@ const ObjectPreview = () => {
        {getSuccessMessage()}
       </div>
    )}   
-
-      {/* object number */}
-      {/* <div className={styles.objectNumberSection}>
-        <div className={styles.objectNumber}>
-          <span className={styles.objectNumberLabel}>Objektnummer::</span>
-          <span className={styles.objectNumberValue}>{objectNumber}</span>
-        </div>
-      </div> */}
 
       <div className={styles.imagesSection}>
         <h3>Bilder</h3>
@@ -484,7 +481,7 @@ const ObjectPreview = () => {
                   alt={`image ${index + 1}`} 
                   className={styles.objectImage} 
                 />
-                {index === 0 && <span className={styles.mainImageLabel}>Hauptblid</span>}
+                {index === 0 && <span className={styles.mainImageLabel}>Hauptbild</span>}
               </div>
             ))
           ) : (
@@ -528,28 +525,32 @@ const ObjectPreview = () => {
           </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Objekttyp:</span>
-            <span className={styles.dataValue}>{objectData.type}</span>
+            <span className={styles.dataValue}>{getObjectTypeLabel(objectData.type)}</span>
           </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Preis:</span>
-            <span className={styles.dataValue}>{objectData.price.toLocaleString()} €</span>
+            <span className={styles.dataValue}>{formatGermanCurrency(objectData.price)} €</span>
           </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Objektstatus:</span>
             <span className={styles.dataValue}>{objectData.status}</span>
           </div>
-          <div className={styles.dataItem}>
-            <span className={styles.dataLabel}>Lage:</span>
-            <span className={styles.dataValue}>{objectData.location}</span>
-          </div>
+
         </div>
         
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Adresse:</span>
           <span className={styles.dataValue}>
-            {`${objectData.address.street} ${objectData.address.houseNumber || ''}, ${objectData.address.zip} ${objectData.address.city}, ${objectData.address.country}`}
+            {`${objectData.address.street} ${objectData.address.houseNumber || ''}`}<br />
+            {`${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}`}<br />
+            {`${objectData.address.country}`}
           </span>
-        </div>        
+        </div>
+
+        <div className={styles.dataItem}>
+          <span className={styles.dataLabel}>Lage:</span>
+          <p className={styles.dataValue}>{objectData.location}</p>
+        </div>
         
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Beschreibung:</span>

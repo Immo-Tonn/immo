@@ -43,16 +43,25 @@ export const createLandPlot = async (
   res: Response,
 ): Promise<void> => {
   try {
+
+    // console.log('🔍 DEBUG createLandPlot: Получен запрос');
+    // console.log('🔍 DEBUG req.body:', JSON.stringify(req.body, null, 2));
+
     const { realEstateObject, ...LandPlotsData } = req.body;
 
-    // 1. Проверка: существует ли объект недвижимости
+    // console.log('🔍 DEBUG realEstateObject ID:', realEstateObject);
+    // console.log('🔍 DEBUG LandPlotsData:', JSON.stringify(LandPlotsData, null, 2));
+    // console.log('🔍 DEBUG landPlottype в данных:', LandPlotsData.landPlottype);
+
+
+    // 1. Check: property exist?
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
 
-    // Проверка на соответствие типа в обьекте недвижимости
+    // Check for type compliance in a real estate object
     if (realEstate.type !== ObjectType.LAND) {
       res.status(400).json({
         message: 'Der Eigenschaftstyp stimmt nicht überein.',
@@ -67,21 +76,29 @@ export const createLandPlot = async (
       return;
     }
 
-    // 2. Создаём новую квартиру и связываем с объектом
+    // 2. Create a new Plot and link it to the object
     const newLandPlot = new LandPlotsModel({
       ...LandPlotsData,
       realEstateObject,
     });
 
+    // console.log('🔍 DEBUG newLandPlot до сохранения:', JSON.stringify(newLandPlot.toObject(), null, 2));
+    // console.log('🔍 DEBUG newLandPlot.landPlottype:', newLandPlot.landPlottype);    
+
     const savedLandPlot = await newLandPlot.save();
 
-    // 3. Добавляем ID квартиры в объект недвижимости
+    // console.log('🔍 DEBUG savedLandPlot после сохранения:', JSON.stringify(savedLandPlot.toObject(), null, 2));
+    // console.log('🔍 DEBUG savedLandPlot.landPlottype:', savedLandPlot.landPlottype);    
+
+    // 3. Adding a Plot ID to a Property
     realEstate.landPlots = savedLandPlot._id as Types.ObjectId;
     await realEstate.save();
 
-    // 4. Ответ клиенту
+    // 4. Reply to client
+    // console.log('🔍 DEBUG Отправляем ответ клиенту:', savedLandPlot);
     res.status(201).json(savedLandPlot);
   } catch (error) {
+    console.error('🔍 DEBUG Ошибка в createLandPlot:', error);
     res.status(500).json({
       message: 'Fehler beim Erstellen des Objekts „Grundstücke“',
       error,
@@ -116,7 +133,6 @@ export const deleteLandPlot = async (
   res: Response,
 ): Promise<void> => {
   try {
-    // 1. Удаляем по ID
     const deleted = await LandPlotsModel.findByIdAndDelete(req.params.id);
     if (!deleted) {
       res.status(404).json({
@@ -125,12 +141,10 @@ export const deleteLandPlot = async (
       return;
     }
 
-    // 2. Удаляем ID квартиры из соответствующего объекта недвижимости
     await RealEstateObjectsModel.findByIdAndUpdate(deleted.realEstateObject, {
       $unset: { landPlots: '' },
     });
 
-    // 3. Ответ клиенту
     res.status(200).json({
       message: 'Zusätzliche Informationen zum Objekt Grundstück entfernt',
     });

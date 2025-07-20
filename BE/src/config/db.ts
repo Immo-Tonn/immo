@@ -1,5 +1,4 @@
 // immo/BE/src/config/db.ts
-
 import mongoose from "mongoose";
 import { setupDatabaseIndexes, listExistingIndexes } from "./setupIndexes";
 
@@ -15,21 +14,21 @@ const connectDb = async () => {
     }
     console.log("MongoDB connected.", connection.connection.host);
 
-    // Создаем индексы после подключения к базе данных
+    // Create indices after connecting to the database
     try {
-      // Показываем существующие индексы (опционально)
+      // Show existing indices (optionally)
       await listExistingIndexes();
       
-      // Создаем необходимые индексы
+      // create the necessary indices
       await setupDatabaseIndexes();
     } catch (indexError) {
       console.warn("⚠️ Предупреждение: не удалось создать некоторые индексы:", indexError);
-      // Не прерываем работу приложения из-за ошибок с индексами
+  // Do not interrupt the application due to errors with indexes
     }
 
   } catch (error) {
     console.error("❌ Ошибка подключения к MongoDB:", error);
-    process.exit(1); // Прерываем работу при ошибке подключения
+    process.exit(1); // Interrupt when the connection error
   }
 };
 

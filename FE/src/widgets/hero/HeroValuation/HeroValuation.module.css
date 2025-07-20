@@ -22,11 +22,10 @@
 .contentWrapper::before {
   position: absolute;
   content: '';
-  top: 0;
   left: 50%;
   transform: translateX(-50%);
   height: 675px;
-  background-image: url('@shared/assets/intro/intro-photo.webp');
+  background-image: url('@shared/assets/hero-valuation/hero-valuation-photo.webp');
   background-size: cover;
   background-position: center;
   z-index: 2;
@@ -56,7 +55,7 @@
 .textWrapper > p {
   color: white;
   font-family: var(--Inter);
-  font-size: clamp(24px, 4.5vw, 40px);
+  font-size: clamp(var(--font-size-small), 4.5vw, 40px);
   font-weight: var(--font-weight-secondary);
 }
 
@@ -68,5 +67,8 @@
 @media (max-width: 765px) {
   .heroValuationSection > p {
     display: flex;
+  }
+  .textWrapper {
+    padding: clamp(10px, 2vw, 20px);
   }
 }

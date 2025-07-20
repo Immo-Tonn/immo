@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './PropertyHero.module.css';
 import ImageGalleryModal from '../ImageGalleryModal/ImageGalleryModal';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 import {
   RealEstateObject,
   Apartment,
@@ -72,13 +73,13 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
     return () => window.removeEventListener('resize', updateMobile);
   }, []);
 
-  useEffect(() => {
-    if (!isMobile || mediaItems.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [mediaItems.length, isMobile]);
+  // useEffect(() => {
+  //   if (!isMobile || mediaItems.length <= 1) return;
+  //   const interval = setInterval(() => {
+  //     setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+  //   }, 8000);
+  //   return () => clearInterval(interval);
+  // }, [mediaItems.length, isMobile]);
 
   const handlePrev = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -109,29 +110,31 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const currentMedia = mediaItems[currentIndex];
   const firstMedia = mediaItems[0];
 
-    const renderAddress = () => {
-    if (isAdmin) {
-      // Full adress for Admin
-      return (
-        <div className={styles.address}>
-          {address.street && address.houseNumber && (
-            <>
-              {address.street} {address.houseNumber}<br />
-            </>
-          )}
-          {address.zip} {address.city}, {address.district}<br />
-          {address.country}
-        </div>
-      );
-    } else {
-      // Partial address for regular users
-      return (
-        <div className={styles.address}>
-          {address.city}{address.district ? `, ${address.district}` : ''}
-        </div>
-      );
-    }
-  };
+const renderAddress = () => {
+  if (isAdmin) { 
+          // Full adress for Admin   
+    return (
+      <div className={styles.address}>
+        {address.street && (
+          <>
+            {address.street}
+            {address.houseNumber && ` ${address.houseNumber}`}
+            <br />
+          </>
+        )}
+        {address.zip} {address.city}, {address.district}<br />
+        {address.country}
+      </div>
+    );
+  } else {
+          // Partial address for regular users
+    return (
+      <div className={styles.address}>
+        {address.zip} {address.city}{address.district ? `, ${address.district}` : ''}
+      </div>
+    );
+  }
+};
 
   return (
     <section className={styles.section}>
@@ -139,18 +142,6 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
        ref={el => {refs.current[0] = el}}>
         {title}
       </h1>
-
-     {object.status && (     
-      <div className={styles.status}>
-        <span className={styles.label}>Objektstatus:</span>
-      <div className={styles.statusBanner}>       
-        {object.status === 'active' && 'AKTIV'}
-        {object.status === 'sold' && 'VERKAUFT'}
-        {object.status === 'reserved' && 'RESERVIERT'}
-        {object.status === 'archived' && 'ARCHIVIERT'}
-      </div>
-       </div>
-     )}
 
       {isMobile ? (
         currentMedia ? (
@@ -164,30 +155,18 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                 <div className={styles.statusBadge}>{statusLabel}</div>
               )}
               {isVideo(currentMedia) ? (
-                <div
-                  className={styles.videoFrameWrapper}
-                  ref={el => {refs.current[2] = el}}
-                >
-                    <img
-                     src={currentMedia.thumbnailUrl}           // ← ИСПРАВЛЕНИЕ: показываем thumbnail
+                <div className={styles.videoFrameWrapper}>
+                  <img
+                     src={currentMedia.thumbnailUrl}
                      alt={currentMedia.title || 'Video preview'}
                      className={styles.videoThumbnail}
                      loading="lazy"
                      onError={(e) => {
-                       // Fallback при ошибке загрузки thumbnail
                        const target = e.target as HTMLImageElement;
                        target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
                      }}                    
                    />
                    <div className={styles.playIcon}>▶</div>
-                  {/* <iframe
-                    src={currentMedia.url}
-                    title={currentMedia.title || 'Video Player'}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className={styles.videoFrame}
-                    loading="lazy"
-                  /> */}
                 </div>
               ) : (
                 <img
@@ -221,9 +200,8 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
             )}
             {isVideo(firstMedia) ? (
               <div className={styles.videoFrameWrapper}>
-
                 <img
-                   src={firstMedia.thumbnailUrl}           // ← ИСПРАВЛЕНИЕ: thumbnail вместо iframe
+                   src={firstMedia.thumbnailUrl}
                    alt={firstMedia.title || 'Video preview'}
                    className={styles.videoThumbnail}
                    loading="lazy"
@@ -233,14 +211,6 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                    }}
                  />
                  <div className={styles.playIcon}>▶</div>
-                {/* <iframe
-                  src={firstMedia.url}
-                  title={firstMedia.title || 'Video Player'}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className={styles.videoFrame}
-                  loading="lazy"
-                /> */}
               </div>
             ) : (
               <img
@@ -274,13 +244,9 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                   style={{ cursor: 'pointer' }}
                 >
                   {isVideo(item) ? (
-                    <div
-                      className={styles.videoFrameWrapper}
-                      style={{ pointerEvents: 'none' }}
-                    >
-
+                    <div className={styles.videoFrameWrapper}>
                      <img
-                        src={item.thumbnailUrl}               // ← ИСПРАВЛЕНИЕ: thumbnail в превью
+                        src={item.thumbnailUrl}
                         alt={item.title || 'Video preview'}
                         className={styles.videoThumbnail}
                         loading="lazy"
@@ -289,15 +255,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
                         target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
                         }}
                      />
-                     <div className={styles.playIcon}>▶</div>
-                      {/* <iframe
-                        src={item.url}
-                        title={item.title || 'Video Player'}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className={styles.videoFrame}
-                        loading="lazy"
-                      /> */}
+                     <div className={styles.playIconSmall}>▶</div>
                     </div>
                   ) : (
                     <img
@@ -330,7 +288,7 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 
       <div className={styles.features} ref={el => {refs.current[6] = el}}>
         <div className={styles.feature}>
-          <h3>{price.toLocaleString()} €</h3>
+          <h3>{formatGermanCurrency(price)} €</h3>
           <h6>Kaufpreis</h6>
         </div>
 
@@ -393,3 +351,5 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
 };
 
 export default PropertyHero;
+
+

@@ -40,7 +40,7 @@
   overflow-x: auto;
   gap: 8px;
   padding: 0.5rem 1rem;
-  max-width: 1000px;
+  max-width: 1200px;
   z-index: 1001;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
@@ -62,6 +62,7 @@
 .thumbnail iframe {
   width: 100%;
   height: 100%;
+  object-fit: cover;
   border-radius: 4px;
   pointer-events: none;
   border: none;
@@ -113,4 +114,22 @@
 
 .nextButton {
   right: 10px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

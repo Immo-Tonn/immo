@@ -1,6 +1,6 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { gsap } from 'gsap';
-import { ParallaxOptions } from './model';
+import { ParallaxOptions } from './models';
 gsap.registerPlugin(ScrollTrigger);
 
 export const parallaxMouseEffect = ({
@@ -81,7 +81,7 @@ export const fadeInOnScroll = (
   gsap.fromTo(
     el,
     {
-      opacity: 0,
+      opacity: el instanceof HTMLImageElement && el.complete ? 1 : 0,
       x,
       y,
     },
@@ -129,5 +129,3 @@ export const runningBoxShadow = (ref: any) => {
     },
   );
 };
-
-

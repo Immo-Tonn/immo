@@ -8,6 +8,9 @@ import {
   CommercialBuilding,
 } from '@shared/types/propertyTypes';
 import { useNavigate } from 'react-router-dom';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
+import { getObjectTypeLabel } from '@features/utils/objectTypeMapping';
+import { ObjectType } from '@features/utils/types';
 
 interface PropertyDetailsProps {
   object: RealEstateObject;
@@ -42,28 +45,29 @@ const getPropertyDetails = (
   return {
     Land: object.address?.country,
     'Nummer ID': object.number,
-    Objektart: object.type,
+    Objektart: getObjectTypeLabel(object.type as ObjectType),
     ...(apartment?.type && { Wohnungstyp: apartment.type }),
     ...(house?.type && {Haustyp: house.type}),
     ...(commercial?.buildingType && { Gebäudetyp: commercial.buildingType }),
+    ...(land?.landPlottype && { 'Art des Grundstücks': land.landPlottype}),
 
-
-    Wohnfläche: house?.livingArea ?? apartment?.livingArea,
-    Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` : undefined,
-    Nutzfläche: house?.usableArea,
+    Wohnfläche: house?.livingArea ? `${house.livingArea} m²` : apartment?.livingArea ? `${apartment.livingArea} m²` : undefined,
+    Fläche: commercial?.area ? `${commercial.area} m²` : undefined,
+    Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` :  commercial?.plotArea ? `${commercial.plotArea} m²`: undefined,
+    Nutzfläche: house?.usableArea ? `${house.usableArea} m²` : undefined,
     Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
-    Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
+    Zimmer: house?.numberOfRooms ?? apartment?.numberOfRooms,
     Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
     Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
     Etage: apartment?.floor,
     'Anzahl Etagen': apartment?.totalFloors ?? house?.numberOfFloors,
-    Garage: house?.garageParkingSpaces,
+    Stellplätze: house?.garageParkingSpaces,
     Energieeffizienzklasse:
-      house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass ?? commercial?.additionalFeatures,
+      house?.energyEfficiencyClass ?? apartment?.energyEfficiencyClass,
     Energieträger: house?.energySource ?? apartment?.energySource,
     Heizung: house?.heatingType ?? apartment?.heatingType,
     'Frei ab': object.freeWith,
-    Nutzung: commercial?.purpose ?? land?.recommendedUsage,
+    Nutzung: commercial?.purpose ?? land?.recommendedUsage ?? land?.recommendedUsage,
     Infrastruktur: land?.infrastructureConnection,
     Bebauungsplan: land?.buildingRegulations,
   };
@@ -159,7 +163,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <p>Vor Ort.</p>
           </div>
           <div className={styles.rightButton}>
-            <button className={styles.calcButton} onClick={() => navigate('/finanzierung')}>
+            <button 
+    className={styles.calcButton} 
+    onClick={() => navigate('/finanzierung', { state: { price: formatGermanCurrency(object.price) } })}
+  >
               Finanzierungsrechner
             </button>
           </div>

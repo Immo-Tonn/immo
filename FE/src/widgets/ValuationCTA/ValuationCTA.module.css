@@ -1,6 +1,7 @@
 .valuationCTASection {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 10px 0 10px;
 }
 .textWrapper {
   display: flex;
@@ -10,7 +11,8 @@
 }
 .firstTitle {
   max-width: 625px;
-  font-size: clamp(10px, 5vw, var(--font-size-secondary));
+  font-size: clamp(13px, 7vw, var(--font-size-secondary));
+  text-shadow: 2px 4px 2.4px rgba(0, 0, 0, 0.5);
   font-family: var(--Inter);
   font-weight: 500;
   text-align: left;
@@ -20,7 +22,7 @@
   text-align: left;
   max-width: 317px;
   font-family: var(--Inter);
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(36px, 5vw, var(--font-size-big));
 }
 .description {
   max-width: 625px;
@@ -50,11 +52,13 @@
   font-family: var(--Inter);
   font-weight: var(--font-weight-secondary);
   color: #212529;
-  font-size: 22px;
+  font-size: clamp(16px, 3vw, 22px);
   max-width: 557px;
-  margin-left: 94px;
+  margin-left: clamp(40px, 8vw, 94px);
 }
-
+.valuationPhoto {
+  max-width: 664px;
+}
 .buttonWrapper {
   display: flex;
   justify-content: flex-end;
@@ -64,9 +68,8 @@
     font-weight: var(--font-weight-secondary);
     font-size: var(--font-size-secondary);
     font-family: var(--Inter);
-    background-color: #1c1829;
-    max-width: 539px;
-    height: 74px;
+    background-color: var(--secondary-color);
+    margin-right: 37px;
   }
 }
 @media (max-width: 765px) {
@@ -82,6 +85,7 @@
   }
   .valuationCTASection h1 {
     max-width: 742px;
+    padding: clamp(8px, 2vw, 16px);
   }
   .valuationCTASection .imageWrapper img {
     margin-top: 40px;

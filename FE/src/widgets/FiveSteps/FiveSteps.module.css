@@ -70,10 +70,9 @@
 
 .verkaufButton {
   width: clamp(275px, 10vw, 332px);
-  margin: 109px 19px 60px 0;
   border: none;
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
-  background: #1c1829;
+  background: var(--secondary-color);
   font-weight: var(--font-weight-secondary);
   font-size: var(--font-size-secondary);
   text-align: center;
@@ -87,6 +86,7 @@
 .verkaufButton:hover {
   background-color: #2b4878;
 }
+
 @media (max-width: 765px) {
   .buttonWrapper {
     justify-content: center;

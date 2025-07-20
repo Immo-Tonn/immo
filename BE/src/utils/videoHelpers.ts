@@ -10,9 +10,8 @@ export const convertToIframeUrl = (originalUrl: string): string => {
   return `https://iframe.mediadelivery.net/play/${projectId}/${uuid}`;
 };
 
-// ИСПРАВЛЕННАЯ функция для получения thumbnail URL
+
 export const getVideoThumbnailUrl = (originalUrl: string): string => {
-  // Извлекаем UUID видео из iframe или direct play URL
   const iframeRegex =
     /^https:\/\/iframe\.mediadelivery\.net\/play\/\d+\/([a-f0-9\-]+)/;
   const directRegex =
@@ -28,12 +27,12 @@ export const getVideoThumbnailUrl = (originalUrl: string): string => {
     return "";
   }
 
-  // ИСПРАВЛЕНИЕ: Используем thumbnail.jpg вместо preview.webp
-  // Также убираем timestamp чтобы избежать проблем с кешированием
+  // FIX: Use thumbnail.jpg instead of preview.webp
+  // Remove the timestamp to avoid caching problems.
   return `https://vz-${THUMBNAIL_PROJECT_ID}.b-cdn.net/${uuid}/thumbnail.jpg`;
 };
 
-// ДОПОЛНИТЕЛЬНАЯ функция для получения нескольких вариантов thumbnail
+// OPTIONAL feature to get multiple thumbnail options
 export const getVideoThumbnailUrls = (originalUrl: string): string[] => {
   const iframeRegex =
     /^https:\/\/iframe\.mediadelivery\.net\/play\/\d+\/([a-f0-9\-]+)/;
@@ -50,7 +49,7 @@ export const getVideoThumbnailUrls = (originalUrl: string): string[] => {
     return [];
   }
 
-  // Возвращаем массив возможных thumbnail URL в порядке приоритета
+  // Return array of possible thumbnail URLs in order of priority
   return [
     `https://vz-${THUMBNAIL_PROJECT_ID}.b-cdn.net/${uuid}/thumbnail.jpg`,
     `https://vz-${THUMBNAIL_PROJECT_ID}.b-cdn.net/${uuid}/poster.jpg`,
@@ -59,11 +58,11 @@ export const getVideoThumbnailUrls = (originalUrl: string): string[] => {
   ];
 };
 
-// НОВАЯ функция для проверки доступности thumbnail
+// NEW feature to check thumbnail availability
 export const getAvailableThumbnailUrl = async (originalUrl: string): Promise<string> => {
   const thumbnailUrls = getVideoThumbnailUrls(originalUrl);
   
-  // Простая функция для проверки доступности URL
+  //Simple function to check URL availability
   const checkUrl = async (url: string): Promise<boolean> => {
     try {
       const response = await fetch(url, { method: 'HEAD' });
@@ -73,13 +72,13 @@ export const getAvailableThumbnailUrl = async (originalUrl: string): Promise<str
     }
   };
 
-  // Проверяем каждый URL и возвращаем первый доступный
+  // Check each URL and return the first available one
   for (const url of thumbnailUrls) {
     if (await checkUrl(url)) {
       return url;
     }
   }
 
-  // Если ничего не найдено, возвращаем основной URL
+  // If nothing found, return the base URL
   return getVideoThumbnailUrl(originalUrl);
 };

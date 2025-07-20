@@ -94,7 +94,7 @@ const Header = () => {
                   {link.label}
                 </NavLink>
               ))}
-              {/* --- ADMIN DROPDOWN (десктоп >765px) --- */}
+              {/* --- ADMIN DROPDOWN (десктоп >768px) --- */}
               {isAdmin && (
                 <div className={styles.adminDesktop}>
                   <AdminDropdownMenu onLogout={handleLogout} />
@@ -102,7 +102,7 @@ const Header = () => {
               )}
             </nav>
             
-            {/* --- ADMIN DROPDOWN (планшет ≤765px) --- */}
+            {/* --- ADMIN DROPDOWN (планшет ≤768px) --- */}
             {isAdmin && (
               <div className={styles.adminTablet}>
                 <AdminDropdownMenu onLogout={handleLogout} />

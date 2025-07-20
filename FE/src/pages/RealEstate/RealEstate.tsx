@@ -89,14 +89,6 @@ const RealEstate = () => {
                     ? 'Es wurden noch keine Immobilien erstellt. Erstellen Sie Ihre erste Immobilie!'
                     : 'Derzeit sind keine Immobilien verfügbar.'}
                 </p>
-                {/* {isAdmin && (
-                  <button
-                    className={styles.createFirstButton}
-                    onClick={handleCreateNew}
-                  >
-                    Создать первый объект
-                  </button>
-                )} */}
               </div>
             )
           )}
@@ -124,23 +116,10 @@ const RealEstate = () => {
     )}
   </div>
 )}
-
-          {/* {isAdmin && objectData && objectData.length > 0 && (
-            <div className={styles.adminInfo}>
-              <h4>Informationen für Administratoren</h4>
-              <p>Alle Nutzer sehen alle erstellten Objekte auf der Website.</p>
-              <p>
-                Um Objekte zu verwalten, verwenden Sie die Schaltflächen
-                „Bearbeiten" und „Löschen" in der Detailansicht oder erstellen
-                Sie ein neues Objekt über die Schaltfläche „+ Objekt erstellen".
-              </p>
-            </div>
-          )} */}
-        </section>
+</section>
       )}
     </>
   );
 };
 
 export default RealEstate;
-

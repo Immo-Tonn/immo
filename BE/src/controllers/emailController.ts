@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
-import axios from "axios";
+import axios from 'axios';
 import qs from 'qs';
 
 export const sendContactEmail = async (req: Request, res: Response) => {
@@ -41,7 +41,6 @@ export const sendContactEmail = async (req: Request, res: Response) => {
         .json({ message: 'reCAPTCHA-Überprüfung fehlgeschlagen' });
     }
     const transporter = nodemailer.createTransport({
-      // service: "gmail", - it's too much
       host: 'smtp.strato.de',
       port: 465,
       secure: true,

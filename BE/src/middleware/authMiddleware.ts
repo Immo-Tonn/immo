@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AdminModel } from "../models/AdminModel";
 
-// Расширение интерфейса Request для добавления user
+
 declare global {
   namespace Express {
     interface Request {
@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-// Middleware защиты маршрутов с правильной типизацией
+// Route protection middleware with proper typing
 export const protect = async (
   req: Request,
   res: Response,
@@ -21,7 +21,7 @@ export const protect = async (
   try {
     let token;
 
-    // Проверяем наличие токена в заголовке Authorization
+    // Check for the presence of a token in the Authorization header
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -30,17 +30,17 @@ export const protect = async (
         // Получаем токен из заголовка
         token = req.headers.authorization.split(" ")[1];
 
-        // Проверяем токен
+        // Get  token from header
         const decoded = jwt.verify(
           token,
           process.env.JWT_SECRET || "default_secret"
         ) as { id: string };
 
-        // Находим пользователя по ID из токена
+        // Find a user by ID from a token
         req.user = await AdminModel.findById(decoded.id).select("-password");
 
         if (!req.user) {
-          res.status(401).json({ message: "Пользователь не найден" });
+          res.status(401).json({ message: "User not found" });
           return;
         }
 
@@ -48,14 +48,14 @@ export const protect = async (
       } catch (error) {
         res
           .status(401)
-          .json({ message: "Не авторизован, токен недействителен" });
+          .json({ message: "Not authorized, invalid token " });
         return;
       }
     } else {
-      res.status(401).json({ message: "Не авторизован, токен отсутствует" });
+      res.status(401).json({ message: "Not authorized, token missing" });
       return;
     }
   } catch (error) {
-    res.status(500).json({ message: "Ошибка аутентификации", error });
+    res.status(500).json({ message: "Authentication error", error });
   }
 };

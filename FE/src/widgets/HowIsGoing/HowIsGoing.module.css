@@ -30,19 +30,17 @@
 .buttonWrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 256px;
+  margin-bottom: 97px;
 }
 .buttonWrapper Button {
   max-width: 832px;
-  height: 113px;
-  margin-top: 113px;
-  background-color: #1c1829;
+  background-color: var(--secondary-color);
   font-weight: var(--font-weight-secondary);
   font-size: clamp(10px, 5vw, 36px);
   color: #fcfdff;
 }
 .howIsGoingSection {
-  margin-top: 91px;
+  margin-top: clamp(40px, 6vh, 91px);
 }
 
 @media (max-width: 765px) {
@@ -56,5 +54,9 @@
 @media (max-width: 576px) {
   .textBlock .textWrapper {
     max-width: 353px;
+  }
+  .textBlock ol,
+  .textBlock ul {
+    padding-left: clamp(12px, 2vw, 24px);
   }
 }

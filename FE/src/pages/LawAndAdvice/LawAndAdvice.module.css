@@ -1,0 +1,134 @@
+.image {
+  width: 100%;
+  position: relative;
+  box-shadow: 0 4px 25px 4px rgba(0, 0, 0, 0.25);
+}
+.imageWrapper {
+  position: relative;
+  width: 100%;
+}
+.rechtSection {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.firstTitleWrapper {
+  top: clamp(20px, 5vw, 196px);
+  left: clamp(20px, 5vw, 53px);
+  position: absolute;
+}
+
+.firstTitleWrapper > h1 {
+  font-family: var(--Roboto);
+  font-weight: var(--font-weight-main);
+  font-size: clamp(var(--font-size-main), 10vw, 96px);
+  color: #fff;
+  text-shadow: 6px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.rechtSection > h2 {
+  font-family: var(--Roboto);
+  font-size: 36px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 40px;
+}
+
+.textBlockL {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 150px;
+  padding: 2rem 1rem;
+  margin: 70px 50px;
+  grid-template-areas: 'blockTitle blockText ';
+}
+
+.textBlockR {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 150px;
+  padding: 2rem 1rem;
+  margin: 70px 50px;
+  grid-template-areas: 'blockText blockTitle';
+}
+
+.blockTitle {
+  grid-area: blockText;
+}
+
+.blockTitle {
+  grid-area: blockTitle;
+}
+
+.blockTitle > h2 {
+  font-size: clamp(var(--font-size-small), 6vw, 40px);
+  font-weight: bold;
+  margin-top: 100px;
+  font-family: var(--Roboto);
+}
+
+.blockText > p {
+  font-size: var(--font-size-small);
+  line-height: 1.6;
+  font-family: var(--Roboto);
+}
+
+.ziel {
+  font-family: var(--Roboto);
+  max-width: 981px;
+  text-align: center;
+  margin-top: 80px;
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(20px, 4vw, var(--font-size-small));
+}
+
+hr {
+  margin: 0 auto;
+  width: 80%;
+}
+
+@media (max-width: 765px) {
+  .blockText > p {
+    font-size: 18px;
+  }
+
+  .textBlockL,
+  .textBlockR {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'blockText' 'blockTitle';
+    gap: 50px;
+    padding:
+      1rem 0,
+      5rem;
+    margin: 50px 30px;
+  }
+
+  .textBlockR .blockTitle {
+    margin-left: 150px;
+  }
+
+  .textBlockL .blockTitle {
+    margin-right: 150px;
+  }
+
+  .textBlockR .blockText {
+    margin-right: 150px;
+  }
+
+  .textBlockL .blockText {
+    margin-left: 150px;
+  }
+}
+
+@media (max-width: 576px) {
+  h2 {
+    font-size: var(--font-size-small);
+  }
+
+  .textBlockR .blockText,
+  .textBlockL .blockText {
+    margin: 0;
+  }
+}

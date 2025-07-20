@@ -62,7 +62,7 @@ export const updateObject = async (req: Request, res: Response) => {
     console.log('📋 ID объекта:', req.params.id);
     console.log('📋 Тело запроса:', JSON.stringify(req.body, null, 2));
     
-    // Проверяем текущее состояние объекта до обновления
+    // check current object's state before update
     const currentObject = await RealEstateObjectsModel.findById(req.params.id);
     console.log('📊 Текущий объект до обновления:', {
       id: currentObject?._id,
@@ -91,27 +91,27 @@ export const updateObject = async (req: Request, res: Response) => {
       title: updated.title
     });
 
-    // Специальная обработка обновления порядка изображений
+    // Special handling for updating image order
     if (req.body.images) {
       console.log('🔄 Обнаружено обновление порядка изображений');
       console.log('📋 Новый порядок изображений из запроса:', req.body.images);
       console.log('📋 Порядок изображений в сохраненном объекте:', updated.images);
       
-      // Принудительно сохраняем изменения
+      // Force saving changes
       const saveResult = await updated.save();
       console.log('📊 Результат принудительного сохранения:', {
         id: saveResult._id,
         images: saveResult.images
       });
       
-      // Дополнительная верификация через прямой запрос к БД
+      // Additional verification via direct query to the database
       const verification = await RealEstateObjectsModel.findById(req.params.id).lean();
       console.log('🔍 Верификация через прямой запрос к БД:', {
         id: verification?._id,
         images: verification?.images
       });
       
-      // Проверяем, что изменения действительно сохранились
+      // Let's check that the changes were actually saved
       const expectedOrder = req.body.images;
       const actualOrder = verification?.images || [];
       
@@ -131,7 +131,7 @@ export const updateObject = async (req: Request, res: Response) => {
       }
     }
     
-    // Добавляем заголовки для предотвращения кеширования
+    // Add headlines to prevent caching
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -139,7 +139,7 @@ export const updateObject = async (req: Request, res: Response) => {
       'Last-Modified': new Date().toUTCString()
     });
     
-    console.log('✅ КОНТРОЛЛЕР: Объект успешно обновлен');
+    // console.log('✅ КОНТРОЛЛЕР: Объект успешно обновлен');
     res.json(updated);
     
   } catch (error) {
@@ -163,7 +163,7 @@ export const deleteObject = async (
     const objectId = req.params.id;
     console.log('🗑️ НАЧАЛО каскадного удаления объекта:', objectId);
 
-    // 1. Получаем основной объект со всеми связанными данными
+    // 1. Get the main object with all associated data
     const mainObject = await RealEstateObjectsModel.findById(objectId);
     if (!mainObject) {
       console.log('❌ Объект не найден:', objectId);
@@ -179,67 +179,62 @@ export const deleteObject = async (
       videosCount: mainObject.videos?.length || 0
     });
 
-    // 2. УДАЛЕНИЕ ИЗОБРАЖЕНИЙ
+    // 2. DELETING IMAGES
     if (mainObject.images && mainObject.images.length > 0) {
       console.log('🖼️ Удаляем изображения...');
       
       for (const imageId of mainObject.images) {
         try {
-          // Получаем данные изображения
           const image = await ImagesModel.findById(imageId);
           if (image) {
             console.log(`🗑️ Удаляем изображение: ${image._id} (${image.url})`);
-            
-            // Удаляем файл из BunnyCDN
+
             try {
               await deleteFromBunny(image.url);
               console.log(`✅ Файл удален из BunnyCDN: ${image.url}`);
             } catch (cdnError) {
-              console.warn(`⚠️ Не удалось удалить файл из BunnyCDN: ${image.url}`, cdnError);
+              console.warn(`⚠️ Failed to delete file from BunnyCDN: ${image.url}`, cdnError);
             }
             
-            // Удаляем запись из базы данных
+
             await ImagesModel.findByIdAndDelete(imageId);
             console.log(`✅ Изображение удалено из БД: ${image._id}`);
           }
         } catch (imageError) {
-          console.error(`❌ Ошибка при удалении изображения ${imageId}:`, imageError);
+          console.error(`❌ Error deleting image ${imageId}:`, imageError);
         }
       }
     }
 
-    // 3. УДАЛЕНИЕ ВИДЕО
+    // 3. REMOVE VIDEO
     if (mainObject.videos && mainObject.videos.length > 0) {
       console.log('🎥 Удаляем видео...');
       
       for (const videoId of mainObject.videos) {
         try {
-          // Получаем данные видео
           const video = await VideoModel.findById(videoId);
           if (video) {
             console.log(`🗑️ Удаляем видео: ${video._id} (${video.title})`);
             
-            // Удаляем файл из BunnyCDN
             if (video.videoId) {
               try {
                 await deleteFromBunnyVideo(video.videoId);
                 console.log(`✅ Видео удалено из BunnyCDN: ${video.videoId}`);
               } catch (cdnError) {
-                console.warn(`⚠️ Не удалось удалить видео из BunnyCDN: ${video.videoId}`, cdnError);
+                console.warn(`⚠️ Failed to remove video from BunnyCDN: ${video.videoId}`, cdnError);
               }
             }
             
-            // Удаляем запись из базы данных
             await VideoModel.findByIdAndDelete(videoId);
             console.log(`✅ Видео удалено из БД: ${video._id}`);
           }
         } catch (videoError) {
-          console.error(`❌ Ошибка при удалении видео ${videoId}:`, videoError);
+          console.error(`❌ Error deleting video ${videoId}:`, videoError);
         }
       }
     }
 
-    // 4. УДАЛЕНИЕ СПЕЦИФИЧЕСКИХ ДАННЫХ ОБЪЕКТА
+    // 4. REMOVE SPECIFIC OBJECT DATA
     console.log('🏠 Удаляем специфические данные объекта...');
     
     try {
@@ -276,18 +271,18 @@ export const deleteObject = async (
           console.warn(`⚠️ Неизвестный тип объекта: ${mainObject.type}`);
       }
     } catch (specificError) {
-      console.error('❌ Ошибка при удалении специфических данных:', specificError);
+      console.error('❌ Error deleting specific data:', specificError);
     }
 
-    // 5. УДАЛЕНИЕ ОСНОВНОГО ОБЪЕКТА
+    // 5. REMOVE MAIN OBJECT
     console.log('🗑️ Удаляем основной объект...');
     await RealEstateObjectsModel.findByIdAndDelete(objectId);
     console.log(`✅ Основной объект удален: ${objectId}`);
 
-    // 6. ФИНАЛЬНАЯ ПРОВЕРКА
+    // 6. FINAL CHECK
     console.log('🔍 Выполняем финальную проверку...');
     
-    // Проверяем на наличие сиротских изображений
+    // check for orphan images
     const orphanImages = await ImagesModel.find({ realEstateObject: objectId });
     if (orphanImages.length > 0) {
       console.warn(`⚠️ Найдены сиротские изображения: ${orphanImages.length}`);
@@ -297,7 +292,7 @@ export const deleteObject = async (
       }
     }
     
-    // Проверяем на наличие сиротских видео
+    // Check for orphan videos
     const orphanVideos = await VideoModel.find({ realEstateObject: objectId });
     if (orphanVideos.length > 0) {
       console.warn(`⚠️ Найдены сиротские видео: ${orphanVideos.length}`);
@@ -333,30 +328,12 @@ export const deleteObject = async (
     res.status(500).json({ 
       message: 'Fehler beim Löschen des Objekts', 
       error: (error as Error).message,
-      details: 'Некоторые связанные данные могли остаться в базе. Обратитесь к администратору.'
+      details: 'Some related data may remain in the database. Please contact the administrator.'
     });
   }
 };
 
-// export const deleteObject = async (
-//   req: Request,
-//   res: Response,
-// ): Promise<void> => {
-//   try {
-//     const deleted = await RealEstateObjectsModel.findByIdAndDelete(
-//       req.params.id,
-//     );
-//     if (!deleted) {
-//       res.status(404).json({ message: 'Objekt nicht gefunden' });
-//       return;
-//     }
-//     res.json({ message: 'Das Objekt wurde erfolgreich gelöscht.' });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Fehler beim Löschen des Objekts', error });
-//   }
-// };
-
-// Функция для очистки всех сиротских записей в базе данных
+// Clear all orphan records in the database
 export const cleanupOrphanRecords = async (
   req: Request,
   res: Response,
@@ -364,7 +341,6 @@ export const cleanupOrphanRecords = async (
   try {
     console.log('🧹 НАЧАЛО очистки сиротских записей...');
 
-    // Получаем все ID существующих объектов недвижимости
     const existingObjects = await RealEstateObjectsModel.find({}, '_id');
     const existingObjectIds = existingObjects.map((obj: any) => obj._id.toString());
     
@@ -380,7 +356,7 @@ export const cleanupOrphanRecords = async (
       deletedFiles: 0
     };
 
-    // 1. ОЧИСТКА СИРОТСКИХ ИЗОБРАЖЕНИЙ
+    // 1. CLEANING ORPHAN IMAGES
     console.log('🖼️ Проверка сиротских изображений...');
     const orphanImages = await ImagesModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -388,20 +364,18 @@ export const cleanupOrphanRecords = async (
 
     for (const image of orphanImages) {
       try {
-        // Удаляем файл из BunnyCDN
         await deleteFromBunny(image.url);
         cleanupStats.deletedFiles++;
         console.log(`🗑️ Удален файл: ${image.url}`);
       } catch (cdnError) {
-        console.warn(`⚠️ Не удалось удалить файл: ${image.url}`);
+        console.warn(`⚠️ Failed to delete file: ${image.url}`);
       }
 
-      // Удаляем запись из БД
       await ImagesModel.findByIdAndDelete(image._id);
       cleanupStats.orphanImages++;
     }
 
-    // 2. ОЧИСТКА СИРОТСКИХ ВИДЕО
+    // 2.  CLEANING ORPHAN VIDEO
     console.log('🎥 Проверка сиротских видео...');
     const orphanVideos = await VideoModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -409,22 +383,21 @@ export const cleanupOrphanRecords = async (
 
     for (const video of orphanVideos) {
       try {
-        // Удаляем файл из BunnyCDN
+
         if (video.videoId) {
           await deleteFromBunnyVideo(video.videoId);
           cleanupStats.deletedFiles++;
           console.log(`🗑️ Удалено видео: ${video.videoId}`);
         }
       } catch (cdnError) {
-        console.warn(`⚠️ Не удалось удалить видео: ${video.videoId}`);
+        console.warn(`⚠️ Failed to delete video: ${video.videoId}`);
       }
 
-      // Удаляем запись из БД
       await VideoModel.findByIdAndDelete(video._id);
       cleanupStats.orphanVideos++;
     }
 
-    // 3. ОЧИСТКА СИРОТСКИХ КВАРТИР
+    // 3.  CLEANING ORPHAN APARTMENTS
     console.log('🏠 Проверка сиротских квартир...');
     const orphanApartments = await ApartmentsModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -434,7 +407,7 @@ export const cleanupOrphanRecords = async (
       cleanupStats.orphanApartments++;
     }
 
-    // 4. ОЧИСТКА СИРОТСКИХ ДОМОВ
+    // 4. CLEANING ORPHAN HAUSES
     console.log('🏘️ Проверка сиротских домов...');
     const orphanHouses = await ResidentialHousesModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -444,7 +417,7 @@ export const cleanupOrphanRecords = async (
       cleanupStats.orphanHouses++;
     }
 
-    // 5. ОЧИСТКА СИРОТСКИХ УЧАСТКОВ
+    // 5. CLEANING ORPHAN PLOTS
     console.log('🌿 Проверка сиротских участков...');
     const orphanLandPlots = await LandPlotsModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -454,7 +427,7 @@ export const cleanupOrphanRecords = async (
       cleanupStats.orphanLandPlots++;
     }
 
-    // 6. ОЧИСТКА СИРОТСКОЙ КОММЕРЧЕСКОЙ НЕДВИЖИМОСТИ
+    // 6. CLEANING ORPHAN COMMERCIAL REAL ESTATE
     console.log('🏢 Проверка сиротской коммерческой недвижимости...');
     const orphanCommercial = await CommercialNonResidentialBuildingsModel.find({
       realEstateObject: { $nin: existingObjectIds }
@@ -476,29 +449,25 @@ export const cleanupOrphanRecords = async (
   } catch (error) {
     console.error('❌ Ошибка при очистке сиротских записей:', error);
     res.status(500).json({
-      message: 'Ошибка при очистке сиротских записей',
+      message: 'Error while cleaning orphan records',
       error: (error as Error).message
     });
   }
 };
 
 
-// ДОБАВЛЕННАЯ ФУНКЦИЯ DEBUG
+// DEBUG FUNCTION
 export const debugObjectState = async (req: Request, res: Response): Promise<void> => {
   try {
     const objectId = req.params.id;
     console.log('🔍 DEBUG: Проверка состояния объекта:', objectId);
-    
-    // Получаем объект
+    // Get pbject
     const object = await RealEstateObjectsModel.findById(objectId).lean();
-    
-    // Получаем изображения
+    // Get images
     const images = await ImagesModel.find({ realEstateObject: objectId }).lean();
-
-        // Получаем видео
-    const videos = await VideoModel.find({ realEstateObject: objectId }).lean();
-
-        // ДОБАВЛЕНО: Получаем специфические данные
+    // Get videos
+    const videos = await VideoModel.find({ realEstateObject: objectId }).lean();    
+    //Get specific data
     let specificData = null;
     if (object) {
       switch (object.type) {
@@ -524,7 +493,6 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
           break;
       }
     }
-    
     
     const result = {
       timestamp: new Date().toISOString(),
@@ -557,13 +525,14 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
         livingArea: (specificData as any).livingArea,
         plotArea: (specificData as any).plotArea,
         area: (specificData as any).area,
+        landPlottype: (specificData as any).landPlottype || null,        
         buildingType: (specificData as any).buildingType || null
       } : null,
       actualImagesCount: images.length,
       actualVideosCount:videos.length,
       orderMatch: object?.images?.length === images.length,
       vodeoOrderMatch: object?.videos?.length === videos.length,
-      // Дополнительная информация для отладки
+      // Additional information for debugging
       imageIdsInObject: object?.images || [],
       imageIdsInCollection: images.map(img => img._id?.toString()),
       videoIdsInObject: object?.videos || [],

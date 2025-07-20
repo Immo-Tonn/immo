@@ -7,36 +7,36 @@ export const setupDatabaseIndexes = async (): Promise<void> => {
   try {
     console.log("Creating database indexes...");
 
-    // Индекс для коллекции images по полю realEstateObject
+    // IMAGES index through the Realestateobject field
     await ImagesModel.collection.createIndex({ realEstateObject: 1 });
     console.log("✅ Index for images.realEstateObject created");
 
-    // Индекс для коллекции realestateobjects по полю images
+    // Realestateobjects index by Images field
     await RealEstateObjectsModel.collection.createIndex({ images: 1 });
     console.log("✅ Index for realestateobjects.images created");
 
     // Дополнительные полезные индексы
     
-    // Составной индекс для быстрого поиска изображений по объекту и типу
+    // Composite index for quick search for images by object and type
     await ImagesModel.collection.createIndex({ 
       realEstateObject: 1, 
       type: 1 
     });
     console.log("✅ Composite index for images.realEstateObject + type created");
 
-    // Индекс для поиска объектов по статусу
+    // Index for the search for objects by status
     await RealEstateObjectsModel.collection.createIndex({ status: 1 });
     console.log("✅ Index for realestateobjects.status created");
 
-    // Индекс для поиска объектов по типу
+    // Index for searching objects by type
     await RealEstateObjectsModel.collection.createIndex({ type: 1 });
     console.log("✅ Index for realestateobjects.type created");
 
-    // Индекс для поиска по цене
+    //Index for search  by price
     await RealEstateObjectsModel.collection.createIndex({ price: 1 });
     console.log("✅ Index for realestateobjects.price createdн");
 
-    // Индекс для поиска по дате добавления
+    // Index for search by date of adding
     await RealEstateObjectsModel.collection.createIndex({ dateAdded: -1 });
     console.log("✅ Index for realestateobjects.dateAdded created");
 
@@ -56,7 +56,7 @@ export const setupDatabaseIndexes = async (): Promise<void> => {
   }
 };
 
-// Функция для проверки существующих индексов
+// Function for checking existing indices
 export const listExistingIndexes = async (): Promise<void> => {
   try {
     console.log("\n📋 Existing indexes:");

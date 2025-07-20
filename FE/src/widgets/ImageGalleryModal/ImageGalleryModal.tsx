@@ -36,6 +36,9 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   return (
     <div className={styles.videoModal} onClick={handleBackdropClick}>
       <div className={styles.videoWrapper}>
+        <button className={styles.closeButton} onClick={onClose}>
+        ×
+        </button>
         {isVideo(currentItem) ? (
           <iframe
             key={currentItem.url}

@@ -13,9 +13,9 @@ const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  const { objectData, images, loading, err, videos, refreshData, isDeleted, markAsDeleted } = usePropertyData(id);
+  const { objectData, images, loading, err, videos, isDeleted, markAsDeleted } = usePropertyData(id);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
   
   // Checking admin authorization
   useEffect(() => {
@@ -39,19 +39,6 @@ const PropertyPage: React.FC = () => {
     navigate(`/edit-object/${id}`);
   };
 
-  // Forced data refresh function
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      await refreshData();
-      console.log('Данные обновлены вручную');
-    } catch (error) {
-      console.error('Ошибка при обновлении данных:', error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
     // Delete handler (admin only)
   const handleDelete = async () => {
     if (!window.confirm('Wirklich löschen? Diese Aktion ist unwiderruflich.')) {
@@ -69,7 +56,6 @@ const PropertyPage: React.FC = () => {
 
       console.log('Объект успешно удален, -->> на /immobilien');
       
-      // alert('Das Objekt ist erfolgreich gelöscht');
       navigate('/immobilien', {
         state: {
           message: 'Das Objekt wurde erfolgreich gelöscht',
@@ -139,16 +125,6 @@ const PropertyPage: React.FC = () => {
           </button>
         </div>
       )}
-
-          {/* Data refresh button */}
-          <button 
-            className={styles.refreshButton} 
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-          >
-            {isRefreshing ? 'Aktualisieren...' : '🔄 Daten aktualisieren'}
-          </button>
-      
 
       {!loading && objectData && (
         <>

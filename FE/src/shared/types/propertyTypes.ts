@@ -42,6 +42,7 @@ export interface Apartment {
 export interface CommercialBuilding {
   buildingType: string;
   area?: number;
+  plotArea: number;
   yearBuilt?: number;
   purpose?: string;
   additionalFeatures?: string;
@@ -49,6 +50,7 @@ export interface CommercialBuilding {
 
 export interface LandPlot {
   plotArea: number;
+  landPlottype?: string;
   infrastructureConnection?: string;
   buildingRegulations?: string;
   recommendedUsage?: string;
@@ -84,7 +86,7 @@ export interface RealEstateObject {
   price: number;
   dateAdded: string;
   status: string;
-  images?: Image[];
+  images?: string[];
   videos?: Video[];
   apartments?: Apartment;
   commercial_NonResidentialBuildings?: CommercialBuilding;
@@ -95,7 +97,7 @@ export interface RealEstateObject {
 
 export interface PropertyHeroProps {
   object: RealEstateObject;
-  images?: string[];
+  images?: Image[];
   apartment?: Apartment;
   residentialHouse?: ResidentialHouse;
   landPlot?: LandPlot;

@@ -14,4 +14,3 @@ export function calcMonthly({
   const n = years * 12;
   return (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
 }
-

@@ -6,19 +6,34 @@ import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import Button from '@shared/ui/Button/Button';
 import { useEffect, useRef } from 'react';
 import { fadeInOnScroll } from '@shared/anim/animations';
+import { Link } from 'react-router-dom';
 
 const FiveSteps = () => {
-  const ref = useRef(null);
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
-    fadeInOnScroll(ref, { x: -100 });
+    refs.current.forEach((ref, i) => {
+      if (ref) {
+        fadeInOnScroll(
+          { current: ref },
+          i % 2 === 0
+            ? { x: -100, y: 0, duration: 0.3 }
+            : { x: 100, y: -50, duration: 0.2 },
+        );
+      }
+    });
   }, []);
 
   return (
     <section className={styles.fiveStepsSection}>
-      <div className={styles.firstTitleWrap}>
+      <div
+        className={styles.firstTitleWrap}
+        ref={el => {
+          refs.current[1] = el;
+        }}
+      >
         <h3 className={styles.firstTitle}>
           Mehr als nur Immobilien – eine Partnerschaft, <br />
-          die für Sie entfaltet
+          die sich für Sie entfaltet
         </h3>
       </div>
       <div className={styles.secondTitleWrap}>
@@ -28,7 +43,12 @@ const FiveSteps = () => {
       </div>
 
       <div className={styles.contentWrapper}>
-        <div className={styles.itemList} ref={ref}>
+        <div
+          className={styles.itemList}
+          ref={el => {
+            refs.current[2] = el;
+          }}
+        >
           <Accordion
             sx={{
               m: 0,
@@ -251,11 +271,13 @@ const FiveSteps = () => {
           </Accordion>
 
           <div className={styles.buttonWrapper}>
-            <Button
-              className={styles.verkaufButton}
-              initialText="Verkauf"
-              clickedText="Weiterleitung..."
-            />
+            <Link style={{ margin: '109px 19px 60px 0' }} to="/kontakt">
+              <Button
+                className={styles.verkaufButton}
+                initialText="Verkauf"
+                clickedText="Weiterleitung..."
+              />
+            </Link>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@
   border: none;
   padding: 5px 15px;
   margin-bottom: 10px;
-  border-radius: 4px;
+  border-radius: 1px;
   cursor: pointer;
   font-weight: var(--font-weight-secondary);
   font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));

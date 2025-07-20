@@ -27,10 +27,11 @@
 .formWrapper > p {
   font-family: var(--Lato);
   font-weight: 700;
-  font-size: 64px;
+  font-size: clamp(var(--font-size-secondary), 5vw, var(--font-size-big));
+
   text-align: center;
   color: #000;
-  margin-left: 50px;
+  margin: 0 clamp(10px, 4vw, 20px) 0 clamp(20px, 6vw, 50px);
 }
 .lineWrapper {
   display: flex;
@@ -61,4 +62,24 @@
 .buttonWrapper {
   display: flex;
   justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .lineWrapper {
+    display: flex;
+    width: 60%;
+    margin: 0 auto;
+  }
+  .formWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 139px 0 168px 0;
+  }
+  .interiorStylingSection .lineVertical {
+    display: none;
+  }
+  .formWrapper > p {
+    margin-left: 0;
+  }
 }

@@ -11,10 +11,9 @@ export const getAllImagesHelper = async () => {
   try {
     const images = await ImagesModel.find();
     
-    // ИСПРАВЛЕНО: Возвращаем пустой массив вместо null
     if (!images || images.length === 0) {
-      console.log('ℹ️ В базе данных нет изображений');
-      return []; // Возвращаем пустой массив вместо null
+      console.log('ℹ️ There are no images in the database');
+      return [];
     }
 
     return images.map(img => ({
@@ -22,8 +21,8 @@ export const getAllImagesHelper = async () => {
       url: transformBunnyUrl(img.url),
     }));
   } catch (error) {
-    console.error('❌ Ошибка в getAllImagesHelper:', error);
-    return []; // При ошибке тоже возвращаем пустой массив
+    console.error('❌ Error in getAllImagesHelper:', error);
+    return [];
   }
 };
 
