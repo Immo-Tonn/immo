@@ -58,7 +58,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Sessendrupweg <p>54 48161 Münster</p>
+            Sessendrupweg 54 <p>48161 Münster</p>
           </a>
         </div>
       </div>

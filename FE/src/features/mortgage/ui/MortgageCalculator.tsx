@@ -7,13 +7,9 @@ import QuestionIcon from '@shared/assets/morgage-calculator/question.svg';
 import MarkerIcon from '@shared/assets/morgage-calculator/marker.svg';
 import Input from '@shared/ui/Input/Input';
 import Button from '@shared/ui/Button/Button';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
+// import Arrow from '@shared/assets/morgage-calculator/arrow.svg'
 
-const formatGermanCurrency = (num: number) => {
-  return num
-    .toFixed(2)
-    .replace('.', ',')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
 // Преобразует строку "375.000,00" в число 375000.00
 const parseGermanCurrency = (str: string): number => {
   if (!str) return 0;
@@ -35,13 +31,14 @@ const infoTexts = {
     title: 'Käufer-Maklerprovision',
     body: 'Die Käufer-Maklerprovision richtet sich nach den Angaben im Exposé.',
   },
-};
+} as const;
 
 type Mode = 'calculateYears' | 'calculateRepayment';
+type InfoKey = keyof typeof infoTexts;
 
 const MortgageCalculator = () => {
   const location = useLocation();
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState('');  
   const [equity, setEquity] = useState('');
   const [loanAmount, setLoanAmount] = useState<number | null>(null);
   const [tax, setTax] = useState('6,5');
@@ -70,10 +67,39 @@ const MortgageCalculator = () => {
   const [equityDecimalError, setEquityDecimalError] = useState(false);
   const [interestDecimalError, setInterestDecimalError] = useState(false);
   const [interestRangeError, setInterestRangeError] = useState(false);
-  
-  const [rawInterest, setRawInterest] = useState('');
-  const [rawEquity, setRawEquity] = useState('');
-  const [showTaxError, setShowTaxError] = useState(false);
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Разрешаем только цифры при вводе
+    const digits = e.target.value.replace(/[^\d]/g, '');
+    
+    // Ограничиваем длину
+    if (digits.length <= 11) {
+      setPrice(digits);
+    }
+  };
+
+  const handlePriceBlur = () => {
+    // Форматируем только при потере фокуса
+    if (price && price !== '') {
+      const numericValue = parseInt(price, 10);
+      if (!isNaN(numericValue)) {
+        setPrice(formatGermanCurrency(numericValue));
+      }
+    }
+  };
+
+  const handlePriceFocus = () => {
+    // При получении фокуса преобразуем отформатированное число обратно в цифры
+    if (price) {
+      // Если строка содержит форматирование (точки и запятую), парсим её
+      if (price.includes('.') || price.includes(',')) {
+        const numericValue = parseGermanCurrency(price);
+        setPrice(numericValue.toString());
+      }
+      // Если уже содержит только цифры, оставляем как есть
+    }
+  };
+
   const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
 
   const customTaxError =
@@ -83,11 +109,11 @@ const MortgageCalculator = () => {
   const customBrokerError =
     broker === 'custom' && customBroker !== '' && !isValidPercent(customBroker);
 
-  const parseValue = (val: string, fallback: any) =>
+  const parseValue = (val: string, fallback: string) =>
     parseFloat((val === 'custom' ? fallback : val).replace(',', '.')) || 0;
 
-const parsedPrice = parseGermanCurrency(price);
-  const parsedEquity = parseFloat(equity.replace(',', '.')) || 0;
+  const parsedPrice = parseGermanCurrency(price);
+  const parsedEquity = parseGermanCurrency(equity);
   const parsedInterest = parseFloat(interest) || 0;
   const parsedRepayment = parseFloat(repayment) || 0;
   const parsedYears = parseInt(years) || 0;
@@ -105,8 +131,8 @@ const parsedPrice = parseGermanCurrency(price);
   const darlehen = totalCost - parsedEquity;
 
   const fixedRepaymentOptions = Array.from({ length: 91 }, (_, i) =>
-  (1.0 + i * 0.1).toFixed(1).replace('.', ',')
-);
+    (1.0 + i * 0.1).toFixed(1).replace('.', ','),
+  );
   const fixedLaufzeitOptions = Array.from({ length: 40 }, (_, i) =>
     (i + 1).toString(),
   );
@@ -118,7 +144,7 @@ const parsedPrice = parseGermanCurrency(price);
     new Set([...fixedLaufzeitOptions, ...dynamicLaufzeitOptions]),
   ).sort((a, b) => parseInt(a) - parseInt(b));
 
-  const formatCurrencyDE = (num: number) => {
+  const formatCurrencyDE = (num: number | null) => {
     if (num === null || num === undefined || isNaN(num)) return '';
     return num.toLocaleString('de-DE', {
       minimumFractionDigits: 2,
@@ -126,82 +152,50 @@ const parsedPrice = parseGermanCurrency(price);
     });
   };
 
-  // const handleEquityChange = (val: string) => {
-  //   const parts = val.split(/[,\.]/);
-  //   let formattedVal = val;
-  //   if (parts.length === 2) {
-  //     const [integerPart, decimalPart = ''] = parts;
-  //     const limitedDecimal = decimalPart.slice(0, 3);
-  //     formattedVal = integerPart + ',' + limitedDecimal;
-  //     setEquityDecimalError(limitedDecimal.length > 2);
-  //   } else {
-  //     setEquityDecimalError(false);
-  //   }
-  //   setEquity(formattedVal);
-  //   const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
-  //   setEquityTooHighError(valNum > totalCost);
-  // };
-const handleEquityChange = (val: string) => {
-  let normalized = val.replace(/\./g, ',');
+  const handleEquityChange = (val: string) => {
+    // Разрешаем только цифры при вводе
+    const digits = val.replace(/[^\d]/g, '');
+    
+    // Ограничиваем длину (можно установить разумный лимит)
+    if (digits.length <= 11) {
+      setEquity(digits);
+    }
+  };
 
-  if (normalized === '') {
-    setEquity('');
+  const handleEquityBlur = () => {
+    // Форматируем только при потере фокуса
+    if (equity && equity !== '') {
+      const numericValue = parseInt(equity, 10);
+      if (!isNaN(numericValue)) {
+        const formattedValue = formatGermanCurrency(numericValue);
+        setEquity(formattedValue);
+        
+        // Проверяем на превышение общей стоимости
+        if (numericValue >= totalCost) {
+          setEquityTooHighError(true);
+        } else {
+          setEquityTooHighError(false);
+        }
+      }
+    }
     setEquityDecimalError(false);
+  };
+
+  const handleEquityFocus = () => {
+    // При получении фокуса преобразуем отформатированное число обратно в цифры
+    if (equity) {
+      // Если строка содержит форматирование (точки и запятую), парсим её
+      if (equity.includes('.') || equity.includes(',')) {
+        const numericValue = parseGermanCurrency(equity);
+        setEquity(numericValue.toString());
+      }
+      // Если уже содержит только цифры, оставляем как есть
+    }
     setEquityTooHighError(false);
-    return;
-  }
-
-  let cleaned = normalized.replace(/[^\d,]/g, '');
-
-  const firstCommaIndex = cleaned.indexOf(',');
-  if (firstCommaIndex !== -1) {
-    const beforeComma = cleaned.slice(0, firstCommaIndex);
-    const afterCommaRaw = cleaned.slice(firstCommaIndex + 1);
-    const afterComma = afterCommaRaw.replace(/,/g, '');
-    cleaned = beforeComma + ',' + afterComma;
-  }
-
-  const parts = cleaned.split(',');
-  let formattedVal = cleaned;
-  let limitedDecimal = '';
-  if (parts.length === 2) {
-    const [integerPart, decimalPart = ''] = parts;
-    limitedDecimal = decimalPart.slice(0, 3);
-    formattedVal = integerPart + ',' + limitedDecimal;
-    setEquityDecimalError(limitedDecimal.length > 2);
-  } else {
     setEquityDecimalError(false);
-  }
+  };
 
-  const valNum = parseFloat(formattedVal.replace(',', '.')) || 0;
-
-  setEquity(formattedVal);
-
-  // Здесь ключевая проверка
-  if (valNum >= totalCost) {
-    setEquityTooHighError(true);
-  } else {
-    setEquityTooHighError(false);
-  }
-};
-
-  // const handleInterestChange = (val: string) => {
-  //   setInterest(val);
-  //   const parts = val.split(/[,\.]/);
-  //   if (parts.length === 2 && parts[1].length > 1) {
-  //     setInterestDecimalError(true);
-  //   } else {
-  //     setInterestDecimalError(false);
-  //   }
-  //   const normalized = val.replace(',', '.');
-  //   const parsed = parseFloat(normalized);
-  //   if (!isNaN(parsed)) {
-  //     setInterestRangeError(parsed <= 0 || parsed >= 14);
-  //   } else {
-  //     setInterestRangeError(false);
-  //   }
-  // };
-const handleInterestChange = (value: string) => {
+  const handleInterestChange = (value: string) => {
     // Заменить точки на запятые
     let val = value.replace(/\./g, ',');
 
@@ -211,9 +205,7 @@ const handleInterestChange = (value: string) => {
     const parts = val.split(',');
 
     // Только одна запятая и одна цифра после неё
-    if (parts.length > 2) {
-      val = parts[0] + ',' + parts[1].slice(0, 1);
-    } else if (parts.length === 2) {
+    if (parts.length >= 2 && parts[1]) {
       val = parts[0] + ',' + parts[1].slice(0, 1);
     }
 
@@ -223,18 +215,18 @@ const handleInterestChange = (value: string) => {
       return; // Не обновляем состояние
     }
 
-    setRawInterest(val);
-    setInterest(val); // Пока пользователь вводит — без %
-  };
+    setInterest(val); // Пока пользователь вводит — без %
+  };
 
- useEffect(() => {
-  if (location.state && location.state.price) {
-    const rawPrice = typeof location.state.price === 'number'
-      ? location.state.price
-      : parseGermanCurrency(location.state.price);
-    setPrice(formatGermanCurrency(rawPrice));
-  }
-}, [location.state]);
+  useEffect(() => {
+    if (location.state && location.state.price) {
+      const rawPrice =
+        typeof location.state.price === 'number'
+          ? location.state.price
+          : parseGermanCurrency(String(location.state.price));
+      setPrice(formatGermanCurrency(rawPrice));
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (!darlehen || parsedInterest === 0) return;
@@ -267,7 +259,7 @@ const handleInterestChange = (value: string) => {
         setRepayment(fixedStr);
       }
     }
-  }, [repayment, years, interest, totalCost, equity, mode]);
+  }, [repayment, years, interest, totalCost, equity, mode, darlehen, parsedInterest, parsedRepayment, parsedYears, laufzeitOptions, repaymentOptions]);
 
   useEffect(() => {
     if (!isNaN(darlehen) && darlehen > 0) {
@@ -303,20 +295,16 @@ const handleInterestChange = (value: string) => {
   ]);
 
   const handleCalc = () => {
-    // setValidationError('');
-    // setMonthly(null);
-    // if (!equity || equity.trim() === '') {
-    //   setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
-    //   return;
-    // }
-     setInterestDecimalError(false);
+    setInterestDecimalError(false);
     setInterestRangeError(false);
     setValidationError('');
     setMonthly(null);
     if (equityTooHighError) {
-    setValidationError('Eigenkapital darf den Gesamtpreis nicht überschreiten.');
-    return;
-  }
+      setValidationError(
+        'Eigenkapital darf den Gesamtpreis nicht überschreiten.',
+      );
+      return;
+    }
     if (!equity || equity.trim() === '') {
       setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
       return;
@@ -342,142 +330,125 @@ const handleInterestChange = (value: string) => {
     const monthlyPayment =
       (darlehen * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     setMonthly(monthlyPayment);
-    setLoanAmount(darlehen.toFixed(2) as any);
+    setLoanAmount(Number(darlehen.toFixed(2)));
   };
 
   const exportPDF = () => {
-  const doc = new jsPDF();
-  doc.setFontSize(32);
-  doc.setFont('times', 'bolditalic');
-  doc.setFontSize(13);
-  doc.setFont('helvetica', 'normal');
-  doc.text('IMMO  TONN', 22, 36);
-  doc.setFontSize(10);
-  doc.text('EST. 1985', 22, 41);
-  doc.setLineWidth(0.5);
-  doc.line(20, 45, 190, 45);
-  doc.setFontSize(22);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Finanzierungsrechner', 105, 55, { align: 'center' });
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Erstellt am: ${new Date().toLocaleDateString('de-DE')}`, 170, 60, {
-    align: 'right',
-  });
+    const doc = new jsPDF();
+    doc.setFontSize(32);
+    doc.setFont('times', 'bolditalic');
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'normal');
+    doc.text('IMMO  TONN', 22, 36);
+    doc.setFontSize(10);
+    doc.text('EST. 1985', 22, 41);
+    doc.setLineWidth(0.5);
+    doc.line(20, 45, 190, 45);
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Finanzierungsrechner', 105, 55, { align: 'center' });
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(
+      `Erstellt am: ${new Date().toLocaleDateString('de-DE')}`,
+      170,
+      60,
+      {
+        align: 'right',
+      },
+    );
 
-  const formatCurrency = (value: number | string) =>
-    Number(value).toLocaleString('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
-      minimumFractionDigits: 2,
-    });
+    const formatCurrency = (value: number | string) =>
+      Number(value).toLocaleString('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 2,
+      });
 
-  doc.setFontSize(13);
-  let y = 70;
-  const rowGap = 10;
+    doc.setFontSize(13);
+    let y = 70;
+    const rowGap = 10;
 
-  doc.text('Immobilienpreis:', 25, y);
-  doc.text(formatCurrency(price), 110, y);
-  y += rowGap;
+    doc.text('Immobilienpreis:', 25, y);
+    doc.text(formatCurrency(parseGermanCurrency(price)), 110, y);
+    y += rowGap;
 
-  doc.text('Eigenkapital:', 25, y);
-  doc.text(formatCurrency(equity), 110, y);
-  y += rowGap;
+    doc.text('Eigenkapital:', 25, y);
+    doc.text(formatCurrency(equity), 110, y);
+    y += rowGap;
 
-  doc.text('Grunderwerbsteuer:', 25, y);
-  doc.text(`${tax === 'custom' ? customTax : tax}%`, 110, y);
-  y += rowGap;
+    doc.text('Grunderwerbsteuer:', 25, y);
+    doc.text(`${tax === 'custom' ? customTax : tax}%`, 110, y);
+    y += rowGap;
 
-  doc.text('Notar/Grundbuch:', 25, y);
-  doc.text(`${notary === 'custom' ? customNotary : notary}%`, 110, y);
-  y += rowGap;
+    doc.text('Notar/Grundbuch:', 25, y);
+    doc.text(`${notary === 'custom' ? customNotary : notary}%`, 110, y);
+    y += rowGap;
 
-  doc.text('Maklerprovision:', 25, y);
-  doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
-  y += rowGap;
+    doc.text('Maklerprovision:', 25, y);
+    doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
+    y += rowGap;
 
-  doc.text('Darlehenssumme:', 25, y);
-  doc.text(formatCurrency(loanAmount), 110, y);
-  y += rowGap;
+    doc.text('Darlehenssumme:', 25, y);
+    doc.text(formatCurrency(loanAmount ?? 0), 110, y);
+    y += rowGap;
 
-  doc.text('Zinssatz:', 25, y);
-  doc.text(`${interest}%`, 110, y);
-  y += rowGap;
+    doc.text('Zinssatz:', 25, y);
+    doc.text(`${interest}%`, 110, y);
+    y += rowGap;
 
-  doc.text('Tilgung:', 25, y);
-  doc.text(`${repayment}%`, 110, y);
-  y += rowGap;
+    doc.text('Tilgung:', 25, y);
+    doc.text(`${repayment}%`, 110, y);
+    y += rowGap;
 
-  doc.text('Laufzeit:', 25, y);
-  doc.text(`${years} Jahre`, 110, y);
-  y += rowGap + 6;
+    doc.text('Laufzeit:', 25, y);
+    doc.text(`${years} Jahre`, 110, y);
+    y += rowGap + 6;
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(22);
-  doc.setTextColor(15, 68, 106);
-  doc.text('Monatliche Rate:', 25, y);
-  doc.text(formatCurrency(monthly ?? 0), 110, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(15, 68, 106);
+    doc.text('Monatliche Rate:', 25, y);
+    doc.text(formatCurrency(monthly ?? 0), 110, y);
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(11);
-  doc.setTextColor(0, 0, 0);
-  doc.setLineWidth(0.5);
-  doc.line(20, 240, 190, 240);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.setLineWidth(0.5);
+    doc.line(20, 240, 190, 240);
 
-  let contactY = 250;
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Kontakt', 105, contactY, { align: 'center' });
-  contactY += 7;
+    let contactY = 250;
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kontakt', 105, contactY, { align: 'center' });
+    contactY += 7;
 
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'normal');
-  doc.text('0174 345 44 19', 105, contactY, { align: 'center' });
-  contactY += 7;
-  doc.text('tonn_andreas@web.de', 105, contactY, { align: 'center' });
-  contactY += 7;
-  doc.text('Sessendrupweg 54', 105, contactY, { align: 'center' });
-  contactY += 6;
-  doc.text('48161 Münster', 105, contactY, { align: 'center' });
-  contactY += 8;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text('0174 345 44 19', 105, contactY, { align: 'center' });
+    contactY += 7;
+    doc.text('tonn_andreas@web.de', 105, contactY, { align: 'center' });
+    contactY += 7;
+    doc.text('Sessendrupweg 54', 105, contactY, { align: 'center' });
+    contactY += 6;
+    doc.text('48161 Münster', 105, contactY, { align: 'center' });
+    contactY += 8;
 
-  doc.setFontSize(10);
-  doc.setTextColor(15, 68, 106);
-  doc.text('www.immotonn.de', 105, contactY, { align: 'center' });
-  doc.setTextColor(0, 0, 0);
+    doc.setFontSize(10);
+    doc.setTextColor(15, 68, 106);
+    doc.text('www.immotonn.de', 105, contactY, { align: 'center' });
+    doc.setTextColor(0, 0, 0);
 
-  doc.save('Finanzierung.pdf');
-};
+    doc.save('Finanzierung.pdf');
+  };
 
   const taxOptions = ['3,5', '5,0', '5,5', '6,0', '6,5'];
   const notaryOptions = Array.from({ length: 11 }, (_, i) =>
-    (1.0 + i * 0.1).toFixed(1).replace('.',',')
+    (1.0 + i * 0.1).toFixed(1).replace('.', ','),
   );
   const brokerOptions = Array.from({ length: 7 }, (_, i) =>
-    (1.0 + i * 0.5).toFixed(1).replace('.',',')
+    (1.0 + i * 0.5).toFixed(1).replace('.', ','),
   );
-
-   function validateCustomPercentInput(input: string): string {
-  // Заменяем все точки на запятые
-  let cleaned = input.replace(/\./g, ',');
-  
-  // Разрешаем только цифры и максимум одну запятую
-  cleaned = cleaned.replace(/[^0-9,]/g, '');
-
-  const parts = cleaned.split(',');
-  
-  // Больше одной запятой — удаляем лишние
-  if (parts.length > 2) {
-    cleaned = parts[0] + ',' + parts[1];
-  }
-
-  // Ограничим дробную часть до одной цифры
-  if (parts.length === 2) {
-    cleaned = parts[0] + ',' + parts[1].slice(0, 1);
-  }
-
-  return cleaned;
-}
 
   return (
     <section className={styles.wrapper}>
@@ -490,12 +461,9 @@ const handleInterestChange = (value: string) => {
               id="price"
               name="price"
               value={price}
-              onChange={e => {
-                const val = e.target.value.replace(/\D/g, '');
-                if (val.length <= 11) {
-                  setPrice(val);
-                }
-              }}
+              onChange={handlePriceChange}
+              onBlur={handlePriceBlur}
+              onFocus={handlePriceFocus}
             />
             <img src={MarkerIcon} alt="marker" className={styles.markerIcon} />
           </div>
@@ -547,6 +515,8 @@ const handleInterestChange = (value: string) => {
               name="equity"
               value={equity}
               onChange={e => handleEquityChange(e.target.value)}
+              onBlur={handleEquityBlur}
+              onFocus={handleEquityFocus}
             />
             <img src={MarkerIcon} alt="marker" className={styles.markerIcon} />
           </div>
@@ -561,43 +531,84 @@ const handleInterestChange = (value: string) => {
               werden.
             </p>
           )}
-       {/* {renderSelect(
-            'Tilgung',
-            repayment,
-            setRepayment,
-            '',
-            () => {},
-            'tax',
-            repaymentOptions,
-            () => setMode('calculateYears'),
-          )}*/}
 
           <label htmlFor="repayment">Tilgung</label>
-<select
-  id="repayment"
-  name="repayment"
-  value={repayment}
-  onChange={e => {
-    setMode('calculateYears');
-    setRepayment(e.target.value);
-  }}
->
-  {repaymentOptions.map(opt => (
-    <option key={opt} value={opt}>
-      {opt}%
-    </option>
-  ))}
-</select>
+          <select
+            id="repayment"
+            name="repayment"
+            value={repayment}
+            onChange={e => {
+              setMode('calculateYears');
+              setRepayment(e.target.value);
+            }}
+          >
+            {repaymentOptions.map(opt => (
+              <option key={opt} value={opt}>
+                {opt}%
+              </option>
+            ))}
+          </select>
           <label htmlFor="interest">Sollzins p. a.</label>
-          {/* <div className={styles.inputWithIcon}>
+          <div className={styles.inputWithIcon}>
             <input
-              id="interest"
-              name="interest"
+              type="text"
               value={interest}
               onChange={e => handleInterestChange(e.target.value)}
+              onInput={e => {
+                const inputEvent = e as React.FormEvent<HTMLInputElement> & {
+                  data?: string;                  
+                };
+                
+                if (!inputEvent.data) return;
+
+                const input = e.currentTarget;
+                const { selectionStart, selectionEnd } = input;
+
+                const inserted = inputEvent.data === '.' ? ',' : inputEvent.data;
+
+                const proposed =
+                  selectionStart !== null && selectionEnd !== null
+                    ? input.value.slice(0, selectionStart) +
+                      inserted +
+                      input.value.slice(selectionEnd)
+                    : input.value + inserted;
+
+                const cleaned = proposed.replace('%', '');
+                const parts = cleaned.split(',');
+
+                const numericValue = parseFloat(cleaned.replace(',', '.'));
+
+                const tooManyDecimals =
+                  parts.length === 2 && parts[1] && parts[1].length > 1;
+                const isValidPartialInput = cleaned === '0,' || cleaned === '0';
+
+                const tooHighOrLow =
+                  !isNaN(numericValue) &&
+                  !isValidPartialInput &&
+                  (numericValue <= 0 || numericValue > 14);
+
+                setInterestDecimalError(Boolean(tooManyDecimals));
+                setInterestRangeError(Boolean(tooHighOrLow));
+
+                if (!/^[\d,]*$/.test(inserted)) {
+                  e.preventDefault();
+                  return;
+                }
+
+                if (
+                  (proposed.match(/,/g) || []).length > 1 ||
+                  tooManyDecimals ||
+                  tooHighOrLow
+                ) {
+                  e.preventDefault();
+                  return;
+                }
+              }}
+              inputMode="decimal"
             />
             <img src={MarkerIcon} className={styles.markerIcon} />
           </div>
+
           {interestDecimalError && (
             <p className={styles.error}>
               Nach dem Komma darf nur eine Ziffer eingegeben werden.
@@ -607,66 +618,7 @@ const handleInterestChange = (value: string) => {
             <p className={styles.error}>
               Der Sollzins muss größer als 0 und kleiner als 14 sein.
             </p>
-          )} */}
-          <div className={styles.inputWithIcon}>
-  <input
-    type="text"
-    value={interest}
-    onChange={e => handleInterestChange(e.target.value)}
-    onBeforeInput={e => {
-      if (!e.data) return;
-
-      const input = e.currentTarget;
-      const { selectionStart, selectionEnd } = input;
-
-      const inserted = e.data === '.' ? ',' : e.data;
-
-      const proposed =
-        selectionStart !== null && selectionEnd !== null
-          ? input.value.slice(0, selectionStart) + inserted + input.value.slice(selectionEnd)
-          : input.value + inserted;
-
-      const cleaned = proposed.replace('%', '');
-      const parts = cleaned.split(',');
-
-      const numericValue = parseFloat(cleaned.replace(',', '.'));
-
-      const tooManyDecimals = parts.length === 2 && parts[1].length > 1;
-     const isValidPartialInput = cleaned === '0,' || cleaned === '0';
-
-const tooHighOrLow =
-  !isNaN(numericValue) &&
-  !isValidPartialInput &&
-  (numericValue <= 0 || numericValue > 14);
-
-      setInterestDecimalError(tooManyDecimals);
-      setInterestRangeError(tooHighOrLow);
-
-      if (!/^[\d,]*$/.test(inserted)) {
-        e.preventDefault();
-        return;
-      }
-
-      if ((proposed.match(/,/g) || []).length > 1 || tooManyDecimals || tooHighOrLow) {
-        e.preventDefault();
-        return;
-      }
-    }}
-    inputMode="decimal"
-  />
-  <img src={MarkerIcon} className={styles.markerIcon} />
-</div>
-
-{interestDecimalError && (
-  <p className={styles.error}>
-    Nach dem Komma darf nur eine Ziffer eingegeben werden.
-  </p>
-)}
-{interestRangeError && (
-  <p className={styles.error}>
-    Der Sollzins muss größer als 0 und kleiner als 14 sein.
-  </p>
-)}
+          )}
           <label htmlFor="years">Laufzeit (Jahre)</label>
           <select
             id="years"
@@ -692,18 +644,19 @@ const tooHighOrLow =
             value={formatCurrencyDE(loanAmount)}
             readOnly
           />
-          <div className={styles.rateLabel}>Monatliche Rate:{' '}
-          {monthly !== null && (
-            <span className={styles.monthly}>
-              <CountUp
-                end={monthly}
-                decimals={2}
-                prefix="€ "
-                duration={1.5}
-                formattingFn={formatGermanCurrency}
-              />
-             </span>
-          )}
+          <div className={styles.rateLabel}>
+            Monatliche Rate:{' '}
+            {monthly !== null && (
+              <span className={styles.monthly}>
+                <CountUp
+                  end={monthly}
+                  decimals={2}
+                  prefix="€ "
+                  duration={1.5}
+                  formattingFn={formatGermanCurrency}
+                />
+              </span>
+            )}
           </div>
           <Button
             initialText="Berechnen"
@@ -754,16 +707,16 @@ const tooHighOrLow =
 export default MortgageCalculator;
 
 function renderSelect(
-  label: any,
-  value: any,
-  onChange: any,
-  customValue: any,
-  setCustomValue: any,
-  infoKey: any,
-  options: any,
-  modeToggle: any,
-  showError: any,
-  onInfoClick: any,
+  label: string,
+  value: string,
+  onChange: (value: string) => void,
+  customValue: string,
+  setCustomValue: (value: string) => void,
+  infoKey: InfoKey,
+  options: string[],
+  modeToggle?: () => void,
+  showError?: boolean,
+  onInfoClick?: (info: { title: string; body: string }) => void,
 ) {
   const showCustom = value === 'custom';
   return (
@@ -792,14 +745,10 @@ function renderSelect(
               modeToggle?.();
               onChange(selected);
             }
-             // если пользователь выбрал НЕ custom, сбрасываем ошибку
-            if (selected !== 'custom' && typeof setShowError === 'function') {
-              setShowError(false);
-            }
           }}
           className={styles.select}
         >
-          {options.map(opt => (
+          {options.map((opt: string) => (
             <option key={opt} value={opt}>
               {opt}%
             </option>
@@ -813,68 +762,62 @@ function renderSelect(
               id={`${infoKey}-custom`}
               name={`${infoKey}-custom`}
               value={customValue}
-              // onChange={e => setCustomValue(e.target.value)}
-              // label={`Custom ${label}`}
-             onChange={e => {
-  let val = e.target.value;
+              onChange={e => {
+                let val = e.target.value;
 
-  // Заменяем запятую на точку
-  val = val.replace(',', '.');
+                // Заменяем запятую на точку
+                val = val.replace(',', '.');
 
-  // Проверка: разрешаем максимум 2 цифры перед точкой и одну после
-  const regex = /^\d{0,2}(\.\d?)?$/;
+                // Проверка: разрешаем максимум 2 цифры перед точкой и одну после
+                const regex = /^\d{0,2}(\.\d?)?$/;
 
-  if (regex.test(val)) {
-    const number = parseFloat(val);
+                if (regex.test(val)) {
+                  const number = parseFloat(val);
 
-    // Разрешаем пустую строку — чтобы можно было стереть значение
-    if (val === '' || (number <= 10 && !isNaN(number))) {
-      setCustomValue(val);
-      if (typeof setShowError === 'function') {
-        // Проверяем валидность значения и показываем/скрываем ошибку сразу
-        const isValid = /^([0-9]|10)(\.\d)?$/.test(val) && number >= 0 && number <= 10;
-        setShowError(!isValid);
-      }
-    }
-  }
-}}
- onBlur={e => {
-  let val = e.target.value.trim();
+                  // Разрешаем пустую строку — чтобы можно было стереть значение
+                  if (val === '' || (number <= 10 && !isNaN(number))) {
+                    setCustomValue(val);
+                  }
+                }
+              }}
+              onBlur={e => {
+                let val = e.target.value.trim();
 
-  // Заменяем запятую на точку
-  val = val.replace(',', '.');
+                // Заменяем запятую на точку
+                val = val.replace(',', '.');
 
-  // Удаляем ведущие нули, кроме случаев с "0."
-  if (/^0\d/.test(val)) {
-    val = parseFloat(val).toString(); // '05' → '5'
-  }
+                // Удаляем ведущие нули, кроме случаев с "0."
+                if (/^0\d/.test(val)) {
+                  val = parseFloat(val).toString(); // '05' → '5'
+                }
 
-  const number = parseFloat(val);
+                const number = parseFloat(val);
 
-  // Проверка: от 0 до 10 включительно, максимум одна цифра после точки
-  const isValid =
-    /^([0-9]|10)(\.\d)?$/.test(val) && !isNaN(number) && number <= 10;
+                // Проверка: от 0 до 10 включительно, максимум одна цифра после точки
+                const isValid =
+                  /^([0-9]|10)(\.\d)?$/.test(val) &&
+                  !isNaN(number) &&
+                  number <= 10;
 
-  if (typeof setShowError === 'function') {
-    setShowError(!isValid);
-  }
-
-  // Обновляем значение без ведущих нулей
-  if (isValid) {
-    setCustomValue(val);
-  }
-}}
-
-  inputMode="decimal"
-  label={
-    infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
-      ? ''
-      : `Custom ${label}`
-  }
-       />
+                // Обновляем значение без ведущих нулей
+                if (isValid) {
+                  setCustomValue(val);
+                }
+              }}
+              inputMode="decimal"
+              label={
+                infoKey === 'tax' ||
+                infoKey === 'notary' ||
+                infoKey === 'broker'
+                  ? ''
+                  : `Custom ${label}`
+              }
+            />
             <span>%</span>
+
           </div>
         )}
+            {/* <img src={MarkerIcon} className={styles.markerIcon} /> */}
       </div>
 
       {showError && (

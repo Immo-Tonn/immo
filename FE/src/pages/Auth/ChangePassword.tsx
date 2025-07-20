@@ -32,15 +32,15 @@ const ChangePassword: React.FC = () => {
     }
 
         if (!/\d/.test(password)) {
-          return "Пароль должен содержать хотя бы одну цифру";
+          return "The password must contain at least one number.";
         }
 
         if (!/[A-Z]/.test(password)) {
-          return "Пароль должен содержать хотя бы одну заглавную букву";
+          return "The password must contain at least one uppercase letter.";
         }
 
         if (!/[a-z]/.test(password)) {
-          return "Пароль должен содержать хотя бы одну строчную букву";
+          return "he password must contain at least one lowercase letter.";
         }
 
     if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
@@ -139,15 +139,15 @@ const ChangePassword: React.FC = () => {
       switch (metCriteria) {
         case 0:
         case 1:
-          return { text: "Очень слабый", color: "#f44336", width: "20%" };
+          return { text: "Very weak password", color: "#f44336", width: "20%" };
         case 2:
-          return { text: "Слабый", color: "#ff9800", width: "40%" };
+          return { text: "Weak password", color: "#ff9800", width: "40%" };
         case 3:
-          return { text: "Средний", color: "#ffeb3b", width: "60%" };
+          return { text: "Medium password", color: "#ffeb3b", width: "60%" };
         case 4:
-          return { text: "Хороший", color: "#8bc34a", width: "80%" };
+          return { text: "Satisfactory password", color: "#8bc34a", width: "80%" };
         case 5:
-          return { text: "Сильный", color: "#4caf50", width: "100%" };
+          return { text: "Strong password", color: "#4caf50", width: "100%" };
         default:
           return { text: "", color: "#e0e0e0", width: "0%" };
     }
@@ -216,7 +216,7 @@ const ChangePassword: React.FC = () => {
             htmlFor="newPassword"
             style={{ display: 'block', marginBottom: '5px' }}
           >
-            Новый пароль:
+            Neues Passwort:
           </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input

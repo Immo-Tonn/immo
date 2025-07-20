@@ -18,6 +18,8 @@ import {
 } from '@features/utils/realEstateService';
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
+import { OBJECT_TYPE_OPTIONS } from '@features/utils/objectTypeMapping';
+import { formatGermanCurrency, parseGermanCurrency } from '@features/utils/formatGermanCurrency';
 // import Button from '@shared/ui/Button/Button';
 
 // Determine the type for objectData
@@ -37,12 +39,13 @@ interface ObjectData {
     street: string;
     houseNumber?: string;
   };
-  price: string;
-  status: ObjectStatus; // Поле для выбора status
+  price: string | number;
+  status: ObjectStatus;
 }
 
 const CreateObject = () => {
   const navigate = useNavigate();
+  const [isPriceFocused, setIsPriceFocused] = useState<boolean>(false);  
   const { id } = useParams<{ id: string }>(); // ID for editing
   const isEditMode = !!id; // create or edit
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,6 +61,54 @@ const CreateObject = () => {
   const dropZoneRef = useRef<HTMLDivElement>(null); // ref for drag & drop
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showTypeWarning, setShowTypeWarning] = useState<boolean>(false);
+
+  const handlePriceFocus = () => {
+    setIsPriceFocused(true);
+      // If string contains formatting (dots and commas), parse it
+      if (objectData.price && typeof objectData.price === 'string') {
+        const numericValue = parseGermanCurrency(objectData.price);
+        setObjectData({
+          ...objectData,
+          price: numericValue.toString()
+        });
+      }
+    };
+
+  const handlePriceBlur = () => {
+      setIsPriceFocused(false);
+    // format only when focus is lost
+    if (objectData.price) {
+      const numericValue = parseFloat(objectData.price.toString());
+      if (!isNaN(numericValue)) {
+        const formattedPrice = (formatGermanCurrency(numericValue));
+        setObjectData({
+          ...objectData,
+          price: formattedPrice
+        })
+      }
+    }
+  };
+
+  // Special change handler for the price field
+const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+  let value = e.target.value;
+
+  // If  field is in focus, only allow numbers and one period
+  if (isPriceFocused) {
+    // Remove all characters except numbers and periods
+    value = value.replace(/[^0-9.]/g, '');
+
+    // allow only one point
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+  }
+  setObjectData({
+    ...objectData,
+    price: value,
+  })
+}
 
   // Status for the main object
   const [objectData, setObjectData] = useState<ObjectData>({
@@ -527,7 +578,10 @@ const setMainExistingImage = async (index: number): Promise<void> => {
       // Preparing the main object data
       const realEstateObjectData = {
         ...objectData,
-        price: parseFloat(objectData.price),
+        // Парсим цену, учитывая возможный немецкий формат
+        price: typeof objectData.price === 'string' 
+          ? parseGermanCurrency(objectData.price)
+          : parseFloat(objectData.price.toString()),
         address: {
           ...objectData.address,
           zip: parseInt(objectData.address.zip),
@@ -722,6 +776,7 @@ useEffect(() => {
                   pattern="[0-9]*"
                   value={specificData.floor || ''}
                   onChange={handleSpecificChange}
+                  className={styles.formInput}
                     onKeyDown={(e) => {
                       if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
                         e.preventDefault();
@@ -1405,6 +1460,32 @@ useEffect(() => {
                   className={styles.formInput}
                 />
               </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="plotArea" className={styles.formLabel}>
+                  Grundstücksfläche (m²)
+                </label>
+                <input
+                  type="number"
+                  id="plotArea"
+                  name="plotArea"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
+                  value={specificData.plotArea || ''}
+                  onChange={handleSpecificChange}
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                 }}
+                 onWheel={(e) =>{
+                  (e.target as HTMLInputElement).blur()
+                 }}                                    
+                  className={styles.formInput}
+                />
+              </div>
+
               <div className={styles.formGroup}>
                 <label htmlFor="yearBuilt" className={styles.formLabel}>
                   Baujahr
@@ -1510,12 +1591,17 @@ useEffect(() => {
       className={`${styles.formSelect} ${isEditMode ? styles.disabledSelect : ''}`}
       disabled={isEditMode}
     >
-      <option value={ObjectType.APARTMENT}>Wohnung</option>
+     {OBJECT_TYPE_OPTIONS.map(option => (
+      <option key={option.value} value={option.value}>
+        {option.label}
+         </option>
+        ))}      
+      {/* <option value={ObjectType.APARTMENT}>Wohnung</option>
       <option value={ObjectType.HOUSE}>Wohnhaus</option>
       <option value={ObjectType.LAND}>Grundstück</option>
       <option value={ObjectType.COMMERCIAL}>
         Gewerbe-/Nichtwohnimmobilien
-      </option>
+      </option> */}
     </select>
   </div>
   {showTypeWarning && isEditMode && (
@@ -1690,23 +1776,36 @@ useEffect(() => {
             Preis (€) *
           </label>
           <input
-            type="number"
+            type="text"
             id="price"
             name="price"
-            min="0"
-            inputMode="numeric"
-            pattern="[0-9]*"             
             value={objectData.price}
-            onChange={handleObjectChange}
+            onChange={handlePriceChange}
+            onFocus={handlePriceFocus}
+            onBlur={handlePriceBlur}            
             required
             onKeyDown={(e) => {
-              if (['e', 'E', '+', '-'].includes(e.key)) {
-                  e.preventDefault();
-              }
+              const allowedKeys = [
+                'Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 
+                'ArrowUp', 'ArrowDown', 'Home', 'End'
+              ];              
+              if (allowedKeys.includes(e.key)) {
+                return; // Разрешаем эти клавиши
+              }              
+              // Разрешаем цифры
+              if (e.key >= '0' && e.key <= '9') {
+                return;
+              }              
+              // Разрешаем одну точку только если поле в фокусе
+              if (e.key === '.' && isPriceFocused && !objectData.price.toString().includes('.')) {
+                return;
+              }              
+              // Блокируем все остальные клавиши
+              e.preventDefault();
             }}
-            onWheel={(e) =>{
-            (e.target as HTMLInputElement).blur()
-            }}                              
+            onWheel={(e) => {
+              (e.target as HTMLInputElement).blur();              
+            }}
             className={styles.formInput}
           />
         </div>
@@ -1848,7 +1947,7 @@ useEffect(() => {
                     ⭐
                   </button>
                   {index === 0 && existingImages.length === 0 && (
-                    <span className={styles.mainImageLabel}>Главное</span>
+                    <span className={styles.mainImageLabel}>Hauptbild</span>
                   )}
                 </div>
               ))}

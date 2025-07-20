@@ -120,7 +120,7 @@ const Login: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <h1>Панель администратора</h1>
+      <h1>Admin Panel</h1>
 
       {error && (
         <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>

@@ -5,7 +5,7 @@ import cowSound from '@shared/assets/audio/cow-moo.mp3';
 import Button from '@shared/ui/Button/Button';
 
 const NotFound = () => {
-  const [showCow, setShowCow] = useState(true);
+  const [showCow] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {

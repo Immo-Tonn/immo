@@ -4,8 +4,9 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
 import styles from './ObjectPrewiew.module.css';
 import { ObjectType } from '@features/utils/types';
-// import { formatObjectNumber } from '@shared/objectNumberUtils';
 import ImageGalleryModal from '@widgets/ImageGalleryModal/ImageGalleryModal';
+import { getObjectTypeLabel } from '@features/utils/objectTypeMapping';
+import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
 
 const ObjectPreview = () => {
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ const ObjectPreview = () => {
   const [videos, setVideos] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
   const getSuccessMessage = () => {
     if (action === 'updated') {
       return 'Das Objekt wurde erfolgreich aktualisiert! Überprüfen Sie die folgende Daten..';
@@ -328,7 +328,7 @@ const ObjectPreview = () => {
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
-                <span className={styles.dataValue}>{specificData.plotArea ? `${specificData.plotArea} м²` : '-'}</span>
+                <span className={styles.dataValue}>{specificData.plotArea ? `${specificData.plotArea} m²` : '-'}</span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Anzahl der Zimmer:</span>
@@ -383,7 +383,7 @@ const ObjectPreview = () => {
               </div>              
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
-                <span className={styles.dataValue}>{specificData.plotArea} м²</span>
+                <span className={styles.dataValue}>{specificData.plotArea} m²</span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Technische Kommunikation:</span>
@@ -413,6 +413,10 @@ const ObjectPreview = () => {
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Fläche:</span>
                 <span className={styles.dataValue}>{specificData.area ? `${specificData.area} м²` : '-'}</span>
+              </div>
+              <div className={styles.dataItem}>
+                <span className={styles.dataLabel}>Grundstücksfläche:</span>
+                <span className={styles.dataValue}>{specificData.plotArea ? `${specificData.plotArea} m²` : '-'}</span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Baujahr:</span>
@@ -477,7 +481,7 @@ const ObjectPreview = () => {
                   alt={`image ${index + 1}`} 
                   className={styles.objectImage} 
                 />
-                {index === 0 && <span className={styles.mainImageLabel}>Hauptblid</span>}
+                {index === 0 && <span className={styles.mainImageLabel}>Hauptbild</span>}
               </div>
             ))
           ) : (
@@ -521,11 +525,11 @@ const ObjectPreview = () => {
           </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Objekttyp:</span>
-            <span className={styles.dataValue}>{objectData.type}</span>
+            <span className={styles.dataValue}>{getObjectTypeLabel(objectData.type)}</span>
           </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Preis:</span>
-            <span className={styles.dataValue}>{objectData.price.toLocaleString()} €</span>
+            <span className={styles.dataValue}>{formatGermanCurrency(objectData.price)} €</span>
           </div>
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Objektstatus:</span>

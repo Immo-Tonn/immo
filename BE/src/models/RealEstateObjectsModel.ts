@@ -69,8 +69,8 @@ const RealEstateObjectsSchema: Schema = new Schema<IRealEstateObjects>({
   },
   location: {
     type: String,
-    required: true,
   },
+  
   address: {
     country: { type: String, required: true },
     city: { type: String, required: true },

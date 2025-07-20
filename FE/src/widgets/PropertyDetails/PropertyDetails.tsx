@@ -9,6 +9,8 @@ import {
 } from '@shared/types/propertyTypes';
 import { useNavigate } from 'react-router-dom';
 import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
+import { getObjectTypeLabel } from '@features/utils/objectTypeMapping';
+import { ObjectType } from '@features/utils/types';
 
 interface PropertyDetailsProps {
   object: RealEstateObject;
@@ -43,19 +45,18 @@ const getPropertyDetails = (
   return {
     Land: object.address?.country,
     'Nummer ID': object.number,
-    Objektart: object.type,
+    Objektart: getObjectTypeLabel(object.type as ObjectType),
     ...(apartment?.type && { Wohnungstyp: apartment.type }),
     ...(house?.type && {Haustyp: house.type}),
     ...(commercial?.buildingType && { Gebäudetyp: commercial.buildingType }),
     ...(land?.landPlottype && { 'Art des Grundstücks': land.landPlottype}),
 
-
-    Wohnfläche: house?.livingArea ? `${house.livingArea} м²` : apartment?.livingArea ? `${apartment.livingArea} м²` : undefined,
+    Wohnfläche: house?.livingArea ? `${house.livingArea} m²` : apartment?.livingArea ? `${apartment.livingArea} m²` : undefined,
     Fläche: commercial?.area ? `${commercial.area} m²` : undefined,
-    Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` : undefined,
-    Nutzfläche: house?.usableArea ? `${house.usableArea} м²` : undefined,
+    Grundstück: house?.plotArea ? `${house.plotArea} m²` : land?.plotArea ? `${land.plotArea} m²` :  commercial?.plotArea ? `${commercial.plotArea} m²`: undefined,
+    Nutzfläche: house?.usableArea ? `${house.usableArea} m²` : undefined,
     Baujahr: house?.yearBuilt ?? apartment?.yearBuilt ?? commercial?.yearBuilt,
-    Zimmern: house?.numberOfRooms ?? apartment?.numberOfRooms,
+    Zimmer: house?.numberOfRooms ?? apartment?.numberOfRooms,
     Schlafzimmer: house?.numberOfBedrooms ?? apartment?.numberOfBedrooms,
     Badezimmer: house?.numberOfBathrooms ?? apartment?.numberOfBathrooms,
     Etage: apartment?.floor,

@@ -97,6 +97,7 @@ export interface ICommercialNonResidentialBuilding {
   realEstateObject: string;
   buildingType: string;
   area?: number;
+  plotArea?: number;
   yearBuilt?: number;
   purpose?: string;
   additionalFeatures?: string;

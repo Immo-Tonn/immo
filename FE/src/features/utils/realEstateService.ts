@@ -1,5 +1,4 @@
 // immo/FE/src/features/utils/realEstateService.ts
-
 import axios from '@features/utils/axiosConfig';
 import { IRealEstateObject, ObjectType } from './types';
 import { uploadMultipleImages } from './imageService';

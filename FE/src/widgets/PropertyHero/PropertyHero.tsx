@@ -73,13 +73,13 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
     return () => window.removeEventListener('resize', updateMobile);
   }, []);
 
-  useEffect(() => {
-    if (!isMobile || mediaItems.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [mediaItems.length, isMobile]);
+  // useEffect(() => {
+  //   if (!isMobile || mediaItems.length <= 1) return;
+  //   const interval = setInterval(() => {
+  //     setCurrentIndex(prev => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+  //   }, 8000);
+  //   return () => clearInterval(interval);
+  // }, [mediaItems.length, isMobile]);
 
   const handlePrev = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -110,29 +110,31 @@ const PropertyHero: React.FC<PropertyHeroProps> = ({
   const currentMedia = mediaItems[currentIndex];
   const firstMedia = mediaItems[0];
 
-    const renderAddress = () => {
-    if (isAdmin) {
-      // Full adress for Admin
-      return (
-        <div className={styles.address}>
-          {address.street && address.houseNumber && (
-            <>
-              {address.street} {address.houseNumber}<br />
-            </>
-          )}
-          {address.zip} {address.city}, {address.district}<br />
-          {address.country}
-        </div>
-      );
-    } else {
-      // Partial address for regular users
-      return (
-        <div className={styles.address}>
-          {address.city}{address.district ? `, ${address.district}` : ''}
-        </div>
-      );
-    }
-  };
+const renderAddress = () => {
+  if (isAdmin) { 
+          // Full adress for Admin   
+    return (
+      <div className={styles.address}>
+        {address.street && (
+          <>
+            {address.street}
+            {address.houseNumber && ` ${address.houseNumber}`}
+            <br />
+          </>
+        )}
+        {address.zip} {address.city}, {address.district}<br />
+        {address.country}
+      </div>
+    );
+  } else {
+          // Partial address for regular users
+    return (
+      <div className={styles.address}>
+        {address.zip} {address.city}{address.district ? `, ${address.district}` : ''}
+      </div>
+    );
+  }
+};
 
   return (
     <section className={styles.section}>

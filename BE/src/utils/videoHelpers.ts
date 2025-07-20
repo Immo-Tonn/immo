@@ -10,9 +10,8 @@ export const convertToIframeUrl = (originalUrl: string): string => {
   return `https://iframe.mediadelivery.net/play/${projectId}/${uuid}`;
 };
 
-// ИСПРАВЛЕННАЯ функция для получения thumbnail URL
+
 export const getVideoThumbnailUrl = (originalUrl: string): string => {
-  // Извлекаем UUID видео из iframe или direct play URL
   const iframeRegex =
     /^https:\/\/iframe\.mediadelivery\.net\/play\/\d+\/([a-f0-9\-]+)/;
   const directRegex =

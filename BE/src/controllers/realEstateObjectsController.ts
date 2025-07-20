@@ -139,7 +139,7 @@ export const updateObject = async (req: Request, res: Response) => {
       'Last-Modified': new Date().toUTCString()
     });
     
-    console.log('✅ КОНТРОЛЛЕР: Объект успешно обновлен');
+    // console.log('✅ КОНТРОЛЛЕР: Объект успешно обновлен');
     res.json(updated);
     
   } catch (error) {
@@ -193,7 +193,7 @@ export const deleteObject = async (
               await deleteFromBunny(image.url);
               console.log(`✅ Файл удален из BunnyCDN: ${image.url}`);
             } catch (cdnError) {
-              console.warn(`⚠️ Не удалось удалить файл из BunnyCDN: ${image.url}`, cdnError);
+              console.warn(`⚠️ Failed to delete file from BunnyCDN: ${image.url}`, cdnError);
             }
             
 
@@ -201,7 +201,7 @@ export const deleteObject = async (
             console.log(`✅ Изображение удалено из БД: ${image._id}`);
           }
         } catch (imageError) {
-          console.error(`❌ Ошибка при удалении изображения ${imageId}:`, imageError);
+          console.error(`❌ Error deleting image ${imageId}:`, imageError);
         }
       }
     }
@@ -221,7 +221,7 @@ export const deleteObject = async (
                 await deleteFromBunnyVideo(video.videoId);
                 console.log(`✅ Видео удалено из BunnyCDN: ${video.videoId}`);
               } catch (cdnError) {
-                console.warn(`⚠️ Не удалось удалить видео из BunnyCDN: ${video.videoId}`, cdnError);
+                console.warn(`⚠️ Failed to remove video from BunnyCDN: ${video.videoId}`, cdnError);
               }
             }
             
@@ -229,7 +229,7 @@ export const deleteObject = async (
             console.log(`✅ Видео удалено из БД: ${video._id}`);
           }
         } catch (videoError) {
-          console.error(`❌ Ошибка при удалении видео ${videoId}:`, videoError);
+          console.error(`❌ Error deleting video ${videoId}:`, videoError);
         }
       }
     }
@@ -271,7 +271,7 @@ export const deleteObject = async (
           console.warn(`⚠️ Неизвестный тип объекта: ${mainObject.type}`);
       }
     } catch (specificError) {
-      console.error('❌ Ошибка при удалении специфических данных:', specificError);
+      console.error('❌ Error deleting specific data:', specificError);
     }
 
     // 5. REMOVE MAIN OBJECT
@@ -328,7 +328,7 @@ export const deleteObject = async (
     res.status(500).json({ 
       message: 'Fehler beim Löschen des Objekts', 
       error: (error as Error).message,
-      details: 'Некоторые связанные данные могли остаться в базе. Обратитесь к администратору.'
+      details: 'Some related data may remain in the database. Please contact the administrator.'
     });
   }
 };
@@ -368,7 +368,7 @@ export const cleanupOrphanRecords = async (
         cleanupStats.deletedFiles++;
         console.log(`🗑️ Удален файл: ${image.url}`);
       } catch (cdnError) {
-        console.warn(`⚠️ Не удалось удалить файл: ${image.url}`);
+        console.warn(`⚠️ Failed to delete file: ${image.url}`);
       }
 
       await ImagesModel.findByIdAndDelete(image._id);
@@ -390,7 +390,7 @@ export const cleanupOrphanRecords = async (
           console.log(`🗑️ Удалено видео: ${video.videoId}`);
         }
       } catch (cdnError) {
-        console.warn(`⚠️ Не удалось удалить видео: ${video.videoId}`);
+        console.warn(`⚠️ Failed to delete video: ${video.videoId}`);
       }
 
       await VideoModel.findByIdAndDelete(video._id);
@@ -449,7 +449,7 @@ export const cleanupOrphanRecords = async (
   } catch (error) {
     console.error('❌ Ошибка при очистке сиротских записей:', error);
     res.status(500).json({
-      message: 'Ошибка при очистке сиротских записей',
+      message: 'Error while cleaning orphan records',
       error: (error as Error).message
     });
   }
@@ -466,8 +466,7 @@ export const debugObjectState = async (req: Request, res: Response): Promise<voi
     // Get images
     const images = await ImagesModel.find({ realEstateObject: objectId }).lean();
     // Get videos
-    const videos = await VideoModel.find({ realEstateObject: objectId }).lean();
-    
+    const videos = await VideoModel.find({ realEstateObject: objectId }).lean();    
     //Get specific data
     let specificData = null;
     if (object) {

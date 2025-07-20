@@ -48,7 +48,7 @@ const App = () => {
           <Route path="/rechner" element={<MortgageCalculator />} />
           <Route path="*" element={<NotFound />} />
 
-                    {/* Страницы аутентификации */}
+                    {/* Authentication pages */}
           <Route path="/add-property" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -57,7 +57,7 @@ const App = () => {
             element={<ProtectedRoute>{<ChangePassword />}</ProtectedRoute>}
           />
 
-                    {/* Защищенные маршруты для администратора */}
+                    {/* Protcted routes for admin */}
           <Route
             path="/create-object"
             element={

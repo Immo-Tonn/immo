@@ -15,7 +15,7 @@
   max-height: 136px;
 }
 
-/* Контейнер для навигации и админ-меню */
+/*Container for navi and admin menu */
 .navContainer {
   display: flex;
   flex-direction: column;
@@ -29,13 +29,13 @@
   align-items: flex-end;
 }
 
-/* Админ-кнопка для десктопа (внутри nav) */
+/* Admin button for desktop (inside nav) */
 .adminDesktop {
   display: flex;
   align-items: flex-end;
 }
 
-/* Админ-кнопка для планшета (под nav) */
+/* Admin button for tablet (under nav) */
 .adminTablet {
   display: none;
   margin-top: 10px;
@@ -190,8 +190,8 @@
   margin-top: 10px;
 }
 
-/* Планшетный размер (765px и менее) */
-@media (max-width: 765px) {
+/* Планшетный размер (768px и менее) */
+@media (max-width: 768px) {
   .logo {
     max-height: 114px;
     grid-row: 1 / span 2;
@@ -212,12 +212,12 @@
     justify-content: flex-start;
   }
 
-  /* Скрываем админ-кнопку в nav для планшета */
+  /* Hiding  admin button in nav for tablet */
   .adminDesktop {
     display: none;
   }
 
-  /* Показываем админ-кнопку под nav для планшета */
+  /* Showing admin button under nav for tablet */
   .adminTablet {
     display: block;
     margin-top: 5px;

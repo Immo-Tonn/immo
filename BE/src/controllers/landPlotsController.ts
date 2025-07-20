@@ -44,14 +44,14 @@ export const createLandPlot = async (
 ): Promise<void> => {
   try {
 
-    console.log('🔍 DEBUG createLandPlot: Получен запрос');
-    console.log('🔍 DEBUG req.body:', JSON.stringify(req.body, null, 2));
+    // console.log('🔍 DEBUG createLandPlot: Получен запрос');
+    // console.log('🔍 DEBUG req.body:', JSON.stringify(req.body, null, 2));
 
     const { realEstateObject, ...LandPlotsData } = req.body;
 
-    console.log('🔍 DEBUG realEstateObject ID:', realEstateObject);
-    console.log('🔍 DEBUG LandPlotsData:', JSON.stringify(LandPlotsData, null, 2));
-    console.log('🔍 DEBUG landPlottype в данных:', LandPlotsData.landPlottype);
+    // console.log('🔍 DEBUG realEstateObject ID:', realEstateObject);
+    // console.log('🔍 DEBUG LandPlotsData:', JSON.stringify(LandPlotsData, null, 2));
+    // console.log('🔍 DEBUG landPlottype в данных:', LandPlotsData.landPlottype);
 
 
     // 1. Check: property exist?
@@ -82,20 +82,20 @@ export const createLandPlot = async (
       realEstateObject,
     });
 
-    console.log('🔍 DEBUG newLandPlot до сохранения:', JSON.stringify(newLandPlot.toObject(), null, 2));
-    console.log('🔍 DEBUG newLandPlot.landPlottype:', newLandPlot.landPlottype);    
+    // console.log('🔍 DEBUG newLandPlot до сохранения:', JSON.stringify(newLandPlot.toObject(), null, 2));
+    // console.log('🔍 DEBUG newLandPlot.landPlottype:', newLandPlot.landPlottype);    
 
     const savedLandPlot = await newLandPlot.save();
 
-    console.log('🔍 DEBUG savedLandPlot после сохранения:', JSON.stringify(savedLandPlot.toObject(), null, 2));
-    console.log('🔍 DEBUG savedLandPlot.landPlottype:', savedLandPlot.landPlottype);    
+    // console.log('🔍 DEBUG savedLandPlot после сохранения:', JSON.stringify(savedLandPlot.toObject(), null, 2));
+    // console.log('🔍 DEBUG savedLandPlot.landPlottype:', savedLandPlot.landPlottype);    
 
     // 3. Adding a Plot ID to a Property
     realEstate.landPlots = savedLandPlot._id as Types.ObjectId;
     await realEstate.save();
 
     // 4. Reply to client
-    console.log('🔍 DEBUG Отправляем ответ клиенту:', savedLandPlot);
+    // console.log('🔍 DEBUG Отправляем ответ клиенту:', savedLandPlot);
     res.status(201).json(savedLandPlot);
   } catch (error) {
     console.error('🔍 DEBUG Ошибка в createLandPlot:', error);

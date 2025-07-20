@@ -42,6 +42,7 @@ export interface Apartment {
 export interface CommercialBuilding {
   buildingType: string;
   area?: number;
+  plotArea: number;
   yearBuilt?: number;
   purpose?: string;
   additionalFeatures?: string;

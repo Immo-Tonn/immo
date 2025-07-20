@@ -77,10 +77,10 @@ export const uploadToBunnyVideo = async (
     req.end();
   });
 
-  // Удаляем локальный файл после успешной загрузки
+  // Delete local file after successful download
   fs.unlinkSync(filePath);
 
-  // Формируем публичные URL для видео и превью
+  // Generate public URLs for videos and previews
   return {
     videoId,
     videoUrl: `https://vz-${BUNNY_LIBRARY_ID}.b-cdn.net/${videoId}/play`,
