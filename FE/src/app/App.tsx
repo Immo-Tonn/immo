@@ -9,6 +9,7 @@ import RealEstate from '@pages/RealEstate/RealEstate';
 import Financing from '@pages/Financing/Financing';
 import ContactForm from '@features/contact/ui/ContactForm';
 import LegalNotice from '@pages/LegalNotice/LegalNotice';
+import LawAndAdvice from '@pages/LawAndAdvice/LawAndAdvice';
 import CancellationPolicy from '@pages/CancellationPolicy/CancellationPolicy';
 import PrivacyPolicy from '@pages/PrivacyPolicy/PrivacyPolicy';
 import DankePage from '@pages/DankePage/DankePage';
@@ -16,7 +17,6 @@ import ObjectStyling from '@pages/ObjectStyling/ObjectStyling';
 import '@shared/styles/global.css';
 import PropertyPage from '@pages/PropertyPage/PropertyPage';
 import SalesSupport from '@pages/SalesSupport/SalesSupport';
-import RechtUndRat from '@pages/RechtUndRat/RechtUndRat';
 import MortgageCalculator from '@features/mortgage/ui/MortgageCalculator';
 import ObjectPreview from '@pages/AdminObject/ObjectPrewiew/ObjectPrewiew';
 import Login from '@pages/Auth/Login';
@@ -40,11 +40,11 @@ const App = () => {
           <Route path="/finanzierung" element={<Financing />} />
           <Route path="/kontakt" element={<ContactForm />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
+          <Route path="/recht-und-rat" element={<LawAndAdvice />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/kontakt/danke" element={<DankePage />} />
           <Route path="/cancellationpolicy" element={<CancellationPolicy />} />
           <Route path="/verkaufssupport" element={<SalesSupport />} />
-          <Route path="/recht-und-rat" element={<RechtUndRat />} />
           <Route path="/rechner" element={<MortgageCalculator />} />
           <Route path="*" element={<NotFound />} />
 

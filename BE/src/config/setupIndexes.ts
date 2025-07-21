@@ -40,7 +40,7 @@ export const setupDatabaseIndexes = async (): Promise<void> => {
     await RealEstateObjectsModel.collection.createIndex({ dateAdded: -1 });
     console.log("✅ Index for realestateobjects.dateAdded created");
 
-    // Текстовый индекс для поиска по заголовку и описанию
+    // Text index for searching by title and description
     await RealEstateObjectsModel.collection.createIndex({
       title: "text",
       description: "text",

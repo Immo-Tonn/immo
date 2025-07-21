@@ -22,12 +22,12 @@ const connectDb = async () => {
       // create the necessary indices
       await setupDatabaseIndexes();
     } catch (indexError) {
-      console.warn("⚠️ Предупреждение: не удалось создать некоторые индексы:", indexError);
+      console.warn("⚠️ Warning: Some indexes could not be created:", indexError);
   // Do not interrupt the application due to errors with indexes
     }
 
   } catch (error) {
-    console.error("❌ Ошибка подключения к MongoDB:", error);
+    console.error("❌ Error connecting to MongoDB:", error);
     process.exit(1); // Interrupt when the connection error
   }
 };

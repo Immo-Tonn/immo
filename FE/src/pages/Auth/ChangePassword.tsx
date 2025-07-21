@@ -373,16 +373,16 @@ const ChangePassword: React.FC = () => {
         </div>
       </form>
 
-      {/* <div style={{ marginTop: "20px", fontSize: "14px" }}>
-        <h3>Требования к паролю:</h3>
+      <div style={{ marginTop: "20px", fontSize: "14px" }}>
+        <h3>Kennwortanforderungen:</h3>
         <ul style={{ paddingLeft: "20px" }}>
-          <li>Минимум 8 символов</li>
-          <li>Минимум 1 цифра</li>
-          <li>Минимум 1 заглавная буква</li>
-          <li>Минимум 1 строчная буква</li>
-          <li>Минимум 1 специальный символ (!@#$%^&*()_+...)</li>
+          <li>Mindestens 8 Zeichen</li>
+          <li>Mindestens 1 Ziffer</li>
+          <li>Mindestens 1 Großbuchstabe</li>
+          <li>Mindestens 1 Kleinbuchstabe</li>
+          <li>Mindestens 1 Sonderzeichen (!@#$%^&*()_+...)</li>
         </ul>
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -33,7 +33,7 @@ app.use(cors());
    res.json({ message: "API работает" });
  });
 
-//Маршрут для отладки подключения к базе данных
+//Route for debugging database connection
 app.get("/api/debug/db", (req, res) => {
   const dbInfo: {
     database: string;
