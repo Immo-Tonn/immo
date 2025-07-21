@@ -2,8 +2,8 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import connectDb from './config/db';
-import "./models"; // models/index.ts
-import authRoutes from "./routes/authRoutes";
+import './models'; // models/index.ts
+import authRoutes from './routes/authRoutes';
 import realEstateRoutes from './routes/realEstateObjectsRoutes';
 import imagesRoutes from './routes/imagesRoutes';
 import apartmentRoutes from './routes/apartmentsRoutes';
@@ -17,7 +17,7 @@ import {
   errorLogger,
   errorHandler,
   setupUncaughtErrorHandlers,
-} from "./middleware/errorMiddleware";
+} from './middleware/errorMiddleware';
 
 setupUncaughtErrorHandlers();
 const app: Application = express();
@@ -89,11 +89,11 @@ app.use("/api/images", imagesRoutes);
 app.use("/api/videos", videosRoutes);
 app.use("/api/apartments", apartmentRoutes);
 app.use(
-  "/api/commercial_NonResidentialBuildings",
-  commercial_NonResidentialBuildingsRoutes
+  '/api/commercial_NonResidentialBuildings',
+  commercial_NonResidentialBuildingsRoutes,
 );
-app.use("/api/landPlots", landPlotRoutes);
-app.use("/api/residentialHouses", residentialHousesRoutes);
+app.use('/api/landPlots', landPlotRoutes);
+app.use('/api/residentialHouses', residentialHousesRoutes);
 app.use('/api/email', emailRoutes);
 
 app.use(errorLogger);

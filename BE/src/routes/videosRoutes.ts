@@ -1,6 +1,6 @@
-import express from "express";
-import multer from "multer";
-import path from "path";
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
 import {
   uploadVideo,
   deleteVideo,
@@ -8,16 +8,16 @@ import {
   getVideoById,
   updateVideo,
   getVideosByObjectId,
-} from "../controllers/videosController";
-import { protectVideoRoutes } from "../middleware/adminRouteMiddleware";
-import { uploadSingleVideo } from "../middleware/uploadMiddleware";
+} from '../controllers/videosController';
+import { protectVideoRoutes } from '../middleware/adminRouteMiddleware';
+import { uploadSingleVideo } from '../middleware/uploadMiddleware';
 const router = express.Router();
 
-router.post("/", protectVideoRoutes, uploadSingleVideo, uploadVideo);
-router.delete("/:id", protectVideoRoutes,  deleteVideo);
-router.put("/:id", protectVideoRoutes, uploadSingleVideo, updateVideo);
-router.get("/", getAllVideos);
-router.get("/by-object", getVideosByObjectId);
-router.get("/:id", getVideoById);
+router.post('/', protectVideoRoutes, uploadSingleVideo, uploadVideo);
+router.delete('/:id', protectVideoRoutes, deleteVideo);
+router.put('/:id', protectVideoRoutes, uploadSingleVideo, updateVideo);
+router.get('/', getAllVideos);
+router.get('/by-object', getVideosByObjectId);
+router.get('/:id', getVideoById);
 
 export default router;

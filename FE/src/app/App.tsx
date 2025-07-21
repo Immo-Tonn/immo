@@ -26,6 +26,7 @@ import ProtectedRoute from '@features/utils/ProtectedRoute';
 import ChangePassword from '@pages/Auth/ChangePassword';
 import CreateObject from '@pages/AdminObject/CreateObject/CreateObject';
 
+
 const App = () => {
   return (
     <Router>
@@ -57,7 +58,7 @@ const App = () => {
             element={<ProtectedRoute>{<ChangePassword />}</ProtectedRoute>}
           />
 
-                    {/* Protcted routes for admin */}
+                    {/* Protected routes for admin */}
           <Route
             path="/create-object"
             element={
@@ -76,12 +77,12 @@ const App = () => {
           />
           <Route
             path="/edit-object/:id"
-            element= {
+            element={
               <ProtectedRoute>
                 <CreateObject />
               </ProtectedRoute>
             }
-            />
+          />
         </Routes>
       </Layout>
     </Router>

@@ -45,7 +45,6 @@
 //   Bebauungsplan: land?.buildingRegulations,
 // });
 
-
 // // import {
 // //   RealEstateObject,
 // //   Apartment,

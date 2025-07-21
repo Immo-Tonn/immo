@@ -86,7 +86,7 @@ const ChangePassword: React.FC = () => {
     try {
       setLoading(true);
 
-      // get a token from 
+      // get a token from
       const token = sessionStorage.getItem('adminToken');
 
       // send a request to change the password
@@ -114,27 +114,27 @@ const ChangePassword: React.FC = () => {
     }
   };
 
-    // Индикатор сложности пароля
+  // Индикатор сложности пароля
   const getPasswordStrength = (
-    password: string
+    password: string,
   ): {
     text: string;
     color: string;
     width: string;
   } => {
     if (!password) {
-      return { text: "", color: "#e0e0e0", width: "0%" };
+      return { text: '', color: '#e0e0e0', width: '0%' };
     }
 
-      const criteria = [
-        password.length >= 8,
-        /\d/.test(password),
-        /[A-Z]/.test(password),
-        /[a-z]/.test(password),
-        /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
-      ];
+    const criteria = [
+      password.length >= 8,
+      /\d/.test(password),
+      /[A-Z]/.test(password),
+      /[a-z]/.test(password),
+      /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+    ];
 
-      const metCriteria = criteria.filter((c) => c).length;
+    const metCriteria = criteria.filter(c => c).length;
 
       switch (metCriteria) {
         case 0:
@@ -264,17 +264,17 @@ const ChangePassword: React.FC = () => {
               >
                 <div
                   style={{
-                    height: "100%",
+                    height: '100%',
                     width: passwordStrength.width,
                     backgroundColor: passwordStrength.color,
-                    transition: "width 0.3s ease",
+                    transition: 'width 0.3s ease',
                   }}
                 ></div>
               </div>
               <div
                 style={{
-                  fontSize: "12px",
-                  marginTop: "3px",
+                  fontSize: '12px',
+                  marginTop: '3px',
                   color: passwordStrength.color,
                 }}
               >

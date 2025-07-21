@@ -16,13 +16,18 @@ export const uploadVideo = async (
   try {
     console.log('🎥 Начинаем загрузку видео...');
     console.log('📋 Body:', req.body);
-    console.log('📁 File:', req.file ? {
-      filename: req.file.filename,
-      originalname: req.file.originalname,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      path: req.file.path
-    } : 'Файл не найден');
+    console.log(
+      '📁 File:',
+      req.file
+        ? {
+            filename: req.file.filename,
+            originalname: req.file.originalname,
+            mimetype: req.file.mimetype,
+            size: req.file.size,
+            path: req.file.path,
+          }
+        : 'Файл не найден',
+    );
     const { realEstateObjectId, title } = req.body;
 
     if (!realEstateObjectId) {
@@ -34,7 +39,7 @@ export const uploadVideo = async (
     const videoFile = req.file;
 
     if (!videoFile) {
-       console.error('❌ Видео файл не найден в запросе');
+      console.error('❌ Видео файл не найден в запросе');
       res.status(400).json({ error: 'Video file required' });
       return;
     }
@@ -46,7 +51,7 @@ export const uploadVideo = async (
       return;
     }
 
-    console.log('✅ Файл найден, начинаем загрузку в Bunny CDN...');    
+    console.log('✅ Файл найден, начинаем загрузку в Bunny CDN...');
 
     const { videoId, videoUrl, thumbnailUrl } = await uploadToBunnyVideo(
       videoFile.path,
@@ -64,7 +69,7 @@ export const uploadVideo = async (
       dateAdded: new Date(),
     });
 
-    console.log('✅ Видео сохранено в БД:', videoDoc._id);    
+    console.log('✅ Видео сохранено в БД:', videoDoc._id);
 
     await RealEstateObjectsModel.findByIdAndUpdate(realEstateObjectId, {
       $push: { videos: videoDoc._id },
@@ -78,7 +83,7 @@ export const uploadVideo = async (
       console.log('✅ Временный файл удален:', videoFile.path);
     } catch (unlinkError) {
       console.warn('⚠️ Не удалось удалить временный файл:', unlinkError);
-    }    
+    }
 
     res.status(201).json(videoDoc);
   } catch (error: any) {
@@ -90,10 +95,13 @@ export const uploadVideo = async (
         fs.unlinkSync(req.file.path);
         console.log('🧹 Временный файл удален после ошибки');
       } catch (unlinkError) {
-        console.warn('⚠️ Не удалось удалить временный файл после ошибки:', unlinkError);
+        console.warn(
+          '⚠️ Не удалось удалить временный файл после ошибки:',
+          unlinkError,
+        );
       }
-    } 
-    
+    }
+
     res
       .status(500)
       .json({ error: 'Upload failed', details: error.message || error });
@@ -249,7 +257,7 @@ export const updateVideo = async (
         fs.unlinkSync(newVideoFile.path);
       } catch (unlinkError) {
         console.warn('⚠️ Не удалось удалить временный файл:', unlinkError);
-      }      
+      }
     }
 
     // 4. Save changes
@@ -264,7 +272,10 @@ export const updateVideo = async (
       try {
         fs.unlinkSync(req.file.path);
       } catch (unlinkError) {
-        console.warn('⚠️ Не удалось удалить временный файл после ошибки:', unlinkError);
+        console.warn(
+          '⚠️ Не удалось удалить временный файл после ошибки:',
+          unlinkError,
+        );
       }
     }
 

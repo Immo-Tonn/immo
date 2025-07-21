@@ -97,26 +97,29 @@ const RealEstate = () => {
             <div className={styles.adminInfo}>
               <h4>Informationen für Administratoren</h4>
               {objectData && objectData.length > 0 ? (
-          <>
-            <p>Alle Nutzer sehen alle erstellten Objekte auf der Website.</p>
-            <p>
-            Um Objekte zu verwalten, verwenden Sie die Schaltflächen
-           „Bearbeiten" und „Löschen" in der Detailansicht oder erstellen
-           Sie ein neues Objekt über die Schaltfläche „+ Objekt erstellen".
-           </p>
-         </>
-    ) : (
-      <>
-        <p>Derzeit sind keine Objekte in der Datenbank vorhanden.</p>
-        <p>
-          Erstellen Sie Ihr erstes Objekt über die Schaltfläche 
-          „+ Objekt erstellen" oben auf der Seite.
-        </p>
-      </>
-    )}
-  </div>
-)}
-</section>
+                <>
+                  <p>
+                    Alle Nutzer sehen alle erstellten Objekte auf der Website.
+                  </p>
+                  <p>
+                    Um Objekte zu verwalten, verwenden Sie die Schaltflächen
+                    „Bearbeiten" und „Löschen" in der Detailansicht oder
+                    erstellen Sie ein neues Objekt über die Schaltfläche „+
+                    Objekt erstellen".
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>Derzeit sind keine Objekte in der Datenbank vorhanden.</p>
+                  <p>
+                    Erstellen Sie Ihr erstes Objekt über die Schaltfläche „+
+                    Objekt erstellen" oben auf der Seite.
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+        </section>
       )}
     </>
   );

@@ -29,7 +29,8 @@ const VideoManager: React.FC<VideoManagerProps> = ({
   isEditMode = false,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<VideoFile[]>([]);
-  const [existingVideoList, setExistingVideoList] = useState<Video[]>(existingVideos);
+  const [existingVideoList, setExistingVideoList] =
+    useState<Video[]>(existingVideos);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
@@ -50,7 +51,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
           originalUrl: video.url,
           thumbnailUrl: video.thumbnailUrl,
           directUrl: getDirectVideoUrl(video.url),
-          iframeUrl: getIframeUrl(video.url)
+          iframeUrl: getIframeUrl(video.url),
         });
       });
       console.log('========================');
@@ -78,9 +79,9 @@ const VideoManager: React.FC<VideoManagerProps> = ({
       /\/([a-f0-9\-]+)\/thumbnail/,
       /\/([a-f0-9\-]+)\/preview/,
       /play\/\d+\/([a-f0-9\-]+)/,
-      /embed\/\d+\/([a-f0-9\-]+)/
+      /embed\/\d+\/([a-f0-9\-]+)/,
     ];
-    
+
     for (const pattern of patterns) {
       const match = url.match(pattern);
       if (match && match[1]) return match[1];
@@ -96,17 +97,18 @@ const VideoManager: React.FC<VideoManagerProps> = ({
 
       // Processing URL format: https://iframe.mediadelivery.net/play/430278/{videoId}
       const playRegex = /iframe\.mediadelivery\.net\/play\/\d+\/([a-f0-9\-]+)/;
-      const embedRegex = /iframe\.mediadelivery\.net\/embed\/\d+\/([a-f0-9\-]+)/;
-      
+      const embedRegex =
+        /iframe\.mediadelivery\.net\/embed\/\d+\/([a-f0-9\-]+)/;
+
       const playMatch = originalUrl.match(playRegex);
       const embedMatch = originalUrl.match(embedRegex);
       const videoId = playMatch?.[1] || embedMatch?.[1];
-      
+
       if (videoId) {
         // Use THUMBNAIL_PROJECT_ID to form a direct link
         return `https://vz-973fa28c-a7d.b-cdn.net/${videoId}/play_480p.mp4`;
       }
-      
+
       console.warn('Не удалось извлечь videoId из URL:', originalUrl);
       return originalUrl;
     } catch (error) {
@@ -128,7 +130,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
       // In: https://iframe.mediadelivery.net/embed/430278/{videoId}
       const playRegex = /iframe\.mediadelivery\.net\/play\/(\d+)\/([a-f0-9\-]+)/;
       const match = originalUrl.match(playRegex);
-      
+
       if (match) {
         const [, libraryId, videoId] = match;
         return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}`;
@@ -137,12 +139,12 @@ const VideoManager: React.FC<VideoManagerProps> = ({
       // If it`s a direct BunnyCDN link, try to get the iframe URL
       const directRegex = /vz-[\w\-]+\.b-cdn\.net\/([a-f0-9\-]+)/;
       const directMatch = originalUrl.match(directRegex);
-      
+
       if (directMatch) {
         const [, videoId] = directMatch;
         return `https://iframe.mediadelivery.net/embed/430278/${videoId}`;
       }
-      
+
       return originalUrl;
     } catch (error) {
       console.error('Ошибка при получении iframe URL:', error);
@@ -165,7 +167,10 @@ const VideoManager: React.FC<VideoManagerProps> = ({
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (dropZoneRef.current && !dropZoneRef.current.contains(e.relatedTarget as Node)) {
+    if (
+      dropZoneRef.current &&
+      !dropZoneRef.current.contains(e.relatedTarget as Node)
+    ) {
       setIsDragging(false);
     }
   };
@@ -189,19 +194,29 @@ const VideoManager: React.FC<VideoManagerProps> = ({
 
   // Checking and processing files
   const processFiles = (files: File[]) => {
-    const videoFiles = files.filter(file => 
-      file.type.startsWith('video/') || 
-      ['video/mp4', 'video/avi', 'video/mov', 'video/wmv', 'video/flv', 'video/webm'].includes(file.type)
+    const videoFiles = files.filter(
+      file =>
+        file.type.startsWith('video/') ||
+        [
+          'video/mp4',
+          'video/avi',
+          'video/mov',
+          'video/wmv',
+          'video/flv',
+          'video/webm',
+        ].includes(file.type),
     );
 
     if (videoFiles.length === 0) {
-      setError('Bitte wählen Sie nur Videodateien aus (mp4, avi, mov, wmv, flv, webm)');
+      setError(
+        'Bitte wählen Sie nur Videodateien aus (mp4, avi, mov, wmv, flv, webm)',
+      );
       return;
     }
 
     const maxSize = 100 * 1024 * 1024; // 100MB
     const oversizedFiles = videoFiles.filter(file => file.size > maxSize);
-    
+
     if (oversizedFiles.length > 0) {
       setError('Einige Dateien überschreiten die maximale Größe von 100MB');
       return;
@@ -212,7 +227,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     // Add files with basic names and correct typing
     const filesWithTitles: VideoFile[] = videoFiles.map(file => {
       const videoFile = file as VideoFile;
-      videoFile.title = file.name.replace(/\.[^/.]+$/, ""); // убираем расширение
+      videoFile.title = file.name.replace(/\.[^/.]+$/, ''); // убираем расширение
       return videoFile;
     });
 
@@ -221,7 +236,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
 
   // New video title update
   const updateVideoTitle = (index: number, title: string) => {
-    setSelectedFiles(prev => 
+    setSelectedFiles(prev =>
       prev.map((file, i) => {
         if (i === index && file) {
           const updatedFile = { ...file };
@@ -229,7 +244,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
           return updatedFile;
         }
         return file;
-      })
+      }),
     );
   };
 
@@ -237,16 +252,16 @@ const VideoManager: React.FC<VideoManagerProps> = ({
   const updateExistingVideoTitle = async (videoId: string, title: string) => {
     try {
       await axiosInstance.put(`/videos/${videoId}`, { title });
-      
-      setExistingVideoList(prev => 
-        prev.map(video => 
-          video._id === videoId ? { ...video, title } : video
-        )
+
+      setExistingVideoList(prev =>
+        prev.map(video =>
+          video._id === videoId ? { ...video, title } : video,
+        ),
       );
-      
+
       if (onVideosChange) {
-        const updatedVideos = existingVideoList.map(video => 
-          video._id === videoId ? { ...video, title } : video
+        const updatedVideos = existingVideoList.map(video =>
+          video._id === videoId ? { ...video, title } : video,
         );
         onVideosChange(updatedVideos);
       }
@@ -261,15 +276,19 @@ const VideoManager: React.FC<VideoManagerProps> = ({
   };
 
   const removeExistingVideo = async (videoId: string) => {
-    if (!window.confirm('Sind Sie sicher, dass Sie dieses Video löschen möchten?')) {
+    if (
+      !window.confirm('Sind Sie sicher, dass Sie dieses Video löschen möchten?')
+    ) {
       return;
     }
     try {
       await axiosInstance.delete(`/videos/${videoId}`);     
       setExistingVideoList(prev => prev.filter(video => video._id !== videoId));
-      
+
       if (onVideosChange) {
-        const updatedVideos = existingVideoList.filter(video => video._id !== videoId);
+        const updatedVideos = existingVideoList.filter(
+          video => video._id !== videoId,
+        );
         onVideosChange(updatedVideos);
       }
     } catch (err) {
@@ -304,11 +323,13 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         await axiosInstance.post('/videos', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
           timeout: 300000, // Увеличиваем timeout для видео файлов
-          onUploadProgress: (progressEvent) => {
+          onUploadProgress: progressEvent => {
             const total = progressEvent.total || 1;
             const current = progressEvent.loaded;
             const fileProgress = (current / total) * 100;
-            const totalProgress = ((i / selectedFiles.length) * 100) + (fileProgress / selectedFiles.length);
+            const totalProgress =
+              (i / selectedFiles.length) * 100 +
+              fileProgress / selectedFiles.length;
             setUploadProgress(Math.round(totalProgress));
           },
         });
@@ -318,7 +339,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
       const response = await axiosInstance.get(`/videos/by-object?objectId=${realEstateObjectId}`);
       const newVideos = response.data || [];
       setExistingVideoList(newVideos);
-      
+
       if (onVideosChange) {
         onVideosChange(newVideos);
       }
@@ -328,7 +349,10 @@ const VideoManager: React.FC<VideoManagerProps> = ({
       setUploadProgress(0);
     } catch (err: any) {
       console.error('Fehler beim Hochladen der Videos:', err);
-      setError('Fehler beim Hochladen der Videos: ' + (err.response?.data?.error || err.message));
+      setError(
+        'Fehler beim Hochladen der Videos: ' +
+          (err.response?.data?.error || err.message),
+      );
     } finally {
       setUploading(false);
     }
@@ -343,11 +367,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     <div className={styles.videoSection}>
       <h3 className={styles.sectionTitle}>Videos</h3>
 
-      {error && (
-        <div className={styles.errorMessage}>
-          {error}
-        </div>
-      )}
+      {error && <div className={styles.errorMessage}>{error}</div>}
 
       {/* Existing videos */}
       {isEditMode && existingVideoList.length > 0 && (
@@ -355,15 +375,16 @@ const VideoManager: React.FC<VideoManagerProps> = ({
           <h4 className={styles.imageSection}>Aktuelle Videos</h4>
           <div className={styles.videoPreviews}>
             {existingVideoList.map((video, index) => (
-              <div key={`existing-${video._id || index}`} className={`${styles.videoPreviewItem} ${styles.existingVideo}`}>
-                <div className={styles.existingVideoLabel}>
-                  Vorhanden
-                </div>
+              <div
+                key={`existing-${video._id || index}`}
+                className={`${styles.videoPreviewItem} ${styles.existingVideo}`}
+              >
+                <div className={styles.existingVideoLabel}>Vorhanden</div>
                 <div className={styles.videoTitle}>
                   <input
                     type="text"
                     value={video.title || ''}
-                    onChange={(e) => {
+                    onChange={e => {
                       if (video._id) {
                         updateExistingVideoTitle(video._id, e.target.value);
                       }
@@ -377,7 +398,9 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                 <div className={styles.videoControls}>
                   <button
                     type="button"
-                    onClick={() => window.open(getIframeUrl(video.url), '_blank')}
+                    onClick={() =>
+                      window.open(getIframeUrl(video.url), '_blank')
+                    }
                     className={styles.openVideoBtn}
                     title="Video im Browser testen"
                   >
@@ -400,19 +423,20 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                 {/* Show thumbnail with correct URL */}
                 <div className={styles.videoPreview}>
                   {video.thumbnailUrl ? (
-                    <img 
-                      src={getCorrectThumbnailUrl(video)} 
+                    <img
+                      src={getCorrectThumbnailUrl(video)}
                       alt={video.title || 'Video preview'}
                       className={styles.videoThumbnail}
                       onError={(e) => {
                         console.warn('Ошибка загрузки thumbnail:', getCorrectThumbnailUrl(video));
                         // If the thumbnail is not loaded, hide the image and show the placeholder
                         const target = e.target as HTMLImageElement;
-                        
+
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent) {
-                          const placeholder = parent.querySelector('.video-placeholder');
+                          const placeholder =
+                            parent.querySelector('.video-placeholder');
                           if (placeholder) {
                             (placeholder as HTMLElement).style.display = 'flex';
                           }
@@ -420,9 +444,9 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                       }}
                     />
                   ) : null}
-                  
+
                   {/* PlaySholder for cases when no Thumbnail or not boot */}
-                  <div 
+                  <div
                     className={`${styles.videoPlaceholder} video-placeholder`}
                     style={{ display: video.thumbnailUrl ? 'none' : 'flex' }}
                   >
@@ -458,10 +482,9 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         <div className={styles.dropZoneContent}>
           <span className={styles.dropZoneIcon}>🎥</span>
           <p>
-            {isEditMode 
+            {isEditMode
               ? 'Neue Videos hier ablegen oder Dateien auswählen'
-              : 'Videos hier ablegen oder Dateien auswählen'
-            }
+              : 'Videos hier ablegen oder Dateien auswählen'}
           </p>
           <input
             ref={fileInputRef}
@@ -472,7 +495,8 @@ const VideoManager: React.FC<VideoManagerProps> = ({
             className={styles.fileInput}
           />
           <p className={styles.dropZoneHint}>
-            Unterstützte Formate: MP4, AVI, MOV, WMV, FLV, WebM (max 100MB pro Datei)
+            Unterstützte Formate: MP4, AVI, MOV, WMV, FLV, WebM (max 100MB pro
+            Datei)
           </p>
         </div>
       </div>
@@ -487,24 +511,23 @@ const VideoManager: React.FC<VideoManagerProps> = ({
             {selectedFiles.map((file, index) => {
               // check that the file exists
               if (!file) return null;
-              
+
               return (
-                <div key={`new-${index}`} className={`${styles.videoPreviewItem} ${styles.newVideo}`}>
-                  <div className={styles.newVideoLabel}>
-                    Neu
-                  </div>
+                <div
+                  key={`new-${index}`}
+                  className={`${styles.videoPreviewItem} ${styles.newVideo}`}
+                >
+                  <div className={styles.newVideoLabel}>Neu</div>
                   <div className={styles.videoTitle}>
                     <input
                       type="text"
                       value={file.title || ''}
-                      onChange={(e) => updateVideoTitle(index, e.target.value)}
+                      onChange={e => updateVideoTitle(index, e.target.value)}
                       className={styles.videoTitleInput}
                       placeholder="Titel des Videos"
                     />
                   </div>
-                  <div className={styles.videoFileName}>
-                    📁 {file.name}
-                  </div>
+                  <div className={styles.videoFileName}>📁 {file.name}</div>
                   <div className={styles.videoFileName}>
                     📊 {(file.size / (1024 * 1024)).toFixed(1)} MB
                   </div>
@@ -544,7 +567,8 @@ const VideoManager: React.FC<VideoManagerProps> = ({
             onClick={uploadVideos}
             className={styles.uploadButton}
           >
-            {selectedFiles.length} Video{selectedFiles.length > 1 ? 's' : ''} hochladen
+            {selectedFiles.length} Video{selectedFiles.length > 1 ? 's' : ''}{' '}
+            hochladen
           </button>
         </div>
       )}

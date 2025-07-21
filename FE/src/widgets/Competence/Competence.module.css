@@ -1,6 +1,9 @@
 .competenceSection {
   background-color: #f2f1f1;
   padding: 66px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .firstTitle {
   margin-bottom: 20px;
@@ -24,11 +27,7 @@
   max-width: 582px;
   border-bottom: 1px solid #000;
 }
-.competenceSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 .competenceSection > p {
   font-weight: var(--font-weight-secondary);
   font-family: var(--Inter);
@@ -48,7 +47,6 @@
 
 .competenceSection > img {
   margin-top: clamp(40px, 6vh, 91px);
-  /* max-height: 688px; */
   width: 100%;
 }
 

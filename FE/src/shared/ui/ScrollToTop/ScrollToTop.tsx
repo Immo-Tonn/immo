@@ -16,7 +16,7 @@ const ScrollToTop = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const vh = window.innerHeight;
-      setIsVisible(scrollY > 0.99 * vh);
+      setIsVisible(scrollY > 1.5 * vh);
     };
 
     window.addEventListener('scroll', handleScroll);

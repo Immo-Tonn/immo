@@ -2,7 +2,7 @@
   display: flex;
   align-items: flex-start;
   position: relative;
-  padding: 2rem 1rem;
+  padding: 2rem 2rem;
   font-family: var(--Roboto);
 }
 
@@ -36,6 +36,7 @@
   gap: 0.5rem;
   max-width: 100%;
 }
+
 .status {
   display: flex;
   justify-content: space-between;
@@ -127,10 +128,17 @@
 }
 
 @media (max-width: 768px) {
+  .stickyAside::-webkit-scrollbar {
+    display: none;
+  }
   .calcButton {
     font-size: 20px;
     padding: 0.5rem 1rem;
     width: 100%;
+  }
+
+  .section {
+    max-width: 95%;
   }
 
   .sectionTitle {
@@ -164,7 +172,7 @@
     justify-content: center;
     align-items: center;
     position: sticky;
-    top: 500px;
+    top: 400px;
     z-index: 10;
     padding: 1rem 0;
     width: 100%;

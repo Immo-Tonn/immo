@@ -28,10 +28,10 @@ const ObjectPreview = () => {
       return 'Das Objekt wurde erfolgreich erstellt! Überprüfen Sie die folgende Daten..';
     }
     return '';
-  }
+  };
 
   // Function to open a modal window
-  const openImageModal = (index: number) => { 
+  const openImageModal = (index: number) => {
     setCurrentImageIndex(index);
     setIsModalOpen(true);
   };
@@ -45,16 +45,12 @@ const ObjectPreview = () => {
   // Navigation functions in a modal window
   const handlePrev = () => {
     const allMedia = [...images, ...videos];
-    setCurrentImageIndex(prev => 
-      prev === 0 ? allMedia.length - 1 : prev - 1
-    );
+    setCurrentImageIndex(prev => (prev === 0 ? allMedia.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
     const allMedia = [...images, ...videos];
-    setCurrentImageIndex(prev => 
-      prev === allMedia.length - 1 ? 0 : prev + 1
-    );
+    setCurrentImageIndex(prev => (prev === allMedia.length - 1 ? 0 : prev + 1));
   };
 
   const handleSelect = (index: number) => {
@@ -72,8 +68,8 @@ const ObjectPreview = () => {
 
       try {
         setLoading(true);
-        console.log('Загружаем данные для объекта с ID:', id);       
-        
+        console.log('Загружаем данные для объекта с ID:', id);
+
         // Main object data
         const objectResponse = await axios.get(`/objects/${id}`);
         const mainObjectData = objectResponse.data;
@@ -83,9 +79,11 @@ const ObjectPreview = () => {
         // images of the object
         try {
           console.log('Загружаем изображения для объекта:', id);
-          const imagesResponse = await axios.get(`/images/by-object?objectId=${id}`);
+          const imagesResponse = await axios.get(
+            `/images/by-object?objectId=${id}`,
+          );
           if (imagesResponse.data && Array.isArray(imagesResponse.data)) {
-            setImages(imagesResponse.data); 
+            setImages(imagesResponse.data);
             console.log('Изображения загружены:', imagesResponse.data);
           } else {
             console.log('Изображения не найдены или неверный формат данных');
@@ -99,16 +97,23 @@ const ObjectPreview = () => {
         // Videos of the object
         try {
           console.log('Загружаем видео для объекта:', id);
-          const videosResponse = await axios.get(`/videos/by-object?objectId=${id}`);
+          const videosResponse = await axios.get(
+            `/videos/by-object?objectId=${id}`,
+          );
           if (videosResponse.data && Array.isArray(videosResponse.data)) {
             // Converting Video to Gallery Compatible Format
             const processedVideos = videosResponse.data.map(video => ({
               ...video,
               url: `https://iframe.mediadelivery.net/embed/430278/${video.videoId}`, // iframe URL
-              thumbnailUrl: video.thumbnailUrl || `https://vz-973fa28c-a7d.b-cdn.net/${video.videoId}/preview.webp`
+              thumbnailUrl:
+                video.thumbnailUrl ||
+                `https://vz-973fa28c-a7d.b-cdn.net/${video.videoId}/preview.webp`,
             }));
             setVideos(processedVideos);
-            console.log('Видео загружены на странице preview:', processedVideos);
+            console.log(
+              'Видео загружены на странице preview:',
+              processedVideos,
+            );
           } else {
             console.log('Видео не найдены на странице preview');
             setVideos([]);
@@ -120,84 +125,136 @@ const ObjectPreview = () => {
 
         // specific data
         try {
-          console.log('Пытаемся загрузить специфические данные для типа:', mainObjectData.type);
+          console.log(
+            'Пытаемся загрузить специфические данные для типа:',
+            mainObjectData.type,
+          );
           let specificEndpoint = '';
           let specificId = null;
 
           switch (mainObjectData.type) {
             case ObjectType.APARTMENT:
               if (mainObjectData.apartments) {
-                if (typeof mainObjectData.apartments === 'object' && mainObjectData.apartments._id) {
+                if (
+                  typeof mainObjectData.apartments === 'object' &&
+                  mainObjectData.apartments._id
+                ) {
                   specificId = mainObjectData.apartments._id;
                   setSpecificData(mainObjectData.apartments);
-                  console.log('Specific data already populated:', mainObjectData.apartments);
+                  console.log(
+                    'Specific data already populated:',
+                    mainObjectData.apartments,
+                  );
                   return;
                 } else if (typeof mainObjectData.apartments === 'string') {
                   specificId = mainObjectData.apartments;
                 }
               }
               specificEndpoint = '/apartments';
-              break;                          
-            
+              break;
+
             case ObjectType.HOUSE:
               if (mainObjectData.residentialHouses) {
-                if (typeof mainObjectData.residentialHouses === 'object' && mainObjectData.residentialHouses._id) {
+                if (
+                  typeof mainObjectData.residentialHouses === 'object' &&
+                  mainObjectData.residentialHouses._id
+                ) {
                   specificId = mainObjectData.residentialHouses._id;
                   setSpecificData(mainObjectData.residentialHouses);
-                  console.log('Specific data already populated:', mainObjectData.residentialHouses);
+                  console.log(
+                    'Specific data already populated:',
+                    mainObjectData.residentialHouses,
+                  );
                   return;
-                } else if (typeof mainObjectData.residentialHouses === 'string') {
+                } else if (
+                  typeof mainObjectData.residentialHouses === 'string'
+                ) {
                   specificId = mainObjectData.residentialHouses;
                 }
               }
               specificEndpoint = '/residentialHouses';
-              break;                          
-            
+              break;
+
             case ObjectType.LAND:
               if (mainObjectData.landPlots) {
-                if (typeof mainObjectData.landPlots === 'object' && mainObjectData.landPlots._id) {
+                if (
+                  typeof mainObjectData.landPlots === 'object' &&
+                  mainObjectData.landPlots._id
+                ) {
                   specificId = mainObjectData.landPlots._id;
                   setSpecificData(mainObjectData.landPlots);
-                  console.log('Specific data already populated:', mainObjectData.landPlots);
+                  console.log(
+                    'Specific data already populated:',
+                    mainObjectData.landPlots,
+                  );
                   return;
                 } else if (typeof mainObjectData.landPlots === 'string') {
                   specificId = mainObjectData.landPlots;
                 }
               }
               specificEndpoint = '/landPlots';
-              break;              
-            
+              break;
+
             case ObjectType.COMMERCIAL:
               if (mainObjectData.commercial_NonResidentialBuildings) {
-                if (typeof mainObjectData.commercial_NonResidentialBuildings === 'object' && mainObjectData.commercial_NonResidentialBuildings._id) {
-                  specificId = mainObjectData.commercial_NonResidentialBuildings._id;
-                  setSpecificData(mainObjectData.commercial_NonResidentialBuildings);
-                  console.log('Specific data already populated:', mainObjectData.commercial_NonResidentialBuildings);
+                if (
+                  typeof mainObjectData.commercial_NonResidentialBuildings ===
+                    'object' &&
+                  mainObjectData.commercial_NonResidentialBuildings._id
+                ) {
+                  specificId =
+                    mainObjectData.commercial_NonResidentialBuildings._id;
+                  setSpecificData(
+                    mainObjectData.commercial_NonResidentialBuildings,
+                  );
+                  console.log(
+                    'Specific data already populated:',
+                    mainObjectData.commercial_NonResidentialBuildings,
+                  );
                   return;
-                } else if (typeof mainObjectData.commercial_NonResidentialBuildings === 'string') {
-                  specificId = mainObjectData.commercial_NonResidentialBuildings;
+                } else if (
+                  typeof mainObjectData.commercial_NonResidentialBuildings ===
+                  'string'
+                ) {
+                  specificId =
+                    mainObjectData.commercial_NonResidentialBuildings;
                 }
               }
               specificEndpoint = '/commercial_NonResidentialBuildings';
-              break;              
-            
+              break;
+
             default:
               console.warn('Unknown object type:', mainObjectData.type);
           }
 
-          console.log('Specific ID:', specificId, 'Endpoint:', specificEndpoint);
+          console.log(
+            'Specific ID:',
+            specificId,
+            'Endpoint:',
+            specificEndpoint,
+          );
           if (specificId && specificEndpoint) {
-            console.log(`Loading specific data: ${specificEndpoint}/${specificId}`);
-            const specificResponse = await axios.get(`${specificEndpoint}/${specificId}`);
+            console.log(
+              `Loading specific data: ${specificEndpoint}/${specificId}`,
+            );
+            const specificResponse = await axios.get(
+              `${specificEndpoint}/${specificId}`,
+            );
             setSpecificData(specificResponse.data);
             console.log('Specific data loaded:', specificResponse.data);
           } else {
-            console.warn('Specific ID not found for object type:', mainObjectData.type);
+            console.warn(
+              'Specific ID not found for object type:',
+              mainObjectData.type,
+            );
             console.warn('Object mainObjectData:', mainObjectData);
           }
         } catch (specificError: any) {
           console.error('Specific data error details:', specificError);
-          console.error('Specific data error details:', specificError.response?.data);
+          console.error(
+            'Specific data error details:',
+            specificError.response?.data,
+          );
           console.error('Request URL:', specificError.config?.url);
         }
       } catch (err: any) {
@@ -216,10 +273,15 @@ const ObjectPreview = () => {
   const handleConfirm = () => {
     // save the flag that the object has been confirmed (for display on the Immobilien page)
     if (objectData && objectData._id) {
-      const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
+      const confirmedObjects = JSON.parse(
+        sessionStorage.getItem('confirmedObjects') || '[]',
+      );
       if (!confirmedObjects.includes(objectData._id)) {
         confirmedObjects.push(objectData._id);
-        sessionStorage.setItem('confirmedObjects', JSON.stringify(confirmedObjects));
+        sessionStorage.setItem(
+          'confirmedObjects',
+          JSON.stringify(confirmedObjects),
+        );
       }
     }
     navigate('/immobilien');
@@ -236,7 +298,10 @@ const ObjectPreview = () => {
       return (
         <div className={styles.specificDataSection}>
           <h3>Spezifische Daten</h3>
-          <p>Spezifische Daten für diesen Objekttyp wurden nicht gefunden oder geladen.</p>
+          <p>
+            Spezifische Daten für diesen Objekttyp wurden nicht gefunden oder
+            geladen.
+          </p>
         </div>
       );
     }
@@ -249,62 +314,92 @@ const ObjectPreview = () => {
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Wohnungstyp:</span>
-                <span className={styles.dataValue}>{specificData.type || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.type || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Stockwerk:</span>
-                <span className={styles.dataValue}>{specificData.floor || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.floor || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
-                <span className={styles.dataLabel}>Anzahl der Stockwerke des Gebäudes:</span>
-                <span className={styles.dataValue}>{specificData.totalFloors || '-'}</span>
+                <span className={styles.dataLabel}>
+                  Anzahl der Stockwerke des Gebäudes:
+                </span>
+                <span className={styles.dataValue}>
+                  {specificData.totalFloors || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Wohnfläche:</span>
-                <span className={styles.dataValue}>{specificData.livingArea} м²</span>
+                <span className={styles.dataValue}>
+                  {specificData.livingArea} м²
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Anzahl der Zimmer:</span>
-                <span className={styles.dataValue}>{specificData.numberOfRooms || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfRooms || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Schlafzimmer:</span>
-                <span className={styles.dataValue}>{specificData.numberOfBedrooms || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfBedrooms || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Badezimmer:</span>
-                <span className={styles.dataValue}>{specificData.numberOfBathrooms || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfBathrooms || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Baujahr:</span>
-                <span className={styles.dataValue}>{specificData.yearBuilt || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.yearBuilt || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Jahr der Renovierung:</span>
-                <span className={styles.dataValue}>{specificData.yearRenovated || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.yearRenovated || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Heizungsart:</span>
-                <span className={styles.dataValue}>{specificData.heatingType || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.heatingType || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Energiequelle:</span>
-                <span className={styles.dataValue}>{specificData.energySource || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.energySource || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
-                <span className={styles.dataLabel}>Energieeffizienzklasse:</span>
-                <span className={styles.dataValue}>{specificData.energyEfficiencyClass || '-'}</span>
+                <span className={styles.dataLabel}>
+                  Energieeffizienzklasse:
+                </span>
+                <span className={styles.dataValue}>
+                  {specificData.energyEfficiencyClass || '-'}
+                </span>
               </div>
             </div>
             {specificData.additionalFeatures && (
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Zusätsliche Merkmale:</span>
-                <p className={styles.dataValue}>{specificData.additionalFeatures}</p>
+                <p className={styles.dataValue}>
+                  {specificData.additionalFeatures}
+                </p>
               </div>
             )}
           </div>
         );
-      
+
       case ObjectType.HOUSE:
         return (
           <div className={styles.specificDataSection}>
@@ -312,19 +407,29 @@ const ObjectPreview = () => {
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Haustyp:</span>
-                <span className={styles.dataValue}>{specificData.type || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.type || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Anzahl der Stockwerke:</span>
-                <span className={styles.dataValue}>{specificData.numberOfFloors || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfFloors || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Wohnfläche:</span>
-                <span className={styles.dataValue}>{specificData.livingArea} м²</span>
+                <span className={styles.dataValue}>
+                  {specificData.livingArea} м²
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Nutzfläche:</span>
-                <span className={styles.dataValue}>{specificData.usableArea ? `${specificData.usableArea} м²` : '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.usableArea
+                    ? `${specificData.usableArea} м²`
+                    : '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
@@ -332,46 +437,66 @@ const ObjectPreview = () => {
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Anzahl der Zimmer:</span>
-                <span className={styles.dataValue}>{specificData.numberOfRooms || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfRooms || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Schlafzimmer:</span>
-                <span className={styles.dataValue}>{specificData.numberOfBedrooms || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfBedrooms || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Badezimmer:</span>
-                <span className={styles.dataValue}>{specificData.numberOfBathrooms || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.numberOfBathrooms || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Parkplätze:</span>
-                <span className={styles.dataValue}>{specificData.garageParkingSpaces || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.garageParkingSpaces || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Baujahr:</span>
-                <span className={styles.dataValue}>{specificData.yearBuilt || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.yearBuilt || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Heizungsart:</span>
-                <span className={styles.dataValue}>{specificData.heatingType || '-'}</span>
-              </div>             
+                <span className={styles.dataValue}>
+                  {specificData.heatingType || '-'}
+                </span>
+              </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Energiequelle:</span>
-                <span className={styles.dataValue}>{specificData.energySource || '-'}</span>
-              </div>             
+                <span className={styles.dataValue}>
+                  {specificData.energySource || '-'}
+                </span>
+              </div>
               <div className={styles.dataItem}>
-                <span className={styles.dataLabel}>Energieeffizienzklasse:</span>
-                <span className={styles.dataValue}>{specificData.energyEfficiencyClass || '-'}</span>
+                <span className={styles.dataLabel}>
+                  Energieeffizienzklasse:
+                </span>
+                <span className={styles.dataValue}>
+                  {specificData.energyEfficiencyClass || '-'}
+                </span>
               </div>
             </div>
             {specificData.additionalFeatures && (
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Zusätsliche Merkmale:</span>
-                <p className={styles.dataValue}>{specificData.additionalFeatures}</p>
+                <p className={styles.dataValue}>
+                  {specificData.additionalFeatures}
+                </p>
               </div>
             )}
           </div>
         );
-      
+
       case ObjectType.LAND:
         return (
           <div className={styles.specificDataSection}>
@@ -379,28 +504,38 @@ const ObjectPreview = () => {
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Art des Grundstücks:</span>
-                <span className={styles.dataValue}>{specificData.landPlottype || '-'}</span>
-              </div>              
+                <span className={styles.dataValue}>
+                  {specificData.landPlottype || '-'}
+                </span>
+              </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Grundstücksfläche:</span>
                 <span className={styles.dataValue}>{specificData.plotArea} m²</span>
               </div>
               <div className={styles.dataItem}>
-                <span className={styles.dataLabel}>Technische Kommunikation:</span>
-                <span className={styles.dataValue}>{specificData.infrastructureConnection || '-'}</span>
+                <span className={styles.dataLabel}>
+                  Technische Kommunikation:
+                </span>
+                <span className={styles.dataValue}>
+                  {specificData.infrastructureConnection || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Bauvorschriften:</span>
-                <span className={styles.dataValue}>{specificData.buildingRegulations || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.buildingRegulations || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Empfohlener Gebrauch:</span>
-                <span className={styles.dataValue}>{specificData.recommendedUsage || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.recommendedUsage || '-'}
+                </span>
               </div>
             </div>
           </div>
         );
-      
+
       case ObjectType.COMMERCIAL:
         return (
           <div className={styles.specificDataSection}>
@@ -408,7 +543,9 @@ const ObjectPreview = () => {
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Gebäudetyp:</span>
-                <span className={styles.dataValue}>{specificData.buildingType || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.buildingType || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Fläche:</span>
@@ -420,22 +557,28 @@ const ObjectPreview = () => {
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Baujahr:</span>
-                <span className={styles.dataValue}>{specificData.yearBuilt || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.yearBuilt || '-'}
+                </span>
               </div>
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Zweck:</span>
-                <span className={styles.dataValue}>{specificData.purpose || '-'}</span>
+                <span className={styles.dataValue}>
+                  {specificData.purpose || '-'}
+                </span>
               </div>
             </div>
             {specificData.additionalFeatures && (
               <div className={styles.dataItem}>
                 <span className={styles.dataLabel}>Zusätsliche Merkmale:</span>
-                <p className={styles.dataValue}>{specificData.additionalFeatures}</p>
+                <p className={styles.dataValue}>
+                  {specificData.additionalFeatures}
+                </p>
               </div>
             )}
           </div>
         );
-      
+
       default:
         return null;
     }
@@ -458,28 +601,26 @@ const ObjectPreview = () => {
 
   return (
     <div className={styles.previewContainer}>
-      <h2 className={styles.title}>Vorschau des Objekts</h2> 
+      <h2 className={styles.title}>Vorschau des Objekts</h2>
 
-   {action && (
-      <div className={styles.successMessage}>
-       {getSuccessMessage()}
-      </div>
-   )}   
+      {action && (
+        <div className={styles.successMessage}>{getSuccessMessage()}</div>
+      )}
 
       <div className={styles.imagesSection}>
         <h3>Bilder</h3>
         <div className={styles.imagesGrid}>
           {images.length > 0 ? (
             images.map((image, index) => (
-              <div 
-                key={image._id || `image-${index}`} 
+              <div
+                key={image._id || `image-${index}`}
                 className={styles.imageContainer}
                 onClick={() => openImageModal(index)}
               >
-                <img 
-                  src={image.url} 
-                  alt={`image ${index + 1}`} 
-                  className={styles.objectImage} 
+                <img
+                  src={image.url}
+                  alt={`image ${index + 1}`}
+                  className={styles.objectImage}
                 />
                 {index === 0 && <span className={styles.mainImageLabel}>Hauptbild</span>}
               </div>
@@ -495,13 +636,16 @@ const ObjectPreview = () => {
         {videos.length > 0 ? (
           <div className={styles.videosGrid}>
             {videos.map((video, index) => (
-              <div key={`video-${video._id || index}`} className={styles.videoContainer}>
+              <div
+                key={`video-${video._id || index}`}
+                className={styles.videoContainer}
+              >
                 <h4>{video.title || `Video ${index + 1}`}</h4>
-                <div 
+                <div
                   className={styles.videoThumbnailContainer}
                   onClick={() => openImageModal(images.length + index)} // ИСПРАВЛЕНО: правильный индекс
                 >
-                  <img 
+                  <img
                     src={video.thumbnailUrl}
                     alt={video.title || 'Video preview'}
                     className={styles.videoThumbnail}
@@ -535,14 +679,15 @@ const ObjectPreview = () => {
             <span className={styles.dataLabel}>Objektstatus:</span>
             <span className={styles.dataValue}>{objectData.status}</span>
           </div>
-
         </div>
-        
+
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Adresse:</span>
           <span className={styles.dataValue}>
-            {`${objectData.address.street} ${objectData.address.houseNumber || ''}`}<br />
-            {`${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}`}<br />
+            {`${objectData.address.street} ${objectData.address.houseNumber || ''}`}
+            <br />
+            {`${objectData.address.zip} ${objectData.address.city}, ${objectData.address.district}`}
+            <br />
             {`${objectData.address.country}`}
           </span>
         </div>
@@ -551,19 +696,21 @@ const ObjectPreview = () => {
           <span className={styles.dataLabel}>Lage:</span>
           <p className={styles.dataValue}>{objectData.location}</p>
         </div>
-        
+
         <div className={styles.dataItem}>
           <span className={styles.dataLabel}>Beschreibung:</span>
           <p className={styles.dataValue}>{objectData.description}</p>
-        </div>        
-        
+        </div>
+
         {objectData.features && (
           <div className={styles.dataItem}>
-            <span className={styles.dataLabel}>Besonderheiten des Objektes:</span>
+            <span className={styles.dataLabel}>
+              Besonderheiten des Objektes:
+            </span>
             <p className={styles.dataValue}>{objectData.features}</p>
           </div>
-        )}        
-        
+        )}
+
         {objectData.miscellaneous && (
           <div className={styles.dataItem}>
             <span className={styles.dataLabel}>Zusätzliche Information:</span>
@@ -599,4 +746,3 @@ const ObjectPreview = () => {
 };
 
 export default ObjectPreview;
-

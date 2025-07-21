@@ -12,6 +12,7 @@ import {
   Video,
 } from '@shared/types/propertyTypes';
 import { fadeInOnScroll } from '@shared/anim/animations';
+
 interface PropertyHeroProps {
   object: RealEstateObject;
   images?: (Image | undefined)[];
@@ -20,7 +21,7 @@ interface PropertyHeroProps {
   commercialBuilding?: CommercialBuilding;
   landPlot?: LandPlot;
   residentialHouse?: ResidentialHouse;
-   isAdmin?: boolean;
+  isAdmin?: boolean;
 }
 
 const PropertyHero: React.FC<PropertyHeroProps> = ({
@@ -138,8 +139,12 @@ const renderAddress = () => {
 
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}
-       ref={el => {refs.current[0] = el}}>
+      <h1
+        className={styles.title}
+        ref={el => {
+          refs.current[0] = el;
+        }}
+      >
         {title}
       </h1>
 
@@ -149,7 +154,9 @@ const renderAddress = () => {
             <div
               className={styles.carouselWrapper}
               onClick={() => handleThumbClick(currentIndex)}
-              ref={el => {refs.current[1] = el}}
+              ref={el => {
+                refs.current[1] = el;
+              }}
             >
               {shouldShowStatus && (
                 <div className={styles.statusBadge}>{statusLabel}</div>
@@ -157,16 +164,17 @@ const renderAddress = () => {
               {isVideo(currentMedia) ? (
                 <div className={styles.videoFrameWrapper}>
                   <img
-                     src={currentMedia.thumbnailUrl}
-                     alt={currentMedia.title || 'Video preview'}
-                     className={styles.videoThumbnail}
-                     loading="lazy"
-                     onError={(e) => {
-                       const target = e.target as HTMLImageElement;
-                       target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
-                     }}                    
-                   />
-                   <div className={styles.playIcon}>▶</div>
+                    src={currentMedia.thumbnailUrl}
+                    alt={currentMedia.title || 'Video preview'}
+                    className={styles.videoThumbnail}
+                    loading="lazy"
+                    onError={e => {
+                      const target = e.target as HTMLImageElement;
+                      target.src =
+                        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                  <div className={styles.playIcon}>▶</div>
                 </div>
               ) : (
                 <img
@@ -188,7 +196,9 @@ const renderAddress = () => {
       ) : firstMedia ? (
         <div
           className={styles.imageContainer}
-          ref={el => {refs.current[3] = el}}
+          ref={el => {
+            refs.current[3] = el;
+          }}
         >
           <div
             className={styles.mainImageWrapper}
@@ -201,16 +211,17 @@ const renderAddress = () => {
             {isVideo(firstMedia) ? (
               <div className={styles.videoFrameWrapper}>
                 <img
-                   src={firstMedia.thumbnailUrl}
-                   alt={firstMedia.title || 'Video preview'}
-                   className={styles.videoThumbnail}
-                   loading="lazy"
-                   onError={(e) => {
-                   const target = e.target as HTMLImageElement;
-                   target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
-                   }}
-                 />
-                 <div className={styles.playIcon}>▶</div>
+                  src={firstMedia.thumbnailUrl}
+                  alt={firstMedia.title || 'Video preview'}
+                  className={styles.videoThumbnail}
+                  loading="lazy"
+                  onError={e => {
+                    const target = e.target as HTMLImageElement;
+                    target.src =
+                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
+                  }}
+                />
+                <div className={styles.playIcon}>▶</div>
               </div>
             ) : (
               <img
@@ -222,11 +233,12 @@ const renderAddress = () => {
             )}
           </div>
 
-          <div className={styles.sideImages} 
-          ref={el => {
-            refs.current[4] = el
+          <div
+            className={styles.sideImages}
+            ref={el => {
+              refs.current[4] = el;
             }}
-            >
+          >
             {previewMedia.slice(1, 3).map((item, idx) => {
               const actualIndex = idx + 1;
               const isLastPreview = idx === 1;
@@ -245,17 +257,18 @@ const renderAddress = () => {
                 >
                   {isVideo(item) ? (
                     <div className={styles.videoFrameWrapper}>
-                     <img
+                      <img
                         src={item.thumbnailUrl}
                         alt={item.title || 'Video preview'}
                         className={styles.videoThumbnail}
                         loading="lazy"
-                        onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
+                        onError={e => {
+                          const target = e.target as HTMLImageElement;
+                          target.src =
+                            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn46lIFZpZGVvPC90ZXh0Pjwvc3ZnPg==';
                         }}
-                     />
-                     <div className={styles.playIconSmall}>▶</div>
+                      />
+                      <div className={styles.playIconSmall}>▶</div>
                     </div>
                   ) : (
                     <img
@@ -286,7 +299,12 @@ const renderAddress = () => {
         </div>
       )}
 
-      <div className={styles.features} ref={el => {refs.current[6] = el}}>
+      <div
+        className={styles.features}
+        ref={el => {
+          refs.current[6] = el;
+        }}
+      >
         <div className={styles.feature}>
           <h3>{formatGermanCurrency(price)} €</h3>
           <h6>Kaufpreis</h6>
@@ -333,8 +351,8 @@ const renderAddress = () => {
         )}
       </div>
 
-       {/* display address depending on user role */}
-      {renderAddress()}     
+      {/* display address depending on user role */}
+      {renderAddress()}
 
       {showModal && mediaItems.length > 0 && (
         <ImageGalleryModal
@@ -351,5 +369,3 @@ const renderAddress = () => {
 };
 
 export default PropertyHero;
-
-

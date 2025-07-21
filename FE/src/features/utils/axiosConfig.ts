@@ -1,7 +1,6 @@
 import axios from 'axios';
 // axios instance with base url and settings
 const axiosInstance = axios.create({
-
   baseURL: `${import.meta.env.VITE_HOST}/api`, // Адрес API-сервера
   timeout: 3000,
   headers: {

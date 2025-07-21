@@ -80,7 +80,7 @@ const Header = () => {
       <div className={styles.headerWrapper}>
         <div className={styles.headerTop}>
           <img className={styles.logo} src={logo} alt="logo" />
-          
+
           <div className={styles.navContainer}>
             <nav className={styles.nav}>
               {navLinks.map(link => (

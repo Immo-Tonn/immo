@@ -9,12 +9,12 @@ import {
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
-import { ObjectType, ObjectStatus} from '@features/utils/types';
+import { ObjectType, ObjectStatus } from '@features/utils/types';
 import {
   createCompleteRealEstateObject,
   updateCompleteRealEstateObject,
   fetchObjectForEdit,
-  updateImageOrder
+  updateImageOrder,
 } from '@features/utils/realEstateService';
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
@@ -156,37 +156,36 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
       case ObjectType.HOUSE:
         return !!(
           // specificData.type &&
-          specificData.livingArea &&
-          specificData.numberOfRooms
+          (specificData.livingArea && specificData.numberOfRooms)
         );
       case ObjectType.LAND:
         return !!specificData.plotArea;
 
       case ObjectType.COMMERCIAL:
-         return true;
-        // return !!specificData.buildingType;
+        return true;
+      // return !!specificData.buildingType;
       default:
         return false;
     }
   };
 
-const handleDisabledTypeClick = () => {
-  if (isEditMode) {
-    setShowTypeWarning(true);
-    setTimeout(() => {
-      setShowTypeWarning(false);
-    }, 3000);
-  }
-};
+  const handleDisabledTypeClick = () => {
+    if (isEditMode) {
+      setShowTypeWarning(true);
+      setTimeout(() => {
+        setShowTypeWarning(false);
+      }, 3000);
+    }
+  };
 
   // State for tracking form validity
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
-const handleDropZoneClick = () => {
-  if (fileInputRef.current) {
-    fileInputRef.current.click();
-  }
-};
+  const handleDropZoneClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   // Validate the form when changing data
   useEffect(() => {
@@ -291,10 +290,10 @@ const handleDropZoneClick = () => {
       if (!isEditMode) {
         setSpecificData({});
       }
-      } else if (name === 'status') {
-        setObjectData({
-          ...objectData,
-          status: value as ObjectStatus,
+    } else if (name === 'status') {
+      setObjectData({
+        ...objectData,
+        status: value as ObjectStatus,
       });
     } else {
       setObjectData({
@@ -310,19 +309,19 @@ const handleDropZoneClick = () => {
   ) => {
     const { name, value } = e.target;
 
-  console.log('🔍 DEBUG: handleSpecificChange called');
-  console.log('🔍 DEBUG: field name:', name);
-  console.log('🔍 DEBUG: field value:', value);
-  console.log('🔍 DEBUG: current specificData before update:', specificData);
+    console.log('🔍 DEBUG: handleSpecificChange called');
+    console.log('🔍 DEBUG: field name:', name);
+    console.log('🔍 DEBUG: field value:', value);
+    console.log('🔍 DEBUG: current specificData before update:', specificData);
 
-  const fieldName = name;  
+    const fieldName = name;
 
     setSpecificData({
       ...specificData,
       [fieldName]: value,
     });
 
-        console.log('🔍 DEBUG: specificData after update should be:', {
+    console.log('🔍 DEBUG: specificData after update should be:', {
       ...specificData,
       [name]: value,
     });
@@ -418,7 +417,7 @@ const handleDropZoneClick = () => {
 
     setExistingImages(existingImages.filter((_, i) => i !== index));
   };
-    const debugObjectState = async (objectId: string) => {
+  const debugObjectState = async (objectId: string) => {
     try {
       console.log('🔍 Вызываем серверную отладку для объекта:', objectId);
       const response = await axios.get(`/objects/debug/${objectId}`);
@@ -430,13 +429,13 @@ const handleDropZoneClick = () => {
     }
   };
 
-    // Тестовая функция для проверки серверной отладки
+  // Тестовая функция для проверки серверной отладки
   const testDebugEndpoint = async () => {
     if (!id) {
       console.log('❌ ID объекта не найден');
       return;
     }
-    
+
     console.log('🧪 Тестируем серверную отладку...');
     try {
       const response = await axios.get(`/objects/debug/${id}`);
@@ -458,92 +457,103 @@ const handleDropZoneClick = () => {
     }
   }, [isEditMode, id]);
 
-    //Function for setting the main image among existing ones
-const setMainExistingImage = async (index: number): Promise<void> => {
-  console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
-  console.log('📋 Текущий порядок изображений:', existingImages);
-  
-  const newImages = [...existingImages];
-  const mainImage = newImages.splice(index, 1)[0];
-  
-  if (!mainImage) {
-    console.error('❌ Главное изображение не найдено по индексу:', index);
-    return;
-  }
-  
-  newImages.unshift(mainImage);
-  console.log('📋 Новый порядок изображений (локально):', newImages);
-  
-  if (isEditMode && id) {
-    try {
-      console.log('🔄 Режим редактирования, ID объекта:', id);
-      
-      // ОТЛАДКА ДО изменений
-      console.log('\n🔍 === СОСТОЯНИЕ ДО ИЗМЕНЕНИЙ ===');
-      await debugObjectState(id);
-      console.log('✅ Отладка ДО изменений завершена');
-      
-      console.log('🔄 Вызываем updateImageOrder...');
-      await updateImageOrder(id, newImages);
-      console.log('✅ updateImageOrder завершена');
-      
-      // КРИТИЧНО: Добавляем отладку здесь
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 1: updateImageOrder выполнена, переходим к отладке ПОСЛЕ');
-      
-      // ОТЛАДКА ПОСЛЕ изменений
-      console.log('\n🔍 === СОСТОЯНИЕ ПОСЛЕ ИЗМЕНЕНИЙ ===');
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 2: Начинаем отладку ПОСЛЕ изменений');
-      
-      const debugResult = await debugObjectState(id);
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 3: debugObjectState завершен, результат:', debugResult);
-      
-      // Проверяем результат
-      if (debugResult?.orderMatch) {
-        console.log('✅ ТОЧКА ПРОВЕРКИ 4: orderMatch = true');
-        console.log('✅ Порядок изображений в БД обновлен корректно!');
-        setExistingImages(newImages);
-        setSuccess('Главное изображение обновлено');
-        setTimeout(() => setSuccess(''), 3000);
-      } else {
-        console.log('❌ ТОЧКА ПРОВЕРКИ 4: orderMatch = false или debugResult пустой');
-        console.log('❌ debugResult:', debugResult);
-        console.error('❌ Порядок изображений в БД НЕ соответствует ожидаемому!');
-        setError('Ошибка: порядок изображений не обновился в БД');
-        return;
-      }
-      
-      console.log('🔍 ТОЧКА ПРОВЕРКИ 5: Функция завершается успешно');
-      
-    } catch (error: unknown) {
-      console.error('❌ ОШИБКА в setMainExistingImage:', error);
-      console.error('❌ Стек ошибки:', error instanceof Error ? error.stack : 'No stack');
-      
-      // ОТЛАДКА ПРИ ОШИБКЕ
-      console.log('\n🔍 === СОСТОЯНИЕ ПРИ ОШИБКЕ ===');
-      try {
-        await debugObjectState(id);
-      } catch (debugError) {
-        console.error('❌ Ошибка даже в отладке при ошибке:', debugError);
-      }
-      
-      // Обработка ошибки
-      let errorMessage = 'Неизвестная ошибка';
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      
-      setError(`Ошибка при обновлении порядка изображений: ${errorMessage}`);
+  //Function for setting the main image among existing ones
+  const setMainExistingImage = async (index: number): Promise<void> => {
+    console.log('🔄 НАЧАЛО setMainExistingImage, index:', index);
+    console.log('📋 Текущий порядок изображений:', existingImages);
+
+    const newImages = [...existingImages];
+    const mainImage = newImages.splice(index, 1)[0];
+
+    if (!mainImage) {
+      console.error('❌ Главное изображение не найдено по индексу:', index);
       return;
     }
-  } else {
-    console.log('📝 Режим создания - обновляем только локальное состояние');
-    setExistingImages(newImages);
-  }
-  
-  console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
-};
 
-    // Function for setting the main image among new ones
+    newImages.unshift(mainImage);
+    console.log('📋 Новый порядок изображений (локально):', newImages);
+
+    if (isEditMode && id) {
+      try {
+        console.log('🔄 Режим редактирования, ID объекта:', id);
+
+        // ОТЛАДКА ДО изменений
+        console.log('\n🔍 === СОСТОЯНИЕ ДО ИЗМЕНЕНИЙ ===');
+        await debugObjectState(id);
+        console.log('✅ Отладка ДО изменений завершена');
+
+        console.log('🔄 Вызываем updateImageOrder...');
+        await updateImageOrder(id, newImages);
+        console.log('✅ updateImageOrder завершена');
+
+        // КРИТИЧНО: Добавляем отладку здесь
+        console.log(
+          '🔍 ТОЧКА ПРОВЕРКИ 1: updateImageOrder выполнена, переходим к отладке ПОСЛЕ',
+        );
+
+        // ОТЛАДКА ПОСЛЕ изменений
+        console.log('\n🔍 === СОСТОЯНИЕ ПОСЛЕ ИЗМЕНЕНИЙ ===');
+        console.log('🔍 ТОЧКА ПРОВЕРКИ 2: Начинаем отладку ПОСЛЕ изменений');
+
+        const debugResult = await debugObjectState(id);
+        console.log(
+          '🔍 ТОЧКА ПРОВЕРКИ 3: debugObjectState завершен, результат:',
+          debugResult,
+        );
+
+        // Проверяем результат
+        if (debugResult?.orderMatch) {
+          console.log('✅ ТОЧКА ПРОВЕРКИ 4: orderMatch = true');
+          console.log('✅ Порядок изображений в БД обновлен корректно!');
+          setExistingImages(newImages);
+          setSuccess('Главное изображение обновлено');
+          setTimeout(() => setSuccess(''), 3000);
+        } else {
+          console.log(
+            '❌ ТОЧКА ПРОВЕРКИ 4: orderMatch = false или debugResult пустой',
+          );
+          console.log('❌ debugResult:', debugResult);
+          console.error(
+            '❌ Порядок изображений в БД НЕ соответствует ожидаемому!',
+          );
+          setError('Ошибка: порядок изображений не обновился в БД');
+          return;
+        }
+
+        console.log('🔍 ТОЧКА ПРОВЕРКИ 5: Функция завершается успешно');
+      } catch (error: unknown) {
+        console.error('❌ ОШИБКА в setMainExistingImage:', error);
+        console.error(
+          '❌ Стек ошибки:',
+          error instanceof Error ? error.stack : 'No stack',
+        );
+
+        // ОТЛАДКА ПРИ ОШИБКЕ
+        console.log('\n🔍 === СОСТОЯНИЕ ПРИ ОШИБКЕ ===');
+        try {
+          await debugObjectState(id);
+        } catch (debugError) {
+          console.error('❌ Ошибка даже в отладке при ошибке:', debugError);
+        }
+
+        // Обработка ошибки
+        let errorMessage = 'Неизвестная ошибка';
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+
+        setError(`Ошибка при обновлении порядка изображений: ${errorMessage}`);
+        return;
+      }
+    } else {
+      console.log('📝 Режим создания - обновляем только локальное состояние');
+      setExistingImages(newImages);
+    }
+
+    console.log('✅ ЗАВЕРШЕНИЕ setMainExistingImage');
+  };
+
+  // Function for setting the main image among new ones
   const setMainNewImage = (index: number) => {
     const newFiles = [...selectedFiles];
     const newPreviews = [...previews];
@@ -588,8 +598,8 @@ const setMainExistingImage = async (index: number): Promise<void> => {
         },
       };
 
-    console.log('🔍 DEBUG: Original specificData:', specificData);
-    console.log('🔍 DEBUG: landPlottype value:', specificData.landPlottype);
+      console.log('🔍 DEBUG: Original specificData:', specificData);
+      console.log('🔍 DEBUG: landPlottype value:', specificData.landPlottype);
 
       // Converting numeric fields from strings to numbers for specific data
       const processedSpecificData = { ...specificData };
@@ -640,100 +650,116 @@ const setMainExistingImage = async (index: number): Promise<void> => {
       }
 
       console.log('Operation completed successfully, objectId:', objectId);
-      setSuccess(isEditMode ? 'Objekt erfolgreich aktualisiert!' : 'Objekt erfolgreich erstellt!');
+      setSuccess(
+        isEditMode
+          ? 'Objekt erfolgreich aktualisiert!'
+          : 'Objekt erfolgreich erstellt!',
+      );
       // setSuccess(true);
-      {success && (
-        <div className={styles.successMessage}>
-          {success}
-        </div>
-)}
+      {
+        success && <div className={styles.successMessage}>{success}</div>;
+      }
       // Going to the preview page
-    setTimeout(() => {
-      navigate(`/preview-object/${objectId}?action=${isEditMode ? 'updated' : 'created'}`);
-    }, 1000);
-  } catch (err: any) {
-    setError(
-      err.response?.data?.message ||
-        `An error occurred while ${isEditMode ? 'updating' : 'creating'} object`,
-    );
-    console.error(
-      `Error while ${isEditMode ? 'updating' : 'creating'} object:`,
-      err,
-    );
-  } finally {
-    setLoading(false);
-  }
-};
-// ЗАМЕНИТЬ СУЩЕСТВУЮЩИЙ useEffect НА ЭТОТ:
-useEffect(() => {
-  if (isEditMode && id) {
-    // Функция для ручной отладки через консоль браузера
-    (window as any).debugCurrentObject = async () => {
-      if (!id) {
-        console.log('❌ ID объекта не найден');
-        return;
-      }
-      
-      console.log('🔧 === РУЧНАЯ ОТЛАДКА ТЕКУЩЕГО ОБЪЕКТА ===');
-      console.log('📋 ID объекта:', id);
-      console.log('📋 Текущее состояние existingImages:', existingImages);
-      
-      try {
-        // 1. Серверная отладка
-        console.log('\n🔍 1. СЕРВЕРНАЯ ОТЛАДКА:');
-        const debugResult = await debugObjectState(id);
-        console.log('📊 Результат серверной отладки:', debugResult);
-        
-        // 2. Состояние клиента
-        console.log('\n📱 2. СОСТОЯНИЕ КЛИЕНТА:');
-        console.log('📋 existingImages (клиент):', existingImages);
-        console.log('📋 selectedFiles (новые файлы):', selectedFiles.length);
-        console.log('📋 previews (превью новых):', previews.length);
-        
-        // 3. Сравнение клиент-сервер
-        console.log('\n⚖️ 3. СРАВНЕНИЕ КЛИЕНТ-СЕРВЕР:');
-        const serverImageCount = debugResult?.actualImagesCount || 0;
-        const clientImageCount = existingImages.length;
-        console.log(`📊 Изображений на сервере: ${serverImageCount}`);
-        console.log(`📊 Изображений у клиента: ${clientImageCount}`);
-        console.log(`📊 Совпадает: ${serverImageCount === clientImageCount ? '✅' : '❌'}`);
-        
-        if (serverImageCount !== clientImageCount) {
-          console.log('⚠️ НЕСООТВЕТСТВИЕ! Возможные причины:');
-          console.log('   - Изображения удалены локально, но не на сервере');
-          console.log('   - Состояние не синхронизировано');
-          console.log('   - Ошибка в логике обновления');
+      setTimeout(() => {
+        navigate(
+          `/preview-object/${objectId}?action=${isEditMode ? 'updated' : 'created'}`,
+        );
+      }, 1000);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          `An error occurred while ${isEditMode ? 'updating' : 'creating'} object`,
+      );
+      console.error(
+        `Error while ${isEditMode ? 'updating' : 'creating'} object:`,
+        err,
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  // ЗАМЕНИТЬ СУЩЕСТВУЮЩИЙ useEffect НА ЭТОТ:
+  useEffect(() => {
+    if (isEditMode && id) {
+      // Функция для ручной отладки через консоль браузера
+      (window as any).debugCurrentObject = async () => {
+        if (!id) {
+          console.log('❌ ID объекта не найден');
+          return;
         }
-        
-        // 4. Рекомендации
-        console.log('\n💡 4. РЕКОМЕНДАЦИИ:');
-        if (clientImageCount === 0 && serverImageCount > 0) {
-          console.log('🔧 Все изображения удалены локально - при сохранении объекта они должны быть удалены и с сервера');
-        } else if (clientImageCount > 0 && serverImageCount === 0) {
-          console.log('🔧 У клиента есть изображения, но сервер их не видит - возможна ошибка загрузки');
-        } else if (clientImageCount === serverImageCount && serverImageCount > 0) {
-          console.log('✅ Количество изображений совпадает');
+
+        console.log('🔧 === РУЧНАЯ ОТЛАДКА ТЕКУЩЕГО ОБЪЕКТА ===');
+        console.log('📋 ID объекта:', id);
+        console.log('📋 Текущее состояние existingImages:', existingImages);
+
+        try {
+          // 1. Серверная отладка
+          console.log('\n🔍 1. СЕРВЕРНАЯ ОТЛАДКА:');
+          const debugResult = await debugObjectState(id);
+          console.log('📊 Результат серверной отладки:', debugResult);
+
+          // 2. Состояние клиента
+          console.log('\n📱 2. СОСТОЯНИЕ КЛИЕНТА:');
+          console.log('📋 existingImages (клиент):', existingImages);
+          console.log('📋 selectedFiles (новые файлы):', selectedFiles.length);
+          console.log('📋 previews (превью новых):', previews.length);
+
+          // 3. Сравнение клиент-сервер
+          console.log('\n⚖️ 3. СРАВНЕНИЕ КЛИЕНТ-СЕРВЕР:');
+          const serverImageCount = debugResult?.actualImagesCount || 0;
+          const clientImageCount = existingImages.length;
+          console.log(`📊 Изображений на сервере: ${serverImageCount}`);
+          console.log(`📊 Изображений у клиента: ${clientImageCount}`);
+          console.log(
+            `📊 Совпадает: ${serverImageCount === clientImageCount ? '✅' : '❌'}`,
+          );
+
+          if (serverImageCount !== clientImageCount) {
+            console.log('⚠️ НЕСООТВЕТСТВИЕ! Возможные причины:');
+            console.log('   - Изображения удалены локально, но не на сервере');
+            console.log('   - Состояние не синхронизировано');
+            console.log('   - Ошибка в логике обновления');
+          }
+
+          // 4. Рекомендации
+          console.log('\n💡 4. РЕКОМЕНДАЦИИ:');
+          if (clientImageCount === 0 && serverImageCount > 0) {
+            console.log(
+              '🔧 Все изображения удалены локально - при сохранении объекта они должны быть удалены и с сервера',
+            );
+          } else if (clientImageCount > 0 && serverImageCount === 0) {
+            console.log(
+              '🔧 У клиента есть изображения, но сервер их не видит - возможна ошибка загрузки',
+            );
+          } else if (
+            clientImageCount === serverImageCount &&
+            serverImageCount > 0
+          ) {
+            console.log('✅ Количество изображений совпадает');
+          }
+
+          console.log('\n🎯 Для тестирования удаления последнего изображения:');
+          console.log('   1. Убедитесь, что остался только 1 файл');
+          console.log('   2. Удалите его через интерфейс (кнопка ✕)');
+          console.log('   3. Нажмите "Objekt aktualisieren"');
+          console.log(
+            '   4. Проверьте, что на Preview изображения не отображаются',
+          );
+        } catch (error) {
+          console.error('❌ Ошибка при ручной отладке:', error);
         }
-        
-        console.log('\n🎯 Для тестирования удаления последнего изображения:');
-        console.log('   1. Убедитесь, что остался только 1 файл');
-        console.log('   2. Удалите его через интерфейс (кнопка ✕)');
-        console.log('   3. Нажмите "Objekt aktualisieren"');
-        console.log('   4. Проверьте, что на Preview изображения не отображаются');
-        
-      } catch (error) {
-        console.error('❌ Ошибка при ручной отладке:', error);
-      }
-    };
-    
-    console.log('🔧 Для ручной отладки выполните в консоли: debugCurrentObject()');
-    
-    // Очищаем глобальную функцию при размонтировании компонента
-    return () => {
-      delete (window as any).debugCurrentObject;
-    };
-  }
-}, [isEditMode, id, existingImages, selectedFiles, previews]);
+      };
+
+      console.log(
+        '🔧 Для ручной отладки выполните в консоли: debugCurrentObject()',
+      );
+
+      // Очищаем глобальную функцию при размонтировании компонента
+      return () => {
+        delete (window as any).debugCurrentObject;
+      };
+    }
+  }, [isEditMode, id, existingImages, selectedFiles, previews]);
   // Rendering form fields depending on the object type
   const renderSpecificFields = () => {
     switch (objectData.type) {
@@ -745,22 +771,24 @@ useEffect(() => {
               <label htmlFor="type" className={styles.formLabel}>
                 Wohnungstyp
               </label>
-            <select
-              id="type"
-              name="type"
-              value={specificData.type || ''}
-              onChange={handleSpecificChange}
-              className={styles.formSelect}
-            >
-              <option value="">Bitte wählen</option>
-              <option value="Einliegerwohnung">Einliegerwohnung</option>
-              <option value="Dachgeschosswohnung">Dachgeschosswohnung</option>
-              <option value="Etagenwohnung">Etagenwohnung</option>
-              <option value="Loft / Studio / Atelier">Loft / Studio / Atelier</option>
-              <option value="Maisonette">Maisonette</option>
-              <option value="Penthouse">Penthouse</option>
-              <option value="Souterrainwohnung">Souterrainwohnung</option>
-            </select>
+              <select
+                id="type"
+                name="type"
+                value={specificData.type || ''}
+                onChange={handleSpecificChange}
+                className={styles.formSelect}
+              >
+                <option value="">Bitte wählen</option>
+                <option value="Einliegerwohnung">Einliegerwohnung</option>
+                <option value="Dachgeschosswohnung">Dachgeschosswohnung</option>
+                <option value="Etagenwohnung">Etagenwohnung</option>
+                <option value="Loft / Studio / Atelier">
+                  Loft / Studio / Atelier
+                </option>
+                <option value="Maisonette">Maisonette</option>
+                <option value="Penthouse">Penthouse</option>
+                <option value="Souterrainwohnung">Souterrainwohnung</option>
+              </select>
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
@@ -796,17 +824,17 @@ useEffect(() => {
                   id="totalFloors"
                   name="totalFloors"
                   value={specificData.totalFloors || ''}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
                       e.preventDefault();
                     }
                   }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
-                  onChange={handleSpecificChange}                  
-                className={styles.formInput}
-             />
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
+                  onChange={handleSpecificChange}
+                  className={styles.formInput}
+                />
               </div>
             </div>
             <div className={styles.formGroup}>
@@ -819,18 +847,20 @@ useEffect(() => {
                 name="livingArea"
                 min="0"
                 inputMode="numeric"
-                pattern="[0-9]*" 
+                pattern="[0-9]*"
                 value={specificData.livingArea || ''}
                 onChange={handleSpecificChange}
                 required
-                onKeyDown={(e) => {
-                  if (['e', 'E', '+', '-', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                onKeyDown={e => {
+                  if (
+                    ['e', 'E', '+', '-', 'ArrowUp', 'ArrowDown'].includes(e.key)
+                  ) {
                     e.preventDefault();
                   }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}
+                }}
+                onWheel={e => {
+                  (e.target as HTMLInputElement).blur();
+                }}
                 className={styles.formInput}
               />
             </div>
@@ -845,17 +875,28 @@ useEffect(() => {
                   name="numberOfRooms"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.numberOfRooms || ''}
                   onChange={handleSpecificChange}
-                    onKeyDown={(e) => {
-                      if (['e', 'E', '+', '-', ',', '.', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
-                        e.preventDefault();
-                      }
-                 }}                  
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  onKeyDown={e => {
+                    if (
+                      [
+                        'e',
+                        'E',
+                        '+',
+                        '-',
+                        ',',
+                        '.',
+                        'ArrowUp',
+                        'ArrowDown',
+                      ].includes(e.key)
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -869,17 +910,17 @@ useEffect(() => {
                   name="numberOfBedrooms"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.numberOfBedrooms || ''}
-                  onChange={handleSpecificChange}                  
-                  onKeyDown={(e) => {
+                  onChange={handleSpecificChange}
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -893,17 +934,28 @@ useEffect(() => {
                   name="numberOfBathrooms"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.numberOfBathrooms || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
-                    if (['e', 'E', '+', '-', ',', '.', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                  onKeyDown={e => {
+                    if (
+                      [
+                        'e',
+                        'E',
+                        '+',
+                        '-',
+                        ',',
+                        '.',
+                        'ArrowUp',
+                        'ArrowDown',
+                      ].includes(e.key)
+                    ) {
                       e.preventDefault();
                     }
                   }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -920,17 +972,17 @@ useEffect(() => {
                   name="yearBuilt"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                        
+                  pattern="[0-9]*"
                   value={specificData.yearBuilt || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
-                  if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                  onKeyDown={e => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
                       e.preventDefault();
                     }
                   }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -944,17 +996,17 @@ useEffect(() => {
                   name="yearRenovated"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                            
+                  pattern="[0-9]*"
                   value={specificData.yearRenovated || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1026,47 +1078,47 @@ useEffect(() => {
               <label htmlFor="type" className={styles.formLabel}>
                 Haustyp
               </label>
-            <select
-              id="type"
-              name="type"
-              value={specificData.type || ''}
-              onChange={handleSpecificChange}
-              className={styles.formSelect}
-            >
-              <option value="">Bitte wählen</option>
-              <option value="Bauernhaus">Bauernhaus</option>
-              <option value="Bungalow">Bungalow</option>
-              <option value="Doppelhaushälfte">Doppelhaushälfte</option>
-              <option value="Einfamilienhaus">Einfamilienhaus</option>
-              <option value="Ferienhaus">Ferienhaus</option>
-              <option value="Mehrfamilienhaus">Mehrfamilienhaus</option>
-              <option value="Reihenhaus">Reihenhaus</option>
-              <option value="Villa">Villa</option>
-              <option value="Zweifamilienhaus">Zweifamilienhaus</option>
-            </select>
+              <select
+                id="type"
+                name="type"
+                value={specificData.type || ''}
+                onChange={handleSpecificChange}
+                className={styles.formSelect}
+              >
+                <option value="">Bitte wählen</option>
+                <option value="Bauernhaus">Bauernhaus</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Doppelhaushälfte">Doppelhaushälfte</option>
+                <option value="Einfamilienhaus">Einfamilienhaus</option>
+                <option value="Ferienhaus">Ferienhaus</option>
+                <option value="Mehrfamilienhaus">Mehrfamilienhaus</option>
+                <option value="Reihenhaus">Reihenhaus</option>
+                <option value="Villa">Villa</option>
+                <option value="Zweifamilienhaus">Zweifamilienhaus</option>
+              </select>
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="numberOfFloors" className={styles.formLabel}>
                 Anzahl der Stockwerke
               </label>
-                <input
-                  type="number"
-                  id="numberOfFloors"
-                  name="numberOfFloors"
-                  min="0"
-                  inputMode="numeric"
-                  pattern="[0-9]*"                
-                  value={specificData.numberOfFloors || ''}
-                  onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
-                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
-                    }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
-                  className={styles.formInput}                  
+              <input
+                type="number"
+                id="numberOfFloors"
+                name="numberOfFloors"
+                min="0"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={specificData.numberOfFloors || ''}
+                onChange={handleSpecificChange}
+                onKeyDown={e => {
+                  if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                onWheel={e => {
+                  (e.target as HTMLInputElement).blur();
+                }}
+                className={styles.formInput}
               />
             </div>
             <div className={styles.formRow}>
@@ -1080,18 +1132,18 @@ useEffect(() => {
                   name="livingArea"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                        
+                  pattern="[0-9]*"
                   value={specificData.livingArea || ''}
                   onChange={handleSpecificChange}
                   required
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1105,17 +1157,17 @@ useEffect(() => {
                   name="usableArea"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                            
+                  pattern="[0-9]*"
                   value={specificData.usableArea || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1129,17 +1181,17 @@ useEffect(() => {
                   name="plotArea"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.plotArea || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1155,18 +1207,18 @@ useEffect(() => {
                   name="numberOfRooms"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.numberOfRooms || ''}
                   onChange={handleSpecificChange}
                   required
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1180,17 +1232,17 @@ useEffect(() => {
                   name="numberOfBedrooms"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.numberOfBedrooms || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1204,17 +1256,17 @@ useEffect(() => {
                   name="numberOfBathrooms"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.numberOfBathrooms || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1243,17 +1295,17 @@ useEffect(() => {
                   name="yearBuilt"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.yearBuilt || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                  
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1322,47 +1374,49 @@ useEffect(() => {
           <>
             <h3 className={styles.sectionTitle}>Grundstücksdaten</h3>
             <div className={styles.formGroup}>
-            <label htmlFor="landPlottype" className={styles.formLabel}>
-              Art des Grundstücks
-            </label>
-            <select
-              id="landPlottype"
-              name="landPlottype"
-              value={specificData.landPlottype || ''}
-              onChange={handleSpecificChange}
-              className={styles.formSelect}
-            >
-              <option value="">Bitte wählen</option>
-              <option value="Baugrundstück">Baugrundstück</option>
-              <option value="Gewerbegrundstück">Gewerbegrundstück</option>
-              <option value="Freizeitgrundstück">Freizeitgrundstück</option>
-              <option value="Land- und Forstwirtschaft">Land- und Forstwirtschaft</option>
-            </select>
-            </div>            
+              <label htmlFor="landPlottype" className={styles.formLabel}>
+                Art des Grundstücks
+              </label>
+              <select
+                id="landPlottype"
+                name="landPlottype"
+                value={specificData.landPlottype || ''}
+                onChange={handleSpecificChange}
+                className={styles.formSelect}
+              >
+                <option value="">Bitte wählen</option>
+                <option value="Baugrundstück">Baugrundstück</option>
+                <option value="Gewerbegrundstück">Gewerbegrundstück</option>
+                <option value="Freizeitgrundstück">Freizeitgrundstück</option>
+                <option value="Land- und Forstwirtschaft">
+                  Land- und Forstwirtschaft
+                </option>
+              </select>
+            </div>
             <div className={styles.formGroup}>
               <label htmlFor="plotArea" className={styles.formLabel}>
                 Grundstücksfläche (m²) *
               </label>
-                <input
-                  type="number"
-                  id="plotArea"
-                  name="plotArea"
-                  min="0"
-                  inputMode="numeric"
-                  pattern="[0-9]*"                
-                  value={specificData.plotArea || ''}
-                  onChange={handleSpecificChange}
-                  required
-                  onKeyDown={(e) => {
-                    if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
-                    }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}
-                  className={styles.formInput}
-                />
+              <input
+                type="number"
+                id="plotArea"
+                name="plotArea"
+                min="0"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={specificData.plotArea || ''}
+                onChange={handleSpecificChange}
+                required
+                onKeyDown={e => {
+                  if (['e', 'E', '+', '-'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                onWheel={e => {
+                  (e.target as HTMLInputElement).blur();
+                }}
+                className={styles.formInput}
+              />
             </div>
             <div className={styles.formGroup}>
               <label
@@ -1418,22 +1472,24 @@ useEffect(() => {
               <label htmlFor="buildingType" className={styles.formLabel}>
                 Gebäudetyp
               </label>
-            <select
-              id="buildingType"
-              name="buildingType"
-              value={specificData.buildingType || ''}
-              onChange={handleSpecificChange}
-              className={styles.formSelect}
-            >
-              <option value="">Bitte wählen</option>
-              <option value="Büro / Praxis">Büro / Praxis</option>
-              <option value="Laden / Einzelhandel">Laden / Einzelhandel</option>
-              <option value="Lager / Halle">Lager / Halle</option>
-              <option value="Industrieimmobilie">Industrieimmobilie</option>
-              <option value="Pflegeimmobilie">Pflegeimmobilie</option>
-              <option value="Freizeitimmobilie">Freizeitimmobilie</option>
-              <option value="Gastronomie / Hotel">Gastronomie / Hotel</option>
-            </select>
+              <select
+                id="buildingType"
+                name="buildingType"
+                value={specificData.buildingType || ''}
+                onChange={handleSpecificChange}
+                className={styles.formSelect}
+              >
+                <option value="">Bitte wählen</option>
+                <option value="Büro / Praxis">Büro / Praxis</option>
+                <option value="Laden / Einzelhandel">
+                  Laden / Einzelhandel
+                </option>
+                <option value="Lager / Halle">Lager / Halle</option>
+                <option value="Industrieimmobilie">Industrieimmobilie</option>
+                <option value="Pflegeimmobilie">Pflegeimmobilie</option>
+                <option value="Freizeitimmobilie">Freizeitimmobilie</option>
+                <option value="Gastronomie / Hotel">Gastronomie / Hotel</option>
+              </select>
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
@@ -1446,8 +1502,33 @@ useEffect(() => {
                   name="area"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.area || ''}
+                  onChange={handleSpecificChange}
+                  onKeyDown={e => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
+                  className={styles.formInput}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="plotArea" className={styles.formLabel}>
+                  Grundstücksfläche (m²)
+                </label>
+                <input
+                  type="number"
+                  id="plotArea"
+                  name="plotArea"
+                  min="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"                  
+                  value={specificData.plotArea || ''}
                   onChange={handleSpecificChange}
                   onKeyDown={(e) => {
                     if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -1496,17 +1577,17 @@ useEffect(() => {
                   name="yearBuilt"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.yearBuilt || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1670,7 +1751,7 @@ useEffect(() => {
             name="location"
             value={objectData.location}
             onChange={handleObjectChange}
-            rows={4}            
+            rows={4}
             // required
             className={styles.formInput}
           />
@@ -1885,15 +1966,15 @@ useEffect(() => {
         )}
 
         {/* File drop area */}
-<div
-  ref={dropZoneRef}
-  className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
-  onDragEnter={handleDragEnter}
-  onDragOver={handleDragOver}
-  onDragLeave={handleDragLeave}
-  onDrop={handleDrop}
-  onClick={handleDropZoneClick}
->
+        <div
+          ref={dropZoneRef}
+          className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={handleDropZoneClick}
+        >
           <div className={styles.dropZoneContent}>
             <p>
               <span className={styles.dropZoneIcon}>📁</span>
@@ -1901,14 +1982,14 @@ useEffect(() => {
                 ? 'Neue Bilder hierher ziehen oder vom Computer auswählen'
                 : 'Bilder hierher ziehen oder vom Computer auswählen'}
             </p>
-<input
-  ref={fileInputRef}
-  type="file"
-  onChange={handleFileChange}
-  accept="image/jpeg,image/png,image/jpg,image/webp"
-  multiple
-  style={{ display: 'none' }}
-/>
+            <input
+              ref={fileInputRef}
+              type="file"
+              onChange={handleFileChange}
+              accept="image/jpeg,image/png,image/jpg,image/webp"
+              multiple
+              style={{ display: 'none' }}
+            />
             <p className={styles.dropZoneHint}>
               {isEditMode
                 ? 'Falls keine Bilder vorhanden sind, wird das erste neue Bild automatisch als Hauptbild verwendet.'

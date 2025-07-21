@@ -19,14 +19,16 @@ export const usePropertyData = (id?: string) => {
     }
 
     if (isDeleted) {
-      console.log('usePropertyData: Объект помечен как удаленный, пропускаем запрос');
+      console.log(
+        'usePropertyData: Объект помечен как удаленный, пропускаем запрос',
+      );
       setLoading(false);
       return;
     }
 
     try {
       console.log('Loading object data:', id);
-      
+
       const objectRes = await axios.get<RealEstateObject>(
         `http://localhost:3000/api/objects/${id}`,
       );
@@ -63,8 +65,10 @@ export const usePropertyData = (id?: string) => {
     } catch (err: any) {
       console.error('Fehler beim Laden der Daten:', err);
       setErr(err?.message || 'Unbekannter Fehler');
-          if (err?.response?.status === 404) {
-        console.log('Объект не найден (возможно удален), помечаем как удаленный');
+      if (err?.response?.status === 404) {
+        console.log(
+          'Объект не найден (возможно удален), помечаем как удаленный',
+        );
         setIsDeleted(true);
         setObjectData(null);
         setImages([]);
@@ -73,11 +77,9 @@ export const usePropertyData = (id?: string) => {
       } else {
         setErr(err?.message || 'Unbekannter Fehler');
       }
-    
-
     } finally {
       setLoading(false);
-    }    
+    }
   }, [id, isDeleted]);
 
   // Initial data loading
@@ -90,26 +92,38 @@ export const usePropertyData = (id?: string) => {
     const handleVisibilityChange = () => {
       if (!document.hidden && id && !isDeleted) {
         console.log('Вкладка активна, обновляем данные');
-        fetchData
+        fetchData;
         fetchData();
-      } else if (!document.hidden && isDeleted){
-        console.log('Вкладка активна, но объект удален - пропускаем обновление');        
+      } else if (!document.hidden && isDeleted) {
+        console.log(
+          'Вкладка активна, но объект удален - пропускаем обновление',
+        );
       }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    return () =>
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [id, fetchData, isDeleted]);
 
-  const markAsDeleted = useCallback(()=>{
+  const markAsDeleted = useCallback(() => {
     setIsDeleted(true);
     setObjectData(null);
     setImages([]);
-    setVideos([])
-    setErr('Object wurde gelöscht')
-  }, [])
+    setVideos([]);
+    setErr('Object wurde gelöscht');
+  }, []);
 
-  return { objectData, images, videos, loading, err, refreshData: fetchData, isDeleted, markAsDeleted };
+  return {
+    objectData,
+    images,
+    videos,
+    loading,
+    err,
+    refreshData: fetchData,
+    isDeleted,
+    markAsDeleted,
+  };
 };
 
 // Hook for list of objects (without ID)
@@ -123,7 +137,7 @@ export const usePropertysData = () => {
     const fetchData = async () => {
       try {
         console.log('Loading list of all objects');
-        
+
         const objectRes = await axios.get<RealEstateObject[]>(
           `http://localhost:3000/api/objects/`,
         );
@@ -142,7 +156,9 @@ export const usePropertysData = () => {
         } catch (imageError: any) {
           // Processing of the case when there are no images (404)
           if (imageError?.response?.status === 404) {
-            console.log('Изображения не найдены (пустая база) - устанавливаем пустой массив');
+            console.log(
+              'Изображения не найдены (пустая база) - устанавливаем пустой массив',
+            );
             setImages([]);
             loadedImages = [];
           } else {
@@ -153,7 +169,7 @@ export const usePropertysData = () => {
         }
 
         setErr(null);
-        
+
         // Counting objects with images
         let objectsWithImages = 0;
         if (data && data.length > 0) {
@@ -163,13 +179,18 @@ export const usePropertysData = () => {
               return false;
             }
             // check real images in a loaded array
-            return obj.images.some((imageId: string) => 
-              loadedImages.some(img => img._id === imageId)
+            return obj.images.some((imageId: string) =>
+              loadedImages.some(img => img._id === imageId),
             );
           }).length;
         }
-        
-        console.log('Geladene Objekte:', data.length, 'Bilder:', objectsWithImages);
+
+        console.log(
+          'Geladene Objekte:',
+          data.length,
+          'Bilder:',
+          objectsWithImages,
+        );
       } catch (err: any) {
         console.error('Fehler beim Laden der Daten:', err);
 

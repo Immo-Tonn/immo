@@ -2,7 +2,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
-import { dispatchLoginEvent, dispatchLogoutEvent, isAuthenticated, setupAutoLogout } from '@features/utils/authEvent'; // Импортируем функцию отправки события
+import {
+  dispatchLoginEvent,
+  dispatchLogoutEvent,
+  isAuthenticated,
+  setupAutoLogout,
+} from '@features/utils/authEvent'; // Импортируем функцию отправки события
 
 const Login: React.FC = () => {
   const [login, setLogin] = useState<string>('');
@@ -16,7 +21,7 @@ const Login: React.FC = () => {
 
   // Администратор в системе ?
   useEffect(() => {
-  // Настройка автоматического выхода
+    // Настройка автоматического выхода
     setupAutoLogout();
 
     const checkAdminExists = async (): Promise<void> => {
@@ -102,20 +107,23 @@ const Login: React.FC = () => {
 
       // Очищаем данные авторизации
       dispatchLogoutEvent();
-    //  sessionStorage.removeItem('adminToken');
-    //  sessionStorage.removeItem('adminInfo');
+      //  sessionStorage.removeItem('adminToken');
+      //  sessionStorage.removeItem('adminInfo');
 
       setAdminExists(false);
       alert('Adminregistrierung entfernt');
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Fehler beim Löschen der Registrierung');
+      setError(
+        error.response?.data?.message ||
+          'Fehler beim Löschen der Registrierung',
+      );
     } finally {
       setLoading(false);
     }
   };
 
   // Проверка авторизации админа
-   const isAdminAuthenticated = isAuthenticated();
+  const isAdminAuthenticated = isAuthenticated();
   // const isAuthenticated = !!sessionStorage.getItem('adminToken');
 
   return (

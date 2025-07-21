@@ -56,13 +56,11 @@ export const createCommercial_NonResidentialBuildings = async (
     const { realEstateObject, ...commercial_NonResidentialBuildingsData } =
       req.body;
 
-
     const realEstate = await RealEstateObjectsModel.findById(realEstateObject);
     if (!realEstate) {
       res.status(404).json({ message: 'Objekt nicht gefunden' });
       return;
     }
-
 
     if (realEstate.type !== ObjectType.COMMERCIAL) {
       res.status(400).json({
@@ -78,7 +76,6 @@ export const createCommercial_NonResidentialBuildings = async (
       return;
     }
 
-
     const newCommercial_NonResidentialBuilding =
       new Commercial_NonResidentialBuildingsModel({
         ...commercial_NonResidentialBuildingsData,
@@ -88,11 +85,9 @@ export const createCommercial_NonResidentialBuildings = async (
     const savedCommercial_NonResidentialBuilding =
       await newCommercial_NonResidentialBuilding.save();
 
-
     realEstate.commercial_NonResidentialBuildings =
       savedCommercial_NonResidentialBuilding._id as Types.ObjectId;
     await realEstate.save();
-
 
     res.status(201).json(savedCommercial_NonResidentialBuilding);
   } catch (error) {
@@ -135,7 +130,6 @@ export const deleteCommercial_NonResidentialBuilding = async (
   res: Response,
 ): Promise<void> => {
   try {
-
     const deletedCommercial_NonResidentialBuilding =
       await Commercial_NonResidentialBuildingsModel.findByIdAndDelete(
         req.params.id,
@@ -147,12 +141,10 @@ export const deleteCommercial_NonResidentialBuilding = async (
       return;
     }
 
-
     await RealEstateObjectsModel.findByIdAndUpdate(
       deletedCommercial_NonResidentialBuilding.realEstateObject,
       { $unset: { commercial_NonResidentialBuildings: '' } },
     );
-
 
     res.status(200).json({
       message:

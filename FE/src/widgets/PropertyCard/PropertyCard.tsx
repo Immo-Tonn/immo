@@ -47,9 +47,9 @@ const PropertyCard = forwardRef<HTMLLIElement, PropertyHeroProps>(
               <p className={styles.cardTitle}>{title}</p>
               <p className={styles.address}>{address?.city}</p>
               <div className={styles.details}>
-               {price !== undefined && (
-  <p>Kaufpreis: {formatGermanCurrency(price)} €</p>
-)}
+                {price !== undefined && (
+                  <p>Kaufpreis: {formatGermanCurrency(price)} €</p>
+                )}
                 {livingArea !== undefined && (
                   <p>| Wohnfläche: {livingArea} m² | </p>
                 )}

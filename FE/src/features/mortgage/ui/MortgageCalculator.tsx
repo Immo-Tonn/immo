@@ -38,7 +38,8 @@ type InfoKey = keyof typeof infoTexts;
 
 const MortgageCalculator = () => {
   const location = useLocation();
-  const [price, setPrice] = useState('');  
+  const [price, setPrice] = useState('');
+  
   const [equity, setEquity] = useState('');
   const [loanAmount, setLoanAmount] = useState<number | null>(null);
   const [tax, setTax] = useState('6,5');

@@ -53,14 +53,21 @@ export const uploadMultipleImages = async (
       return [];
     }
 
-    console.log(`🔄 Начинаем загрузку ${files.length} изображений для объекта ${realEstateObjectId}`);
+    console.log(
+      `🔄 Начинаем загрузку ${files.length} изображений для объекта ${realEstateObjectId}`,
+    );
 
     // check if object has images
     let hasExistingImages = false;
     try {
-      const existingImagesResponse = await axios.get(`/images/by-object?objectId=${realEstateObjectId}`);
-      hasExistingImages = existingImagesResponse.data && existingImagesResponse.data.length > 0;
-      console.log(`📊 У объекта уже есть ${hasExistingImages ? existingImagesResponse.data.length : 0} изображений`);
+      const existingImagesResponse = await axios.get(
+        `/images/by-object?objectId=${realEstateObjectId}`,
+      );
+      hasExistingImages =
+        existingImagesResponse.data && existingImagesResponse.data.length > 0;
+      console.log(
+        `📊 У объекта уже есть ${hasExistingImages ? existingImagesResponse.data.length : 0} изображений`,
+      );
     } catch (error) {
       console.log('ℹ️ У объекта пока нет изображений');
       hasExistingImages = false;
@@ -80,7 +87,9 @@ export const uploadMultipleImages = async (
       const isMain = !hasExistingImages && i === 0;
       const type = isMain ? ImageType.MAIN : ImageType.ADDITIONAL;
 
-      console.log(`📤 Загружаем изображение ${i + 1}/${files.length}, тип: ${type}`);
+      console.log(
+        `📤 Загружаем изображение ${i + 1}/${files.length}, тип: ${type}`,
+      );
 
       const url = await uploadImage(
         file,
@@ -114,4 +123,4 @@ export const uploadMultipleImages = async (
     console.error('❌ Ошибка при загрузке нескольких изображений:', error);
     throw error;
   }
-};    
+};

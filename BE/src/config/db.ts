@@ -6,13 +6,13 @@ const connectDb = async () => {
   try {
     const connection = await mongoose.connect(
       process.env.MONGO_URI as string,
-      {}
+      {},
     );
-    
+
     if (connection.connection.db) {
       console.log(`Database name: ${connection.connection.db.databaseName}`);
     }
-    console.log("MongoDB connected.", connection.connection.host);
+    console.log('MongoDB connected.', connection.connection.host);
 
     // Create indices after connecting to the database
     try {
@@ -25,7 +25,6 @@ const connectDb = async () => {
       console.warn("⚠️ Warning: Some indexes could not be created:", indexError);
   // Do not interrupt the application due to errors with indexes
     }
-
   } catch (error) {
     console.error("❌ Error connecting to MongoDB:", error);
     process.exit(1); // Interrupt when the connection error
@@ -33,4 +32,3 @@ const connectDb = async () => {
 };
 
 export default connectDb;
-

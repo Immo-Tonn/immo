@@ -12,34 +12,36 @@ import LoadingErrorHandler from '@shared/ui/LoadingErrorHandler/LoadingErrorHand
 const PropertyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
-  const { objectData, images, loading, err, videos, isDeleted, markAsDeleted } = usePropertyData(id);
+
+  const { objectData, images, loading, err, videos, isDeleted, markAsDeleted } =
+    usePropertyData(id);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  
   // Checking admin authorization
   useEffect(() => {
     const token = sessionStorage.getItem('adminToken');
     setIsAdmin(!!token);
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     if (isDeleted) {
-      console.log('Объект удален, показываем сообщение и редиректим через 3 секунды');
+      console.log(
+        'Объект удален, показываем сообщение и редиректим через 3 секунды',
+      );
       const timer = setTimeout(() => {
         navigate('/immobilien');
       }, 3000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isDeleted, navigate]);
 
-    // Edit handler (admin only)
+  // Edit handler (admin only)
   const handleEdit = () => {
     navigate(`/edit-object/${id}`);
   };
 
-    // Delete handler (admin only)
+  // Delete handler (admin only)
   const handleDelete = async () => {
     if (!window.confirm('Wirklich löschen? Diese Aktion ist unwiderruflich.')) {
       return;
@@ -48,35 +50,47 @@ const PropertyPage: React.FC = () => {
     try {
       markAsDeleted();
       await axios.delete(`/objects/${id}`);
-      
+
       // delete the object from confirmed
-      const confirmedObjects = JSON.parse(sessionStorage.getItem('confirmedObjects') || '[]');
-      const updatedConfirmed = confirmedObjects.filter((objId: string) => objId !== id);
-      sessionStorage.setItem('confirmedObjects', JSON.stringify(updatedConfirmed));
+      const confirmedObjects = JSON.parse(
+        sessionStorage.getItem('confirmedObjects') || '[]',
+      );
+      const updatedConfirmed = confirmedObjects.filter(
+        (objId: string) => objId !== id,
+      );
+      sessionStorage.setItem(
+        'confirmedObjects',
+        JSON.stringify(updatedConfirmed),
+      );
 
       console.log('Объект успешно удален, -->> на /immobilien');
-      
+
       navigate('/immobilien', {
         state: {
           message: 'Das Objekt wurde erfolgreich gelöscht',
-          type:'success'
-        }
+          type: 'success',
+        },
       });
     } catch (err: any) {
       console.error('Error deleting object:', err);
       markAsDeleted();
-      alert('Error deleting object: ' + (err.response?.data?.message || err.message));
+      alert(
+        'Error deleting object: ' +
+          (err.response?.data?.message || err.message),
+      );
     }
   };
 
-    if (isDeleted) {
+  if (isDeleted) {
     return (
       <div className={styles.propertyPageContainer}>
         <div className={styles.deletedObjectMessage}>
           <h2>Objekt wurde gelöscht</h2>
           <p>Das angeforderte Objekt wurde erfolgreich gelöscht.</p>
-          <p>Sie werden in wenigen Sekunden zur Objektübersicht weitergeleitet...</p>
-          <button 
+          <p>
+            Sie werden in wenigen Sekunden zur Objektübersicht weitergeleitet...
+          </p>
+          <button
             className={styles.backButton}
             onClick={() => navigate('/immobilien')}
           >
@@ -87,16 +101,16 @@ const PropertyPage: React.FC = () => {
     );
   }
 
-    if (loading) return <p>Laden...</p>;
+  if (loading) return <p>Laden...</p>;
 
-      if (err && err.includes('nicht gefunden')) {
+  if (err && err.includes('nicht gefunden')) {
     return (
       <div className={styles.propertyPageContainer}>
         <div className={styles.notFoundMessage}>
           <h2>Objekt nicht gefunden</h2>
           <p>Das angeforderte Objekt konnte nicht gefunden werden.</p>
           <p>Möglicherweise wurde es gelöscht oder die URL ist ungültig.</p>
-          <button 
+          <button
             className={styles.backButton}
             onClick={() => navigate('/immobilien')}
           >
@@ -112,8 +126,7 @@ const PropertyPage: React.FC = () => {
   return (
     <div className={styles.propertyPageContainer}>
       <LoadingErrorHandler loading={loading} error={err} />
-      
-      
+
       {/* Admin buttons */}
       {isAdmin && (
         <div className={styles.adminActions}>
@@ -146,6 +159,7 @@ const PropertyPage: React.FC = () => {
             residentialHouse={objectData.residentialHouses}
           />
           <PropertyMap address={objectData.address} />
+
           <ContactForm />
         </>
       )}
