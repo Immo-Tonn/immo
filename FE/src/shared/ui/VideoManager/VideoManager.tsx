@@ -1,4 +1,3 @@
-// immo/FE/src/shared/ui/VideoManager/VideoManager.tsx
 import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import axiosInstance from '@features/utils/axiosConfig';
 import styles from './VideoManager.module.css';
@@ -15,11 +14,22 @@ interface VideoFile extends File {
   title?: string;
 }
 
+interface TempVideo {
+  tempId: string;
+  originalName: string;
+  title: string;
+  size: number;
+  path: string;
+  mimetype: string;
+}
+
 interface VideoManagerProps {
   realEstateObjectId: string;
   existingVideos?: Video[];
   onVideosChange?: (videos: Video[]) => void;
   isEditMode?: boolean;
+  tempVideos?: TempVideo[];
+  onTempVideosChange?: (videos: TempVideo[]) => void;
 }
 
 const VideoManager: React.FC<VideoManagerProps> = ({
@@ -27,6 +37,8 @@ const VideoManager: React.FC<VideoManagerProps> = ({
   existingVideos = [],
   onVideosChange,
   isEditMode = false,
+  tempVideos = [],
+  onTempVideosChange,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<VideoFile[]>([]);
   const [existingVideoList, setExistingVideoList] =
@@ -38,11 +50,27 @@ const VideoManager: React.FC<VideoManagerProps> = ({
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // update existing videos when props change
+  React.useEffect(() => {
+    console.log('🔍 === VideoManager Props Debug ===');
+    console.log('  realEstateObjectId:', realEstateObjectId);
+    console.log('  realEstateObjectId type:', typeof realEstateObjectId);
+    console.log('  isEditMode:', isEditMode);
+    console.log('  tempVideos length:', tempVideos.length);
+    console.log('  existingVideos length:', existingVideos.length);
+    console.log('  onTempVideosChange defined:', typeof onTempVideosChange);
+    console.log('================================');
+  }, [
+    realEstateObjectId,
+    isEditMode,
+    tempVideos.length,
+    existingVideos.length,
+  ]);
+
+  // Обновляем существующие видео при изменении пропсов
   React.useEffect(() => {
     setExistingVideoList(existingVideos);
-    
-    // Adding logging for diagnostics
+
+    // Добавляем логирование для диагностики
     if (existingVideos.length > 0) {
       console.log('=== VideoManager Debug ===');
       existingVideos.forEach((video, index) => {
@@ -58,21 +86,47 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   }, [existingVideos]);
 
-  // Function to get the correct thumbnail URL
+  // Cleanup при размонтировании компонента
+  React.useEffect(() => {
+    return () => {
+      if (realEstateObjectId === 'new-object' && tempVideos.length > 0) {
+        const tempIds = tempVideos.map(video => video.tempId);
+        axiosInstance
+          .post('/videos/cleanup-temp', { tempIds })
+          .catch(err => console.warn('Cleanup error on unmount:', err));
+      }
+    };
+  }, [realEstateObjectId, tempVideos]);
+
+  // Предупреждение при закрытии страницы с несохраненными видео
+  React.useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (
+        selectedFiles.length > 0 ||
+        (realEstateObjectId === 'new-object' && tempVideos.length > 0)
+      ) {
+        e.preventDefault();
+        return true;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [selectedFiles, realEstateObjectId, tempVideos]);
+
+  // Функция для получения правильного thumbnail URL
   const getCorrectThumbnailUrl = (video: Video): string => {
-    // fixing incorrect thumbnail URL if it exists
     if (video.thumbnailUrl) {
-      // Extract videoId from any URL
-      const videoId = extractVideoId(video.url) || extractVideoId(video.thumbnailUrl);
+      const videoId =
+        extractVideoId(video.url) || extractVideoId(video.thumbnailUrl);
       if (videoId) {
-        // Forming the correct thumbnail URL
         return `https://vz-973fa28c-a7d.b-cdn.net/${videoId}/preview.webp?v=${Math.floor(Date.now() / 1000)}`;
       }
     }
     return video.thumbnailUrl || '';
   };
 
-  // Function to extract videoId from URL
+  // Функция для извлечения videoId из URL
   const extractVideoId = (url: string): string | null => {
     const patterns = [
       /\/([a-f0-9\-]+)\/play$/,
@@ -88,14 +142,13 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
     return null;
   };
+
   const getDirectVideoUrl = (originalUrl: string): string => {
     try {
-      // Если URL уже прямая ссылка на MP4, возвращаем как есть
       if (originalUrl.includes('.mp4') || originalUrl.includes('play_')) {
         return originalUrl;
       }
 
-      // Processing URL format: https://iframe.mediadelivery.net/play/430278/{videoId}
       const playRegex = /iframe\.mediadelivery\.net\/play\/\d+\/([a-f0-9\-]+)/;
       const embedRegex =
         /iframe\.mediadelivery\.net\/embed\/\d+\/([a-f0-9\-]+)/;
@@ -105,7 +158,6 @@ const VideoManager: React.FC<VideoManagerProps> = ({
       const videoId = playMatch?.[1] || embedMatch?.[1];
 
       if (videoId) {
-        // Use THUMBNAIL_PROJECT_ID to form a direct link
         return `https://vz-973fa28c-a7d.b-cdn.net/${videoId}/play_480p.mp4`;
       }
 
@@ -117,26 +169,22 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   };
 
-  // get iframe URL for embedding
+  // Функция для получения iframe URL для встраивания
   const getIframeUrl = (originalUrl: string): string => {
     try {
-      // If the URL is already iframe embed, return as is
       if (originalUrl.includes('iframe.mediadelivery.net/embed/')) {
         return originalUrl;
       }
 
-      // Convert play URL to embed URL
-      // From: https://iframe.mediadelivery.net/play/430278/{videoId}
-      // In: https://iframe.mediadelivery.net/embed/430278/{videoId}
-      const playRegex = /iframe\.mediadelivery\.net\/play\/(\d+)\/([a-f0-9\-]+)/;
+      const playRegex =
+        /iframe\.mediadelivery\.net\/play\/(\d+)\/([a-f0-9\-]+)/;
       const match = originalUrl.match(playRegex);
 
       if (match) {
         const [, libraryId, videoId] = match;
         return `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}`;
       }
-      
-      // If it`s a direct BunnyCDN link, try to get the iframe URL
+
       const directRegex = /vz-[\w\-]+\.b-cdn\.net\/([a-f0-9\-]+)/;
       const directMatch = originalUrl.match(directRegex);
 
@@ -152,7 +200,141 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   };
 
-  // Drag & drop handlers
+  // 3. checkServerAvailability (возможная проблема):
+  const checkServerAvailability = async (): Promise<boolean> => {
+    try {
+      console.log('🔍 Проверяем доступность сервера...');
+      await axiosInstance.get('/videos', { timeout: 5000 });
+      console.log('✅ Сервер доступен');
+      return true;
+    } catch (error) {
+      console.error('❌ Сервер недоступен:', error);
+      setError(
+        'Server ist nicht verfügbar. Bitte versuchen Sie es später erneut.',
+      );
+      return false;
+    }
+  };
+
+  // Новый метод для загрузки временных видео
+  const uploadTempVideos = async () => {
+    console.log('🎥 === НАЧАЛО uploadTempVideos ===');
+    console.log('📁 selectedFiles.length:', selectedFiles.length);
+
+    if (selectedFiles.length === 0) {
+      console.log('❌ Нет файлов для временной загрузки');
+      return;
+    }
+
+    console.log('🎥 НАЧИНАЕМ ВРЕМЕННУЮ ЗАГРУЗКУ для новых объектов');
+    console.log('📁 Количество файлов:', selectedFiles.length);
+    console.log('🔗 realEstateObjectId:', realEstateObjectId);
+
+    // Проверяем общий размер всех файлов
+    const totalSize = selectedFiles.reduce((sum, file) => sum + file.size, 0);
+    const maxTotalSize = 500 * 1024 * 1024; // 500MB общий лимит
+
+    if (totalSize > maxTotalSize) {
+      console.log('❌ Превышен лимит размера файлов');
+      setError(
+        'Gesamtgröße aller Videos überschreitet 500MB. Bitte reduzieren Sie die Anzahl der Dateien.',
+      );
+      return;
+    }
+
+    setUploading(true);
+    setError('');
+    setUploadProgress(0);
+
+    const newTempVideos: TempVideo[] = [];
+    const failedUploads: string[] = [];
+
+    try {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+
+        if (!file) {
+          console.warn(`Файл с индексом ${i} не найден`);
+          continue;
+        }
+
+        try {
+          console.log(
+            `📤 Загружаем файл ${i + 1}/${selectedFiles.length}: ${file.name}`,
+          );
+          const formData = new FormData();
+          formData.append('video', file);
+          formData.append('title', file.title || file.name);
+
+          console.log('🚀 Отправляем запрос на /videos/temp');
+          console.log('📋 FormData содержит:', {
+            video: file.name,
+            title: file.title || file.name,
+          });
+
+          const response = await axiosInstance.post('/videos/temp', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            timeout: 300000,
+            onUploadProgress: progressEvent => {
+              const total = progressEvent.total || 1;
+              const current = progressEvent.loaded;
+              const fileProgress = (current / total) * 100;
+              const totalProgress =
+                (i / selectedFiles.length) * 100 +
+                fileProgress / selectedFiles.length;
+              setUploadProgress(Math.round(totalProgress));
+            },
+          });
+
+          console.log('✅ Ответ от сервера:', response.data);
+          newTempVideos.push(response.data);
+        } catch (fileError: any) {
+          console.error(`❌ Ошибка загрузки файла ${file.name}:`, fileError);
+          console.error('❌ URL запроса:', fileError.config?.url);
+          console.error('❌ Метод запроса:', fileError.config?.method);
+          console.error('❌ Детали ошибки:', fileError.response?.data);
+          failedUploads.push(file.name);
+        }
+      }
+
+      // Обновляем список временных видео
+      if (onTempVideosChange) {
+        console.log(
+          '📋 Обновляем tempVideos, добавляем:',
+          newTempVideos.length,
+        );
+        onTempVideosChange([...tempVideos, ...newTempVideos]);
+      } else {
+        console.log('⚠️ onTempVideosChange не определен!');
+      }
+
+      // Очищаем выбранные файлы
+      setSelectedFiles([]);
+      setUploadProgress(0);
+
+      // Показываем результат
+      if (failedUploads.length > 0) {
+        setError(
+          `${newTempVideos.length} Videos gespeichert, ${failedUploads.length} fehlgeschlagen: ${failedUploads.join(', ')}`,
+        );
+      } else if (newTempVideos.length > 0) {
+        console.log(
+          `✅ ${newTempVideos.length} Videos erfolgreich temporär gespeichert`,
+        );
+      }
+    } catch (err: any) {
+      console.error('❌ Общая ошибка uploadTempVideos:', err);
+      console.error('❌ Детали общей ошибки:', err.response?.data);
+      setError(
+        'Fehler beim temporären Speichern der Videos: ' +
+          (err.response?.data?.error || err.message),
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Обработчики drag & drop
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -184,7 +366,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     processFiles(files);
   };
 
-  // Processing file selection
+  // Обработка выбора файлов
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
@@ -192,7 +374,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   };
 
-  // Checking and processing files
+  // Проверка и обработка файлов
   const processFiles = (files: File[]) => {
     const videoFiles = files.filter(
       file =>
@@ -223,18 +405,17 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
 
     setError('');
-    
-    // Add files with basic names and correct typing
+
     const filesWithTitles: VideoFile[] = videoFiles.map(file => {
       const videoFile = file as VideoFile;
-      videoFile.title = file.name.replace(/\.[^/.]+$/, ''); // убираем расширение
+      videoFile.title = file.name.replace(/\.[^/.]+$/, '');
       return videoFile;
     });
 
     setSelectedFiles(prev => [...prev, ...filesWithTitles]);
   };
 
-  // New video title update
+  // Обновление названия нового видео
   const updateVideoTitle = (index: number, title: string) => {
     setSelectedFiles(prev =>
       prev.map((file, i) => {
@@ -248,7 +429,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     );
   };
 
-  // Update title of existing video
+  // Обновление названия существующего видео
   const updateExistingVideoTitle = async (videoId: string, title: string) => {
     try {
       await axiosInstance.put(`/videos/${videoId}`, { title });
@@ -271,18 +452,22 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   };
 
+  // Удаление нового видео из списка
   const removeNewVideo = (index: number) => {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Удаление существующего видео
   const removeExistingVideo = async (videoId: string) => {
     if (
       !window.confirm('Sind Sie sicher, dass Sie dieses Video löschen möchten?')
     ) {
       return;
     }
+
     try {
-      await axiosInstance.delete(`/videos/${videoId}`);     
+      await axiosInstance.delete(`/videos/${videoId}`);
+
       setExistingVideoList(prev => prev.filter(video => video._id !== videoId));
 
       if (onVideosChange) {
@@ -297,10 +482,79 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   };
 
-  // Uploading new videos to the server
-  const uploadVideos = async () => {
-    if (selectedFiles.length === 0) return;
+  // Метод для удаления временного видео
+  const removeTempVideo = (tempId: string) => {
+    if (
+      !window.confirm(
+        'Sind Sie sicher, dass Sie dieses temporäre Video entfernen möchten?',
+      )
+    ) {
+      return;
+    }
 
+    if (onTempVideosChange) {
+      const updatedTempVideos = tempVideos.filter(
+        video => video.tempId !== tempId,
+      );
+      onTempVideosChange(updatedTempVideos);
+
+      // Отправляем запрос на удаление файла с сервера
+      axiosInstance
+        .post('/videos/cleanup-temp', { tempIds: [tempId] })
+        .then(() => {
+          console.log('Временный файл успешно удален с сервера');
+        })
+        .catch(err => {
+          console.warn('Ошибка при удалении временного файла:', err);
+          setError(
+            'Warnung: Temporäre Datei konnte nicht vom Server gelöscht werden',
+          );
+          setTimeout(() => setError(''), 5000);
+        });
+    }
+  };
+
+  // Загрузка новых видео на сервер
+  const uploadVideos = async () => {
+    console.log('🚀 === НАЧАЛО uploadVideos ===');
+    console.log('📁 selectedFiles.length:', selectedFiles.length);
+    console.log('🔗 realEstateObjectId:', realEstateObjectId);
+    console.log(
+      '🔍 realEstateObjectId === "new-object":',
+      realEstateObjectId === 'new-object',
+    );
+    console.log('📝 isEditMode:', isEditMode);
+
+    if (selectedFiles.length === 0) {
+      console.log('❌ Нет файлов для загрузки');
+      return;
+    }
+
+    // Проверяем доступность сервера
+    console.log('🔍 Проверяем доступность сервера...');
+    const serverAvailable = await checkServerAvailability();
+    if (!serverAvailable) {
+      console.log('❌ Сервер недоступен');
+      return;
+    }
+    console.log('✅ Сервер доступен');
+
+    // КРИТИЧЕСКАЯ ПРОВЕРКА
+    if (realEstateObjectId === 'new-object') {
+      console.log('🎯 УСЛОВИЕ ВЫПОЛНЕНО: realEstateObjectId === "new-object"');
+      console.log('🔄 Вызываем uploadTempVideos...');
+      await uploadTempVideos();
+      console.log('✅ uploadTempVideos завершен');
+      return;
+    } else {
+      console.log(
+        '🎯 УСЛОВИЕ НЕ ВЫПОЛНЕНО: realEstateObjectId НЕ РАВЕН "new-object"',
+      );
+      console.log('🔄 Продолжаем с обычной загрузкой...');
+    }
+
+    // Обычная загрузка для существующих объектов
+    console.log('🔄 Существующий объект, используем обычную загрузку');
     setUploading(true);
     setError('');
     setUploadProgress(0);
@@ -308,12 +562,15 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     try {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
-        
-        // Check that the file exists
+
         if (!file) {
           console.warn(`Файл с индексом ${i} не найден`);
           continue;
         }
+
+        console.log(
+          `📤 Загружаем файл ${i + 1}/${selectedFiles.length} через ОБЫЧНЫЙ роут /videos`,
+        );
 
         const formData = new FormData();
         formData.append('video', file);
@@ -322,7 +579,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
 
         await axiosInstance.post('/videos', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
-          timeout: 300000, // Увеличиваем timeout для видео файлов
+          timeout: 300000,
           onUploadProgress: progressEvent => {
             const total = progressEvent.total || 1;
             const current = progressEvent.loaded;
@@ -335,8 +592,10 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         });
       }
 
-      // Updating the list of existing videos
-      const response = await axiosInstance.get(`/videos/by-object?objectId=${realEstateObjectId}`);
+      // Обновляем список существующих видео
+      const response = await axiosInstance.get(
+        `/videos/by-object?objectId=${realEstateObjectId}`,
+      );
       const newVideos = response.data || [];
       setExistingVideoList(newVideos);
 
@@ -344,7 +603,6 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         onVideosChange(newVideos);
       }
 
-      // Cleaning up new files
       setSelectedFiles([]);
       setUploadProgress(0);
     } catch (err: any) {
@@ -358,7 +616,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
     }
   };
 
-  // Click on the download area
+  // Клик по зоне загрузки
   const handleZoneClick = () => {
     fileInputRef.current?.click();
   };
@@ -369,14 +627,65 @@ const VideoManager: React.FC<VideoManagerProps> = ({
 
       {error && <div className={styles.errorMessage}>{error}</div>}
 
-      {/* Existing videos */}
+      {/* Временные видео для новых объектов */}
+      {realEstateObjectId === 'new-object' && tempVideos.length > 0 && (
+        <>
+          <h4 className={styles.imageSection}>
+            Videos für Upload nach Erstellung
+          </h4>
+          <div className={styles.videoPreviews}>
+            {tempVideos.map(video => (
+              <div
+                key={`temp-${video.tempId}`}
+                className={`${styles.videoPreviewItem} ${styles.tempVideo}`}
+              >
+                <div className={styles.tempVideoLabel}>Wartend</div>
+                <div className={styles.videoTitle}>
+                  <input
+                    type="text"
+                    value={video.title}
+                    onChange={e => {
+                      if (onTempVideosChange) {
+                        const updatedTempVideos = tempVideos.map(v =>
+                          v.tempId === video.tempId
+                            ? { ...v, title: e.target.value }
+                            : v,
+                        );
+                        onTempVideosChange(updatedTempVideos);
+                      }
+                    }}
+                    className={styles.videoTitleInput}
+                    placeholder="Titel des Videos"
+                  />
+                </div>
+                <div className={styles.videoFileName}>
+                  📁 {video.originalName}
+                </div>
+                <div className={styles.videoFileName}>
+                  📊 {(video.size / (1024 * 1024)).toFixed(1)} MB
+                </div>
+                <button
+                  type="button"
+                  className={styles.removeVideoBtn}
+                  onClick={() => removeTempVideo(video.tempId)}
+                  title="Video entfernen"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Существующие видео */}
       {isEditMode && existingVideoList.length > 0 && (
         <>
           <h4 className={styles.imageSection}>Aktuelle Videos</h4>
           <div className={styles.videoPreviews}>
-            {existingVideoList.map((video, index) => (
+            {existingVideoList.map(video => (
               <div
-                key={`existing-${video._id || index}`}
+                key={`existing-${video._id || Math.random()}`}
                 className={`${styles.videoPreviewItem} ${styles.existingVideo}`}
               >
                 <div className={styles.existingVideoLabel}>Vorhanden</div>
@@ -393,8 +702,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                     placeholder="Titel des Videos"
                   />
                 </div>
-                
-                {/* Add buttons to control the video */}
+
                 <div className={styles.videoControls}>
                   <button
                     type="button"
@@ -419,19 +727,19 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                     📋 URL kopieren
                   </button>
                 </div>
-                
-                {/* Show thumbnail with correct URL */}
+
                 <div className={styles.videoPreview}>
                   {video.thumbnailUrl ? (
                     <img
                       src={getCorrectThumbnailUrl(video)}
                       alt={video.title || 'Video preview'}
                       className={styles.videoThumbnail}
-                      onError={(e) => {
-                        console.warn('Ошибка загрузки thumbnail:', getCorrectThumbnailUrl(video));
-                        // If the thumbnail is not loaded, hide the image and show the placeholder
+                      onError={e => {
+                        console.warn(
+                          'Ошибка загрузки thumbnail:',
+                          getCorrectThumbnailUrl(video),
+                        );
                         const target = e.target as HTMLImageElement;
-
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent) {
@@ -445,7 +753,6 @@ const VideoManager: React.FC<VideoManagerProps> = ({
                     />
                   ) : null}
 
-                  {/* PlaySholder for cases when no Thumbnail or not boot */}
                   <div
                     className={`${styles.videoPlaceholder} video-placeholder`}
                     style={{ display: video.thumbnailUrl ? 'none' : 'flex' }}
@@ -469,7 +776,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </>
       )}
 
-      {/* Loading Zone */}
+      {/* Зона загрузки */}
       <div
         ref={dropZoneRef}
         className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
@@ -501,7 +808,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </div>
       </div>
 
-      {/* Preview new videos */}
+      {/* Предпросмотр новых видео */}
       {selectedFiles.length > 0 && (
         <>
           <h4 className={styles.imageSection}>
@@ -509,7 +816,6 @@ const VideoManager: React.FC<VideoManagerProps> = ({
           </h4>
           <div className={styles.videoPreviews}>
             {selectedFiles.map((file, index) => {
-              // check that the file exists
               if (!file) return null;
 
               return (
@@ -546,7 +852,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </>
       )}
 
-      {/* Loading progress */}
+      {/* Прогресс загрузки */}
       {uploading && uploadProgress > 0 && (
         <div className={styles.uploadProgress}>
           <div
@@ -559,7 +865,7 @@ const VideoManager: React.FC<VideoManagerProps> = ({
         </div>
       )}
 
-      {/* Download button */}
+      {/* Кнопка загрузки */}
       {selectedFiles.length > 0 && !uploading && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <button
@@ -568,8 +874,17 @@ const VideoManager: React.FC<VideoManagerProps> = ({
             className={styles.uploadButton}
           >
             {selectedFiles.length} Video{selectedFiles.length > 1 ? 's' : ''}{' '}
-            hochladen
+            {realEstateObjectId === 'new-object'
+              ? 'temporär speichern'
+              : 'hochladen'}
           </button>
+
+          {realEstateObjectId === 'new-object' && (
+            <div className={styles.infoMessage} style={{ marginTop: '10px' }}>
+              Videos werden nach dem Erstellen des Objekts automatisch
+              hochgeladen.
+            </div>
+          )}
         </div>
       )}
     </div>
