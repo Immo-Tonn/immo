@@ -423,7 +423,15 @@ if (priceTooLowError) {
     y += rowGap;
 
     doc.text('Maklerprovision:', 25, y);
-    doc.text(`${broker === 'custom' ? customBroker : broker}%`, 110, y);
+    const brokerRaw = broker === 'custom' ? customBroker : broker;
+const parsedBroker = parseFloat(brokerRaw.replace(',', '.')); // превращаем строку в число
+
+if (!isNaN(parsedBroker)) {
+  const brokerPercent = (parsedBroker * 100).toFixed(2).replace('.', ',');
+  doc.text(`${brokerPercent}%`, 110, y);
+} else {
+  doc.text('–', 110, y); // если ошибка, выводим прочерк
+}
     y += rowGap;
 
     doc.text('Darlehenssumme:', 25, y);
