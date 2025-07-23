@@ -7,8 +7,13 @@ import QuestionIcon from '@shared/assets/morgage-calculator/question.svg';
 import MarkerIcon from '@shared/assets/morgage-calculator/marker.svg';
 import Input from '@shared/ui/Input/Input';
 import Button from '@shared/ui/Button/Button';
-import { formatGermanCurrency } from '@features/utils/formatGermanCurrency';
-// import Arrow from '@shared/assets/morgage-calculator/arrow.svg'
+
+const formatGermanCurrency = (num: number) => {
+  return num
+    .toFixed(2)
+    .replace('.', ',')
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
 
 // Преобразует строку "375.000,00" в число 375000.00
 const parseGermanCurrency = (str: string): number => {
@@ -39,12 +44,12 @@ type InfoKey = keyof typeof infoTexts;
 const MortgageCalculator = () => {
   const location = useLocation();
   const [price, setPrice] = useState('');
-  
+  //const [showError, setShowError] = useState(false);
   const [equity, setEquity] = useState('');
   const [loanAmount, setLoanAmount] = useState<number | null>(null);
   const [tax, setTax] = useState('6,5');
   const [notary, setNotary] = useState('1,5');
-  const [broker, setBroker] = useState('2,0');
+  const [broker, setBroker] = useState('0,0357'); 
   const [repayment, setRepayment] = useState('2,0');
   const [interest, setInterest] = useState('3,5');
   const [years, setYears] = useState('30');
@@ -68,7 +73,7 @@ const MortgageCalculator = () => {
   const [equityDecimalError, setEquityDecimalError] = useState(false);
   const [interestDecimalError, setInterestDecimalError] = useState(false);
   const [interestRangeError, setInterestRangeError] = useState(false);
-
+const [priceTooLowError, setPriceTooLowError] = useState(false);
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Разрешаем только цифры при вводе
     const digits = e.target.value.replace(/[^\d]/g, '');
@@ -76,6 +81,15 @@ const MortgageCalculator = () => {
     // Ограничиваем длину
     if (digits.length <= 11) {
       setPrice(digits);
+        // Проверка: Immobilienpreis должен быть > Eigenkapital
+    const priceNum = parseFloat(digits);
+    const equityNum = parseFloat(equity.replace(',', '.')) || 0;
+
+    if (priceNum > 0 && equityNum > 0 && priceNum <= equityNum) {
+      setPriceTooLowError(true);
+    } else {
+      setPriceTooLowError(false);
+    }
     }
   };
 
@@ -101,7 +115,7 @@ const MortgageCalculator = () => {
     }
   };
 
-  const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d)?$/.test(val);
+  const isValidPercent = (val: string) => /^([0-9]|10)([.,]\d{1,2})?$/.test(val);
 
   const customTaxError =
     tax === 'custom' && customTax !== '' && !isValidPercent(customTax);
@@ -294,7 +308,25 @@ const MortgageCalculator = () => {
     years,
     interest,
   ]);
+useEffect(() => {
+  const priceStr = price.replace(/\./g, '').replace(',', '.');  // удаляем точку, если была
+  const equityStr = equity.replace(/\./g, '').replace(',', '.');
+  const priceNum = parseFloat(priceStr) || 0;
+  const equityNum = parseFloat(equityStr) || 0;
 
+if (
+  price !== '' &&
+  equity !== '' &&
+  priceNum > 0 &&
+  equityNum > 0 &&
+  priceNum <= equityNum
+) {
+  setPriceTooLowError(true);
+} else {
+  setPriceTooLowError(false);
+}
+
+}, [price, equity]);
   const handleCalc = () => {
     setInterestDecimalError(false);
     setInterestRangeError(false);
@@ -304,8 +336,12 @@ const MortgageCalculator = () => {
       setValidationError(
         'Eigenkapital darf den Gesamtpreis nicht überschreiten.',
       );
-      return;
+      return;          
     }
+if (priceTooLowError) {
+  setValidationError('Der Immobilienpreis muss größer als das Eigenkapital sein.');
+  return;
+}
     if (!equity || equity.trim() === '') {
       setValidationError('Bitte geben Sie Ihr Eigenkapital ein.');
       return;
@@ -375,7 +411,7 @@ const MortgageCalculator = () => {
     y += rowGap;
 
     doc.text('Eigenkapital:', 25, y);
-    doc.text(formatCurrency(equity), 110, y);
+  doc.text(formatCurrency(parseGermanCurrency(equity)), 110, y);
     y += rowGap;
 
     doc.text('Grunderwerbsteuer:', 25, y);
@@ -450,7 +486,10 @@ const MortgageCalculator = () => {
   const brokerOptions = Array.from({ length: 7 }, (_, i) =>
     (1.0 + i * 0.5).toFixed(1).replace('.', ','),
   );
-
+// Добавим 3,57, если его ещё нет
+if (!brokerOptions.includes('3,57')) {
+  brokerOptions.unshift('3,57'); // вставим в начало (по умолчанию)
+}
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Immobilien Finanzierung Rechner</h2>
@@ -468,6 +507,11 @@ const MortgageCalculator = () => {
             />
             <img src={MarkerIcon} alt="marker" className={styles.markerIcon} />
           </div>
+          {priceTooLowError && (
+  <p className={styles.error}>
+    Der Immobilienpreis muss größer als das Eigenkapital sein.
+  </p>
+)}
           {renderSelect(
             'Grunderwerbsteuer',
             tax,
@@ -478,7 +522,8 @@ const MortgageCalculator = () => {
             taxOptions,
             undefined,
             customTaxError,
-            setModalContent,
+             undefined, // modeToggle
+             setModalContent,
           )}
           {renderSelect(
             'Notar/Grundbuch',
@@ -490,6 +535,7 @@ const MortgageCalculator = () => {
             notaryOptions,
             undefined,
             customNotaryError,
+             undefined,
             setModalContent,
           )}
           {renderSelect(
@@ -502,6 +548,7 @@ const MortgageCalculator = () => {
             brokerOptions,
             undefined,
             customBrokerError,
+             undefined,
             setModalContent,
           )}
           <p className={styles.sumLine}>
@@ -549,66 +596,51 @@ const MortgageCalculator = () => {
               </option>
             ))}
           </select>
-          <label htmlFor="interest">Sollzins p. a.</label>
-          <div className={styles.inputWithIcon}>
-            <input
-              type="text"
-              value={interest}
-              onChange={e => handleInterestChange(e.target.value)}
-              onInput={e => {
-                const inputEvent = e as React.FormEvent<HTMLInputElement> & {
-                  data?: string;                  
-                };
-                
-                if (!inputEvent.data) return;
+          {/* 222 */}
+ <label htmlFor="interest">Sollzins p. a.(%)</label>
+<div className={styles.inputWithIcon}>
+  <input
+    type="text"
+    value={interest}
+    onChange={e => handleInterestChange(e.target.value)}
+    onBeforeInput={e => {
+      if (!e.data) return;
 
-                const input = e.currentTarget;
-                const { selectionStart, selectionEnd } = input;
+      const input = e.currentTarget;
+      const { selectionStart, selectionEnd } = input;
 
-                const inserted = inputEvent.data === '.' ? ',' : inputEvent.data;
+      const inserted = e.data === '.' ? ',' : e.data;
 
-                const proposed =
-                  selectionStart !== null && selectionEnd !== null
-                    ? input.value.slice(0, selectionStart) +
-                      inserted +
-                      input.value.slice(selectionEnd)
-                    : input.value + inserted;
+      const proposed =
+        selectionStart !== null && selectionEnd !== null
+          ? input.value.slice(0, selectionStart) + inserted + input.value.slice(selectionEnd)
+          : input.value + inserted;
 
-                const cleaned = proposed.replace('%', '');
-                const parts = cleaned.split(',');
+      const cleaned = proposed.replace('%', '');
+      const parts = cleaned.split(',');
 
-                const numericValue = parseFloat(cleaned.replace(',', '.'));
+      const numericValue = parseFloat(cleaned.replace(',', '.'));
 
-                const tooManyDecimals =
-                  parts.length === 2 && parts[1] && parts[1].length > 1;
-                const isValidPartialInput = cleaned === '0,' || cleaned === '0';
+      const tooManyDecimals = parts.length === 2 && parts[1] !== undefined && parts[1].length > 1;
+      const tooHighOrLow = !isNaN(numericValue) && (numericValue <= 0 || numericValue > 14);
 
-                const tooHighOrLow =
-                  !isNaN(numericValue) &&
-                  !isValidPartialInput &&
-                  (numericValue <= 0 || numericValue > 14);
+      setInterestDecimalError(tooManyDecimals);
+      setInterestRangeError(tooHighOrLow);
 
-                setInterestDecimalError(Boolean(tooManyDecimals));
-                setInterestRangeError(Boolean(tooHighOrLow));
+      if (!/^[\d,]*$/.test(inserted)) {
+        e.preventDefault();
+        return;
+      }
 
-                if (!/^[\d,]*$/.test(inserted)) {
-                  e.preventDefault();
-                  return;
-                }
-
-                if (
-                  (proposed.match(/,/g) || []).length > 1 ||
-                  tooManyDecimals ||
-                  tooHighOrLow
-                ) {
-                  e.preventDefault();
-                  return;
-                }
-              }}
-              inputMode="decimal"
-            />
-            <img src={MarkerIcon} className={styles.markerIcon} />
-          </div>
+      if ((proposed.match(/,/g) || []).length > 1 || tooManyDecimals || tooHighOrLow) {
+        e.preventDefault();
+        return;
+      }
+    }}
+    inputMode="decimal"
+  />
+  <img src={MarkerIcon} className={styles.markerIcon} />
+</div>
 
           {interestDecimalError && (
             <p className={styles.error}>
@@ -620,6 +652,7 @@ const MortgageCalculator = () => {
               Der Sollzins muss größer als 0 und kleiner als 14 sein.
             </p>
           )}
+
           <label htmlFor="years">Laufzeit (Jahre)</label>
           <select
             id="years"
@@ -692,6 +725,7 @@ const MortgageCalculator = () => {
         Für die Richtigkeit, Vollständigkeit und Aktualität der Angaben wird
         keine Haftung übernommen.
       </p>
+      {/* Модальное окно для иконки QuestionIcon */}
       {modalContent && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -717,6 +751,7 @@ function renderSelect(
   options: string[],
   modeToggle?: () => void,
   showError?: boolean,
+   setShowError?: (show: boolean) => void,
   onInfoClick?: (info: { title: string; body: string }) => void,
 ) {
   const showCustom = value === 'custom';
@@ -759,74 +794,84 @@ function renderSelect(
 
         {showCustom && (
           <div className={styles.inputWithPercent}>
-            <Input
-              id={`${infoKey}-custom`}
-              name={`${infoKey}-custom`}
-              value={customValue}
-              onChange={e => {
-                let val = e.target.value;
+          <Input
+  id={`${infoKey}-custom`}
+  name={`${infoKey}-custom`}
+  value={customValue}
+  onChange={e => {
+    let val = e.target.value;
 
-                // Заменяем запятую на точку
-                val = val.replace(',', '.');
+    // Заменяем все точки на запятые
+    val = val.replace(/\./g, ',');
 
-                // Проверка: разрешаем максимум 2 цифры перед точкой и одну после
-                const regex = /^\d{0,2}(\.\d?)?$/;
+    // Проверка: максимум 2 цифры перед запятой и максимум 2 после
+    const regex = /^\d{0,2}(,\d{0,2})?$/;
 
-                if (regex.test(val)) {
-                  const number = parseFloat(val);
+    if (regex.test(val)) {
+      const number = parseFloat(val.replace(',', '.'));
+const parts = val.split(',');
+ const hasTooManyDecimals = parts[1] !== undefined && parts[1]?.length > 2;
+      // Разрешаем пустую строку
+      if (val === '' || (!isNaN(number) && number <= 10)) {
+        setCustomValue(val);
+         if (typeof setShowError === 'function') {
+          const isValid =
+            /^([0-9]|10)(,\d{0,2})?$/.test(val) &&
+            !isNaN(number) &&
+            number <= 10 &&
+            !hasTooManyDecimals;
 
-                  // Разрешаем пустую строку — чтобы можно было стереть значение
-                  if (val === '' || (number <= 10 && !isNaN(number))) {
-                    setCustomValue(val);
-                  }
-                }
-              }}
-              onBlur={e => {
-                let val = e.target.value.trim();
+          setShowError(!isValid);
+          }
+      }
+    }
+  }}
+  onBlur={e => {
+    let val = e.target.value.trim();
 
-                // Заменяем запятую на точку
-                val = val.replace(',', '.');
+    // Заменяем все точки на запятые
+    val = val.replace(/\./g, ',');
 
-                // Удаляем ведущие нули, кроме случаев с "0."
-                if (/^0\d/.test(val)) {
-                  val = parseFloat(val).toString(); // '05' → '5'
-                }
+    // Удаляем ведущие нули, кроме "0,"
+    if (/^0\d/.test(val)) {
+      val = parseFloat(val.replace(',', '.')).toString().replace('.', ',');
+    }
 
-                const number = parseFloat(val);
+    const number = parseFloat(val.replace(',', '.'));
+ const parts = val.split(',');
+    const hasTooManyDecimals = parts[1] !== undefined && parts[1]?.length > 2;
 
-                // Проверка: от 0 до 10 включительно, максимум одна цифра после точки
-                const isValid =
-                  /^([0-9]|10)(\.\d)?$/.test(val) &&
-                  !isNaN(number) &&
-                  number <= 10;
+    // Проверка: 0–10, максимум две цифры после запятой
+    const isValid =
+      /^([0-9]|10)(,\d{1,2})?$/.test(val) &&
+      !isNaN(number) &&
+      number <= 10 &&
+      !hasTooManyDecimals;
+ if (typeof setShowError === 'function') {
+      setShowError(!isValid);
+    }
+    if (isValid) {
+      setCustomValue(val);
+    }
+  }}
+  inputMode="decimal"
+  label={
+    infoKey === 'tax' || infoKey === 'notary' || infoKey === 'broker'
+      ? ''
+      : `Custom ${label}`
+  }
+/>
 
-                // Обновляем значение без ведущих нулей
-                if (isValid) {
-                  setCustomValue(val);
-                }
-              }}
-              inputMode="decimal"
-              label={
-                infoKey === 'tax' ||
-                infoKey === 'notary' ||
-                infoKey === 'broker'
-                  ? ''
-                  : `Custom ${label}`
-              }
-            />
             <span>%</span>
-
           </div>
         )}
-            {/* <img src={MarkerIcon} className={styles.markerIcon} /> */}
       </div>
 
-      {showError && (
-        <p className={styles.error}>
-          Bitte geben Sie einen gültigen Wert zwischen 0 und 10 ein (max. eine
-          Nachkommastelle).
-        </p>
-      )}
+      {showCustom && showError && (
+  <p className={styles.error}>
+    Bitte geben Sie einen gültigen Wert zwischen 0 und 10 ein (max. zwei Nachkommastellen).
+  </p>
+)}
     </>
   );
 }

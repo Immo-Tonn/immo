@@ -82,6 +82,8 @@ input[readonly] {
 
 .inputWithPercent {
   position: relative;
+  /* width: 250px; */
+  max-width: 1200px;
 }
 
 .inputWithPercent input {
