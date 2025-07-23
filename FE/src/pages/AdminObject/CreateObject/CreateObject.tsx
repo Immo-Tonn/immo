@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '@features/utils/axiosConfig';
+import axiosInstance from '@features/utils/axiosConfig';
 import { ObjectType, ObjectStatus } from '@features/utils/types';
 import {
   createCompleteRealEstateObject,
@@ -19,8 +20,10 @@ import {
 import VideoManager from '@shared/ui/VideoManager/VideoManager';
 import styles from './CreateObject.module.css';
 import { OBJECT_TYPE_OPTIONS } from '@features/utils/objectTypeMapping';
-import { formatGermanCurrency, parseGermanCurrency } from '@features/utils/formatGermanCurrency';
-// import Button from '@shared/ui/Button/Button';
+import {
+  formatGermanCurrency,
+  parseGermanCurrency,
+} from '@features/utils/formatGermanCurrency';
 
 // Determine the type for objectData
 interface ObjectData {
@@ -40,12 +43,21 @@ interface ObjectData {
     houseNumber?: string;
   };
   price: string | number;
-  status: ObjectStatus;
+  status: ObjectStatus; // Поле для выбора status
+}
+
+interface TempVideo {
+  tempId: string;
+  originalName: string;
+  title: string;
+  size: number;
+  path: string;
+  mimetype: string;
 }
 
 const CreateObject = () => {
   const navigate = useNavigate();
-  const [isPriceFocused, setIsPriceFocused] = useState<boolean>(false);  
+  const [isPriceFocused, setIsPriceFocused] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>(); // ID for editing
   const isEditMode = !!id; // create or edit
   const [loading, setLoading] = useState<boolean>(false);
@@ -61,54 +73,87 @@ const CreateObject = () => {
   const dropZoneRef = useRef<HTMLDivElement>(null); // ref for drag & drop
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showTypeWarning, setShowTypeWarning] = useState<boolean>(false);
+  const [tempVideos, setTempVideos] = useState<TempVideo[]>([]);
 
   const handlePriceFocus = () => {
     setIsPriceFocused(true);
-      // If string contains formatting (dots and commas), parse it
-      if (objectData.price && typeof objectData.price === 'string') {
-        const numericValue = parseGermanCurrency(objectData.price);
-        setObjectData({
-          ...objectData,
-          price: numericValue.toString()
-        });
-      }
-    };
+    // Если строка содержит форматирование (точки и запятую), парсим её
+    if (objectData.price && typeof objectData.price === 'string') {
+      const numericValue = parseGermanCurrency(objectData.price);
+      setObjectData({
+        ...objectData,
+        price: numericValue.toString(),
+      });
+    }
+  };
 
   const handlePriceBlur = () => {
-      setIsPriceFocused(false);
-    // format only when focus is lost
+    setIsPriceFocused(false);
+    // Форматируем только при потере фокуса
     if (objectData.price) {
       const numericValue = parseFloat(objectData.price.toString());
       if (!isNaN(numericValue)) {
-        const formattedPrice = (formatGermanCurrency(numericValue));
+        const formattedPrice = formatGermanCurrency(numericValue);
         setObjectData({
           ...objectData,
-          price: formattedPrice
-        })
+          price: formattedPrice,
+        });
       }
     }
   };
 
-  // Special change handler for the price field
-const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-  let value = e.target.value;
+  // Специальный обработчик изменения для поля цены
+  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
 
-  // If  field is in focus, only allow numbers and one period
-  if (isPriceFocused) {
-    // Remove all characters except numbers and periods
-    value = value.replace(/[^0-9.]/g, '');
+    // Если поле в фокусе, разрешаем только цифры и одну точку
+    if (isPriceFocused) {
+      // Удаляем все символы кроме цифр и точки
+      value = value.replace(/[^0-9.]/g, '');
 
-    // allow only one point
-    const parts = value.split('.');
-    if (parts.length > 2) {
-      value = parts[0] + '.' + parts.slice(1).join('');
+      // Разрешаем только одну точку
+      const parts = value.split('.');
+      if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
     }
-  }
-  setObjectData({
-    ...objectData,
-    price: value,
-  })
-}
+    setObjectData({
+      ...objectData,
+      price: value,
+    });
+  };
+
+  //   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   // Разрешаем только цифры при вводе
+  //   const digits = e.target.value.replace(/[^\d]/g, '');
+
+  //   // Ограничиваем длину
+  //   if (digits.length <= 11) {
+  //     setPrice(digits);
+  //   }
+  // };
+
+  // const handlePriceBlur = () => {
+  //   // Форматируем только при потере фокуса
+  //   if (price && price !== '') {
+  //     const numericValue = parseInt(price, 10);
+  //     if (!isNaN(numericValue)) {
+  //       setPrice(formatGermanCurrency(numericValue));
+  //     }
+  //   }
+  // };
+
+  // const handlePriceFocus = () => {
+  //   // При получении фокуса преобразуем отформатированное число обратно в цифры
+  //   if (price) {
+  //     // Если строка содержит форматирование (точки и запятую), парсим её
+  //     if (price.includes('.') || price.includes(',')) {
+  //       const numericValue = parseGermanCurrency(price);
+  //       setPrice(numericValue.toString());
+  //     }
+  //     // Если уже содержит только цифры, оставляем как есть
+  //   }
+  // };
 
   // Status for the main object
   const [objectData, setObjectData] = useState<ObjectData>({
@@ -585,18 +630,66 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     }
 
     try {
-      // Preparing the main object data
       const realEstateObjectData = {
         ...objectData,
         // Парсим цену, учитывая возможный немецкий формат
-        price: typeof objectData.price === 'string' 
-          ? parseGermanCurrency(objectData.price)
-          : parseFloat(objectData.price.toString()),
+        price:
+          typeof objectData.price === 'string'
+            ? parseGermanCurrency(objectData.price)
+            : parseFloat(objectData.price.toString()),
         address: {
           ...objectData.address,
           zip: parseInt(objectData.address.zip),
         },
       };
+      // Preparing the main object data
+      // const realEstateObjectData = {
+      //   ...objectData,
+      //   price: parseFloat(objectData.price),
+      //   address: {
+      //     ...objectData.address,
+      //     zip: parseInt(objectData.address.zip),
+      //   },
+      // };
+
+      console.log('🔍 DEBUG handleSubmit: Данные перед отправкой:');
+      console.log(
+        '🔍 DEBUG realEstateObjectData:',
+        JSON.stringify(realEstateObjectData, null, 2),
+      );
+      console.log('🔍 DEBUG Проверка типов:');
+      console.log(
+        '🔍 DEBUG type:',
+        realEstateObjectData.type,
+        typeof realEstateObjectData.type,
+      );
+      console.log(
+        '🔍 DEBUG price:',
+        realEstateObjectData.price,
+        typeof realEstateObjectData.price,
+      );
+      console.log(
+        '🔍 DEBUG zip:',
+        realEstateObjectData.address.zip,
+        typeof realEstateObjectData.address.zip,
+      );
+
+      // Проверяем что все обязательные поля заполнены
+      if (!realEstateObjectData.type) console.error('❌ type пустой!');
+      if (!realEstateObjectData.title) console.error('❌ title пустой!');
+      if (!realEstateObjectData.description)
+        console.error('❌ description пустой!');
+      if (isNaN(realEstateObjectData.price))
+        console.error('❌ price не число!');
+      if (!realEstateObjectData.address.country)
+        console.error('❌ country пустой!');
+      if (!realEstateObjectData.address.city) console.error('❌ city пустой!');
+      if (isNaN(realEstateObjectData.address.zip))
+        console.error('❌ zip не число!');
+      if (!realEstateObjectData.address.district)
+        console.error('❌ district пустой!');
+      if (!realEstateObjectData.address.street)
+        console.error('❌ street пустой!');
 
       console.log('🔍 DEBUG: Original specificData:', specificData);
       console.log('🔍 DEBUG: landPlottype value:', specificData.landPlottype);
@@ -647,6 +740,23 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
           selectedFiles,
           progress => setUploadProgress(progress),
         );
+        // Обрабатываем временные видео после создания объекта
+        if (tempVideos.length > 0) {
+          try {
+            console.log('Обрабатываем временные видео для объекта:', objectId);
+
+            await axiosInstance.post('/videos/process-temp', {
+              realEstateObjectId: objectId,
+              tempFiles: tempVideos,
+            });
+
+            console.log('Временные видео успешно обработаны');
+          } catch (videoError) {
+            console.error('Ошибка при обработке временных видео:', videoError);
+            // Не прерываем процесс, просто показываем предупреждение
+            setError('Объект создан, но произошла ошибка при загрузке видео');
+          }
+        }
       }
 
       console.log('Operation completed successfully, objectId:', objectId);
@@ -666,6 +776,15 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
         );
       }, 1000);
     } catch (err: any) {
+      // При ошибке очищаем временные файлы
+      if (tempVideos.length > 0) {
+        axiosInstance
+          .post('/videos/cleanup-temp', {
+            tempIds: tempVideos.map(v => v.tempId),
+          })
+          .catch(cleanupErr => console.warn('Ошибка очистки:', cleanupErr));
+      }
+
       setError(
         err.response?.data?.message ||
           `An error occurred while ${isEditMode ? 'updating' : 'creating'} object`,
@@ -805,14 +924,14 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
                   value={specificData.floor || ''}
                   onChange={handleSpecificChange}
                   className={styles.formInput}
-                    onKeyDown={(e) => {
-                      if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
-                        e.preventDefault();
-                      }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}
+                  onKeyDown={e => {
+                    if (['e', 'E', '+', '-', ',', '.'].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                 />
               </div>
               <div className={styles.formGroup}>
@@ -1527,42 +1646,17 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
                   name="plotArea"
                   min="0"
                   inputMode="numeric"
-                  pattern="[0-9]*"                  
+                  pattern="[0-9]*"
                   value={specificData.plotArea || ''}
                   onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
+                      e.preventDefault();
                     }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="plotArea" className={styles.formLabel}>
-                  Grundstücksfläche (m²)
-                </label>
-                <input
-                  type="number"
-                  id="plotArea"
-                  name="plotArea"
-                  min="0"
-                  inputMode="numeric"
-                  pattern="[0-9]*"                  
-                  value={specificData.plotArea || ''}
-                  onChange={handleSpecificChange}
-                  onKeyDown={(e) => {
-                    if (['e', 'E', '+', '-'].includes(e.key)) {
-                        e.preventDefault();
-                    }
-                 }}
-                 onWheel={(e) =>{
-                  (e.target as HTMLInputElement).blur()
-                 }}                                    
+                  }}
+                  onWheel={e => {
+                    (e.target as HTMLInputElement).blur();
+                  }}
                   className={styles.formInput}
                 />
               </div>
@@ -1655,42 +1749,43 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
       <form onSubmit={handleSubmit}>
         <h3 className={styles.sectionTitle}>Grundlegende Informationen</h3>
 
-<div className={styles.formGroup}>
-  <label htmlFor="type" className={styles.formLabel}>
-    Objekttyp *
-  </label>
-  <div 
-    className={isEditMode ? styles.disabledSelectWrapper : ''}
-    onClick={handleDisabledTypeClick}
-  >
-    <select
-      id="type"
-      name="type"
-      value={objectData.type}
-      onChange={handleObjectChange}
-      required
-      className={`${styles.formSelect} ${isEditMode ? styles.disabledSelect : ''}`}
-      disabled={isEditMode}
-    >
-     {OBJECT_TYPE_OPTIONS.map(option => (
-      <option key={option.value} value={option.value}>
-        {option.label}
-         </option>
-        ))}      
-      {/* <option value={ObjectType.APARTMENT}>Wohnung</option>
+        <div className={styles.formGroup}>
+          <label htmlFor="type" className={styles.formLabel}>
+            Objekttyp *
+          </label>
+          <div
+            className={isEditMode ? styles.disabledSelectWrapper : ''}
+            onClick={handleDisabledTypeClick}
+          >
+            <select
+              id="type"
+              name="type"
+              value={objectData.type}
+              onChange={handleObjectChange}
+              required
+              className={`${styles.formSelect} ${isEditMode ? styles.disabledSelect : ''}`}
+              disabled={isEditMode}
+            >
+              {OBJECT_TYPE_OPTIONS.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+              {/* <option value={ObjectType.APARTMENT}>Wohnung</option>
       <option value={ObjectType.HOUSE}>Wohnhaus</option>
       <option value={ObjectType.LAND}>Grundstück</option>
       <option value={ObjectType.COMMERCIAL}>
         Gewerbe-/Nichtwohnimmobilien
       </option> */}
-    </select>
-  </div>
-  {showTypeWarning && isEditMode && (
-    <div className={styles.warningMessage}>
-      Die Auswahl des Objekttyps ist nur beim Erstellen des Objekts möglich.
-    </div>
-  )}
-</div>
+            </select>
+          </div>
+          {showTypeWarning && isEditMode && (
+            <div className={styles.warningMessage}>
+              Die Auswahl des Objekttyps ist nur beim Erstellen des Objekts
+              möglich.
+            </div>
+          )}
+        </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="status" className={styles.formLabel}>
@@ -1857,36 +1952,62 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
             Preis (€) *
           </label>
           <input
+            // id="price"
+            // name="price"
+            // value={price}
+            // onChange={handlePriceChange}
+            // onBlur={handlePriceBlur}
+            // onFocus={handlePriceFocus}
             type="text"
             id="price"
             name="price"
             value={objectData.price}
             onChange={handlePriceChange}
             onFocus={handlePriceFocus}
-            onBlur={handlePriceBlur}            
+            onBlur={handlePriceBlur}
             required
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               const allowedKeys = [
-                'Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 
-                'ArrowUp', 'ArrowDown', 'Home', 'End'
-              ];              
+                'Backspace',
+                'Delete',
+                'Tab',
+                'Enter',
+                'ArrowLeft',
+                'ArrowRight',
+                'ArrowUp',
+                'ArrowDown',
+                'Home',
+                'End',
+              ];
               if (allowedKeys.includes(e.key)) {
                 return; // Разрешаем эти клавиши
-              }              
+              }
               // Разрешаем цифры
               if (e.key >= '0' && e.key <= '9') {
                 return;
-              }              
+              }
               // Разрешаем одну точку только если поле в фокусе
-              if (e.key === '.' && isPriceFocused && !objectData.price.toString().includes('.')) {
+              if (
+                e.key === '.' &&
+                isPriceFocused &&
+                !objectData.price.toString().includes('.')
+              ) {
                 return;
-              }              
+              }
               // Блокируем все остальные клавиши
               e.preventDefault();
             }}
-            onWheel={(e) => {
-              (e.target as HTMLInputElement).blur();              
+            onWheel={e => {
+              (e.target as HTMLInputElement).blur();
             }}
+            // onKeyDown={(e) => {
+            //   if (['e', 'E', '+', '-'].includes(e.key)) {
+            //       e.preventDefault();
+            //   }
+            // }}
+            // onWheel={(e) =>{
+            // (e.target as HTMLInputElement).blur()
+            // }}
             className={styles.formInput}
           />
         </div>
@@ -2028,7 +2149,7 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
                     ⭐
                   </button>
                   {index === 0 && existingImages.length === 0 && (
-                    <span className={styles.mainImageLabel}>Hauptbild</span>
+                    <span className={styles.mainImageLabel}>Главное</span>
                   )}
                 </div>
               ))}
@@ -2041,6 +2162,8 @@ const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
           existingVideos={existingVideos}
           onVideosChange={setExistingVideos}
           isEditMode={isEditMode}
+          tempVideos={tempVideos}
+          onTempVideosChange={setTempVideos}
         />
 
         {/* Upload progress */}

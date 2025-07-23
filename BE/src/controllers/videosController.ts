@@ -8,6 +8,263 @@ import {
   getVideoThumbnailUrl,
 } from '../utils/videoHelpers';
 import fs from 'fs';
+import path from 'path';
+
+export const uploadTempVideo = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    console.log('🎯 TEMP VIDEO ENDPOINT CALLED!');
+    console.log('📋 Request body:', req.body);
+    console.log('📁 Request file:', req.file?.originalname);
+
+    const { title } = req.body;
+    const videoFile = req.file;
+
+    if (!videoFile) {
+      console.error('❌ Видео файл не найден в запросе');
+      res.status(400).json({ error: 'Video file required' });
+      return;
+    }
+
+    // Checking if the file exists
+    console.log('🔍 Путь к загруженному файлу:', videoFile.path);
+    console.log('🔍 Полный путь:', path.resolve(videoFile.path));
+    console.log('🔍 Файл существует:', fs.existsSync(videoFile.path));
+
+    if (!fs.existsSync(videoFile.path)) {
+      console.error('❌ Файл не существует по пути:', videoFile.path);
+      res.status(400).json({ error: 'Uploaded file not found on server' });
+      return;
+    }
+
+    console.log('✅ Временный видео файл сохранен:', videoFile.path);
+
+    // Return information about the temporary file (without downloading to Bunny CDN)
+    res.status(201).json({
+      tempId: videoFile.filename,
+      originalName: videoFile.originalname,
+      title: title || 'Untitled',
+      size: videoFile.size,
+      path: videoFile.path,
+      mimetype: videoFile.mimetype,
+    });
+  } catch (error: any) {
+    console.error('❌ Temp upload error:', error);
+
+    // delete temporary file when error
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      try {
+        fs.unlinkSync(req.file.path);
+        console.log('🧹 Временный файл удален после ошибки');
+      } catch (unlinkError) {
+        console.warn(
+          '⚠️ Не удалось удалить временный файл после ошибки:',
+          unlinkError,
+        );
+      }
+    }
+
+    res.status(500).json({
+      error: 'Temp upload failed',
+      details: error.message || error,
+    });
+  }
+};
+// Download temporary video in db after creating an object
+export const processTempVideos = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    console.log('🎥 Начинаем обработку временных видео...');
+    const { realEstateObjectId, tempFiles } = req.body;
+
+    if (!realEstateObjectId) {
+      res.status(400).json({ error: 'realEstateObjectId is required' });
+      return;
+    }
+
+    if (!tempFiles || !Array.isArray(tempFiles) || tempFiles.length === 0) {
+      res.status(400).json({ error: 'tempFiles array is required' });
+      return;
+    }
+
+    const processedVideos = [];
+
+    for (const tempFile of tempFiles) {
+      const { tempId, title, originalName } = tempFile;
+
+      // File search function
+      const findTempFile = (tempId: string): string | null => {
+        const possiblePaths = [
+          path.resolve(process.cwd(), 'uploads', tempId),
+          path.join(__dirname, '../../uploads', tempId),
+          path.join(process.cwd(), 'uploads', tempId),
+          path.join(__dirname, '../uploads', tempId),
+          `uploads/${tempId}`,
+          `./uploads/${tempId}`,
+        ];
+
+        for (const possiblePath of possiblePaths) {
+          if (fs.existsSync(possiblePath)) {
+            console.log('✅ Файл найден по пути:', possiblePath);
+            return possiblePath;
+          }
+        }
+
+        return null;
+      };
+
+      const tempPath = findTempFile(tempId);
+
+      if (!tempPath) {
+        console.warn(`❌ Временный файл не найден: ${originalName}`);
+        continue;
+      }
+
+      try {
+        console.log(`✅ Обрабатываем временный файл: ${originalName}`);
+
+        // download video in the Bunny CDN
+        const { videoId, videoUrl, thumbnailUrl } = await uploadToBunnyVideo(
+          tempPath,
+          title || originalName || 'Untitled',
+        );
+
+        console.log('✅ Видео загружено в Bunny CDN:', { videoId, videoUrl });
+
+        // create an entry in the database
+        const videoDoc = await VideoModel.create({
+          url: videoUrl,
+          thumbnailUrl,
+          title: title || originalName || 'Untitled',
+          videoId,
+          realEstateObject: realEstateObjectId,
+          dateAdded: new Date(),
+        });
+
+        console.log('✅ Видео сохранено в БД:', videoDoc._id);
+
+        // Add video to the real estate object
+        await RealEstateObjectsModel.findByIdAndUpdate(realEstateObjectId, {
+          $push: { videos: videoDoc._id },
+        });
+
+        processedVideos.push(videoDoc);
+
+        // delete a temporary file after successful processing
+        try {
+          console.log('🗑️ Попытка удалить временный файл:', tempPath);
+          fs.unlinkSync(tempPath);
+          console.log('✅ Временный файл удален:', tempPath);
+        } catch (unlinkError) {
+          console.warn('⚠️ Не удалось удалить временный файл:', unlinkError);
+          console.warn('📁 Путь к файлу:', tempPath);
+          console.warn(
+            '📁 Файл существует перед удалением:',
+            fs.existsSync(tempPath),
+          );
+        }
+      } catch (fileError: any) {
+        console.error(
+          `❌ Ошибка при обработке файла ${originalName}:`,
+          fileError,
+        );
+      }
+    }
+
+    console.log(
+      `✅ Обработано ${processedVideos.length} из ${tempFiles.length} временных видео`,
+    );
+
+    res.status(201).json({
+      message: `Processed ${processedVideos.length} videos successfully`,
+      videos: processedVideos,
+    });
+  } catch (error: any) {
+    console.error('❌ Process temp videos error:', error);
+    res.status(500).json({
+      error: 'Failed to process temp videos',
+      details: error.message || error,
+    });
+  }
+};
+
+// cleaning old temporary files
+export const cleanupTempVideos = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { tempIds } = req.body;
+
+    if (!tempIds || !Array.isArray(tempIds)) {
+      res.status(400).json({ error: 'tempIds array is required' });
+      return;
+    }
+
+    let deletedCount = 0;
+
+    for (const tempId of tempIds) {
+      const tempPath = path.resolve(process.cwd(), 'uploads', tempId);
+      console.log('🔍 Cleanup: ищем файл по пути:', tempPath);
+
+      if (fs.existsSync(tempPath)) {
+        try {
+          fs.unlinkSync(tempPath);
+          deletedCount++;
+          console.log('🧹 Удален временный файл:', tempPath);
+        } catch (error) {
+          console.warn(
+            '⚠️ Не удалось удалить временный файл:',
+            tempPath,
+            error,
+          );
+        }
+      } else {
+        // Additional check: Alternative ways
+        const alternativePaths = [
+          path.join(__dirname, '../../uploads', tempId),
+          path.join(process.cwd(), 'uploads', tempId),
+          path.join(__dirname, '../uploads', tempId),
+        ];
+
+        for (const altPath of alternativePaths) {
+          if (fs.existsSync(altPath)) {
+            try {
+              fs.unlinkSync(altPath);
+              deletedCount++;
+              console.log(
+                '🧹 Удален временный файл (альтернативный путь):',
+                altPath,
+              );
+              break;
+            } catch (error) {
+              console.warn(
+                '⚠️ Не удалось удалить временный файл:',
+                altPath,
+                error,
+              );
+            }
+          }
+        }
+      }
+    }
+
+    res.status(200).json({
+      message: `Deleted ${deletedCount} temp files`,
+      deletedCount,
+    });
+  } catch (error: any) {
+    console.error('❌ Cleanup error:', error);
+    res.status(500).json({
+      error: 'Cleanup failed',
+      details: error.message,
+    });
+  }
+};
 
 export const uploadVideo = async (
   req: Request,
@@ -224,14 +481,14 @@ export const updateVideo = async (
       video.realEstateObject = realEstateObjectId;
     }
 
-    // 2. Update the name
+    // 2.  Update the name
     if (title) {
       video.title = title;
     }
 
     // 3. Processing video file replacement
     if (newVideoFile) {
-      // Проверяем, существует ли новый файл
+      // check for new file
       if (!fs.existsSync(newVideoFile.path)) {
         res.status(400).json({ error: 'New video file not found on server' });
         return;
@@ -247,7 +504,7 @@ export const updateVideo = async (
         title || video.title || 'Untitled',
       );
 
-      //Update data in db
+      // Update data in db
       video.videoId = videoId;
       video.url = videoUrl;
       video.thumbnailUrl = thumbnailUrl;
