@@ -1,0 +1,108 @@
+.adminDropdown {
+  position: relative;
+}
+
+.adminButton {
+  background-color: #1b4965;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  margin-bottom: 10px;
+  border-radius: 1px;
+  cursor: pointer;
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-small));
+  width: auto;
+  margin-top: 0;
+}
+
+.adminButton:hover {
+  background-color: #14374e;
+}
+
+.adminDropdownContent {
+  position: absolute;
+  right: -26px;
+  top: 100%;
+  background-color: #1c1829;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  opacity: 0.8;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.adminDropdownItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  color: white;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 0;
+  text-decoration: none;
+}
+
+.adminDropdownItem:hover {
+  background-color: #14374e;
+}
+
+/* Адаптивные стили для планшета */
+@media (max-width: 765px) {
+  .adminButton {
+    font-size: 14px;
+    padding: 4px 12px;
+    margin-bottom: 5px;
+  }
+
+  .adminDropdownContent {
+    right: -20px;
+    min-width: 180px;
+  }
+
+  .adminDropdownItem {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+}
+
+/* Стили для мобильного drawer */
+@media (max-width: 576px) {
+  .adminDropdown {
+    width: 100%;
+  }
+
+  .adminButton {
+    font-size: 16px;
+    padding: 8px 16px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .adminDropdownContent {
+    position: static;
+    right: auto;
+    top: auto;
+    margin-top: 0;
+    width: 100%;
+    min-width: auto;
+    box-shadow: none;
+    background-color: #14374e;
+    border-radius: 0;
+    opacity: 1;
+  }
+
+  .adminDropdownItem {
+    font-size: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1c1829;
+  }
+
+  .adminDropdownItem:last-child {
+    border-bottom: none;
+  }
+}

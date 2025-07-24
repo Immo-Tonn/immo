@@ -1,0 +1,94 @@
+.fiveStepsSection {
+  background-image: url('@shared/assets/five-steps/image-bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.itemList {
+  list-style: none;
+  margin: 0 auto;
+  max-width: 750px;
+}
+.accordionItem {
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-secondary);
+  color: #f5f5f5;
+}
+.secondTitle {
+  position: relative;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  padding: 60px;
+  font-size: clamp(40px, 5vw, 40px);
+  text-align: center;
+  color: #fff;
+}
+.secondTitle::after {
+  content: '';
+  z-index: -1;
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #10396e;
+}
+
+.firstTitle {
+  position: relative;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: #fff;
+  z-index: 1;
+}
+.firstTitle::after {
+  bottom: -24px;
+  content: '';
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #1d2a3b;
+}
+.accordionItem {
+  margin-left: 20px;
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  font-size: clamp(var(--font-size-xs), 5vw, var(--font-size-secondary));
+  color: #f5f5f5;
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.verkaufButton {
+  width: clamp(275px, 10vw, 332px);
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
+  background: var(--secondary-color);
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-secondary);
+  text-align: center;
+  color: #f5f5f5;
+}
+
+.verkaufButton[disabled] {
+  color: white;
+  background-color: #091321;
+}
+.verkaufButton:hover {
+  background-color: #2b4878;
+}
+
+@media (max-width: 765px) {
+  .buttonWrapper {
+    justify-content: center;
+  }
+}

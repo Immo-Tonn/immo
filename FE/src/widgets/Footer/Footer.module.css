@@ -1,0 +1,159 @@
+footer {
+  background-color: var(--secondary-color);
+  color: white;
+  font-family: var(--Inter);
+  margin: 0 auto;
+}
+
+.topStripe {
+  background-color: #2b3e56;
+  height: 53px;
+  width: 100%;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 28px clamp(20px, 5vw, 25px) 26px clamp(20px, 5vw, 20px);
+  max-width: 1024px;
+  margin: 0 auto;
+  align-items: flex-end;
+}
+
+.footerLeft {
+  display: block;
+}
+
+.footerLogo {
+  max-width: 111px;
+  margin-bottom: 24px;
+}
+
+.footerLinks {
+  font-family: var(--Inter);
+  list-style: none;
+  font-size: clamp(12px, 2vw, 16px);
+}
+.footerIcons > li > a > img {
+  transition: transform 0.3s ease;
+}
+.footerIcons > li > a > img:hover {
+  animation: wiggleRotate 0.6s ease-in-out;
+}
+.footerIcons {
+  display: flex;
+  gap: clamp(24px, 5vw, 52px);
+
+  list-style: none;
+}
+
+.footerLinks > li {
+  margin-bottom: 8px;
+}
+
+.footerLinks > li > a {
+  text-decoration: none;
+  color: white;
+}
+
+.footerRight {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 126px;
+}
+
+.footerRight > a {
+  font-size: clamp(12px, 2vw, 16px);
+  line-height: 1.6;
+  text-align: left;
+  color: white;
+}
+.footerLinks > li > a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background-color: white;
+  transition: width 300ms ease;
+}
+.contactButton {
+  font-size: clamp(21px, 5vw, var(--font-size-secondary));
+  background-color: #cbd8e2;
+  color: var(--secondary-color);
+  font-weight: bold;
+  border: none;
+}
+
+.bottomStripe {
+  background-color: #2b3e56;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottomStripe > p {
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-xs);
+  color: #fff;
+}
+
+.contactButton[disabled] {
+  color: white;
+  background-color: #557289;
+}
+.contactButton:hover {
+  background-color: #9cb2c3;
+}
+
+@media (max-width: 765px) {
+  .footerLeft {
+    display: block;
+  }
+  .footerLeft .footerLinks li {
+    margin-top: 20px;
+  }
+  .footerIcons img {
+    width: 30px;
+    height: 27px;
+  }
+  .contactButton {
+    display: none;
+  }
+  .footerLogo {
+    max-width: 133px;
+  }
+}
+
+@media (max-width: 576px) {
+  .bottomBar {
+    display: block;
+  }
+  .footerLogo {
+    max-width: clamp(109px, 20vw, 133px);
+  }
+}
+
+@keyframes wiggleRotate {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+  20% {
+    transform: rotate(-10deg) translateY(-2px);
+  }
+  40% {
+    transform: rotate(10deg) translateY(-2px);
+  }
+  60% {
+    transform: rotate(-6deg) translateY(0);
+  }
+  80% {
+    transform: rotate(6deg) translateY(1px);
+  }
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+}

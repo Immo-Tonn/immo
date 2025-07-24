@@ -1,0 +1,158 @@
+.immoTonnContentSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px 152px;
+  display: grid;
+  grid-template-columns: 1fr 2px 2fr;
+  align-items: flex-end;
+}
+
+.immoTonnBigPhrase {
+  font-weight: --font-weight-big;
+  font-size: var(--font-size-main);
+  font-family: var(--Roboto);
+  color: #000;
+  text-align: left;
+  line-height: 1.2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.immoTonnLine {
+  background: #000;
+  width: 1px;
+  height: 537px;
+}
+
+.immoTonnTextList {
+  list-style: none;
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  margin-left: 65px;
+  border-left: 1px solid;
+}
+
+.immoTonnTextListItemWrapper {
+  margin: 0 25px 0 65px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.immoTonnTextH4 {
+  font-family: var(--Roboto);
+  font-weight: --font-weight-big;
+  font-size: 22px;
+  margin-bottom: 5px;
+  letter-spacing: 0.1em;
+}
+
+.immoTonnTextP {
+  font-family: var(--Roboto);
+  font-weight: var(--font-weight-secondary);
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.salesSupportButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
+  font-family: var(--Roboto);
+  width: 622px;
+  height: 85px;
+  font-weight: var(--font-weight-secondary);
+  font-size: var(--font-size-secondary);
+  color: #fcfdff;
+  margin-bottom: 85px;
+}
+
+@media (max-width: 765px) {
+  .immoTonnContentSection {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: clamp(24px, 4vh, 40px) clamp(4px, 2vw, 10px) clamp(40px, 8vh, 80px);
+    text-align: center;
+  }
+
+  .immoTonnBigPhrase {
+    font-size: 2.4em;
+  }
+
+  .immoTonnTextH4 {
+    font-size: 1.1em;
+  }
+
+  .immoTonnTextP {
+    font-size: 0.85em;
+    line-height: 1.6;
+  }
+
+  .immoTonnLine {
+    height: 2px;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .salesSupportButton {
+    width: 100%;
+    max-width: 500px;
+    font-size: var(--font-size-small);
+    height: 70px;
+  }
+  .immoTonnTextList {
+    text-align: left;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .immoTonnContentSection {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .immoTonnTextList {
+    text-align: left;
+    width: 90%;
+    border-bottom: 1px solid black;
+    border-left: none;
+    margin-left: 0;
+    padding-bottom: 71px;
+  }
+
+  .immoTonnLine {
+    display: none;
+  }
+
+  .immoTonnBigPhrase {
+    font-size: var(--font-size-main);
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .immoTonnTextH4 {
+    font-size: 1em;
+    text-align: left;
+  }
+
+  .immoTonnTextP {
+    font-size: 0.8em;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .salesSupportButton {
+    font-size: 20px;
+    height: 60px;
+  }
+}

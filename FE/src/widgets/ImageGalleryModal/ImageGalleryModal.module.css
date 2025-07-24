@@ -1,0 +1,134 @@
+.videoModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.videoWrapper {
+  width: 100%;
+  max-width: 1000px;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.mediaContent {
+  width: 100%;
+  height: 200%;
+  border-radius: 8px;
+  object-fit: contain;
+  border: none;
+}
+
+.thumbnailRow {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 0.5rem 1rem;
+  max-width: 1200px;
+  z-index: 1001;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.thumbnail {
+  flex: 0 0 auto;
+  width: 90px;
+  height: 60px;
+  cursor: pointer;
+  opacity: 0.6;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+.thumbnail img,
+.thumbnail iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  pointer-events: none;
+  border: none;
+}
+
+.active {
+  opacity: 1;
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+.playIconThumb {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.prevButton,
+.nextButton {
+  position: absolute;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-size: 2.5rem;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  z-index: 1002;
+  user-select: none;
+  transition: background 0.2s;
+  width: 50px;
+}
+
+.prevButton:hover,
+.nextButton:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.prevButton {
+  left: 10px;
+}
+
+.nextButton {
+  right: 10px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

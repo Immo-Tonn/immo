@@ -1,0 +1,111 @@
+.valuationCTASection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px 0 10px;
+}
+.textWrapper {
+  display: flex;
+  margin: 44px 0 98px 0;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.firstTitle {
+  max-width: 625px;
+  font-size: clamp(13px, 7vw, var(--font-size-secondary));
+  text-shadow: 2px 4px 2.4px rgba(0, 0, 0, 0.5);
+  font-family: var(--Inter);
+  font-weight: 500;
+  text-align: left;
+}
+.secondTitle {
+  font-weight: 500;
+  text-align: left;
+  max-width: 317px;
+  font-family: var(--Inter);
+  font-size: clamp(36px, 5vw, var(--font-size-big));
+}
+.description {
+  max-width: 625px;
+  font-size: clamp(10px, 5vw, 22px);
+  font-family: var(--Inter);
+  font-weight: 500;
+  margin-top: 20px;
+}
+.imageWrapper {
+  display: flex;
+  align-items: flex-start;
+  margin: 0 76px 0 46px;
+  justify-content: space-between;
+}
+
+.thirdTitle {
+  font-weight: 900;
+  font-family: var(--Inter);
+  font-size: clamp(10px, 5vw, 30px);
+  text-align: center;
+  color: #212529;
+  text-transform: uppercase;
+  margin: 114px 0 71px 0;
+}
+
+.bottomWrapper > p {
+  font-family: var(--Inter);
+  font-weight: var(--font-weight-secondary);
+  color: #212529;
+  font-size: clamp(16px, 3vw, 22px);
+  max-width: 557px;
+  margin-left: clamp(40px, 8vw, 94px);
+}
+.valuationPhoto {
+  max-width: clamp(320px, 60vw, 664px);
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 55px;
+
+  Button {
+    font-weight: var(--font-weight-secondary);
+    font-size: var(--font-size-secondary);
+    font-family: var(--Inter);
+    background-color: var(--secondary-color);
+    margin-right: 37px;
+  }
+}
+@media (max-width: 765px) {
+  .valuationCTASection .textWrapper {
+    align-items: center;
+  }
+  .valuationCTASection .imageWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .valuationCTASection .imageWrapper {
+    margin: 0;
+  }
+  .valuationCTASection h1 {
+    max-width: 742px;
+    padding: clamp(8px, 2vw, 16px);
+  }
+  .valuationCTASection .imageWrapper img {
+    margin-top: 40px;
+  }
+  .valuationCTASection > .buttonWrapper {
+    margin-top: 120px;
+    justify-content: center;
+  }
+  .valuationPhoto {
+    max-width: clamp(320px, 86vw, 605px);
+  }
+}
+@media (max-width: 576px) {
+  .valuationCTASection h1 {
+    text-align: center;
+  }
+  .valuationCTASection .textWrapper {
+    margin: 40px 40px;
+  }
+  .line {
+    width: 353px;
+  }
+}
