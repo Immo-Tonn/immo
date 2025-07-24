@@ -1,45 +1,43 @@
-name: Deploy Frontend
+name: Deploy Frontend to Hetzner
 
 on:
   push:
-    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
-      - name: Install deps and build
-        run: |
-          cd frontend
-          npm install
-          echo "VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}" >> .env
-          echo "VITE_HOST=${{ secrets.VITE_HOST }}" >> .env
-          npm run build
+    - name: Build frontend
+      run: |
+        cd frontend
+        echo "VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}" >> .env
+        echo "VITE_HOST=${{ secrets.VITE_HOST }}" >> .env
+        npm install
+        npm run build
 
-      - name: Deploy via SSH
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "frontend/dist/*"
-          target: "/var/www/immo-ton/frontend"
+    - name: Deploy to server
+      run: |
+        ssh root@${{ secrets.SERVER_HOST }} "mkdir -p /var/www/immo-tonn/frontend"
+        scp -r ./frontend/dist/* root@${{ secrets.SERVER_HOST }}:/var/www/immo-tonn/frontend/
 
-      - name: Reload frontend with PM2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            pm2 delete frontend || true
-            pm2 serve /var/www/immo-tonn/frontend 3000 --name frontend
+    - name: Serve frontend with PM2
+      run: |
+        ssh root@${{ secrets.SERVER_HOST }} <<'ENDSSH'
+        pm2 delete frontend || true
+        pm2 serve /var/www/immo-tonn/frontend 3000 --name frontend
+        pm2 save
+ENDSSH
