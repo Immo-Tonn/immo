@@ -1,0 +1,62 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Create .env file
+        run: |
+          cd backend
+          touch .env
+          echo "PORT=${{ secrets.BACKEND_PORT }}" >> .env
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+          echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env
+          echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> .env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
+          echo "EMAIL_HOST=${{ secrets.EMAIL_HOST }}" >> .env
+          echo "EMAIL_PORT=${{ secrets.EMAIL_PORT }}" >> .env
+          echo "EMAIL_ADMIN=${{ secrets.EMAIL_ADMIN }}" >> .env
+          echo "EMAIL_ADMIN_PASS=${{ secrets.EMAIL_ADMIN_PASS }}" >> .env
+          echo "BUNNY_STORAGE_ZONE=${{ secrets.BUNNY_STORAGE_ZONE }}" >> .env
+          echo "BUNNY_STORAGE_HOST=${{ secrets.BUNNY_STORAGE_HOST }}" >> .env
+          echo "BUNNY_ACCESS_KEY=${{ secrets.BUNNY_ACCESS_KEY }}" >> .env
+          echo "BUNNY_LIBRARY_ID=${{ secrets.BUNNY_LIBRARY_ID }}" >> .env
+          echo "BUNNY_API_KEY=${{ secrets.BUNNY_API_KEY }}" >> .env
+          echo "BUNNY_VIDEO_CDN=${{ secrets.BUNNY_VIDEO_CDN }}" >> .env
+          echo "BUNNY_VIDEO_ZONE=${{ secrets.BUNNY_VIDEO_ZONE }}" >> .env
+          echo "THUMBNAIL_PROJECT_ID=${{ secrets.THUMBNAIL_PROJECT_ID }}" >> .env
+
+      - name: Deploy backend files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "backend/*"
+          target: "/var/www/immo-ton/backend"
+
+      - name: Install & restart backend
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/immo-tonn/backend
+            npm install --omit=dev
+            pm2 restart backend || pm2 start index.js --name backend
