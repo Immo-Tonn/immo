@@ -27,7 +27,7 @@ jobs:
 
     - name: Setup .env on server
       run: |
-        ssh root@${{ secrets.SERVER_HOST }} 'bash -s' <<'ENDSSH'
+        ssh root@${{ secrets.SERVER_HOST }} 'bash -s' <<ENDSSH
         cat > /var/www/immo-tonn/backend/.env <<EOF
 PORT=${{ secrets.BACKEND_PORT }}
 MONGO_URI=${{ secrets.MONGO_URI }}
