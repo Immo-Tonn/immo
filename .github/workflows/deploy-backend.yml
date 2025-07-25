@@ -1,3 +1,65 @@
+# name: Deploy Backend to Hetzner
+
+# on:
+#   push:
+#     paths:
+#       - 'backend/**'
+#       - '.github/workflows/deploy-backend.yml'
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+
+#     - name: Set up SSH
+#       uses: webfactory/ssh-agent@v0.5.4
+#       with:
+#         ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+#     - name: Deploy backend files
+#       run: |
+#         rsync -av --exclude='node_modules' ./backend/ root@${{ secrets.SERVER_HOST }}:/var/www/immo-tonn/backend/
+
+#     - name: Setup .env on server
+#       run: |
+#         ssh root@${{ secrets.SERVER_HOST }} 'bash -s' <<ENDSSH
+#         cat > /var/www/immo-tonn/backend/.env <<EOF
+# PORT=${{ secrets.BACKEND_PORT }}
+# MONGO_URI=${{ secrets.MONGO_URI }}
+# RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}
+# EMAIL_PASS=${{ secrets.EMAIL_PASS }}
+# EMAIL_USER=${{ secrets.EMAIL_USER }}
+# EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+# EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+# EMAIL_ADMIN=${{ secrets.EMAIL_ADMIN }}
+# EMAIL_ADMIN_PASS=${{ secrets.EMAIL_ADMIN_PASS }}
+# BUNNY_STORAGE_ZONE=${{ secrets.BUNNY_STORAGE_ZONE }}
+# BUNNY_STORAGE_HOST=${{ secrets.BUNNY_STORAGE_HOST }}
+# BUNNY_ACCESS_KEY=${{ secrets.BUNNY_ACCESS_KEY }}
+# BUNNY_LIBRARY_ID=${{ secrets.BUNNY_LIBRARY_ID }}
+# BUNNY_API_KEY=${{ secrets.BUNNY_API_KEY }}
+# BUNNY_VIDEO_CDN=${{ secrets.BUNNY_VIDEO_CDN }}
+# BUNNY_VIDEO_ZONE=${{ secrets.BUNNY_VIDEO_ZONE }}
+# THUMBNAIL_PROJECT_ID=${{ secrets.THUMBNAIL_PROJECT_ID }}
+# EOF
+# ENDSSH
+
+#     - name: Install dependencies & restart PM2
+#       run: |
+#         ssh root@${{ secrets.SERVER_HOST }} <<'ENDSSH'
+#         cd /var/www/immo-tonn/backend
+#         npm install --omit=dev
+#         pm2 restart backend || pm2 start app.js --name backend
+#         pm2 save
+# ENDSSH
+
+
+
 name: Deploy Backend to Hetzner
 
 on:
@@ -23,11 +85,11 @@ jobs:
 
     - name: Deploy backend files
       run: |
-        rsync -av --exclude='node_modules' ./backend/ root@${{ secrets.SERVER_HOST }}:/var/www/immo-tonn/backend/
+        rsync -av --exclude='node_modules' ./backend/ ubuntu@${{ secrets.SERVER_HOST }}:/var/www/immo-tonn/backend/
 
     - name: Setup .env on server
       run: |
-        ssh root@${{ secrets.SERVER_HOST }} 'bash -s' <<ENDSSH
+        ssh ubuntu@${{ secrets.SERVER_HOST }} 'bash -s' <<ENDSSH
         cat > /var/www/immo-tonn/backend/.env <<EOF
 PORT=${{ secrets.BACKEND_PORT }}
 MONGO_URI=${{ secrets.MONGO_URI }}
@@ -51,9 +113,10 @@ ENDSSH
 
     - name: Install dependencies & restart PM2
       run: |
-        ssh root@${{ secrets.SERVER_HOST }} <<'ENDSSH'
+        ssh ubuntu@${{ secrets.SERVER_HOST }} <<'ENDSSH'
         cd /var/www/immo-tonn/backend
         npm install --omit=dev
-        pm2 restart backend || pm2 start app.js --name backend
+        pm2 restart backend || pm2 start dist/app.js --name backend --env production
         pm2 save
 ENDSSH
+
