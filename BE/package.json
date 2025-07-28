@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "nodemon ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "init-ts": "tsc --init"
   },
   "keywords": [
     "api",
@@ -28,8 +31,7 @@
     "mongoose": "^8.13.2",
     "multer": "^1.4.5-lts.2",
     "nodemailer": "^6.10.1",
-    "qs": "^6.14.0",
-    "tsc": "^2.0.4"
+    "qs": "^6.14.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
