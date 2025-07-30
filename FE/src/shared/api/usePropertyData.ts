@@ -30,7 +30,7 @@ export const usePropertyData = (id?: string) => {
       console.log('Loading object data:', id);
 
       const objectRes = await axios.get<RealEstateObject>(
-        `http://49.12.44.201:80/api/objects/${id}`,
+        `https://immo-tonn.de:443/api/objects/${id}`,
       );
       const data = objectRes.data;
       setObjectData(data);
@@ -39,7 +39,7 @@ export const usePropertyData = (id?: string) => {
       if (data._id) {
         try {
           const imagesRes = await axios.get<Image[]>(
-            `http://49.12.44.201:80/api/images/by-object?objectId=${data._id}`,
+            `https://immo-tonn.de:443/api/images/by-object?objectId=${data._id}`,
           );
           console.log('Images uploaded:', imagesRes.data);
           setImages(imagesRes.data);
@@ -51,7 +51,7 @@ export const usePropertyData = (id?: string) => {
         // Uploading video
         try {
           const videosRes = await axios.get<Video[]>(
-            `http://49.12.44.201:80/api/videos/by-object?objectId=${data._id}`,
+            `https://immo-tonn.de:443/api/videos/by-object?objectId=${data._id}`,
           );
           setVideos(videosRes.data);
         } catch (videoError) {
@@ -139,7 +139,7 @@ export const usePropertysData = () => {
         console.log('Loading list of all objects');
 
         const objectRes = await axios.get<RealEstateObject[]>(
-          `http://49.12.44.201:80/api/objects/`,
+          `https://immo-tonn.de:443/api/objects/`,
         );
         const data = objectRes.data;
         setObjectData(data);
@@ -148,7 +148,7 @@ export const usePropertysData = () => {
         let loadedImages: Image[] = [];
         try {
           const imagesRes = await axios.get<Image[]>(
-            `http://49.12.44.201:80/api/images/`,
+            `https://immo-tonn.de:443/api/images/`,
           );
           loadedImages = imagesRes.data || [];
           setImages(loadedImages);
