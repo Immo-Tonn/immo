@@ -47,8 +47,10 @@ export const sendContactEmail = async (req: Request, res: Response) => {
       port: 465,
       secure: true,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        // user: process.env.EMAIL_USER,
+        // pass: process.env.EMAIL_PASS,
+        user: "Traumhaus2025",
+        pass: "andreas@tonn-versicherung.de",
       },
     });
 
