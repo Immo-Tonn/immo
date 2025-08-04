@@ -40,6 +40,8 @@ export const sendContactEmail = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: 'reCAPTCHA-Überprüfung fehlgeschlagen' });
     }
+
+    console.log("!!!!!", process.env.EMAIL_USER, process.env.EMAIL_PASS)
     const transporter = nodemailer.createTransport({
       host: 'smtp.strato.de',
       port: 465,
@@ -65,12 +67,18 @@ export const sendContactEmail = async (req: Request, res: Response) => {
 
     console.log('📤 Versende Nachricht an:', mailOptions.to);
 
+    // infinite request
     const info = await transporter.sendMail(mailOptions);
 
     console.log('✅ Nachricht gesendet:', info.response);
     res.status(200).json({ message: 'Nachricht wurde erfolgreich versendet' });
   } catch (error: any) {
-    console.error('❌ Fehler beim Mailversand:', error?.message || error);
+    console.error(
+      '❌ Fehler beim Mailversand:',
+      error.message,
+      error.code,
+      error.command,
+    );
     res.status(500).json({
       message: 'Serverfehler beim Versenden der Nachricht',
     });
