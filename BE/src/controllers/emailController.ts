@@ -41,27 +41,15 @@ export const sendContactEmail = async (req: Request, res: Response) => {
         .json({ message: 'reCAPTCHA-Überprüfung fehlgeschlagen' });
     }
 
-
-    // const poolConfig = `smtps://${process.env.EMAIL_USER}:${process.env.EMAIL_PASS}@smtp.strato.de:465/?pool=true`;
-    // const transporter = nodemailer.createTransport(poolConfig);
-    // const transporter = nodemailer.createTransport({
-    //   host: 'smtp.strato.de',
-    //   port: 465,
-    //   secure: true,
-    //   auth: {
-    //     user: process.env.EMAIL_USER,
-    //     pass: process.env.EMAIL_PASS,
-    //   },
-    // });
     const transporter = nodemailer.createTransport({
-    host: "smtp.strato.de",
-    port: 587,
-    secure: false, // upgrade later with STARTTLS
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-  },
-});
+      host: "smtp.strato.de",
+      port: 587,
+      secure: false, // upgrade later with STARTTLS
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
     const mailOptions = {
       from: `"Kontaktformular" <${process.env.EMAIL_USER}>`,
