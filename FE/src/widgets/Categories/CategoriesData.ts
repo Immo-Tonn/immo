@@ -1,3 +1,10 @@
+import immoAngeboten from '/src/shared/assets/categories/immo-angeboten.webp';
+import verkaufsSupport from '/src/shared/assets/categories/verkaufssupport.webp';
+import rechtUndRat from '/src/shared/assets/categories/react-und-rat.webp';
+import objektStyling from '/src/shared/assets/categories/object-styling.webp';
+import werterMittlung from '/src/shared/assets/categories/wertemittlung.webp';
+import finanzierung from '/src/shared/assets/categories/finanzirung.webp';
+
 export type CategoryItem = {
   id: number;
   title: string;
@@ -10,14 +17,14 @@ export const CategoriesData: CategoryItem[] = [
   {
     id: 1,
     title: 'Immobilienangebote',
-    image: '/src/shared/assets/categories/immo-angeboten.webp',
+    image: immoAngeboten,
     link: 'immobilien',
     alt: 'immobilienangebote',
   },
   {
     id: 2,
     title: 'Verkaufssupport',
-    image: '/src/shared/assets/categories/verkaufssupport.webp',
+    image: verkaufsSupport,
     link: 'verkaufssupport',
     alt: 'verkaufssupport',
   },
@@ -25,28 +32,28 @@ export const CategoriesData: CategoryItem[] = [
   {
     id: 3,
     title: 'Recht und Rat',
-    image: '/src/shared/assets/categories/react-und-rat.webp',
+    image: rechtUndRat,
     link: 'recht-und-rat',
     alt: 'recht-und-rat',
   },
   {
     id: 4,
     title: 'Objektstyling',
-    image: '/src/shared/assets/categories/object-styling.webp',
+    image: objektStyling,
     link: 'objectstyling',
     alt: 'objektstyling',
   },
   {
     id: 5,
     title: 'wertermittlung',
-    image: '/src/shared/assets/categories/wertemittlung.webp',
+    image: werterMittlung,
     link: 'wertermittlung',
     alt: 'wertermittlung',
   },
   {
     id: 6,
     title: 'finanzierung',
-    image: '/src/shared/assets/categories/finanzirung.webp',
+    image: finanzierung,
     link: 'finanzierung',
     alt: 'finanzierung',
   },
