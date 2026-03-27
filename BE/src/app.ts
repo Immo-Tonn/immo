@@ -109,7 +109,7 @@ connectDb();
 const PORT: number | string = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}`);
+ console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
 
 export default app;
