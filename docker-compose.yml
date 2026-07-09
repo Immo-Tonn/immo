@@ -24,8 +24,9 @@ services:
       - "443:443"
     volumes:
       - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt/live/immo-tonn.de/fullchain.pem:/etc/letsencrypt/live/immo-tonn.de/fullchain.pem
-      - /etc/letsencrypt/live/immo-tonn.de/privkey.pem:/etc/letsencrypt/live/immo-tonn.de/privkey.pem
+      - /etc/letsencrypt:/etc/letsencrypt
+     # - /etc/letsencrypt/live/immo-tonn.de/fullchain.pem:/etc/letsencrypt/live/immo-tonn.de/fullchain.pem
+     # - /etc/letsencrypt/live/immo-tonn.de/privkey.pem:/etc/letsencrypt/live/immo-tonn.de/privkey.pem
     networks:
       - mynet
 
